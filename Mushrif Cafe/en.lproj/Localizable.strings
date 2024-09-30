@@ -5,3 +5,38 @@
   Created by Bhushan Kumar on 27/09/24.
   
 */
+
+"language" = "Language";
+"select_language" = "Select your preferred Language";
+"continue_mobile" = "Continue with Mobile";
+"enter_mobile" = "Enter your local mobile number for OTP";
+"signUp" = "Sign Up";
+"error" = "Error";
+"mobile_error" = "Please enter valid mobile number";
+"ot_verification" = "One Time Verification";
+"please_enter_otp" = "Please Enter the OTP sent to your mobile number";
+"resend_otp" = "Resend OTP";
+"verify" = "Verify";
+"otp_error" = "Please enter 4 digit OTP";
+"complete_profile" = "Complete your Profile";
+"full_name" = "Full Name";
+"email" = "Email (Optional)";
+"email_error" = "Please enter valid email";
+
+"scan_table" = "Scan Table QR";
+"skip" = "Skip";
+"continue_takeaway" = "Continue with Take Away";
+"scan_not_supported" = "Scanning is not supported";
+"device_not_supported" = "Your device does not support scanning a code from an item. Please use a device with a camera.";
+"ok" = "OK";
+"camera_access" = "Camera Access Needed";
+"enable_camera" = "Please enable camera access in Settings to scan QR codes";
+"go_settings" = "Go to Settings";
+"cancel" = "Cancel";
+
+"dine_in" = "Dine in";
+"select_table" = "Select your table";
+"search_product" = "Search any products";
+"add_cart" = "Add to cart";
+"my_usual" = "My Usuals";
+"categories" = "Categories";

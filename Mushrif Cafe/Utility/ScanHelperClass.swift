@@ -5,4 +5,14 @@
 //  Created by Bhushan Kumar on 28/09/24.
 //
 
-import Foundation
+import UIKit
+
+// MARK: - Constants
+
+enum ScanConstants {
+    static let alertTitle = "scan_not_supported".localized()
+    static let alertMessage = "device_not_supported".localized()
+    static let alertButtonTitle = "ok".localized()
+}
+
+

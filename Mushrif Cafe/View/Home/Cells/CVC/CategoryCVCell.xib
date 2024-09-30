@@ -1,21 +1,86 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CategoryCVCell" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CategoryCVCell" id="gTV-IL-0wX" customClass="CategoryCVCell" customModule="Mushrif_Cafe" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="126" height="146"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                <rect key="frame" x="0.0" y="0.0" width="126" height="146"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZK-7E-ufu">
+                        <rect key="frame" x="0.0" y="0.0" width="126" height="146"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainDish" translatesAutoresizingMaskIntoConstraints="NO" id="6WG-Xy-Tqk">
+                                <rect key="frame" x="28" y="15" width="70" height="70"/>
+                                <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="Ctt-zu-3Xw"/>
+                                    <constraint firstAttribute="height" constant="70" id="s5q-jB-ri4"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="35"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Main Dishes &amp; Sweets" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x09-2J-11k">
+                                <rect key="frame" x="2" y="89" width="122" height="49"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="146" id="0lx-dP-8sS"/>
+                            <constraint firstAttribute="trailing" secondItem="x09-2J-11k" secondAttribute="trailing" constant="2" id="Cah-mQ-U0L"/>
+                            <constraint firstAttribute="bottom" secondItem="x09-2J-11k" secondAttribute="bottom" constant="8" id="L3O-sI-0U4"/>
+                            <constraint firstItem="6WG-Xy-Tqk" firstAttribute="top" secondItem="oZK-7E-ufu" secondAttribute="top" constant="15" id="MCQ-He-MP6"/>
+                            <constraint firstItem="6WG-Xy-Tqk" firstAttribute="centerX" secondItem="oZK-7E-ufu" secondAttribute="centerX" id="RMA-jd-DNC"/>
+                            <constraint firstItem="x09-2J-11k" firstAttribute="top" secondItem="6WG-Xy-Tqk" secondAttribute="bottom" constant="4" id="aSm-Yt-ngm"/>
+                            <constraint firstItem="x09-2J-11k" firstAttribute="leading" secondItem="oZK-7E-ufu" secondAttribute="leading" constant="2" id="drb-kR-dpa"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="19"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="oZK-7E-ufu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="XSd-c4-S8y"/>
+                <constraint firstAttribute="bottom" secondItem="oZK-7E-ufu" secondAttribute="bottom" id="iP0-YR-tBV"/>
+                <constraint firstItem="oZK-7E-ufu" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="kd0-II-LVR"/>
+                <constraint firstAttribute="trailing" secondItem="oZK-7E-ufu" secondAttribute="trailing" id="pcN-PI-xjg"/>
+            </constraints>
+            <size key="customSize" width="257" height="192"/>
+            <connections>
+                <outlet property="foodLabel" destination="x09-2J-11k" id="YgC-hu-sgK"/>
+                <outlet property="img" destination="6WG-Xy-Tqk" id="3l4-wk-OKj"/>
+            </connections>
+            <point key="canvasLocation" x="132.1875" y="79.225352112676063"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="mainDish" width="159" height="165"/>
+    </resources>
 </document>

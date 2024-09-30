@@ -8,10 +8,34 @@
 import UIKit
 
 class CategoryTVCell: UITableViewCell {
+    
+    @IBOutlet var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
+            titleLabel.text = "categories".localized()
+        }
+    }
+    
+    @IBOutlet var dataCollection: UICollectionView!
+    
+    @IBOutlet var clcHeight: NSLayoutConstraint!
+    
+    static let identifier = "CategoryTVCell"
+    
+    static func nib() -> UINib {
+        return UINib(nibName: "CategoryTVCell", bundle: nil)
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        dataCollection.register(CategoryCVCell.nib(), forCellWithReuseIdentifier: CategoryCVCell.identifier)
+        dataCollection.delegate = self
+        dataCollection.dataSource = self
+        dataCollection.reloadData()
+        
+        self.clcHeight.constant = (3*146) + (3*10)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -19,5 +43,22 @@ class CategoryTVCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+}
+
+extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 9
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCVCell.identifier, for: indexPath) as! CategoryCVCell
+        cell.foodLabel.text = "Main Dishes & Sweets"
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (UIScreen.main.bounds.size.width - 54)/3, height: 146)
+    }
 }

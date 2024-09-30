@@ -1,0 +1,6 @@
+framework module Pods_Mushrif_Cafe {
+  umbrella header "Pods-Mushrif Cafe-umbrella.h"
+
+  export *
+  module * { export * }
+}
