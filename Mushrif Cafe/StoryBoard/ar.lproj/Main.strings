@@ -1,0 +1,45 @@
+
+/* Class = "UIButton"; normalTitle = "Verify"; ObjectID = "1XB-jb-9pQ"; */
+"1XB-jb-9pQ.normalTitle" = "Verify";
+
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "4v5-Ie-JHR"; */
+"4v5-Ie-JHR.normalTitle" = "Sign Up";
+
+/* Class = "UILabel"; text = "Email (Optional)"; ObjectID = "9WD-Ru-i9Q"; */
+"9WD-Ru-i9Q.text" = "Email (Optional)";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "BJZ-Ua-cl2"; */
+"BJZ-Ua-cl2.text" = "Label";
+
+/* Class = "UILabel"; text = "One Time Verification"; ObjectID = "CrN-Oi-2yW"; */
+"CrN-Oi-2yW.text" = "One Time Verification";
+
+/* Class = "UILabel"; text = "Please Enter the OTP sent to your mobile number 65081410"; ObjectID = "Hbt-Ij-7vw"; */
+"Hbt-Ij-7vw.text" = "Please Enter the OTP sent to your mobile number 65081410";
+
+/* Class = "UILabel"; text = "Enter you local mobile number for OTP"; ObjectID = "MpX-ce-e62"; */
+"MpX-ce-e62.text" = "Enter you local mobile number for OTP";
+
+/* Class = "UILabel"; text = "Continue with Mobile"; ObjectID = "NiZ-01-eLY"; */
+"NiZ-01-eLY.text" = "Continue with Mobile";
+
+/* Class = "UILabel"; text = "Full Name"; ObjectID = "Rm8-Le-Gqo"; */
+"Rm8-Le-Gqo.text" = "Full Name";
+
+/* Class = "UILabel"; text = "Language"; ObjectID = "fpQ-uy-TE7"; */
+"fpQ-uy-TE7.text" = "Language";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "hKW-72-9oe"; */
+"hKW-72-9oe.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Resend OTP"; ObjectID = "hjC-LC-gmO"; */
+"hjC-LC-gmO.normalTitle" = "Resend OTP";
+
+/* Class = "UIButton"; normalTitle = "Sign Up"; ObjectID = "iuZ-l7-BF3"; */
+"iuZ-l7-BF3.normalTitle" = "Sign Up";
+
+/* Class = "UILabel"; text = "Complete your Profile"; ObjectID = "odl-UA-z8a"; */
+"odl-UA-z8a.text" = "Complete your Profile";
+
+/* Class = "UILabel"; text = "Select your preferred Language"; ObjectID = "uoZ-kv-dHw"; */
+"uoZ-kv-dHw.text" = "Select your preferred Language";
