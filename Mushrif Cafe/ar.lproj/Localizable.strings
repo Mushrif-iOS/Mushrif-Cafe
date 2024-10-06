@@ -54,7 +54,7 @@
 "edit" = "يحرر";
 "my_orders" = "طلباتي";
 "manage" = "يدير";
-"wallets" = "محافظ";
+"wallet" = "محفظة";
 "contact_us" = "اتصل بنا";
 "terms_and_conditions" = "الشروط والأحكام";
 "logout" = "تسجيل الخروج";
@@ -73,3 +73,22 @@
 "order_confirm" = "لقد تم تأكيد طلبك";
 "order_id" = "معرف الطلب";
 "payment" = "قسط";
+
+"cart" = "عربة";
+"balance" = "توازن";
+"pay_with" = "ادفع مع";
+"place_order" = "وضع النظام";
+"coupons" = "كوبونات";
+"enter_coupon" = "أدخل رمز القسيمة";
+"apply" = "يتقدم";
+"book_for" = "حجزت ل";
+"select" = "يختار";
+"summary" = "ملخص";
+"discount_apl" = "تم تطبيق الخصم";
+"total" = "المجموع";
+"paid_by" = "تدفع بواسطة";
+"order_on" = "أمر على";
+
+"my_usual" = "عادتي";
+"create_new" = "إنشاء جديد";
+"usual_name" = "الاسم المعتاد";

@@ -25,9 +25,9 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         didSet {
             
             let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(totalValue.toRoundedString(toPlaces: 2))",
-                                                       attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)]);
+                                                       attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
             attrString.append(NSMutableAttributedString(string: " KD",
-                                                        attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]));
+                                                        attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
             addButton.setAttributedTitle(attrString, for: .normal)
         }
     }
@@ -79,6 +79,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func nextAscreenAction(_ sender: Any) {
+        self.dismiss(animated: true)
     }
 }
 

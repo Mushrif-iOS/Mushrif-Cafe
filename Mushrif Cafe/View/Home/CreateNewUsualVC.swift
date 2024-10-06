@@ -6,24 +6,42 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
-class CreateNewUsualVC: UIViewController {
+class CreateNewUsualVC: UIViewController, Instantiatable {
+    static var storyboard: AppStoryboard = .home
+
+    @IBOutlet weak var bottomView: UIView! {
+        didSet {
+            bottomView.roundCorners(corners: [.topLeft, .topRight], radius: 15)
+        }
+    }
+    
+    @IBOutlet var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
+            titleLabel.text = "usual_name".localized()
+        }
+    }
+    
+    @IBOutlet weak var txtUsual: UITextField! {
+        didSet {
+            txtUsual.font = UIFont.poppinsRegularFontWith(size: 18)
+            txtUsual.tintColor = UIColor.primaryBrown
+            txtUsual.placeholder = "usual_name".localized()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 200
+        txtUsual.becomeFirstResponder()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
     }
-    */
-
 }

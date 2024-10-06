@@ -26,6 +26,10 @@
 		C65010292CAF224D003BCA53 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C65010282CAF224D003BCA53 /* Profile.storyboard */; };
 		C650102D2CB06573003BCA53 /* ProfileHeaderTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C650102B2CB06573003BCA53 /* ProfileHeaderTVC.swift */; };
 		C650102E2CB06573003BCA53 /* ProfileHeaderTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C650102C2CB06573003BCA53 /* ProfileHeaderTVC.xib */; };
+		C6600C262CB31938009B0445 /* AddUsualsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6600C252CB31938009B0445 /* AddUsualsVC.swift */; };
+		C6600C292CB31CA6009B0445 /* UsualListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6600C282CB31CA6009B0445 /* UsualListTableViewCell.xib */; };
+		C6600C2A2CB31CA6009B0445 /* UsualListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6600C272CB31CA6009B0445 /* UsualListTableViewCell.swift */; };
+		C6600C2C2CB32249009B0445 /* CreateNewUsualVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */; };
 		C66906D92CA46A2500E74833 /* OTPFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D62CA46A2400E74833 /* OTPFieldView.swift */; };
 		C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D72CA46A2400E74833 /* OTPTextView.swift */; };
 		C68E72582CA3000200F223A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E72572CA3000200F223A8 /* AppDelegate.swift */; };
@@ -107,6 +111,10 @@
 		C65010282CAF224D003BCA53 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		C650102B2CB06573003BCA53 /* ProfileHeaderTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderTVC.swift; sourceTree = "<group>"; };
 		C650102C2CB06573003BCA53 /* ProfileHeaderTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileHeaderTVC.xib; sourceTree = "<group>"; };
+		C6600C252CB31938009B0445 /* AddUsualsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUsualsVC.swift; sourceTree = "<group>"; };
+		C6600C272CB31CA6009B0445 /* UsualListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsualListTableViewCell.swift; sourceTree = "<group>"; };
+		C6600C282CB31CA6009B0445 /* UsualListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UsualListTableViewCell.xib; sourceTree = "<group>"; };
+		C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewUsualVC.swift; sourceTree = "<group>"; };
 		C66906D62CA46A2400E74833 /* OTPFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPFieldView.swift; sourceTree = "<group>"; };
 		C66906D72CA46A2400E74833 /* OTPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPTextView.swift; sourceTree = "<group>"; };
 		C68E72542CA3000200F223A8 /* Mushrif Cafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mushrif Cafe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,8 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				C6337B562CAB1A4E00ACDD86 /* MyOrderViewController.swift */,
-				C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */,
-				C6337B592CAB21E000ACDD86 /* MyOrderTableViewCell.xib */,
+				C6600C242CB3191F009B0445 /* OrderCells */,
 			);
 			path = Orders;
 			sourceTree = "<group>";
@@ -238,6 +245,15 @@
 				C6C818B12CB1B72000905A39 /* ManageUsualTableViewCell.xib */,
 			);
 			path = CellClass;
+			sourceTree = "<group>";
+		};
+		C6600C242CB3191F009B0445 /* OrderCells */ = {
+			isa = PBXGroup;
+			children = (
+				C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */,
+				C6337B592CAB21E000ACDD86 /* MyOrderTableViewCell.xib */,
+			);
+			path = OrderCells;
 			sourceTree = "<group>";
 		};
 		C667C4A12CA3165E00DE03C3 /* Utility */ = {
@@ -371,8 +387,10 @@
 				C6C089B82CA85D540050F034 /* ScanTableVC.swift */,
 				C6C089D72CA8EC500050F034 /* DashboardVC.swift */,
 				C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */,
-				C6C089D92CA9061F0050F034 /* Cells */,
 				C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */,
+				C6600C252CB31938009B0445 /* AddUsualsVC.swift */,
+				C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */,
+				C6C089D92CA9061F0050F034 /* Cells */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -405,6 +423,8 @@
 				C650101C2CADBA72003BCA53 /* SelectionListCell.xib */,
 				C65010212CAF0FC6003BCA53 /* MealDetailsHeaderCell.swift */,
 				C65010222CAF0FC6003BCA53 /* MealDetailsHeaderCell.xib */,
+				C6600C272CB31CA6009B0445 /* UsualListTableViewCell.swift */,
+				C6600C282CB31CA6009B0445 /* UsualListTableViewCell.xib */,
 			);
 			path = TVC;
 			sourceTree = "<group>";
@@ -519,6 +539,7 @@
 				C68E72762CA30F4300F223A8 /* Poppins-Regular.ttf in Resources */,
 				C6C08A022CAADEB70050F034 /* MealCVCell.xib in Resources */,
 				C68E72642CA3000300F223A8 /* Base in Resources */,
+				C6600C292CB31CA6009B0445 /* UsualListTableViewCell.xib in Resources */,
 				C6C089F22CA9C31E0050F034 /* CategoryCVCell.xib in Resources */,
 				C6C089B52CA7280C0050F034 /* Localizable.strings in Resources */,
 				C6C089FE2CAADE9C0050F034 /* MealTVCell.xib in Resources */,
@@ -589,7 +610,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C6C089E52CA9927F0050F034 /* MyUsualTVCell.swift in Sources */,
+				C6600C262CB31938009B0445 /* AddUsualsVC.swift in Sources */,
 				C65010232CAF0FC6003BCA53 /* MealDetailsHeaderCell.swift in Sources */,
+				C6600C2C2CB32249009B0445 /* CreateNewUsualVC.swift in Sources */,
 				C6C089EF2CA9C1C40050F034 /* CategoryTVCell.swift in Sources */,
 				C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */,
 				C6C089D82CA8EC500050F034 /* DashboardVC.swift in Sources */,
@@ -619,6 +642,7 @@
 				C6C818A72CB11C1500905A39 /* WalletTableViewCell.swift in Sources */,
 				C6337B612CAC6C5200ACDD86 /* CategoryViewController.swift in Sources */,
 				C6EDC6E52CA586C3003C40B0 /* LoginVC.swift in Sources */,
+				C6600C2A2CB31CA6009B0445 /* UsualListTableViewCell.swift in Sources */,
 				C6C089AE2CA680C80050F034 /* UserDefault+Helper.swift in Sources */,
 				C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */,
 				C65010272CAF2203003BCA53 /* ProfileViewController.swift in Sources */,

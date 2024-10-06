@@ -72,9 +72,11 @@ class CategoryViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func goToNextAction(_ sender: Any) {
-        let detailVC = MealDetailsViewController.instantiate()
-        self.navigationController?.modalPresentationStyle = .formSheet
-        self.navigationController?.present(detailVC, animated: true)
+//        let detailVC = MealDetailsViewController.instantiate()
+//        self.navigationController?.modalPresentationStyle = .formSheet
+//        self.navigationController?.present(detailVC, animated: true)
+        let cartVC = CartVC.instantiate()
+        self.navigationController?.pushViewController(cartVC, animated: true)
     }
 }
 
@@ -98,10 +100,23 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell") as! CategoryTableViewCell
+        cell.addUsual.tag = indexPath.row
+        cell.addUsual.addTarget(self, action: #selector(addUsual(sender:)), for: .touchUpInside)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    @objc func addUsual(sender: UIButton) {
+        let addVC = AddUsualsVC.instantiate()
+        if #available(iOS 15.0, *) {
+            if let sheet = addVC.sheetPresentationController {
+                sheet.detents = [.medium()]
+                sheet.preferredCornerRadius = 15
+            }
+        }
+        self.present(addVC, animated: true, completion: nil)
     }
 }

@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController, Instantiatable {
     
     @IBOutlet weak var selectLanguageTxt: UITextField! 
     
-    var menuItems = ["my_orders".localized(), "manage".localized(), "wallets".localized(), "contact_us".localized(), "terms_and_conditions".localized(), "logout".localized()]
+    var menuItems = ["my_orders".localized(), "manage".localized(), "wallet".localized(), "contact_us".localized(), "terms_and_conditions".localized(), "logout".localized()]
     var menuImgs = [UIImage(named: "plate-utensils"), UIImage(named: "saved"), UIImage(named: "wallet"), UIImage(named: "headset"), UIImage(named: "document"), UIImage(named: "leave")]
 
     override func viewDidLoad() {

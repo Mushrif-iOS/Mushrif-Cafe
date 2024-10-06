@@ -52,18 +52,22 @@ class PaymentMethodVC: UIViewController, Instantiatable {
     }
     
     @IBAction func appleAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        let confirmVC = OrderSuccessVC.instantiate()
+        self.navigationController?.push(viewController: confirmVC)
     }
     
     @IBAction func onlineKnetAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        let confirmVC = OrderSuccessVC.instantiate()
+        self.navigationController?.push(viewController: confirmVC)
     }
     
     @IBAction func swipeKnetAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        let confirmVC = OrderSuccessVC.instantiate()
+        self.navigationController?.push(viewController: confirmVC)
     }
     
     @IBAction func keepAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        let confirmVC = OrderSuccessVC.instantiate()
+        self.navigationController?.push(viewController: confirmVC)
     }
 }

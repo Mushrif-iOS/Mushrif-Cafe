@@ -54,7 +54,7 @@
 "edit" = "Edit";
 "my_orders" = "My Orders";
 "manage" = "Manage";
-"wallets" = "Wallets";
+"wallet" = "Wallet";
 "contact_us" = "Contact Us";
 "terms_and_conditions" = "Terms and Conditions";
 "logout" = "Logout";
@@ -74,3 +74,21 @@
 "order_id" = "Order ID";
 "payment" = "Payment";
 
+"cart" = "Cart";
+"balance" = "Balance";
+"pay_with" = "Pay with";
+"place_order" = "Place Order";
+"coupons" = "Coupons";
+"enter_coupon" = "Enter coupon Code";
+"apply" = "Apply";
+"book_for" = "Booked for";
+"select" = "Select";
+"summary" = "Summary";
+"discount_apl" = "Discount applied";
+"total" = "Total";
+"paid_by" = "Paid by";
+"order_on" = "Ordered on";
+
+"my_usual" = "My Usuals";
+"create_new" = "Create New";
+"usual_name" = "Usual Name";

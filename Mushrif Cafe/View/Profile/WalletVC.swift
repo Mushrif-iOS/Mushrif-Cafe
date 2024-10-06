@@ -13,7 +13,7 @@ class WalletVC: UIViewController, Instantiatable {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
-            titleLabel.text = "wallets".localized()
+            titleLabel.text = "wallet".localized()
         }
     }
     

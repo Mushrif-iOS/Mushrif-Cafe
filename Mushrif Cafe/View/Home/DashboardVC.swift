@@ -66,7 +66,7 @@ class DashboardVC: UIViewController, Instantiatable {
     
     @IBAction func viewProfileAction(_ sender: Any) {
         let profileVC = ProfileViewController.instantiate()
-        self.navigationController?.push(viewController: profileVC)
+        self.navigationController?.pushViewController(profileVC, animated: true)
     }
     
     @IBAction func searchAction(_ sender: Any) {
@@ -110,21 +110,14 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     
     @objc func payNowAction(sender: UIButton) {
         
-//        let addVC = PaymentMethodVC.instantiate()
-//        
-//        let blurEffect = UIBlurEffect(style: .light)
-//        let visualEffectView = UIVisualEffectView(effect: blurEffect)
-//        visualEffectView.frame = self.view.frame
-//
-//        if #available(iOS 15.0, *) {
-//            if let sheet = addVC.sheetPresentationController {
-//                sheet.detents = [.medium()]
-//                sheet.preferredCornerRadius = 15
-//            }
-//        }
-//        self.present(addVC, animated: true, completion: nil)
-        let confirmVC = OrderSuccessVC.instantiate()
-        self.navigationController?.push(viewController: confirmVC)
+        let addVC = PaymentMethodVC.instantiate()
+        if #available(iOS 15.0, *) {
+            if let sheet = addVC.sheetPresentationController {
+                sheet.detents = [.medium()]
+                sheet.preferredCornerRadius = 15
+            }
+        }
+        self.present(addVC, animated: true, completion: nil)
     }
 }
 
