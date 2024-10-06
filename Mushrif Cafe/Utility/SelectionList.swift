@@ -1,8 +1,8 @@
 //
-//  SelectionList.swift
+//  Extensions.swift
+//  Mushrif Cafe
 //
-//  Created by Yonat Sharon on 14.01.2018.
-//  Copyright © 2018 Yonat Sharon. All rights reserved.
+//  Created by Bhushan Kumar on 26/09/24.
 //
 
 import UIKit
@@ -157,15 +157,15 @@ extension SelectionList: UITableViewDataSource, UITableViewDelegate {
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-        cell.isAccessibilityElement = true
-        cell.selectionStyle = .none
-        if let cell = cell as? SelectionListCell {
-            cell.selectionImage = selectionImage
-            cell.deselectionImage = deselectionImage
-            cell.isSelectionMarkTrailing = isSelectionMarkTrailing
-        }
-        cell.textLabel?.text = items[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! SelectionListCell
+//        cell.isAccessibilityElement = true
+//        cell.selectionStyle = .none
+//        if let cell = cell as? SelectionListCell {
+//
+//        }
+        cell.selectionImage = selectionImage
+        cell.deselectionImage = deselectionImage
+        cell.isSelectionMarkTrailing = isSelectionMarkTrailing
         setupCell?(cell, indexPath.row)
         return cell
     }
@@ -186,86 +186,6 @@ extension SelectionList: UITableViewDataSource, UITableViewDelegate {
 
     public func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
         tableView.isEditing = false
-    }
-}
-
-// MARK: - Selection Marks
-
-class SelectionListCell: UITableViewCell {
-    var selectionImage: UIImage?
-    var deselectionImage: UIImage?
-    var isSelectionMarkTrailing = true
-
-    func updateSelectionAppearance() {
-        if let selectionImage = selectionImage {
-            if isSelectionMarkTrailing {
-                if isSelected {
-                    accessoryView = UIImageView(image: selectionImage)
-                } else {
-                    if let deselectionImage = deselectionImage {
-                        accessoryView = UIImageView(image: deselectionImage)
-                    } else {
-                        accessoryView = nil
-                    }
-                }
-            } else {
-                if isSelected {
-                    imageView?.image = selectionImage
-                } else {
-                    if let deselectionImage = deselectionImage {
-                        imageView?.image = deselectionImage
-                    } else {
-                        imageView?.image = UIImage.emptyImage(size: selectionImage.size)
-                    }
-                }
-            }
-        } else {
-            accessoryType = isSelected ? .checkmark : .none
-        }
-    }
-
-    private var imageViewOriginX = CGFloat(0)
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        guard var imageViewFrame = imageView?.frame else { return }
-
-        // re-entrance guard
-        if 0 == imageViewOriginX {
-            imageViewOriginX = imageViewFrame.origin.x
-        }
-
-        imageViewFrame.origin.x = imageViewOriginX + CGFloat(indentationLevel) * indentationWidth
-        imageView?.frame = imageViewFrame
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        updateSelectionAppearance()
-    }
-
-    override var isSelected: Bool {
-        didSet {
-            updateSelectionAppearance()
-        }
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        updateSelectionAppearance()
-    }
-
-    override var accessibilityTraits: UIAccessibilityTraits {
-        get {
-            if isSelected {
-                return super.accessibilityTraits.union(.selected)
-            }
-            return super.accessibilityTraits
-        }
-
-        set {
-            super.accessibilityTraits = newValue
-        }
     }
 }
 

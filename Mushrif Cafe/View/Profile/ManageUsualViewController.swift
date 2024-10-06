@@ -7,23 +7,120 @@
 
 import UIKit
 
-class ManageUsualViewController: UIViewController {
-
+class ManageUsualViewController: UIViewController, Instantiatable {
+    static var storyboard: AppStoryboard = .profile
+    
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
+            titleLabel.text = "manage_usual".localized()
+        }
+    }
+    
+    @IBOutlet weak var mainTableView: UITableView!
+    
+    lazy var headerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor.black
+        label.font = UIFont.poppinsBoldFontWith(size: 20)
+        return label
+    }()
+    
+    lazy var footerButton: UIButton! = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor.primaryBrown
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.borderColor = UIColor.borderPink
+        button.borderWidth = 1
+        button.cornerRadius = 30
+        button.addTarget(self, action: #selector(didAddTaped), for: .touchUpInside)
+        button.setTitle("add_new".localized(), for: .normal)
+        button.titleLabel?.font = UIFont.poppinsBoldFontWith(size: 18)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        mainTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
+        
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 100))
+        footerView.backgroundColor = .clear
+        footerView.addSubview(footerButton)
+        footerButton.leftAnchor.constraint(equalTo: footerView.leftAnchor, constant: 17).isActive = true
+        footerButton.rightAnchor.constraint(equalTo: footerView.rightAnchor, constant: -17).isActive = true
+        footerButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10).isActive = true
+        //footerButton.centerYAnchor.constraint(equalTo: footerView.centerYAnchor).isActive = true
+        footerButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        mainTableView.tableFooterView = footerView
+        
+        if #available(iOS 15.0, *) {
+            mainTableView.sectionHeaderTopPadding = 0
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func backAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
-    */
+}
 
+extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return 3
+        } else {
+            return 2
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ManageUsualTableViewCell") as! ManageUsualTableViewCell
+        
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
+            } else if indexPath.row == 2 {
+                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
+            }
+        } else {
+            if indexPath.row == 0 {
+                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
+            } else if indexPath.row == 1 {
+                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
+            }
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+        
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
+        headerView.backgroundColor = .clear
+        headerView.addSubview(headerLabel)
+        headerLabel.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 18).isActive = true
+        headerLabel.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: -18).isActive = true
+        headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -15).isActive = true
+        headerLabel.text = "Usual - \(section)"
+        return headerView
+    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+    
+    @objc func didAddTaped() {
+        print("hifvbigbigbij")
+    }
 }

@@ -508,7 +508,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
                                     </textField>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="QuN-8r-46y" firstAttribute="top" secondItem="0qy-2c-Y73" secondAttribute="top" constant="5" id="Bnb-HI-bSj"/>
                                     <constraint firstItem="QuN-8r-46y" firstAttribute="leading" secondItem="0qy-2c-Y73" secondAttribute="leading" constant="15" id="KQv-HF-aDl"/>
@@ -537,7 +537,7 @@
                                         <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                     </textField>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="ey7-XS-x5N" firstAttribute="leading" secondItem="lg1-ho-w5K" secondAttribute="leading" constant="15" id="6gw-Fl-3iP"/>
                                     <constraint firstAttribute="trailing" secondItem="ey7-XS-x5N" secondAttribute="trailing" constant="15" id="AWv-V5-MiB"/>
@@ -600,7 +600,6 @@
                             <constraint firstItem="Rm8-Le-Gqo" firstAttribute="top" secondItem="YXr-TS-lWU" secondAttribute="bottom" constant="30" id="zYe-Cf-sCn"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="EAW-Mo-fLn"/>
                     <connections>
                         <outlet property="bottomConstraint" destination="1mj-nY-T1p" id="5gm-dP-WoQ"/>
                         <outlet property="emailTitle" destination="9WD-Ru-i9Q" id="MYC-Qz-0KA"/>

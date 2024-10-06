@@ -31,6 +31,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Siren.shared.wail()
         Siren.shared.presentationManager = PresentationManager(forceLanguageLocalization: .arabic)
         
+        UITableView.appearance().showsVerticalScrollIndicator = false
+        
+        self.restartApp()
+        return true
+    }
+}
+
+extension AppDelegate {
+    
+    func restartApp() {
+        
         let userLanguage = UserDefaultHelper.language
         print("userLanguage.................", userLanguage ?? "")
         
@@ -64,7 +75,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.makeKeyAndVisible()
         
-        return true
     }
 }
-

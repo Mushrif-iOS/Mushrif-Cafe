@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import SafariServices
 
 enum AppStoryboard: String {
     case main = "Main"
     case home = "Home"
+    case profile = "Profile"
+    case cart = "Cart"
 }
 
 protocol Instantiatable {
@@ -79,6 +82,32 @@ extension String {
     }
 }
 
+extension String {
+    private static let formatter = NumberFormatter()
+    
+    func clippingCharacters(in characterSet: CharacterSet) -> String {
+        components(separatedBy: characterSet).joined()
+    }
+    
+    func convertedDigitsToLocale(_ locale: Locale = .current) -> String {
+        let digits = Set(clippingCharacters(in: CharacterSet.decimalDigits.inverted))
+        guard !digits.isEmpty else { return self }
+        
+        Self.formatter.locale = locale
+        
+        let maps: [(original: String, converted: String)] = digits.map {
+            let original = String($0)
+            let digit = Self.formatter.number(from: original)!
+            let localized = Self.formatter.string(from: digit)!
+            return (original, localized)
+        }
+        
+        return maps.reduce(self) { converted, map in
+            converted.replacingOccurrences(of: map.original, with: map.converted)
+        }
+    }
+}
+
 extension UITextField {
     
     open override func awakeFromNib() {
@@ -110,5 +139,91 @@ public extension UINavigationController {
         transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         transition.type = type
         self.view.layer.add(transition, forKey: nil)
+    }
+}
+
+extension Double {
+    func rounded(toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+    func toRoundedString(toPlaces places:Int) -> String {
+        let amount = self.rounded(toPlaces: places)
+        let str_mount = String(amount)
+        
+        let sub_amountStrings = str_mount.split(separator: ".")
+        
+        if sub_amountStrings.count == 1
+        {
+            var re_str = "\(sub_amountStrings[0])."
+            for _ in 0..<places
+            {
+                re_str += "0"
+            }
+            return re_str
+            
+        }
+        else if sub_amountStrings.count > 1, "\(sub_amountStrings[1])".count < places
+        {
+            var re_str = "\(sub_amountStrings[0]).\(sub_amountStrings[1])"
+            let tem_places = (places -  "\(sub_amountStrings[1])".count)
+            for _ in 0..<tem_places
+            {
+                re_str += "0"
+            }
+            return re_str
+        }
+        
+        return str_mount
+    }
+}
+
+class AlertView {
+
+    static func show(title:String? = Bundle.applicationName, message:String?, preferredStyle: UIAlertController.Style = .alert, buttons: [String], completionHandler: @escaping (String) -> Void) {
+        
+        let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+
+        for button in buttons {
+
+            var style = UIAlertAction.Style.default
+            let buttonText = button.lowercased().replacingOccurrences(of: " ", with: "")
+            if buttonText == "cancel".localized() {
+                style = .cancel
+            }
+            let action = UIAlertAction(title: button, style: style) { (_) in
+                completionHandler(button)
+            }
+            alert.addAction(action)
+        }
+
+        DispatchQueue.main.async {
+            if let app = UIApplication.shared.delegate as? AppDelegate, let rootViewController = app.window?.rootViewController {
+                rootViewController.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+}
+
+extension Bundle {
+    class var applicationName: String {
+
+        if let displayName: String = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String {
+            return displayName
+        } else if let name: String = Bundle.main.infoDictionary?["CFBundleName"] as? String {
+            return name
+        }
+        return "No Name Found"
+    }
+}
+
+extension UIViewController {
+    func showWebView(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            let config = SFSafariViewController.Configuration()
+            config.entersReaderIfAvailable = false
+            let vc = SFSafariViewController(url: url, configuration: config)
+            self.present(vc, animated: true)
+        }
     }
 }

@@ -20,6 +20,8 @@ class CategoryTVCell: UITableViewCell {
     
     @IBOutlet var clcHeight: NSLayoutConstraint!
     
+    var navController: UINavigationController = UINavigationController()
+    
     static let identifier = "CategoryTVCell"
     
     static func nib() -> UINib {
@@ -60,5 +62,11 @@ extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (UIScreen.main.bounds.size.width - 54)/3, height: 146)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let categoryVC = CategoryViewController.instantiate()
+        categoryVC.category = "Main Dishes & Sweets"
+        self.navController.push(viewController: categoryVC)
     }
 }

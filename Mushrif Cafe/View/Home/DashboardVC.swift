@@ -56,13 +56,17 @@ class DashboardVC: UIViewController, Instantiatable {
         
         profileButton.setTitle("Bhushan Kumar".getAcronym(), for: .normal)
         
+        mainTableView.register(HomeOrderTVCell.nib(), forCellReuseIdentifier: HomeOrderTVCell.identifier)
         mainTableView.register(MyUsualTVCell.nib(), forCellReuseIdentifier: MyUsualTVCell.identifier)
         mainTableView.register(CategoryTVCell.nib(), forCellReuseIdentifier: CategoryTVCell.identifier)
         mainTableView.register(BannersTVCell.nib(), forCellReuseIdentifier: BannersTVCell.identifier)
+        
+        mainTableView.register(MealTVCell.nib(), forCellReuseIdentifier: MealTVCell.identifier)
     }
     
     @IBAction func viewProfileAction(_ sender: Any) {
-        
+        let profileVC = ProfileViewController.instantiate()
+        self.navigationController?.push(viewController: profileVC)
     }
     
     @IBAction func searchAction(_ sender: Any) {
@@ -74,25 +78,53 @@ class DashboardVC: UIViewController, Instantiatable {
 extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+            cell.payNowButton.tag = indexPath.row
+            cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
             return cell
         } else if indexPath.row == 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+            return cell
+        } else if indexPath.row == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+            cell.navController = self.navigationController ?? UINavigationController()
+            return cell
+        } else if indexPath.row == 3 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    @objc func payNowAction(sender: UIButton) {
+        
+//        let addVC = PaymentMethodVC.instantiate()
+//        
+//        let blurEffect = UIBlurEffect(style: .light)
+//        let visualEffectView = UIVisualEffectView(effect: blurEffect)
+//        visualEffectView.frame = self.view.frame
+//
+//        if #available(iOS 15.0, *) {
+//            if let sheet = addVC.sheetPresentationController {
+//                sheet.detents = [.medium()]
+//                sheet.preferredCornerRadius = 15
+//            }
+//        }
+//        self.present(addVC, animated: true, completion: nil)
+        let confirmVC = OrderSuccessVC.instantiate()
+        self.navigationController?.push(viewController: confirmVC)
     }
 }
 
