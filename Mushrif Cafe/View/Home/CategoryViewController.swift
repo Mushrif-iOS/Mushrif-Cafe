@@ -72,9 +72,6 @@ class CategoryViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func goToNextAction(_ sender: Any) {
-//        let detailVC = MealDetailsViewController.instantiate()
-//        self.navigationController?.modalPresentationStyle = .formSheet
-//        self.navigationController?.present(detailVC, animated: true)
         let cartVC = CartVC.instantiate()
         self.navigationController?.pushViewController(cartVC, animated: true)
     }

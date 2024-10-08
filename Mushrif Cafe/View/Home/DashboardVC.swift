@@ -100,6 +100,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+            cell.navController = self.navigationController
             return cell
         }
     }

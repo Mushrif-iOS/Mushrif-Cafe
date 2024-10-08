@@ -20,6 +20,8 @@ class MealTVCell: UITableViewCell {
     
     @IBOutlet var clcHeight: NSLayoutConstraint!
     
+    var navController: UINavigationController?
+    
     static let identifier = "MealTVCell"
     
     static func nib() -> UINib {
@@ -50,13 +52,18 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCVCell.identifier, for: indexPath) as! MealCVCell
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.size.width, height: 255)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = MealDetailsViewController.instantiate()
+        self.navController?.modalPresentationStyle = .formSheet
+        self.navController?.present(detailVC, animated: true)
     }
 }
 
