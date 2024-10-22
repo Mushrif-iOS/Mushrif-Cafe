@@ -29,6 +29,17 @@
 		C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D72CA46A2400E74833 /* OTPTextView.swift */; };
 		C68A611F2CB58A700037094D /* CellSelectionTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A611E2CB58A700037094D /* CellSelectionTVC.xib */; };
 		C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A611D2CB58A700037094D /* CellSelectionTVC.swift */; };
+		C68A61232CB6C3650037094D /* WebUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61222CB6C3650037094D /* WebUrls.swift */; };
+		C68A61252CB6C6230037094D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61242CB6C6230037094D /* Protocols.swift */; };
+		C68A61272CB6C99A0037094D /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61262CB6C99A0037094D /* WebService.swift */; };
+		C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A612A2CB6DB6E0037094D /* SingleTon.swift */; };
+		C68A612E2CB948BA0037094D /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A612D2CB948BA0037094D /* APIManager.swift */; };
+		C68A61302CBA4D200037094D /* LanguageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A612F2CBA4D200037094D /* LanguageModel.swift */; };
+		C68A61322CBA98000037094D /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61312CBA98000037094D /* NetworkReachability.swift */; };
+		C68A61342CBC3EAE0037094D /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61332CBC3EAE0037094D /* LoginModel.swift */; };
+		C68A61362CBE619D0037094D /* CommonWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61352CBE619D0037094D /* CommonWebViewController.swift */; };
+		C68A61382CBEB8440037094D /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61372CBEB8440037094D /* WalletModel.swift */; };
+		C68A613A2CC2684A0037094D /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61392CC2684A0037094D /* DashboardModel.swift */; };
 		C68E72582CA3000200F223A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E72572CA3000200F223A8 /* AppDelegate.swift */; };
 		C68E725F2CA3000200F223A8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C68E725E2CA3000200F223A8 /* Base */; };
 		C68E72612CA3000300F223A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C68E72602CA3000300F223A8 /* Assets.xcassets */; };
@@ -111,6 +122,17 @@
 		C66906D72CA46A2400E74833 /* OTPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPTextView.swift; sourceTree = "<group>"; };
 		C68A611D2CB58A700037094D /* CellSelectionTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSelectionTVC.swift; sourceTree = "<group>"; };
 		C68A611E2CB58A700037094D /* CellSelectionTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellSelectionTVC.xib; sourceTree = "<group>"; };
+		C68A61222CB6C3650037094D /* WebUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUrls.swift; sourceTree = "<group>"; };
+		C68A61242CB6C6230037094D /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
+		C68A61262CB6C99A0037094D /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		C68A612A2CB6DB6E0037094D /* SingleTon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTon.swift; sourceTree = "<group>"; };
+		C68A612D2CB948BA0037094D /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		C68A612F2CBA4D200037094D /* LanguageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageModel.swift; sourceTree = "<group>"; };
+		C68A61312CBA98000037094D /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		C68A61332CBC3EAE0037094D /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
+		C68A61352CBE619D0037094D /* CommonWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonWebViewController.swift; sourceTree = "<group>"; };
+		C68A61372CBEB8440037094D /* WalletModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModel.swift; sourceTree = "<group>"; };
+		C68A61392CC2684A0037094D /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
 		C68E72542CA3000200F223A8 /* Mushrif Cafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mushrif Cafe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C68E72572CA3000200F223A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C68E725E2CA3000200F223A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -258,7 +280,11 @@
 				C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */,
 				C6C089AD2CA680C80050F034 /* UserDefault+Helper.swift */,
 				C6C089D52CA8781F0050F034 /* ScanHelperClass.swift */,
+				C68A61242CB6C6230037094D /* Protocols.swift */,
+				C68A612A2CB6DB6E0037094D /* SingleTon.swift */,
+				C68A61312CBA98000037094D /* NetworkReachability.swift */,
 				C66906D82CA46A2400E74833 /* OTP Field View */,
+				C68A61352CBE619D0037094D /* CommonWebViewController.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -266,6 +292,10 @@
 		C667C4A22CA3166F00DE03C3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C68A612F2CBA4D200037094D /* LanguageModel.swift */,
+				C68A61332CBC3EAE0037094D /* LoginModel.swift */,
+				C68A61392CC2684A0037094D /* DashboardModel.swift */,
+				C68A61372CBEB8440037094D /* WalletModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -310,6 +340,16 @@
 			path = "OTP Field View";
 			sourceTree = "<group>";
 		};
+		C68A61212CB6C2B50037094D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				C68A61222CB6C3650037094D /* WebUrls.swift */,
+				C68A61262CB6C99A0037094D /* WebService.swift */,
+				C68A612D2CB948BA0037094D /* APIManager.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		C68E724B2CA3000200F223A8 = {
 			isa = PBXGroup;
 			children = (
@@ -335,6 +375,7 @@
 				C68E726B2CA30F2700F223A8 /* AppDelegate */,
 				C667C4A12CA3165E00DE03C3 /* Utility */,
 				C68E726C2CA30F3200F223A8 /* Resource */,
+				C68A61212CB6C2B50037094D /* Network */,
 				C667C4A22CA3166F00DE03C3 /* Model */,
 				C667C4A42CA3168500DE03C3 /* View */,
 				C667C4A32CA3167800DE03C3 /* ViewModel */,
@@ -608,6 +649,7 @@
 				C6C089D82CA8EC500050F034 /* DashboardVC.swift in Sources */,
 				C6C8189F2CB0F4FD00905A39 /* EditProfileVC.swift in Sources */,
 				C6EDC6E72CA5A1A0003C40B0 /* Extensions.swift in Sources */,
+				C68A61252CB6C6230037094D /* Protocols.swift in Sources */,
 				C6C089B92CA85D540050F034 /* ScanTableVC.swift in Sources */,
 				C6C818AB2CB1454F00905A39 /* ManageUsualViewController.swift in Sources */,
 				C6C089F32CA9C31E0050F034 /* CategoryCVCell.swift in Sources */,
@@ -618,31 +660,41 @@
 				C65010162CAD5940003BCA53 /* TagsCVCell.swift in Sources */,
 				C6C818B32CB1B72000905A39 /* ManageUsualTableViewCell.swift in Sources */,
 				C6337B5A2CAB21E000ACDD86 /* MyOrderTableViewCell.swift in Sources */,
+				C68A613A2CC2684A0037094D /* DashboardModel.swift in Sources */,
 				C6C089E92CA992B90050F034 /* MyUsualCVCell.swift in Sources */,
+				C68A612E2CB948BA0037094D /* APIManager.swift in Sources */,
 				C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */,
 				C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */,
 				C6C818A12CB105B100905A39 /* ContacUsVC.swift in Sources */,
+				C68A61342CBC3EAE0037094D /* LoginModel.swift in Sources */,
 				C6C089AC2CA677810050F034 /* LanguageSelectionVC.swift in Sources */,
 				C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */,
 				C6C089FF2CAADE9C0050F034 /* MealTVCell.swift in Sources */,
 				C6C089D62CA8781F0050F034 /* ScanHelperClass.swift in Sources */,
+				C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */,
 				C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */,
 				C650102D2CB06573003BCA53 /* ProfileHeaderTVC.swift in Sources */,
 				C6C818A72CB11C1500905A39 /* WalletTableViewCell.swift in Sources */,
 				C6337B612CAC6C5200ACDD86 /* CategoryViewController.swift in Sources */,
 				C6EDC6E52CA586C3003C40B0 /* LoginVC.swift in Sources */,
 				C6600C2A2CB31CA6009B0445 /* UsualListTableViewCell.swift in Sources */,
+				C68A61302CBA4D200037094D /* LanguageModel.swift in Sources */,
+				C68A61362CBE619D0037094D /* CommonWebViewController.swift in Sources */,
 				C6C089AE2CA680C80050F034 /* UserDefault+Helper.swift in Sources */,
+				C68A61382CBEB8440037094D /* WalletModel.swift in Sources */,
 				C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */,
 				C65010272CAF2203003BCA53 /* ProfileViewController.swift in Sources */,
 				C6C08A032CAADEB70050F034 /* MealCVCell.swift in Sources */,
+				C68A61322CBA98000037094D /* NetworkReachability.swift in Sources */,
 				C6C818BC2CB2688100905A39 /* OrderSuccessVC.swift in Sources */,
 				C68E72582CA3000200F223A8 /* AppDelegate.swift in Sources */,
 				C6C089F72CA9DF8F0050F034 /* BannersCVCell.swift in Sources */,
 				C68E72792CA3105700F223A8 /* UIFont+Extension.swift in Sources */,
+				C68A61272CB6C99A0037094D /* WebService.swift in Sources */,
 				C6E661B72CA358EB00AFF47F /* UIView+Extension.swift in Sources */,
 				C6C089FB2CA9DFA70050F034 /* BannersTVCell.swift in Sources */,
 				C6C8189D2CB06CEC00905A39 /* ProfileTVC.swift in Sources */,
+				C68A61232CB6C3650037094D /* WebUrls.swift in Sources */,
 				C6C818A92CB1220F00905A39 /* AddFundViewController.swift in Sources */,
 				C65010202CADC18D003BCA53 /* MealDetailsViewController.swift in Sources */,
 				C6E661B52CA3544700AFF47F /* Color+Extension.swift in Sources */,
@@ -819,9 +871,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Design Master Co. for Internet Websites Designing & Management Ltd (Z79PM5DY8M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Design Master Co. for Internet Websites Designing & Management Ltd (Z79PM5DY8M)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -836,9 +891,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mushifa.cafe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dm.mushrefcafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = MushrefCafeAppstoreProvisionProfile;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = MushrefCafeAppstoreProvisionProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -856,9 +912,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Design Master Co. for Internet Websites Designing & Management Ltd (Z79PM5DY8M)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Design Master Co. for Internet Websites Designing & Management Ltd (Z79PM5DY8M)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -873,9 +932,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mushifa.cafe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dm.mushrefcafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = MushrefCafeAppstoreProvisionProfile;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = MushrefCafeAppstoreProvisionProfile;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

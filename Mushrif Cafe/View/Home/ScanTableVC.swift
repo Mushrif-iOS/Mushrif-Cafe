@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import SwiftyJSON
 
 class ScanTableVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -34,13 +35,15 @@ class ScanTableVC: UIViewController, Instantiatable {
     
     @IBOutlet var scanView: UIView!
     
+    @IBOutlet var qrImgeView: UIImageView!
+    
     let session = AVCaptureSession()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        requestCameraAccess { granted in
+        /*requestCameraAccess { granted in
             if granted {
                 // Start the QR code scanner
                 self.setupCamera()
@@ -62,7 +65,11 @@ class ScanTableVC: UIViewController, Instantiatable {
                 
                 self.present(alert, animated: true)
             }
-        }
+        }*/
+        let jsonStr = SingleTon.sharedSingleTon.stringify(json: ["user_id": UserDefaultHelper.userloginId ?? "", "loylity_points": 10.548], prettyPrinted: true)
+        print(jsonStr)
+        let qrImage = SingleTon.sharedSingleTon.generateQRCode(from: jsonStr)
+        self.qrImgeView.image = qrImage
     }
     
     @IBAction func backAction(_ sender: UIButton) {

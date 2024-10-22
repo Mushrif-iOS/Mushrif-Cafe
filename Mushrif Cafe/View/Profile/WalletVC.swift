@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WalletVC: UIViewController, Instantiatable {
+class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
     static var storyboard: AppStoryboard = .profile
     
     @IBOutlet weak var titleLabel: UILabel! {
@@ -27,7 +27,7 @@ class WalletVC: UIViewController, Instantiatable {
     @IBOutlet weak var balanceLabel: UILabel! {
         didSet {
             balanceLabel.font = UIFont.poppinsBoldFontWith(size: 35)
-            balanceLabel.text = "20.000 KD"
+            self.balanceLabel.text = ""
         }
     }
     
@@ -40,11 +40,19 @@ class WalletVC: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
+    var transactionData: [Transaction] = [Transaction]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         mainTableView.register(WalletTableViewCell.nib(), forCellReuseIdentifier: WalletTableViewCell.identifier)
+        
+        self.getWalletDetails()
+    }
+
+    func completed() {
+        self.getWalletDetails()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -60,18 +68,64 @@ class WalletVC: UIViewController, Instantiatable {
                 sheet.preferredCornerRadius = 15
             }
         }
+        addVC.delegate = self
         self.present(addVC, animated: true, completion: nil)
+    }
+    
+    private func getWalletDetails() {
+        
+        let aParams: [String: Any] = [:]
+        
+        APIManager.shared.getCallWithParams(APPURL.wallet_details, params: aParams) { responseJSON in
+            print("Response JSON \(responseJSON)")
+                                    
+            let dataDict = responseJSON["response"]["transactions"].arrayValue
+            
+            for obj in dataDict {
+                self.transactionData.append(Transaction(fromJson: obj))
+            }
+                                    
+            DispatchQueue.main.async {
+                self.mainTableView.delegate = self
+                self.mainTableView.dataSource = self
+                self.mainTableView.reloadData()
+                
+                let balance = responseJSON["response"]["balance"].stringValue
+                let doubleValue = Double(balance) ?? 0.0
+                self.balanceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            }
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }
 
 extension WalletVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        return self.transactionData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "WalletTableViewCell") as! WalletTableViewCell
+        
+        let dict = self.transactionData[indexPath.row]
+        cell.numberLabel.text = "#\(dict.id)"
+        cell.dateLabel.text = dict.transactionDate
+        
+        if dict.txnType == "Cr" {
+            cell.amtLabel.textColor = UIColor.systemGreen
+            
+            let doubleValue = Double(dict.amount) ?? 0.0
+            cell.amtLabel.text = "+ \(doubleValue.rounded(toPlaces: 2)) K.D"
+        } else {
+            cell.amtLabel.textColor = UIColor.red
+            
+            let doubleValue = Double(dict.amount) ?? 0.0
+            cell.amtLabel.text = "- \(doubleValue.rounded(toPlaces: 2)) K.D"
+        }
+        
         return cell
     }
     

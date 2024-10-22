@@ -12,14 +12,12 @@ class MealCVCell: UICollectionViewCell {
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            nameLabel.text = "Beef burger united"
         }
     }
     
     @IBOutlet weak var priceLabel: UILabel! {
         didSet {
             priceLabel.font = UIFont.poppinsBoldFontWith(size: 20)
-            priceLabel.text = "1.500 K.D"
         }
     }
     
@@ -27,7 +25,6 @@ class MealCVCell: UICollectionViewCell {
         didSet {
             descLabel.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
             descLabel.font = UIFont.poppinsRegularFontWith(size: 15)
-            descLabel.text = "Fresh beef, tomato, cheddar cheese, lettuce, cocktail sauce, brioche bun."
             let userLanguage = UserDefaultHelper.language
             descLabel.textAlignment =  userLanguage == "ar" ? .right :  .left
         }

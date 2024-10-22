@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import ProgressHUD
+//import ProgressHUD
 
 class CompleteProfileVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
@@ -21,7 +21,7 @@ class CompleteProfileVC: UIViewController, Instantiatable {
     @IBOutlet weak var fullName: UILabel! {
         didSet {
             fullName.font = UIFont.poppinsRegularFontWith(size: 16)
-            fullName.text = "full_name".localized()
+            fullName.text = "\("full_name".localized())*"
         }
     }
     
@@ -58,6 +58,8 @@ class CompleteProfileVC: UIViewController, Instantiatable {
     }
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
+    var customerData: Customer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,17 +76,49 @@ class CompleteProfileVC: UIViewController, Instantiatable {
                                                    name: UIResponder.keyboardWillHideNotification,
                                                    object: nil)
         }
+        
+        if UserDefaultHelper.userName != "" {
+            txtFullName.text = UserDefaultHelper.userName
+        }
     }
     
     @IBAction func submitAction(_ sender: Any) {
 
-        if txtEmail.text?.isValidEmail == false {
-            ProgressHUD.banner("error".localized(), "email_error".localized())
+        if txtFullName.text!.isEmpty {
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "name_error".localized())
+            self.showBanner(message: "name_error".localized(), status: .error)
+        } else if !txtEmail.text!.isEmpty && txtEmail.text?.isValidEmail == false {
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "email_error".localized())
+            self.showBanner(message: "email_error".localized(), status: .error)
         } else {
-            DispatchQueue.main.async {
-                UserDefaultHelper.userloginId = "Bhushan"
-                let scanVC = ScanTableVC.instantiate()
-                self.navigationController?.pushViewController(scanVC, animated: true)
+            
+            let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "email": "\(self.txtEmail.text!)"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.updateProfile, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"].dictionaryValue
+                
+                let custata = dataDict["customer"]
+                self.customerData = Customer(fromJson: custata)
+                
+                print("Customer Data", self.customerData!.name)
+                UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
+                
+                DispatchQueue.main.async {
+                    let scanVC = ScanTableVC.instantiate()
+                    self.navigationController?.pushViewController(scanVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
             }
         }
     }

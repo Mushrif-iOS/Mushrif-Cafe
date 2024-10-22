@@ -27,6 +27,8 @@ class CategoryTVCell: UITableViewCell {
     static func nib() -> UINib {
         return UINib(nibName: "CategoryTVCell", bundle: nil)
     }
+    
+    var categoryObj: [Category] = [Category]()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,9 +37,13 @@ class CategoryTVCell: UITableViewCell {
         dataCollection.register(CategoryCVCell.nib(), forCellWithReuseIdentifier: CategoryCVCell.identifier)
         dataCollection.delegate = self
         dataCollection.dataSource = self
-        dataCollection.reloadData()
-        
-        self.clcHeight.constant = (3*146) + (3*10)
+    }
+    
+    func reloadCollection() {
+        self.clcHeight.constant = CGFloat(((self.categoryObj.count/3)*146) + ((self.categoryObj.count/3)*10))
+        DispatchQueue.main.async {
+            self.dataCollection.reloadData()
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -50,13 +56,17 @@ class CategoryTVCell: UITableViewCell {
 extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 9
+        return categoryObj.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCVCell.identifier, for: indexPath) as! CategoryCVCell
-        cell.foodLabel.text = "Main Dishes & Sweets"
+        
+        let dict = categoryObj[indexPath.item]
+        
+        cell.foodLabel.text = dict.name
+        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "mainDish"))
         return cell
     }
     
@@ -65,8 +75,11 @@ extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let dict = categoryObj[indexPath.item]
+                
         let categoryVC = CategoryViewController.instantiate()
-        categoryVC.category = "Main Dishes & Sweets"
+        categoryVC.category = dict.name
         self.navController.push(viewController: categoryVC)
     }
 }

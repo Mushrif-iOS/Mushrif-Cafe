@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import ProgressHUD
+//import ProgressHUD
 
 class LoginVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
@@ -47,7 +47,7 @@ class LoginVC: UIViewController, Instantiatable {
     }
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-        
+    
     var pickOption = ["+965", "+91", "+92", "+86", "+1"]
     var pickerView: UIPickerView!
     
@@ -71,13 +71,36 @@ class LoginVC: UIViewController, Instantiatable {
     }
     
     @IBAction func submitAction(_ sender: Any) {
+        postLoginCall()
+    }
+    
+    private func postLoginCall() {
         
         if mobileNumberText.text!.count < 10 {
-            ProgressHUD.banner("error".localized(), "mobile_error".localized())
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "mobile_error".localized())
+            self.showBanner(message: "mobile_error".localized(), status: .error)
         } else {
-            let otpVC = OTPViewController.instantiate()
-            otpVC.enteredNumber = mobileNumberText.text!
-            self.navigationController?.pushViewController(otpVC, animated: true)
+            
+            let aParams: [String: Any] = ["phone": "\(self.mobileNumberText.text!)"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.getOTP, params: aParams, withHeader: false) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"].dictionaryValue
+                print("OTP: \(dataDict["otp"] ?? "")")
+                UserDefaultHelper.countryCode = "\(self.countryCode.text!)"
+                DispatchQueue.main.async {
+                    let otpVC = OTPViewController.instantiate()
+                    otpVC.enteredNumber = self.mobileNumberText.text!
+                    self.navigationController?.pushViewController(otpVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         }
     }
 }

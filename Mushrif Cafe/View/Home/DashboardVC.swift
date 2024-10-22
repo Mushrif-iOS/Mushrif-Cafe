@@ -45,6 +45,10 @@ class DashboardVC: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
+    var activeData: [AnyObject] = [AnyObject]()
+    var categoryData: [Category] = [Category]()
+    var ourBestData: [TryOurBest] = [TryOurBest]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,15 +57,21 @@ class DashboardVC: UIViewController, Instantiatable {
         let pickerView = UIPickerView()
         pickerView.delegate = self
         selectTableTxt.inputView = pickerView
-        
-        profileButton.setTitle("Bhushan Kumar".getAcronym(), for: .normal)
-        
+                
         mainTableView.register(HomeOrderTVCell.nib(), forCellReuseIdentifier: HomeOrderTVCell.identifier)
         mainTableView.register(MyUsualTVCell.nib(), forCellReuseIdentifier: MyUsualTVCell.identifier)
         mainTableView.register(CategoryTVCell.nib(), forCellReuseIdentifier: CategoryTVCell.identifier)
         mainTableView.register(BannersTVCell.nib(), forCellReuseIdentifier: BannersTVCell.identifier)
         
         mainTableView.register(MealTVCell.nib(), forCellReuseIdentifier: MealTVCell.identifier)
+        
+        self.getDashboardData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        profileButton.setTitle(UserDefaultHelper.userName?.getAcronym(), for: .normal)
     }
     
     @IBAction func viewProfileAction(_ sender: Any) {
@@ -72,6 +82,38 @@ class DashboardVC: UIViewController, Instantiatable {
     @IBAction func searchAction(_ sender: Any) {
         let dashboardVC = CompleteProfileVC.instantiate()
         self.navigationController?.push(viewController: dashboardVC)
+    }
+    
+    private func getDashboardData() {
+        
+        let aParams: [String: Any] = [:]
+        
+        APIManager.shared.getCallWithParams(APPURL.dine_dashboard, params: aParams) { responseJSON in
+            print("Response JSON \(responseJSON)")
+                                    
+            let catDataDict = responseJSON["response"]["categories"].arrayValue
+            
+            for obj in catDataDict {
+                self.categoryData.append(Category(fromJson: obj))
+            }
+            
+            let bestDataDict = responseJSON["response"]["try_our_best"].arrayValue
+            
+            for obj in bestDataDict {
+                self.ourBestData.append(TryOurBest(fromJson: obj))
+            }
+            
+            print(self.ourBestData.count)
+            
+            DispatchQueue.main.async {
+                self.mainTableView.delegate = self
+                self.mainTableView.dataSource = self
+                self.mainTableView.reloadData()
+            }
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }
 
@@ -93,6 +135,8 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else if indexPath.row == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+            cell.categoryObj = self.categoryData
+            cell.reloadCollection()
             cell.navController = self.navigationController ?? UINavigationController()
             return cell
         } else if indexPath.row == 3 {
@@ -100,6 +144,8 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+            cell.mealObj = self.ourBestData
+            cell.reloadCollection()
             cell.navController = self.navigationController
             return cell
         }

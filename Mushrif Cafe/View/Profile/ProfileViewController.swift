@@ -16,14 +16,16 @@ class ProfileViewController: UIViewController, Instantiatable {
     var pickOption = ["English", "العربية"]
     var pickerView: UIPickerView!
     
-    @IBOutlet weak var selectLanguageTxt: UITextField! 
+    @IBOutlet weak var selectLanguageTxt: UITextField!
     
     var menuItems = ["my_orders".localized(), "manage".localized(), "wallet".localized(), "contact_us".localized(), "terms_and_conditions".localized(), "logout".localized()]
     var menuImgs = [UIImage(named: "plate-utensils"), UIImage(named: "saved"), UIImage(named: "wallet"), UIImage(named: "headset"), UIImage(named: "document"), UIImage(named: "leave")]
-
+    
+    var profileData: Customer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         if #available(iOS 15.0, *) {
             mainTableView.sectionHeaderTopPadding = 0
@@ -36,9 +38,12 @@ class ProfileViewController: UIViewController, Instantiatable {
         mainTableView.register(ProfileHeaderTVC.nib(), forCellReuseIdentifier: ProfileHeaderTVC.identifier)
         mainTableView.register(ProfileTVC.nib(), forCellReuseIdentifier: ProfileTVC.identifier)
         
-        if #available(iOS 15.0, *) {
-            mainTableView.sectionHeaderTopPadding = 0
-        }
+        print("UserDefaultHelper.userloginId", UserDefaultHelper.userloginId!)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.getProfile()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -46,7 +51,28 @@ class ProfileViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func languageAction(_ sender: Any) {
+    }
+    
+    private func getProfile() {
         
+        let aParams: [String: Any] = [:]
+        
+        APIManager.shared.getCallWithParams(APPURL.getProfileDetails, params: aParams) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let dataDict = responseJSON["response"].dictionaryValue
+            
+            let customerData = dataDict["customer"]
+            self.profileData = Customer(fromJson: customerData)
+            
+            print("Customer Data", self.profileData!.phone)
+            
+            DispatchQueue.main.async {
+                self.mainTableView.reloadData()
+            }
+        } failure: {error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }
 
@@ -60,6 +86,10 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
         
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileHeaderTVC") as! ProfileHeaderTVC
+            
+            cell.nameLabel.text = self.profileData?.name ?? ""
+            cell.idLabel.text = UserDefaultHelper.userloginId
+            
             cell.editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
             return cell
         } else {
@@ -89,11 +119,55 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
             let contactVC = ContacUsVC.instantiate()
             self.navigationController?.pushViewController(contactVC, animated: true)
         case 5:
-            self.showWebView("http://www.youtube.com")
+            var aParams: [String: Any]?
+            
+            if UserDefaultHelper.language == "en" {
+                aParams = ["locale": "English---us"]
+            } else if UserDefaultHelper.language == "ar" {
+                aParams = ["locale": "Arabic---ae"]
+            }
+            
+            APIManager.shared.postCall(APPURL.terms_condition, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"].dictionaryValue
+                
+                let detailVC = CommonWebViewController.instantiate()
+                detailVC.titleString = dataDict["title"]?.stringValue ?? ""
+                detailVC.bodyText = dataDict["body"]?.stringValue ?? ""
+                self.navigationController?.modalPresentationStyle = .fullScreen
+                self.navigationController?.present(detailVC, animated: true)
+                
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+            
         case 6:
             AlertView.show(message: "logout_message".localized(), preferredStyle: .alert, buttons: ["logout".localized(), "cancel".localized()]) { (button) in
                 if button == "logout".localized() {
-                    print("Done")
+                    
+                    let aParams: [String: Any] = [:]
+                    
+                    APIManager.shared.postCall(APPURL.logout, params: aParams, withHeader: true) { responseJSON in
+                        print("Response JSON \(responseJSON)")
+                        
+                        let msg = responseJSON["message"].stringValue
+                        print(msg)
+                        
+                        UserDefaultHelper.deleteCountryCode()
+                        UserDefaultHelper.deleteUserLoginId()
+                        UserDefaultHelper.deleteUserName()
+                        UserDefaultHelper.deleteAuthToken()
+                        
+                        AlertView.show(message: msg, preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+                            if button == "ok".localized() {
+                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                appDelegate.afterLogout()
+                            }
+                        }
+                    } failure: { error in
+                        print("Error \(error.localizedDescription)")
+                    }
                 }
             }
         default:
@@ -103,6 +177,8 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
     
     @objc func editAction() {
         let nextVC = EditProfileVC.instantiate()
+        nextVC.nameValue = self.profileData?.name ?? ""
+        nextVC.email = self.profileData?.email ?? ""
         self.navigationController?.pushViewController(nextVC, animated: true)
     }
 }

@@ -27,6 +27,8 @@ class MealTVCell: UITableViewCell {
     static func nib() -> UINib {
         return UINib(nibName: "MealTVCell", bundle: nil)
     }
+    
+    var mealObj: [TryOurBest] = [TryOurBest]()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,8 +36,13 @@ class MealTVCell: UITableViewCell {
         dataCollection.register(MealCVCell.nib(), forCellWithReuseIdentifier: MealCVCell.identifier)
         dataCollection.delegate = self
         dataCollection.dataSource = self
-        
-        clcHeight.constant = (3 * 255) + (3*13)
+    }
+    
+    func reloadCollection() {
+        self.clcHeight.constant = CGFloat(((self.mealObj.count)*255) + ((self.mealObj.count)*13))
+        DispatchQueue.main.async {
+            self.dataCollection.reloadData()
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -48,11 +55,21 @@ class MealTVCell: UITableViewCell {
 extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return mealObj.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MealCVCell.identifier, for: indexPath) as! MealCVCell
+        
+        let dict = mealObj[indexPath.item]
+        cell.nameLabel.text = dict.name
+        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "pizza"))
+        
+        let doubleValue = Double(dict.specialPrice) ?? 0.0
+        cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+        
+        cell.descLabel.text = dict.descriptionField
+        
         return cell
     }
     

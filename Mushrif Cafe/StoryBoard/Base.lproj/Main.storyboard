@@ -66,8 +66,8 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BJZ-Ua-cl2">
-                                        <rect key="frame" x="65" y="19.5" width="210" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BJZ-Ua-cl2">
+                                        <rect key="frame" x="65" y="30" width="210" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -121,8 +121,8 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKW-72-9oe">
-                                        <rect key="frame" x="65" y="19.5" width="210" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKW-72-9oe">
+                                        <rect key="frame" x="65" y="30" width="210" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -182,8 +182,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="Xsa-Ih-vNe"/>
                     <connections>
+                        <outlet property="arabImg" destination="c8l-1X-XjM" id="s2P-iQ-Gz2"/>
                         <outlet property="arabLbl" destination="hKW-72-9oe" id="AfJ-dd-UDt"/>
                         <outlet property="englishLbl" destination="BJZ-Ua-cl2" id="aDf-Kq-HVj"/>
+                        <outlet property="enlishImg" destination="V3K-e8-a8S" id="lFX-GP-9HE"/>
                         <outlet property="laguateTitle" destination="fpQ-uy-TE7" id="TF5-Qv-pnr"/>
                         <outlet property="selectLabel" destination="uoZ-kv-dHw" id="bKO-6t-Fs4"/>
                     </connections>
@@ -358,7 +360,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wt8-Wf-c0M">
-                                <rect key="frame" x="50" y="102" width="220" height="70"/>
+                                <rect key="frame" x="10" y="102" width="300" height="70"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="12C-dC-s2Y"/>
@@ -437,8 +439,8 @@
                             <constraint firstItem="CrN-Oi-2yW" firstAttribute="leading" secondItem="uB8-gv-Y2F" secondAttribute="leading" constant="15" id="geV-aI-8pe"/>
                             <constraint firstItem="uB8-gv-Y2F" firstAttribute="trailing" secondItem="hjC-LC-gmO" secondAttribute="trailing" constant="16" id="nub-sC-14U"/>
                             <constraint firstItem="uB8-gv-Y2F" firstAttribute="trailing" secondItem="CrN-Oi-2yW" secondAttribute="trailing" constant="15" id="oVA-og-Ujo"/>
-                            <constraint firstItem="Wt8-Wf-c0M" firstAttribute="leading" secondItem="uB8-gv-Y2F" secondAttribute="leading" constant="50" id="t19-mc-k2X"/>
-                            <constraint firstItem="uB8-gv-Y2F" firstAttribute="trailing" secondItem="Wt8-Wf-c0M" secondAttribute="trailing" constant="50" id="ud6-Xg-vaa"/>
+                            <constraint firstItem="Wt8-Wf-c0M" firstAttribute="leading" secondItem="uB8-gv-Y2F" secondAttribute="leading" constant="10" id="t19-mc-k2X"/>
+                            <constraint firstItem="uB8-gv-Y2F" firstAttribute="trailing" secondItem="Wt8-Wf-c0M" secondAttribute="trailing" constant="10" id="ud6-Xg-vaa"/>
                             <constraint firstItem="CrN-Oi-2yW" firstAttribute="top" secondItem="vKj-6u-1l9" secondAttribute="top" constant="62" id="uio-LM-T4g"/>
                         </constraints>
                     </view>
@@ -454,6 +456,77 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hkH-gf-jyH" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="782" y="4"/>
+        </scene>
+        <!--Common Web View Controller-->
+        <scene sceneID="TE4-jq-U4S">
+            <objects>
+                <viewController storyboardIdentifier="CommonWebViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="543-g2-7Wc" customClass="CommonWebViewController" customModule="Mushrif_Cafe" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="n1f-rZ-mFC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0wj-CL-ahu">
+                                <rect key="frame" x="16" y="59" width="46" height="46"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="URm-lZ-DUy"/>
+                                    <constraint firstAttribute="width" constant="46" id="YAT-HV-FYt"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="back"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.29999999999999999"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="23"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backAction:" destination="543-g2-7Wc" eventType="touchUpInside" id="Q0w-BB-A3Y"/>
+                                    <action selector="backAction:" destination="Ph2-2M-k7C" eventType="touchUpInside" id="wgo-kc-sLX"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAq-QJ-3XH">
+                                <rect key="frame" x="15" y="82" width="290" height="0.0"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <wkWebView contentMode="scaleToFill" allowsBackForwardNavigationGestures="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zhq-gs-hcC">
+                                <rect key="frame" x="0.0" y="115" width="320" height="453"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="dgJ-jg-Kl1"/>
+                        <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Zhq-gs-hcC" firstAttribute="leading" secondItem="dgJ-jg-Kl1" secondAttribute="leading" id="1yd-Tl-khf"/>
+                            <constraint firstItem="0wj-CL-ahu" firstAttribute="leading" secondItem="dgJ-jg-Kl1" secondAttribute="leading" constant="16" id="6UY-QD-u08"/>
+                            <constraint firstItem="0wj-CL-ahu" firstAttribute="centerY" secondItem="YAq-QJ-3XH" secondAttribute="centerY" id="88i-kX-fTq"/>
+                            <constraint firstItem="Zhq-gs-hcC" firstAttribute="top" secondItem="0wj-CL-ahu" secondAttribute="bottom" constant="10" id="CHT-xq-ekF"/>
+                            <constraint firstItem="YAq-QJ-3XH" firstAttribute="leading" secondItem="n1f-rZ-mFC" secondAttribute="leading" constant="15" id="Nw4-Rf-ycs"/>
+                            <constraint firstItem="YAq-QJ-3XH" firstAttribute="top" secondItem="dgJ-jg-Kl1" secondAttribute="top" constant="62" id="PSk-Pe-uDV"/>
+                            <constraint firstAttribute="trailing" secondItem="YAq-QJ-3XH" secondAttribute="trailing" constant="15" id="Vfo-Lr-dOQ"/>
+                            <constraint firstItem="dgJ-jg-Kl1" firstAttribute="trailing" secondItem="Zhq-gs-hcC" secondAttribute="trailing" id="qMP-uq-WfH"/>
+                            <constraint firstItem="dgJ-jg-Kl1" firstAttribute="bottom" secondItem="Zhq-gs-hcC" secondAttribute="bottom" id="rIG-xr-zKN"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="titleText" destination="YAq-QJ-3XH" id="hiB-5v-PMi"/>
+                        <outlet property="webView" destination="Zhq-gs-hcC" id="mnq-gP-kUt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MWi-nY-XWq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="94" y="724"/>
         </scene>
         <!--Complete ProfileVC-->
         <scene sceneID="Mb2-Qj-iEj">

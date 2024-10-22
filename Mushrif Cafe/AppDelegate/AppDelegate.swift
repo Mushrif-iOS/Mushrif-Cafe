@@ -8,11 +8,14 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Siren
+import SYBanner
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
+    
+    //let banner = SYCardBanner(title: "error".localized(), subtitle: "no_internet".localized())
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -33,8 +36,84 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITableView.appearance().showsVerticalScrollIndicator = false
         
+        NetworkReachability.shared.startNotifier()
+        //reachabilityObserver()
+        
         self.restartApp()
         return true
+    }
+    
+    func reachabilityObserver() {
+        NetworkReachability.shared.reachabilityObserver = { [weak self] status in
+            switch status {
+            case .connected:
+                print("Reachability: Network available 😃")
+                //ProgressHUD.remove()
+                //MBProgressHUD.hide(for: (self?.window)!, animated: true)
+                //self?.banner.dismissView()
+                
+            case .disconnected:
+                print("Reachability: Network unavailable 😟")
+                print(self?.window?.screen.bounds.size ?? 0.0)
+//                ProgressHUD.animationType = .horizontalBarScaling
+//                ProgressHUD.colorAnimation = UIColor.primaryBrown
+//                ProgressHUD.colorStatus = UIColor.primaryBrown
+//                ProgressHUD.animate("no_internet".localized(), interaction: false)
+//                let progressHUD = MBProgressHUD.showAdded(to: (self?.window)!, animated: true)
+//                progressHUD.label.text = "no_internet".localized()
+//                progressHUD.label.font = UIFont.poppinsLightFontWith(size: 14)
+//                progressHUD.contentColor = UIColor.primaryBrown
+//                progressHUD.mode = .indeterminate
+                                
+                // See Banner options for more
+                
+                let banner = SYCardBanner(title: "error".localized(), subtitle: "no_internet".localized())
+                banner.backgroundColor = self?.getTraitColor()
+                banner.setBannerOptions([
+                    .showExitButton(false),
+                    .customView((self?.customViewDefault())!)
+                ])
+                banner.dismissOnSwipe = false
+                banner.show(queuePosition: .front)
+            }
+        }
+    }
+    
+    private func customViewDefault() -> UIView {
+        let contentView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 300, height: 200)))
+        contentView.layer.cornerRadius = 20
+        contentView.layer.masksToBounds = true
+        
+        let label = UILabel()
+        label.text = "Content"
+        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+        ])
+        
+        contentView.backgroundColor = .systemGray2
+        return contentView
+    }
+    
+    private func customView() -> UIView {
+        let contentView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 300, height: 200)))
+        
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = UIImage(named: "pizza")
+        
+        contentView.addSubview(imageView)
+        
+        return contentView
+    }
+    
+    func getTraitColor() -> UIColor {
+        return UIColor { (traits) -> UIColor in
+            return traits.userInterfaceStyle == .light ? .white : UIColor.init(red: 28/255, green: 27/255, blue: 29/255, alpha: 1)
+        }
     }
 }
 
@@ -54,7 +133,7 @@ extension AppDelegate {
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let languageVC = storyboard.instantiateViewController(withIdentifier: "LanguageSelectionVC") as! LanguageSelectionVC
         let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-                 
+        
         if isLanguageSelected == "yes" {
             let navigationController = UINavigationController.init(rootViewController: loginVC)
             navigationController.isNavigationBarHidden = true
@@ -65,7 +144,8 @@ extension AppDelegate {
             self.window?.rootViewController = navigationController
         }
         
-        if UserDefaultHelper.userloginId == "Bhushan" {
+        print("UserDefaultHelper.authToken", UserDefaultHelper.authToken!)
+        if UserDefaultHelper.authToken != "" {
             let storyboard = UIStoryboard.init(name: "Home", bundle: nil)
             let scanVC = storyboard.instantiateViewController(withIdentifier: "ScanTableVC") as! ScanTableVC
             let navigationController = UINavigationController.init(rootViewController: scanVC)
@@ -75,5 +155,15 @@ extension AppDelegate {
         
         self.window?.makeKeyAndVisible()
         
+    }
+    
+    func afterLogout() {
+        
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+        
+        let navigationController = UINavigationController.init(rootViewController: loginVC)
+        navigationController.isNavigationBarHidden = true
+        self.window?.rootViewController = navigationController
     }
 }

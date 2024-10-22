@@ -111,7 +111,7 @@ import UIKit
     
     fileprivate func getOTPField(forIndex index: Int) -> OTPTextField {
         let hasOddNumberOfFields = (fieldsCount % 2 == 1)
-        var fieldFrame = CGRect(x: 0, y: 0, width: 60, height: fieldSize)
+        var fieldFrame = CGRect(x: 0, y: 0, width: 45, height: fieldSize)
         
         if hasOddNumberOfFields {
             // Calculate from middle each fields x and y values so as to align the entire view in center

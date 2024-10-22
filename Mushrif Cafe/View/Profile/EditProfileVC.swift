@@ -21,7 +21,7 @@ class EditProfileVC: UIViewController, Instantiatable {
     @IBOutlet weak var fullName: UILabel! {
         didSet {
             fullName.font = UIFont.poppinsRegularFontWith(size: 16)
-            fullName.text = "full_name".localized()
+            fullName.text = "\("full_name".localized())*"
         }
     }
     
@@ -63,22 +63,60 @@ class EditProfileVC: UIViewController, Instantiatable {
             deleteBtn.setTitle("delete_account".localized(), for: .normal)
         }
     }
+    
+    var nameValue: String = ""
+    var email: String = ""
+    
+    var customerData: Customer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        txtFullName.text = self.nameValue
+        txtEmail.text = self.email
     }
     
     @IBAction func submitAction(_ sender: Any) {
-
-        if txtEmail.text?.isValidEmail == false {
-            ProgressHUD.banner("error".localized(), "email_error".localized())
+        
+        if txtFullName.text!.isEmpty {
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "name_error".localized())
+            self.showBanner(message: "name_error".localized(), status: .error)
+        } else if !txtEmail.text!.isEmpty && txtEmail.text?.isValidEmail == false {
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "email_error".localized())
+            self.showBanner(message: "email_error".localized(), status: .error)
         } else {
-            DispatchQueue.main.async {
-                UserDefaultHelper.userloginId = "Bhushan"
-                let scanVC = ScanTableVC.instantiate()
-                self.navigationController?.pushViewController(scanVC, animated: true)
+            
+            let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "email": "\(self.txtEmail.text!)"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.updateProfile, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"].dictionaryValue
+                
+                let custata = dataDict["customer"]
+                self.customerData = Customer(fromJson: custata)
+                
+                print("Customer Data", self.customerData!.name)
+                UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                
+                self.showBanner(message: msg, status: .success)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
             }
         }
     }
@@ -88,6 +126,23 @@ class EditProfileVC: UIViewController, Instantiatable {
         AlertView.show(message: "Are you sure ?", preferredStyle: .alert, buttons: ["delete".localized(), "cancel".localized()]) { (button) in
             if button == "delete".localized() {
                 print("Done")
+                
+                let aParams: [String: Any] = [:]
+                
+                APIManager.shared.getCallWithParams(APPURL.deleteProfile, params: aParams) { responseJSON in
+                    print("Response JSON \(responseJSON)")
+                    
+                    let msg = responseJSON["message"].stringValue
+                    print(msg)
+                    
+                    self.showBanner(message: msg, status: .success)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                    
+                } failure: {error in
+                    print("Error \(error.localizedDescription)")
+                }
             }
         }
     }

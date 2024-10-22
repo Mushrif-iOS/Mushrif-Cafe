@@ -20,8 +20,11 @@
 "otp_error" = "Please enter 4 digit OTP";
 "complete_profile" = "Complete your Profile";
 "full_name" = "Full Name";
+"name_error" = "Please enter full name";
 "email" = "Email (Optional)";
 "email_error" = "Please enter valid email";
+"message_error" = "Please enter message";
+"amount_error" = "Please enter valid amount";
 
 "scan_table" = "Scan Table QR";
 "skip" = "Skip";
@@ -92,3 +95,5 @@
 "my_usual" = "My Usuals";
 "create_new" = "Create New";
 "usual_name" = "Usual Name";
+"no_internet" = "No Internet Connection";
+"something_wrong" = "Something went wrong";

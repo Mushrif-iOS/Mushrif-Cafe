@@ -1,9 +1,8 @@
-import Foundation
-import CoreLocation
-import UIKit
-import GooglePlaces
 
-protocol GetBaseInfoDelegate {
+import UIKit
+import CoreLocation
+
+protocol AddMoneyDelegate {
     func completed()
 }
 
@@ -36,7 +35,6 @@ protocol PayDelegate {
     func onSuccess(payAmount: Double)
     func onFail()
 }
-
 
 protocol SetLocationDelegate {
     func onSelect(location: CLLocation, address: String)

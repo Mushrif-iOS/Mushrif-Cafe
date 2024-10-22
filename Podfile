@@ -7,10 +7,20 @@ target 'Mushrif Cafe' do
 
   # Pods for Mushrif Cafe
 	pod 'Alamofire', '5.0.0'
+  pod 'SwiftyJSON', '~> 4.0'
+  pod 'ReachabilitySwift'
   pod 'SDWebImage'
 	pod 'IQKeyboardManagerSwift'
   pod 'ProgressHUD'
+  pod 'SYBanner'
   pod 'Siren'
 
 end
 
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "16.0"
+    end
+  end
+end

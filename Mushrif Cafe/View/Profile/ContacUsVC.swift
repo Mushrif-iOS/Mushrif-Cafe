@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import ProgressHUD
+//import ProgressHUD
 
 class ContacUsVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
@@ -21,7 +21,7 @@ class ContacUsVC: UIViewController, Instantiatable {
     @IBOutlet weak var fullName: UILabel! {
         didSet {
             fullName.font = UIFont.poppinsRegularFontWith(size: 16)
-            fullName.text = "full_name".localized()
+            fullName.text = "\("full_name".localized())*"
         }
     }
     
@@ -35,7 +35,7 @@ class ContacUsVC: UIViewController, Instantiatable {
     @IBOutlet weak var msgTitle: UILabel! {
         didSet {
             msgTitle.font = UIFont.poppinsRegularFontWith(size: 16)
-            msgTitle.text = "message".localized()
+            msgTitle.text = "\("message".localized())*"
         }
     }
     
@@ -70,6 +70,38 @@ class ContacUsVC: UIViewController, Instantiatable {
     
     @IBAction func submitAction(_ sender: Any) {
         
-        ProgressHUD.success()
+        if txtFullName.text!.isEmpty {
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "name_error".localized())
+            self.showBanner(message: "name_error".localized(), status: .error)
+        } else if descLabel.text!.isEmpty {
+//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
+//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
+//            ProgressHUD.colorBanner = UIColor.red
+//            ProgressHUD.banner("error".localized(), "message_error".localized())
+            self.showBanner(message: "message_error".localized(), status: .error)
+        } else {
+            
+            let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "message": "\(self.descLabel.text!)"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.submit_feedback, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                            
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                
+                self.showBanner(message: msg, status: .success)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    self.navigationController?.popViewController(animated: true)
+                }
+                
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        }
     }
 }

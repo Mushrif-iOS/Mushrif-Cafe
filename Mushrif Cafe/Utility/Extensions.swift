@@ -7,6 +7,9 @@
 
 import UIKit
 import SafariServices
+import SDWebImage
+import SYBanner
+import ProgressHUD
 
 enum AppStoryboard: String {
     case main = "Main"
@@ -180,7 +183,7 @@ extension Double {
 
 class AlertView {
 
-    static func show(title:String? = Bundle.applicationName, message:String?, preferredStyle: UIAlertController.Style = .alert, buttons: [String], completionHandler: @escaping (String) -> Void) {
+    static func show(title: String? = Bundle.applicationName, message: String?, preferredStyle: UIAlertController.Style = .alert, buttons: [String], completionHandler: @escaping (String) -> Void) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
 
@@ -218,12 +221,119 @@ extension Bundle {
 }
 
 extension UIViewController {
+    
     func showWebView(_ urlString: String) {
         if let url = URL(string: urlString) {
             let config = SFSafariViewController.Configuration()
             config.entersReaderIfAvailable = false
             let vc = SFSafariViewController(url: url, configuration: config)
             self.present(vc, animated: true)
+        }
+    }
+
+    func showBanner(message: String, status: LoadingStatus) {
+        
+        switch status {
+        case .success:
+            let styleBanner = SYDefaultBanner(message, direction: .top, style: .success)
+            styleBanner.show(queuePosition: .front)
+            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
+            styleBanner.messageColor = .white
+            styleBanner.dismissOnSwipe = true
+            styleBanner.autoDismiss = true
+            styleBanner.show()
+        case .error:
+            let styleBanner = SYDefaultBanner(message, direction: .top, style: .warning)
+            styleBanner.show(queuePosition: .front)
+            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
+            styleBanner.messageColor = .white
+            styleBanner.dismissOnSwipe = true
+            styleBanner.autoDismiss = true
+            styleBanner.show()
+        case .warning:
+            let styleBanner = SYDefaultBanner(message, direction: .top, style: .info)
+            styleBanner.show(queuePosition: .front)
+            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
+            styleBanner.dismissOnSwipe = true
+            styleBanner.autoDismiss = true
+            styleBanner.show()
+        case .normal:
+            let styleBanner = SYSimpleBanner(message, backgroundColor: .white, direction: .top)
+            styleBanner.show(queuePosition: .front)
+            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
+            styleBanner.messageColor = UIColor.primaryBrown
+            styleBanner.dismissOnSwipe = true
+            styleBanner.autoDismiss = true
+            styleBanner.show()
+        }
+    }
+}
+
+//MARK: - DOWNLOAD IMAGE FROM URL OR STRING
+extension UIImageView {
+    
+    //MARK: DOWNLOAD IMAGE FROM URL
+    func downloadedFrom(url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
+        contentMode = mode
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+            else { return }
+            DispatchQueue.main.async() { () -> Void in
+                self.image = image
+            }
+        }.resume()
+    }
+    
+    //MARK: DOWNLOAD IMAGE FROM LINK
+    func downloadedFrom(link: String, contentMode mode: UIView.ContentMode = .scaleToFill) {
+        guard let url = URL(string: link) else { return }
+        downloadedFrom(url: url, contentMode: mode)
+    }
+    
+    func asyncronusImageWith(imageView: UIImageView, url:String?, _ placeHolderImage:UIImage){
+        if let imageUrl = url {
+            let imgUrl = URL.init(string: imageUrl)
+            imageView.sd_setImage(with: imgUrl, placeholderImage: placeHolderImage, options: .highPriority, completed: nil)
+        } else {
+            imageView.image = placeHolderImage
+        }
+    }
+    
+    func loadURL(urlString : String?, placeholderImage : UIImage?)  {
+        
+        self.image = placeholderImage
+        
+        guard let lobjUrlString = urlString, !urlString!.isEmpty else {
+            print("String is nil or empty.")
+            return // or break, continue, throw
+        }
+        
+        print("String From URL :>> \(lobjUrlString)")
+        
+        self.sd_setImage(with: URL(string: lobjUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") , placeholderImage: placeholderImage, options: [.refreshCached], completed: { (image, error, type, utlType)  in
+            
+            if image == nil {
+                self.downloadImage(url : lobjUrlString, completition: { (image2) in
+                    self.image = image2 == nil ? placeholderImage : image
+                })
+            } else {
+                self.image = image
+            }
+        })
+    }
+    
+    func downloadImage(url : String?, completition : @escaping (UIImage?) -> Void) {
+        
+        SDWebImageDownloader.shared.downloadImage(with: URL(string: url?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") , options: [.ignoreCachedResponse] , progress: nil) { (image, data, error, isComplete) in
+            if isComplete {
+                completition(image)
+            } else {
+                completition(nil)
+            }
         }
     }
 }

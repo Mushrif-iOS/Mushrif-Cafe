@@ -27,26 +27,56 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
     @IBOutlet weak var englishLbl: UILabel! {
         didSet {
             englishLbl.font = UIFont.poppinsRegularFontWith(size: 18)
-            englishLbl.text = "English"
         }
     }
+    @IBOutlet weak var enlishImg: UIImageView!
     
     @IBOutlet weak var arabLbl: UILabel! {
         didSet {
             arabLbl.font = UIFont.poppinsRegularFontWith(size: 18)
-            arabLbl.text = "العربية"
         }
     }
+    @IBOutlet weak var arabImg: UIImageView!
     
+    var languageData: [Languages] = [Languages]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        self.getLanguage()
+    }
+    
+    private func getLanguage() {
+        
+        APIManager.shared.getCall(APPURL.getLanguages, withHeader: false) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let dataDict = responseJSON["response"]["languages"].arrayValue
+            
+            for obj in dataDict {
+                self.languageData.append(Languages(fromJson: obj))
+            }
+            
+            DispatchQueue.main.async {
+                self.englishLbl.text = self.languageData.first?.title
+                self.enlishImg.downloadImage(url: self.languageData.first?.icon) { img in
+                    self.enlishImg.image = img
+                }
+                
+                self.arabLbl.text = self.languageData.last?.title //"العربية"
+                self.arabImg.downloadImage(url: self.languageData.last?.icon) { img in
+                    self.arabImg.image = img
+                }
+            }
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
     
     @IBAction func englishAction(_ sender: Any) {
-        UserDefaultHelper.language = "en"
+        UserDefaultHelper.language = "ar"
         DispatchQueue.main.async {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
@@ -57,7 +87,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
     }
     
     @IBAction func arabAction(_ sender: Any) {
-        UserDefaultHelper.language = "ar"
+        UserDefaultHelper.language = "en"
         DispatchQueue.main.async {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight

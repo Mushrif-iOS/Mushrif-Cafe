@@ -10,8 +10,10 @@ import UIKit
 private enum Defaults: String {
     case countryCode = "countryCode"
     case userloginId   = "userloginid"
+    case userName = "userName"
     case language = "language"
     case isLanguageSelected = "isLanguageSelected"
+    case authToken = "authToken"
 }
 
 final class UserDefaultHelper {
@@ -32,6 +34,14 @@ final class UserDefaultHelper {
         }
     }
     
+    static var userName: String? {
+        set {
+            _set(value: newValue, key: .userName)
+        } get {
+            return _get(valueForKay: .userName) as? String ?? ""
+        }
+    }
+    
     static var language: String? {
         set {
             _set(value: newValue, key: .language)
@@ -45,6 +55,14 @@ final class UserDefaultHelper {
             _set(value: newValue, key: .isLanguageSelected)
         } get {
             return _get(valueForKay: .isLanguageSelected) as? String ?? "no"
+        }
+    }
+    
+    static var authToken: String? {
+        set {
+            _set(value: newValue, key: .authToken)
+        } get {
+            return _get(valueForKay: .authToken) as? String ?? ""
         }
     }
     
@@ -64,11 +82,19 @@ final class UserDefaultHelper {
         UserDefaults.standard.removeObject(forKey: Defaults.userloginId.rawValue)
     }
     
+    static func deleteUserName() {
+        UserDefaults.standard.removeObject(forKey: Defaults.userName.rawValue)
+    }
+    
     static func deleteLanguage() {
         UserDefaults.standard.removeObject(forKey: Defaults.language.rawValue)
     }
     
     static func deleteSelectedLanguage() {
         UserDefaults.standard.removeObject(forKey: Defaults.isLanguageSelected.rawValue)
+    }
+    
+    static func deleteAuthToken() {
+        UserDefaults.standard.removeObject(forKey: Defaults.authToken.rawValue)
     }
 }
