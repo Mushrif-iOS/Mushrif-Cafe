@@ -7,9 +7,10 @@
 
 import UIKit
 import IQKeyboardManagerSwift
-//import ProgressHUD
+import PassKit
 
 class AddFundViewController: UIViewController, Instantiatable {
+    
     static var storyboard: AppStoryboard = .profile
     
     @IBOutlet weak var bottomView: UIView! {
@@ -43,6 +44,8 @@ class AddFundViewController: UIViewController, Instantiatable {
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    private var payment : PKPaymentRequest = PKPaymentRequest()
+    
     var delegate: AddMoneyDelegate?
     
     override func viewDidLoad() {
@@ -52,6 +55,20 @@ class AddFundViewController: UIViewController, Instantiatable {
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 215
         txtAmt.becomeFirstResponder()
         txtAmt.delegate = self
+        
+        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
+        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
+            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
+            payment.supportedCountries = ["IN", "KW"]
+            payment.merchantCapabilities = .capability3DS
+            payment.countryCode = "KW"
+            payment.currencyCode = "KWD"
+            payment.supportedNetworks = paymentNetworks
+        } else {
+            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+                
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -60,16 +77,24 @@ class AddFundViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func appleAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        
+        if txtAmt.text!.isEmpty {
+            self.showBanner(message: "amount_error".localized(), status: .error)
+        } else {
+            
+            payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "Add to Wallet", amount: NSDecimalNumber(string: txtAmt.text!))]
+                        
+            let controller = PKPaymentAuthorizationViewController(paymentRequest: payment)
+            if controller != nil {
+                controller!.delegate = self
+                self.present(controller!, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func knetAction(_ sender: Any) {
         
         if txtAmt.text!.isEmpty {
-//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
-//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
-//            ProgressHUD.colorBanner = UIColor.red
-//            ProgressHUD.banner("error".localized(), "amount_error".localized())
             self.showBanner(message: "amount_error".localized(), status: .error)
         } else {
             
@@ -100,11 +125,9 @@ extension AddFundViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        //Prevent "0" characters as the first characters. (i.e.: There should not be values like "003" "01" "000012" etc.) 244878
         if textField.text?.count == 0 && string == "0" {
             return false
         }
-        //Have a decimal keypad. Which means user will be able to enter Double values. (Needless to say "." will be limited one)
         if (textField.text?.contains("."))! && string == "." {
             return false
         }
@@ -119,5 +142,18 @@ extension AddFundViewController: UITextFieldDelegate {
             return false
         }
         return true
+    }
+}
+
+extension AddFundViewController : PKPaymentAuthorizationViewControllerDelegate {
+    
+    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        controller.dismiss(animated: true) {
+            self.dismiss(animated: true)
+        }
+    }
+    
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
     }
 }

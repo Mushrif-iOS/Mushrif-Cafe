@@ -9,6 +9,7 @@ import UIKit
 import IQKeyboardManagerSwift
 import Siren
 import SYBanner
+import ProgressHUD
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITableView.appearance().showsVerticalScrollIndicator = false
         
         NetworkReachability.shared.startNotifier()
-        //reachabilityObserver()
+        reachabilityObserver()
         
         self.restartApp()
         return true
@@ -48,33 +49,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch status {
             case .connected:
                 print("Reachability: Network available 😃")
-                //ProgressHUD.remove()
-                //MBProgressHUD.hide(for: (self?.window)!, animated: true)
-                //self?.banner.dismissView()
-                
+                ProgressHUD.remove()
             case .disconnected:
                 print("Reachability: Network unavailable 😟")
                 print(self?.window?.screen.bounds.size ?? 0.0)
-//                ProgressHUD.animationType = .horizontalBarScaling
-//                ProgressHUD.colorAnimation = UIColor.primaryBrown
-//                ProgressHUD.colorStatus = UIColor.primaryBrown
-//                ProgressHUD.animate("no_internet".localized(), interaction: false)
-//                let progressHUD = MBProgressHUD.showAdded(to: (self?.window)!, animated: true)
-//                progressHUD.label.text = "no_internet".localized()
-//                progressHUD.label.font = UIFont.poppinsLightFontWith(size: 14)
-//                progressHUD.contentColor = UIColor.primaryBrown
-//                progressHUD.mode = .indeterminate
-                                
-                // See Banner options for more
-                
-                let banner = SYCardBanner(title: "error".localized(), subtitle: "no_internet".localized())
-                banner.backgroundColor = self?.getTraitColor()
-                banner.setBannerOptions([
-                    .showExitButton(false),
-                    .customView((self?.customViewDefault())!)
-                ])
-                banner.dismissOnSwipe = false
-                banner.show(queuePosition: .front)
+                ProgressHUD.animationType = .horizontalBarScaling
+                ProgressHUD.colorAnimation = UIColor.primaryBrown
+                ProgressHUD.colorStatus = UIColor.primaryBrown
+                ProgressHUD.animate("no_internet".localized(), interaction: false)
             }
         }
     }
