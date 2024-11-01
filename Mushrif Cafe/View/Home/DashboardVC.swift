@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class DashboardVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -45,18 +46,27 @@ class DashboardVC: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
-    var activeData: [AnyObject] = [AnyObject]()
     var categoryData: [Category] = [Category]()
     var ourBestData: [TryOurBest] = [TryOurBest]()
+    
+    var activeData = [JSON]()
+    var myUsualData = [JSON]()
+    var bannerData = [JSON]()
+    
+    var selectedTable: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        let pickerView = UIPickerView()
-        pickerView.delegate = self
-        selectTableTxt.inputView = pickerView
+//        let pickerView = UIPickerView()
+//        pickerView.delegate = self
+//        selectTableTxt.inputView = pickerView
+        
+        if self.selectedTable != "" {
+            selectTableLabel.text = self.selectedTable
+        }
                 
         mainTableView.register(HomeOrderTVCell.nib(), forCellReuseIdentifier: HomeOrderTVCell.identifier)
         mainTableView.register(MyUsualTVCell.nib(), forCellReuseIdentifier: MyUsualTVCell.identifier)
@@ -73,6 +83,11 @@ class DashboardVC: UIViewController, Instantiatable {
         
         profileButton.setTitle(UserDefaultHelper.userName?.getAcronym(), for: .normal)
     }
+    @IBAction func selectTableAction(_ sender: UIButton) {
+        
+        let scanVC = ScanTableVC.instantiate()
+        self.navigationController?.push(viewController: scanVC)
+    }
     
     @IBAction func viewProfileAction(_ sender: Any) {
         let profileVC = ProfileViewController.instantiate()
@@ -80,7 +95,7 @@ class DashboardVC: UIViewController, Instantiatable {
     }
     
     @IBAction func searchAction(_ sender: Any) {
-        let dashboardVC = CompleteProfileVC.instantiate()
+        let dashboardVC = SearchViewController.instantiate()
         self.navigationController?.push(viewController: dashboardVC)
     }
     
@@ -103,7 +118,15 @@ class DashboardVC: UIViewController, Instantiatable {
                 self.ourBestData.append(TryOurBest(fromJson: obj))
             }
             
-            print(self.ourBestData.count)
+            let activeDataDict = responseJSON["response"]["my_active_orders"].arrayValue
+            self.activeData = activeDataDict
+            print(self.activeData.count)
+            
+            let myUsualDict = responseJSON["response"]["my_usuals"].arrayValue
+            self.myUsualData = myUsualDict
+            
+            let bannerDict = responseJSON["response"]["banner"].arrayValue
+            self.bannerData = bannerDict
             
             DispatchQueue.main.async {
                 self.mainTableView.delegate = self
@@ -120,34 +143,211 @@ class DashboardVC: UIViewController, Instantiatable {
 extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        //return 5
+        
+        if self.activeData.count == 0 && self.myUsualData.count == 0 && self.bannerData.count == 0 {
+            return 2
+        } else if self.activeData.count == 0 && self.myUsualData.count == 0 {
+            return 3
+        } else if self.activeData.count == 0 && self.bannerData.count == 0 {
+            return 3
+        } else if self.myUsualData.count == 0 && self.bannerData.count == 0 {
+            return 3
+        } else if self.activeData.count == 0 {
+            return 4
+        } else if self.myUsualData.count == 0 {
+            return 4
+        } else if self.bannerData.count == 0 {
+            return 4
+        }  else {
+            return 5
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
-            cell.payNowButton.tag = indexPath.row
-            cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
-            return cell
-        } else if indexPath.row == 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
-            return cell
-        } else if indexPath.row == 2 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
-            cell.categoryObj = self.categoryData
-            cell.reloadCollection()
-            cell.navController = self.navigationController ?? UINavigationController()
-            return cell
-        } else if indexPath.row == 3 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
-            cell.mealObj = self.ourBestData
-            cell.reloadCollection()
-            cell.navController = self.navigationController
-            return cell
+        //        if indexPath.row == 0 {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+        //            cell.payNowButton.tag = indexPath.row
+        //            cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+        //            return cell
+        //        } else if indexPath.row == 1 {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+        //            return cell
+        //        } else if indexPath.row == 2 {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+        //            cell.categoryObj = self.categoryData
+        //            cell.reloadCollection()
+        //            cell.navController = self.navigationController ?? UINavigationController()
+        //            return cell
+        //        } else if indexPath.row == 3 {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+        //            return cell
+        //        } else {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+        //            cell.mealObj = self.ourBestData
+        //            cell.reloadCollection()
+        //            cell.navController = self.navigationController
+        //            return cell
+        //        }
+        
+        if self.activeData.count == 0 && self.myUsualData.count == 0 && self.bannerData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        } else if self.activeData.count == 0 && self.myUsualData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        } else if self.activeData.count == 0 && self.bannerData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        } else if self.myUsualData.count == 0 && self.bannerData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                cell.payNowButton.tag = indexPath.row
+                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        }
+        else if self.activeData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else if indexPath.row == 2 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        } else if self.myUsualData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                cell.payNowButton.tag = indexPath.row
+                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else if indexPath.row == 2 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        } else if self.bannerData.count == 0 {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                cell.payNowButton.tag = indexPath.row
+                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                return cell
+            } else if indexPath.row == 2 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
+        }    else {
+            if indexPath.row == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                cell.payNowButton.tag = indexPath.row
+                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                return cell
+            } else if indexPath.row == 1 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                return cell
+            } else if indexPath.row == 2 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
+                cell.categoryObj = self.categoryData
+                cell.reloadCollection()
+                cell.navController = self.navigationController ?? UINavigationController()
+                return cell
+            } else if indexPath.row == 3 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
+                cell.mealObj = self.ourBestData
+                cell.reloadCollection()
+                cell.navController = self.navigationController
+                return cell
+            }
         }
     }
     

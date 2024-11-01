@@ -114,7 +114,7 @@ class CompleteProfileVC: UIViewController, Instantiatable {
                 UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
                 
                 DispatchQueue.main.async {
-                    let scanVC = ScanTableVC.instantiate()
+                    let scanVC = DashboardVC.instantiate()
                     self.navigationController?.pushViewController(scanVC, animated: true)
                 }
             } failure: { error in

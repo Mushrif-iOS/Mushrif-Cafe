@@ -129,7 +129,7 @@ extension AppDelegate {
         print("UserDefaultHelper.authToken", UserDefaultHelper.authToken!)
         if UserDefaultHelper.authToken != "" {
             let storyboard = UIStoryboard.init(name: "Home", bundle: nil)
-            let scanVC = storyboard.instantiateViewController(withIdentifier: "ScanTableVC") as! ScanTableVC
+            let scanVC = storyboard.instantiateViewController(withIdentifier: "DashboardVC") as! DashboardVC
             let navigationController = UINavigationController.init(rootViewController: scanVC)
             navigationController.isNavigationBarHidden = true
             self.window?.rootViewController = navigationController

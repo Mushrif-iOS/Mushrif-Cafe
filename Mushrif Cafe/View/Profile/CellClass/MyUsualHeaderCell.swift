@@ -8,6 +8,19 @@
 import UIKit
 
 class MyUsualHeaderCell: UITableViewCell {
+    
+    @IBOutlet var headerTitle: UILabel! {
+        didSet {
+            headerTitle.textColor = UIColor.black
+            headerTitle.font = UIFont.poppinsBoldFontWith(size: 20)
+        }
+    }
+        
+    static let identifier = "MyUsualHeaderCell"
+    
+    static func nib() -> UINib {
+        return UINib(nibName: "MyUsualHeaderCell", bundle: nil)
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -63,7 +63,33 @@ struct APPURL {
         return BaseURL  + "wallet/add-money"
     }
     
+    
     static var dine_dashboard: String {
         return BaseURL  + "dine-in/dashboard"
+    }
+    
+    static var select_table: String {
+        return BaseURL  + "select-table"
+    }
+    
+    static var search_product: String {
+        return BaseURL  + "dine-in/search"
+    }
+    
+    static var sub_category: String {
+        return BaseURL  + "sub-categories"
+    }
+    static var food_item_list: String {
+        return BaseURL  + "food-items"
+    }
+    
+    static var my_usuals: String {
+        return BaseURL  + "my-usuals"
+    }
+    static var create_usuals_group: String {
+        return BaseURL  + "my-usuals/create"
+    }
+    static var update_usuals_group: String {
+        return BaseURL  + "my-usuals/update"
     }
 }

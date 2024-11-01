@@ -79,7 +79,8 @@ extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, 
         let dict = categoryObj[indexPath.item]
                 
         let categoryVC = CategoryViewController.instantiate()
-        categoryVC.category = dict.name
+        categoryVC.categoryId = "\(dict.id ?? 0)"
+        categoryVC.categoryName = dict.name
         self.navController.push(viewController: categoryVC)
     }
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import ProgressHUD
 
 class OTPViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
@@ -72,10 +71,6 @@ class OTPViewController: UIViewController, Instantiatable {
     private func postOTPCall() {
         
         if !hasEnterd {
-//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
-//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
-//            ProgressHUD.colorBanner = UIColor.red
-//            ProgressHUD.banner("error".localized(), "otp_error".localized())
             self.showBanner(message: "otp_error".localized(), status: .error)
         } else {
             
@@ -102,7 +97,7 @@ class OTPViewController: UIViewController, Instantiatable {
                         let nextVC = CompleteProfileVC.instantiate()
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     } else {
-                        let scanVC = ScanTableVC.instantiate()
+                        let scanVC = DashboardVC.instantiate()
                         self.navigationController?.pushViewController(scanVC, animated: true)
                     }
                 }

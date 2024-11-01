@@ -7,7 +7,6 @@
 
 import UIKit
 import AVFoundation
-import SwiftyJSON
 
 class ScanTableVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -36,14 +35,18 @@ class ScanTableVC: UIViewController, Instantiatable {
     @IBOutlet var scanView: UIView!
     
     @IBOutlet var qrImgeView: UIImageView!
-    
-    let session = AVCaptureSession()
+        
+    private lazy var captureSession: AVCaptureSession = {
+        let s = AVCaptureSession()
+        s.sessionPreset = .hd1920x1080
+        return s
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        /*requestCameraAccess { granted in
+        requestCameraAccess { granted in
             if granted {
                 // Start the QR code scanner
                 self.setupCamera()
@@ -65,11 +68,11 @@ class ScanTableVC: UIViewController, Instantiatable {
                 
                 self.present(alert, animated: true)
             }
-        }*/
-        let jsonStr = SingleTon.sharedSingleTon.stringify(json: ["user_id": UserDefaultHelper.userloginId ?? "", "loylity_points": 10.548], prettyPrinted: true)
-        print(jsonStr)
-        let qrImage = SingleTon.sharedSingleTon.generateQRCode(from: jsonStr)
-        self.qrImgeView.image = qrImage
+        }
+//        let jsonStr = SingleTon.sharedSingleTon.stringify(json: ["user_id": UserDefaultHelper.userloginId ?? "", "loylity_points": 10.548], prettyPrinted: true)
+//        print(jsonStr)
+//        let qrImage = SingleTon.sharedSingleTon.generateQRCode(from: jsonStr)
+//        self.qrImgeView.image = qrImage
     }
     
     @IBAction func backAction(_ sender: UIButton) {
@@ -77,11 +80,32 @@ class ScanTableVC: UIViewController, Instantiatable {
     }
     
     @IBAction func skipAction(_ sender: UIButton) {
+        let dashboardVC = DashboardVC.instantiate()
+        self.navigationController?.push(viewController: dashboardVC)
     }
     
     @IBAction func continueAction(_ sender: UIButton) {
-        let dashboardVC = DashboardVC.instantiate()
-        self.navigationController?.pushViewController(dashboardVC, animated: true)
+        
+        let aParams: [String: Any] = ["hall_id": "1", "table_id": "1"]
+        
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.select_table, params: aParams, withHeader: false) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let dataDict = responseJSON["response"].dictionaryValue
+            
+            let tabName = dataDict["table_name"]?.stringValue
+            
+            DispatchQueue.main.async {
+                let dashboardVC = DashboardVC.instantiate()
+                dashboardVC.selectedTable = tabName ?? ""
+                self.navigationController?.push(viewController: dashboardVC)
+            }
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
     
     // MARK: - set up camera
@@ -95,8 +119,8 @@ class ScanTableVC: UIViewController, Instantiatable {
             
             output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
             
-            session.addInput(input)
-            session.addOutput(output)
+            captureSession.addInput(input)
+            captureSession.addOutput(output)
             
             output.metadataObjectTypes = [.qr,
                                           .ean13,
@@ -106,13 +130,13 @@ class ScanTableVC: UIViewController, Instantiatable {
                                           .code128,
                                           .pdf417]
             
-            let previewLayer = AVCaptureVideoPreviewLayer(session: session)
+            let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             previewLayer.videoGravity = .resizeAspectFill
             previewLayer.frame = view.bounds
             
             scanView.layer.addSublayer(previewLayer)
             
-            session.startRunning()
+            captureSession.startRunning()
             
         } catch {
             showAlert()
@@ -168,7 +192,27 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
         
         print(stringValue)
         if stringValue != "" {
-            session.stopRunning()
+            captureSession.stopRunning()
+            
+            
+            let aParams: [String: Any] = ["hall_id": "1", "table_id": "1"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.select_table, params: aParams, withHeader: false) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"].dictionaryValue
+                
+//                let custata = dataDict["customer"]
+//                self.customerData = Customer(fromJson: custata)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+ 
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         }
     }
     

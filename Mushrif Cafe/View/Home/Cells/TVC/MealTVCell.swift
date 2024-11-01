@@ -65,8 +65,13 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         cell.nameLabel.text = dict.name
         cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "pizza"))
         
-        let doubleValue = Double(dict.specialPrice) ?? 0.0
-        cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+        if dict.specialPrice != "" {
+            let doubleValue = Double(dict.specialPrice) ?? 0.0
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+        } else {
+            let doubleValue = Double(dict.price) ?? 0.0
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+        }
         
         cell.descLabel.text = dict.descriptionField
         

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-class WalletRoot{
+class WalletRoot {
     
     var message : String = ""
     var response : WalletResponse!

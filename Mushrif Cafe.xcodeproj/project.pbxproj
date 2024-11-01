@@ -40,6 +40,19 @@
 		C68A61362CBE619D0037094D /* CommonWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61352CBE619D0037094D /* CommonWebViewController.swift */; };
 		C68A61382CBEB8440037094D /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61372CBEB8440037094D /* WalletModel.swift */; };
 		C68A613A2CC2684A0037094D /* DashboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61392CC2684A0037094D /* DashboardModel.swift */; };
+		C68A613E2CCCF46B0037094D /* MyUsualHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A613C2CCCF46B0037094D /* MyUsualHeaderCell.swift */; };
+		C68A613F2CCCF46B0037094D /* MyUsualHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A613D2CCCF46B0037094D /* MyUsualHeaderCell.xib */; };
+		C68A61412CCCF9B20037094D /* OrderDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61402CCCF9B20037094D /* OrderDetailsVC.swift */; };
+		C68A61442CCD09800037094D /* OrderDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61422CCD097F0037094D /* OrderDetailsTableViewCell.swift */; };
+		C68A61452CCD09800037094D /* OrderDetailsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A61432CCD097F0037094D /* OrderDetailsTableViewCell.xib */; };
+		C68A61472CD2ADED0037094D /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61462CD2ADED0037094D /* SearchViewController.swift */; };
+		C68A61492CD2B2780037094D /* SearchBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61482CD2B2780037094D /* SearchBar+Extension.swift */; };
+		C68A614C2CD35B7F0037094D /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A614A2CD35B7F0037094D /* SearchCollectionViewCell.swift */; };
+		C68A614D2CD35B7F0037094D /* SearchCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A614B2CD35B7F0037094D /* SearchCollectionViewCell.xib */; };
+		C68A614F2CD3719B0037094D /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A614E2CD3719A0037094D /* SearchModel.swift */; };
+		C68A61512CD4C5F80037094D /* SubCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61502CD4C5F80037094D /* SubCategoryModel.swift */; };
+		C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61522CD4D5B50037094D /* FoodItemModel.swift */; };
+		C68A61552CD515600037094D /* UsualsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61542CD515600037094D /* UsualsModel.swift */; };
 		C68E72582CA3000200F223A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E72572CA3000200F223A8 /* AppDelegate.swift */; };
 		C68E725F2CA3000200F223A8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C68E725E2CA3000200F223A8 /* Base */; };
 		C68E72612CA3000300F223A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C68E72602CA3000300F223A8 /* Assets.xcassets */; };
@@ -134,6 +147,19 @@
 		C68A61372CBEB8440037094D /* WalletModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModel.swift; sourceTree = "<group>"; };
 		C68A61392CC2684A0037094D /* DashboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardModel.swift; sourceTree = "<group>"; };
 		C68A613B2CCAA86B0037094D /* Mushrif Cafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mushrif Cafe.entitlements"; sourceTree = "<group>"; };
+		C68A613C2CCCF46B0037094D /* MyUsualHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUsualHeaderCell.swift; sourceTree = "<group>"; };
+		C68A613D2CCCF46B0037094D /* MyUsualHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyUsualHeaderCell.xib; sourceTree = "<group>"; };
+		C68A61402CCCF9B20037094D /* OrderDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsVC.swift; sourceTree = "<group>"; };
+		C68A61422CCD097F0037094D /* OrderDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsTableViewCell.swift; sourceTree = "<group>"; };
+		C68A61432CCD097F0037094D /* OrderDetailsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderDetailsTableViewCell.xib; sourceTree = "<group>"; };
+		C68A61462CD2ADED0037094D /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		C68A61482CD2B2780037094D /* SearchBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchBar+Extension.swift"; sourceTree = "<group>"; };
+		C68A614A2CD35B7F0037094D /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		C68A614B2CD35B7F0037094D /* SearchCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchCollectionViewCell.xib; sourceTree = "<group>"; };
+		C68A614E2CD3719A0037094D /* SearchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
+		C68A61502CD4C5F80037094D /* SubCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryModel.swift; sourceTree = "<group>"; };
+		C68A61522CD4D5B50037094D /* FoodItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemModel.swift; sourceTree = "<group>"; };
+		C68A61542CD515600037094D /* UsualsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsualsModel.swift; sourceTree = "<group>"; };
 		C68E72542CA3000200F223A8 /* Mushrif Cafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mushrif Cafe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C68E72572CA3000200F223A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C68E725E2CA3000200F223A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -230,6 +256,7 @@
 			isa = PBXGroup;
 			children = (
 				C6337B562CAB1A4E00ACDD86 /* MyOrderViewController.swift */,
+				C68A61402CCCF9B20037094D /* OrderDetailsVC.swift */,
 				C6600C242CB3191F009B0445 /* OrderCells */,
 			);
 			path = Orders;
@@ -260,6 +287,8 @@
 				C6C818A52CB11C1400905A39 /* WalletTableViewCell.xib */,
 				C6C818B02CB1B72000905A39 /* ManageUsualTableViewCell.swift */,
 				C6C818B12CB1B72000905A39 /* ManageUsualTableViewCell.xib */,
+				C68A613C2CCCF46B0037094D /* MyUsualHeaderCell.swift */,
+				C68A613D2CCCF46B0037094D /* MyUsualHeaderCell.xib */,
 			);
 			path = CellClass;
 			sourceTree = "<group>";
@@ -269,6 +298,8 @@
 			children = (
 				C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */,
 				C6337B592CAB21E000ACDD86 /* MyOrderTableViewCell.xib */,
+				C68A61422CCD097F0037094D /* OrderDetailsTableViewCell.swift */,
+				C68A61432CCD097F0037094D /* OrderDetailsTableViewCell.xib */,
 			);
 			path = OrderCells;
 			sourceTree = "<group>";
@@ -278,6 +309,7 @@
 			children = (
 				C6E661B42CA3544700AFF47F /* Color+Extension.swift */,
 				C6E661B62CA358EB00AFF47F /* UIView+Extension.swift */,
+				C68A61482CD2B2780037094D /* SearchBar+Extension.swift */,
 				C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */,
 				C6C089AD2CA680C80050F034 /* UserDefault+Helper.swift */,
 				C6C089D52CA8781F0050F034 /* ScanHelperClass.swift */,
@@ -297,6 +329,10 @@
 				C68A61332CBC3EAE0037094D /* LoginModel.swift */,
 				C68A61392CC2684A0037094D /* DashboardModel.swift */,
 				C68A61372CBEB8440037094D /* WalletModel.swift */,
+				C68A614E2CD3719A0037094D /* SearchModel.swift */,
+				C68A61502CD4C5F80037094D /* SubCategoryModel.swift */,
+				C68A61522CD4D5B50037094D /* FoodItemModel.swift */,
+				C68A61542CD515600037094D /* UsualsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -426,6 +462,7 @@
 				C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */,
 				C6600C252CB31938009B0445 /* AddUsualsVC.swift */,
 				C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */,
+				C68A61462CD2ADED0037094D /* SearchViewController.swift */,
 				C6C089D92CA9061F0050F034 /* Cells */,
 			);
 			path = Home;
@@ -475,6 +512,8 @@
 				C6C08A002CAADEB70050F034 /* MealCVCell.swift */,
 				C6C08A012CAADEB70050F034 /* MealCVCell.xib */,
 				C65010152CAD5940003BCA53 /* TagsCVCell.swift */,
+				C68A614A2CD35B7F0037094D /* SearchCollectionViewCell.swift */,
+				C68A614B2CD35B7F0037094D /* SearchCollectionViewCell.xib */,
 			);
 			path = CVC;
 			sourceTree = "<group>";
@@ -562,13 +601,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				C68E72612CA3000300F223A8 /* Assets.xcassets in Resources */,
+				C68A61452CCD09800037094D /* OrderDetailsTableViewCell.xib in Resources */,
 				C6C089D22CA875B60050F034 /* Home.storyboard in Resources */,
 				C6C089F62CA9DF8F0050F034 /* BannersCVCell.xib in Resources */,
+				C68A613F2CCCF46B0037094D /* MyUsualHeaderCell.xib in Resources */,
 				C6C089E82CA992B90050F034 /* MyUsualCVCell.xib in Resources */,
 				C68E72742CA30F4300F223A8 /* Poppins-Light.ttf in Resources */,
 				C6C089FA2CA9DFA70050F034 /* BannersTVCell.xib in Resources */,
 				C6C818B22CB1B72000905A39 /* ManageUsualTableViewCell.xib in Resources */,
 				C6C8189C2CB06CEC00905A39 /* ProfileTVC.xib in Resources */,
+				C68A614D2CD35B7F0037094D /* SearchCollectionViewCell.xib in Resources */,
 				C68E72762CA30F4300F223A8 /* Poppins-Regular.ttf in Resources */,
 				C6C08A022CAADEB70050F034 /* MealCVCell.xib in Resources */,
 				C68E72642CA3000300F223A8 /* Base in Resources */,
@@ -646,15 +688,19 @@
 				C6600C262CB31938009B0445 /* AddUsualsVC.swift in Sources */,
 				C6600C2C2CB32249009B0445 /* CreateNewUsualVC.swift in Sources */,
 				C6C089EF2CA9C1C40050F034 /* CategoryTVCell.swift in Sources */,
+				C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */,
 				C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */,
 				C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */,
 				C6C089D82CA8EC500050F034 /* DashboardVC.swift in Sources */,
 				C6C8189F2CB0F4FD00905A39 /* EditProfileVC.swift in Sources */,
 				C6EDC6E72CA5A1A0003C40B0 /* Extensions.swift in Sources */,
+				C68A61552CD515600037094D /* UsualsModel.swift in Sources */,
 				C68A61252CB6C6230037094D /* Protocols.swift in Sources */,
 				C6C089B92CA85D540050F034 /* ScanTableVC.swift in Sources */,
 				C6C818AB2CB1454F00905A39 /* ManageUsualViewController.swift in Sources */,
 				C6C089F32CA9C31E0050F034 /* CategoryCVCell.swift in Sources */,
+				C68A614F2CD3719B0037094D /* SearchModel.swift in Sources */,
+				C68A61512CD4C5F80037094D /* SubCategoryModel.swift in Sources */,
 				C6337B572CAB1A4E00ACDD86 /* MyOrderViewController.swift in Sources */,
 				C6C818A32CB112BB00905A39 /* WalletVC.swift in Sources */,
 				C6C818B62CB2596D00905A39 /* PaymentMethodVC.swift in Sources */,
@@ -672,13 +718,16 @@
 				C6C089AC2CA677810050F034 /* LanguageSelectionVC.swift in Sources */,
 				C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */,
 				C6C089FF2CAADE9C0050F034 /* MealTVCell.swift in Sources */,
+				C68A61412CCCF9B20037094D /* OrderDetailsVC.swift in Sources */,
 				C6C089D62CA8781F0050F034 /* ScanHelperClass.swift in Sources */,
 				C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */,
 				C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */,
+				C68A61492CD2B2780037094D /* SearchBar+Extension.swift in Sources */,
 				C650102D2CB06573003BCA53 /* ProfileHeaderTVC.swift in Sources */,
 				C6C818A72CB11C1500905A39 /* WalletTableViewCell.swift in Sources */,
 				C6337B612CAC6C5200ACDD86 /* CategoryViewController.swift in Sources */,
 				C6EDC6E52CA586C3003C40B0 /* LoginVC.swift in Sources */,
+				C68A61472CD2ADED0037094D /* SearchViewController.swift in Sources */,
 				C6600C2A2CB31CA6009B0445 /* UsualListTableViewCell.swift in Sources */,
 				C68A61302CBA4D200037094D /* LanguageModel.swift in Sources */,
 				C68A61362CBE619D0037094D /* CommonWebViewController.swift in Sources */,
@@ -693,12 +742,15 @@
 				C6C089F72CA9DF8F0050F034 /* BannersCVCell.swift in Sources */,
 				C68E72792CA3105700F223A8 /* UIFont+Extension.swift in Sources */,
 				C68A61272CB6C99A0037094D /* WebService.swift in Sources */,
+				C68A614C2CD35B7F0037094D /* SearchCollectionViewCell.swift in Sources */,
 				C6E661B72CA358EB00AFF47F /* UIView+Extension.swift in Sources */,
 				C6C089FB2CA9DFA70050F034 /* BannersTVCell.swift in Sources */,
 				C6C8189D2CB06CEC00905A39 /* ProfileTVC.swift in Sources */,
 				C68A61232CB6C3650037094D /* WebUrls.swift in Sources */,
 				C6C818A92CB1220F00905A39 /* AddFundViewController.swift in Sources */,
 				C65010202CADC18D003BCA53 /* MealDetailsViewController.swift in Sources */,
+				C68A61442CCD09800037094D /* OrderDetailsTableViewCell.swift in Sources */,
+				C68A613E2CCCF46B0037094D /* MyUsualHeaderCell.swift in Sources */,
 				C6E661B52CA3544700AFF47F /* Color+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -876,7 +928,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -901,7 +953,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -915,7 +967,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -940,7 +992,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

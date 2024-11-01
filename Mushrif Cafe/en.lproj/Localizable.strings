@@ -97,3 +97,9 @@
 "usual_name" = "Usual Name";
 "no_internet" = "No Internet Connection";
 "something_wrong" = "Something went wrong";
+
+"item_details" = "Item Details";
+"no_product" = "No Products Found";
+"no_usuals" = "No Usuals Yet";
+"usuals_error" = "Please enter usual group name";
+"usuals_update" = "Update Usual Name";

@@ -53,21 +53,41 @@ class PaymentMethodVC: UIViewController, Instantiatable {
     
     @IBAction func appleAction(_ sender: Any) {
         let confirmVC = OrderSuccessVC.instantiate()
-        self.navigationController?.push(viewController: confirmVC)
+        if #available(iOS 15.0, *) {
+            if let sheet = confirmVC.sheetPresentationController {
+                sheet.detents = [.large()]
+            }
+        }
+        self.present(confirmVC, animated: true, completion: nil)
     }
     
     @IBAction func onlineKnetAction(_ sender: Any) {
         let confirmVC = OrderSuccessVC.instantiate()
-        self.navigationController?.push(viewController: confirmVC)
+        if #available(iOS 15.0, *) {
+            if let sheet = confirmVC.sheetPresentationController {
+                sheet.detents = [.large()]
+            }
+        }
+        self.present(confirmVC, animated: true, completion: nil)
     }
     
     @IBAction func swipeKnetAction(_ sender: Any) {
         let confirmVC = OrderSuccessVC.instantiate()
-        self.navigationController?.push(viewController: confirmVC)
+        if #available(iOS 15.0, *) {
+            if let sheet = confirmVC.sheetPresentationController {
+                sheet.detents = [.large()]
+            }
+        }
+        self.present(confirmVC, animated: true, completion: nil)
     }
     
     @IBAction func keepAction(_ sender: Any) {
         let confirmVC = OrderSuccessVC.instantiate()
-        self.navigationController?.push(viewController: confirmVC)
+        if #available(iOS 15.0, *) {
+            if let sheet = confirmVC.sheetPresentationController {
+                sheet.detents = [.large()]
+            }
+        }
+        self.present(confirmVC, animated: true, completion: nil)
     }
 }

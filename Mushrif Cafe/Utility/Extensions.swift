@@ -337,3 +337,123 @@ extension UIImageView {
         }
     }
 }
+
+extension UICollectionView {
+    
+    enum ErrorMessageType {
+        case removeMessage
+        case error(String)
+    }
+    func setEmptyMessage(_ message: String) {
+            
+            let emptyStateView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+            
+            // Create an image view
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFit
+            imageView.tintColor = UIColor.primaryBrown
+            imageView.image = UIImage(systemName: "square.stack.3d.up.slash.fill")
+            
+            // Calculate the scaled size for the image
+            let maxWidth = emptyStateView.bounds.width * 0.4 // Adjust the scaling as needed
+            
+            // Create a label
+            let messageLabel = UILabel()
+            messageLabel.text = message
+            messageLabel.textColor = .black
+            messageLabel.numberOfLines = 0
+            messageLabel.textAlignment = .center
+            messageLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+            messageLabel.sizeToFit()
+            
+            // Set the frame for image view and label
+            let totalHeight = 80 + messageLabel.frame.height + 16
+            let verticalSpacing: CGFloat = 10.0
+            
+            let imageY = (emptyStateView.frame.height - totalHeight) / 2
+            let labelY = imageY + 80 + verticalSpacing
+            
+            imageView.frame = CGRect(x: (emptyStateView.frame.width - 120) / 2,
+                                     y: imageY, width: 120, height: 80)
+            messageLabel.frame = CGRect(x: 0, y: labelY,
+                                        width: emptyStateView.frame.width,
+                                        height: messageLabel.frame.height)
+            
+            // Add image view and label to the empty state view
+            emptyStateView.addSubview(imageView)
+            emptyStateView.addSubview(messageLabel)
+            
+            // Set the empty state view as the background view
+            self.backgroundView = emptyStateView
+        }
+    
+    func restore() {
+        self.backgroundView = nil
+    }
+}
+
+extension UITableView {
+    
+    enum ErrorMessageType {
+        case removeMessage
+        case error(String)
+    }
+    func setEmptyMessage(_ message: String) {
+        
+        let emptyStateView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        
+        // Create an image view
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = UIColor.primaryBrown
+        imageView.image = UIImage(systemName: "square.stack.3d.up.slash.fill")
+        
+        // Calculate the scaled size for the image
+        let maxWidth = emptyStateView.bounds.width * 0.4 // Adjust the scaling as needed
+        
+        // Create a label
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.textColor = .black
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+        messageLabel.sizeToFit()
+        
+        // Set the frame for image view and label
+        let totalHeight = 80 + messageLabel.frame.height + 16
+        let verticalSpacing: CGFloat = 10.0
+        
+        let imageY = (emptyStateView.frame.height - totalHeight) / 2
+        let labelY = imageY + 80 + verticalSpacing
+        
+        imageView.frame = CGRect(x: (emptyStateView.frame.width - 120) / 2,
+                                 y: imageY, width: 120, height: 80)
+        messageLabel.frame = CGRect(x: 0, y: labelY,
+                                    width: emptyStateView.frame.width,
+                                    height: messageLabel.frame.height)
+        
+        // Add image view and label to the empty state view
+        emptyStateView.addSubview(imageView)
+        emptyStateView.addSubview(messageLabel)
+        
+        // Set the empty state view as the background view
+        self.backgroundView = emptyStateView
+    }
+    
+    func restore() {
+        self.backgroundView = nil
+        self.separatorStyle = .none
+    }
+    
+    func hasRowAtIndexPath(indexPath: IndexPath) -> Bool {
+        return indexPath.section < self.numberOfSections && indexPath.row < self.numberOfRows(inSection: indexPath.section)
+    }
+    
+    func scrollToTop(animated: Bool) {
+        let indexPath = IndexPath(row: 0, section: 0)
+        if self.hasRowAtIndexPath(indexPath: indexPath) {
+            self.scrollToRow(at: indexPath, at: .top, animated: animated)
+        }
+    }
+}

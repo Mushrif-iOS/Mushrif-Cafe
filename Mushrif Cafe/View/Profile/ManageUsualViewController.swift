@@ -19,14 +19,6 @@ class ManageUsualViewController: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
-    lazy var headerLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor.black
-        label.font = UIFont.poppinsBoldFontWith(size: 20)
-        return label
-    }()
-    
     lazy var footerButton: UIButton! = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -45,6 +37,8 @@ class ManageUsualViewController: UIViewController, Instantiatable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        mainTableView.register(MyUsualHeaderCell.nib(), forCellReuseIdentifier: MyUsualHeaderCell.identifier)
         mainTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
         
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 100))
@@ -60,6 +54,7 @@ class ManageUsualViewController: UIViewController, Instantiatable {
         if #available(iOS 15.0, *) {
             mainTableView.sectionHeaderTopPadding = 0
         }
+        mainTableView.reloadData()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -88,7 +83,9 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == 2 {
+            } else if indexPath.row == 1 {
+                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 0)
+            } else {
                 cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
             }
         } else {
@@ -107,13 +104,8 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
     }
         
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 50))
-        headerView.backgroundColor = .clear
-        headerView.addSubview(headerLabel)
-        headerLabel.leftAnchor.constraint(equalTo: headerView.leftAnchor, constant: 18).isActive = true
-        headerLabel.rightAnchor.constraint(equalTo: headerView.rightAnchor, constant: -18).isActive = true
-        headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -15).isActive = true
-        headerLabel.text = "Usual - \(section)"
+        let headerView = tableView.dequeueReusableCell(withIdentifier: MyUsualHeaderCell.identifier) as! MyUsualHeaderCell
+        headerView.headerTitle.text = "Usual - \(section)"
         return headerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

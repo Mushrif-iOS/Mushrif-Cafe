@@ -115,7 +115,7 @@ extension WalletVC: UITableViewDelegate, UITableViewDataSource {
         cell.dateLabel.text = dict.transactionDate
         
         if dict.txnType == "Cr" {
-            cell.amtLabel.textColor = UIColor.systemGreen
+            cell.amtLabel.textColor = UIColor.primaryBrown
             
             let doubleValue = Double(dict.amount) ?? 0.0
             cell.amtLabel.text = "+ \(doubleValue.rounded(toPlaces: 2)) K.D"
