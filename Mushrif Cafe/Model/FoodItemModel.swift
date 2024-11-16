@@ -114,6 +114,8 @@ class FoodItemIngredient {
     var ingredientDetails : FoodItemIngredientDetail!
     var ingredientId : Int = 0
     var productId : Int = 0
+    var plainRequirementStatus : Int = 0
+    var requirementStatus : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -126,6 +128,8 @@ class FoodItemIngredient {
         }
         ingredientId = json["ingredient_id"].intValue
         productId = json["product_id"].intValue
+        plainRequirementStatus = json["plain_requirement_status"].intValue
+        requirementStatus = json["requirement_status"].intValue
     }
 }
 

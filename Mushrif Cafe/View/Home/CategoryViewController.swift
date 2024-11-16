@@ -90,9 +90,14 @@ class CategoryViewController: UIViewController, Instantiatable {
     
     private func getSubCategories() {
         
-        let aParams: [String: Any] = ["category_id": "\(self.categoryId)"]
+        var aParams: [String: Any]?
         
-        print(aParams)
+        if UserDefaultHelper.language == "en" {
+            aParams = ["category_id": "\(self.categoryId)", "locale": "English---us"]
+        } else if UserDefaultHelper.language == "ar" {
+            aParams = ["category_id": "\(self.categoryId)", "locale": "Arabic---ae"]
+        }
+        print(aParams!)
         
         APIManager.shared.postCall(APPURL.sub_category, params: aParams, withHeader: false) { responseJSON in
             print("Response JSON \(responseJSON)")
@@ -117,9 +122,14 @@ class CategoryViewController: UIViewController, Instantiatable {
     
     private func getProductList(subCatId: String, page: Int) {
         
-        let aParams: [String: Any] = ["category_id": "\(self.categoryId)", "sub_category_id": "\(subCatId)"]
+        var aParams: [String: Any]?
         
-        print(aParams)
+        if UserDefaultHelper.language == "en" {
+            aParams = ["category_id": "\(self.categoryId)", "sub_category_id": "\(subCatId)", "locale": "English---us"]
+        } else if UserDefaultHelper.language == "ar" {
+            aParams = ["category_id": "\(self.categoryId)", "sub_category_id": "\(subCatId)", "locale": "Arabic---ae"]
+        }
+        print(aParams!)
         
         APIManager.shared.postCall(APPURL.food_item_list + "?page=\(page)", params: aParams, withHeader: false) { responseJSON in
             print("Response JSON \(responseJSON)")
@@ -238,6 +248,14 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dict = self.foodItemArr[indexPath.row]
+        let detailVC = MealDetailsViewController.instantiate()
+        self.navigationController?.modalPresentationStyle = .formSheet
+        detailVC.itemId = "\(dict.id)"
+        self.navigationController?.present(detailVC, animated: true)
+    }
+
     @objc func addUsual(sender: UIButton) {
         let addVC = AddUsualsVC.instantiate()
         if #available(iOS 15.0, *) {

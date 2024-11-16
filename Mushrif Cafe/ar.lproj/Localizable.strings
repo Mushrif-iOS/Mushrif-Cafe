@@ -102,3 +102,7 @@
 "no_usuals" = "لا يوجد المعتاد بعد";
 "usuals_error" = "الرجاء إدخال اسم المجموعة المعتاد";
 "usuals_update" = "تحديث الاسم المعتاد";
+"select_Ingredients" = "حدد المكونات";
+"plain" = "سهل";
+"addOns" = "إضافات";
+"variations" = "الاختلافات";

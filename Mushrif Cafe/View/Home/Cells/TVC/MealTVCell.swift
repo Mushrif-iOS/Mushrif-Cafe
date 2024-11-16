@@ -83,8 +83,12 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let dict = mealObj[indexPath.item]
         let detailVC = MealDetailsViewController.instantiate()
         self.navController?.modalPresentationStyle = .formSheet
+        detailVC.itemId = "\(dict.id ?? 0)"
+        detailVC.descString = dict.descriptionField
         self.navController?.present(detailVC, animated: true)
     }
 }

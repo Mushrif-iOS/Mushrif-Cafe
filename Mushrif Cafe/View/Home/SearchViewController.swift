@@ -84,8 +84,14 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchApi(searchText: String, page: Int) {
         
-        let aParams: [String: Any] = ["search_term": searchText]
-        print(aParams)
+        var aParams: [String: Any]?
+        
+        if UserDefaultHelper.language == "en" {
+            aParams = ["search_term": searchText, "locale": "English---us"]
+        } else if UserDefaultHelper.language == "ar" {
+            aParams = ["search_term": searchText, "locale": "Arabic---ae"]
+        }
+        print(aParams!)
         
         APIManager.shared.postCall(APPURL.search_product + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")

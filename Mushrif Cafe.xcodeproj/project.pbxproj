@@ -53,6 +53,7 @@
 		C68A61512CD4C5F80037094D /* SubCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61502CD4C5F80037094D /* SubCategoryModel.swift */; };
 		C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61522CD4D5B50037094D /* FoodItemModel.swift */; };
 		C68A61552CD515600037094D /* UsualsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61542CD515600037094D /* UsualsModel.swift */; };
+		C68A61572CD931650037094D /* ItemDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61562CD931650037094D /* ItemDetailsModel.swift */; };
 		C68E72582CA3000200F223A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E72572CA3000200F223A8 /* AppDelegate.swift */; };
 		C68E725F2CA3000200F223A8 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C68E725E2CA3000200F223A8 /* Base */; };
 		C68E72612CA3000300F223A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C68E72602CA3000300F223A8 /* Assets.xcassets */; };
@@ -160,6 +161,7 @@
 		C68A61502CD4C5F80037094D /* SubCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryModel.swift; sourceTree = "<group>"; };
 		C68A61522CD4D5B50037094D /* FoodItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemModel.swift; sourceTree = "<group>"; };
 		C68A61542CD515600037094D /* UsualsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsualsModel.swift; sourceTree = "<group>"; };
+		C68A61562CD931650037094D /* ItemDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsModel.swift; sourceTree = "<group>"; };
 		C68E72542CA3000200F223A8 /* Mushrif Cafe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mushrif Cafe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C68E72572CA3000200F223A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C68E725E2CA3000200F223A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 				C68A61502CD4C5F80037094D /* SubCategoryModel.swift */,
 				C68A61522CD4D5B50037094D /* FoodItemModel.swift */,
 				C68A61542CD515600037094D /* UsualsModel.swift */,
+				C68A61562CD931650037094D /* ItemDetailsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 				C6C089E92CA992B90050F034 /* MyUsualCVCell.swift in Sources */,
 				C68A612E2CB948BA0037094D /* APIManager.swift in Sources */,
 				C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */,
+				C68A61572CD931650037094D /* ItemDetailsModel.swift in Sources */,
 				C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */,
 				C6C818A12CB105B100905A39 /* ContacUsVC.swift in Sources */,
 				C68A61342CBC3EAE0037094D /* LoginModel.swift in Sources */,
@@ -928,7 +932,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -967,7 +971,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

@@ -103,3 +103,7 @@
 "no_usuals" = "No Usuals Yet";
 "usuals_error" = "Please enter usual group name";
 "usuals_update" = "Update Usual Name";
+"select_Ingredients" = "Select Ingredients";
+"plain" = "Plain";
+"addOns" = "Addons";
+"variations" = "Variations";

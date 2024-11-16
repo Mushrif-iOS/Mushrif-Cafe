@@ -57,7 +57,10 @@ class AddUsualsVC: UIViewController, Instantiatable {
         
         let aParams: [String: Any] = [:]
         
-        APIManager.shared.getCallWithParams(APPURL.my_usuals + "?page=\(page)", params: aParams) { responseJSON in
+        let userLanguage = UserDefaultHelper.language
+        let dUrl = APPURL.my_usuals + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")" + "?page=\(page)"
+        
+        APIManager.shared.getCallWithParams(dUrl, params: aParams) { responseJSON in
             print("Response JSON \(responseJSON)")
             
             let lPage = responseJSON["response"]["last_page"].intValue
@@ -156,17 +159,17 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dict = self.usualData[indexPath.row]
         
-        let addVC = CreateNewUsualVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = addVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.preferredCornerRadius = 15
-            }
-        }
-        addVC.title = "Update"
-        addVC.myUsual = dict
-        addVC.delegate = self
-        self.present(addVC, animated: true, completion: nil)
+//        let addVC = CreateNewUsualVC.instantiate()
+//        if #available(iOS 15.0, *) {
+//            if let sheet = addVC.sheetPresentationController {
+//                sheet.detents = [.medium()]
+//                sheet.preferredCornerRadius = 15
+//            }
+//        }
+//        addVC.title = "Update"
+//        addVC.myUsual = dict
+//        addVC.delegate = self
+//        self.present(addVC, animated: true, completion: nil)
     }
     
     @objc func addAction(sender: UIButton) {

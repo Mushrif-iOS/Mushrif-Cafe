@@ -103,7 +103,10 @@ class DashboardVC: UIViewController, Instantiatable {
         
         let aParams: [String: Any] = [:]
         
-        APIManager.shared.getCallWithParams(APPURL.dine_dashboard, params: aParams) { responseJSON in
+        let userLanguage = UserDefaultHelper.language
+        let dUrl = APPURL.dine_dashboard + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")"
+        
+        APIManager.shared.getCallWithParams(dUrl, params: aParams) { responseJSON in
             print("Response JSON \(responseJSON)")
                                     
             let catDataDict = responseJSON["response"]["categories"].arrayValue
@@ -143,7 +146,6 @@ class DashboardVC: UIViewController, Instantiatable {
 extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 5
         
         if self.activeData.count == 0 && self.myUsualData.count == 0 && self.bannerData.count == 0 {
             return 2
@@ -165,32 +167,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //        if indexPath.row == 0 {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
-        //            cell.payNowButton.tag = indexPath.row
-        //            cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
-        //            return cell
-        //        } else if indexPath.row == 1 {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
-        //            return cell
-        //        } else if indexPath.row == 2 {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
-        //            cell.categoryObj = self.categoryData
-        //            cell.reloadCollection()
-        //            cell.navController = self.navigationController ?? UINavigationController()
-        //            return cell
-        //        } else if indexPath.row == 3 {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
-        //            return cell
-        //        } else {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
-        //            cell.mealObj = self.ourBestData
-        //            cell.reloadCollection()
-        //            cell.navController = self.navigationController
-        //            return cell
-        //        }
-        
+
         if self.activeData.count == 0 && self.myUsualData.count == 0 && self.bannerData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
