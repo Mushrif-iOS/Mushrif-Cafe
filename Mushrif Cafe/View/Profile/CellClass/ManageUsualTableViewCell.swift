@@ -44,12 +44,14 @@ class ManageUsualTableViewCell: UITableViewCell {
     @IBOutlet weak var qty: UILabel! {
         didSet {
             qty.font = UIFont.poppinsMediumFontWith(size: 18)
-            qty.text =  userLanguage == "ar" ? "١" :  "1"
+            //qty.text =  userLanguage == "ar" ? "١" :  "1"
         }
     }
     
     var totalValue: Double = Double()
     var qtyValue: Int = 1
+    
+    var itemId = String()
     
     let userLanguage = UserDefaultHelper.language
     
@@ -73,14 +75,34 @@ class ManageUsualTableViewCell: UITableViewCell {
     @IBAction func minusAction(_ sender: Any) {
         if qtyValue > 1 {
             qtyValue -= 1
+            
+            qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
+                    
+            let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "0"]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         }
-        qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
     }
     
     @IBAction func plusAction(_ sender: Any) {
-        if qtyValue < 10 {
+        if qtyValue < 20 {
             qtyValue += 1
         }
         qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
+        
+        
+        let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "1"]
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }

@@ -40,6 +40,8 @@ class AddUsualsVC: UIViewController, Instantiatable {
     var pageNo: Int = 1
     var lastPage: Int = Int()
     
+    var productId = String()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -90,6 +92,7 @@ class AddUsualsVC: UIViewController, Instantiatable {
                 sheet.preferredCornerRadius = 15
             }
         }
+        addVC.delegate = self
         addVC.title = ""
         self.present(addVC, animated: true, completion: nil)
     }
@@ -156,24 +159,22 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let dict = self.usualData[indexPath.row]
-        
-//        let addVC = CreateNewUsualVC.instantiate()
-//        if #available(iOS 15.0, *) {
-//            if let sheet = addVC.sheetPresentationController {
-//                sheet.detents = [.medium()]
-//                sheet.preferredCornerRadius = 15
-//            }
-//        }
-//        addVC.title = "Update"
-//        addVC.myUsual = dict
-//        addVC.delegate = self
-//        self.present(addVC, animated: true, completion: nil)
-    }
-    
     @objc func addAction(sender: UIButton) {
-        print("Adddddd")
+        
+        let dict = self.usualData[sender.tag]
+        
+        let aParams: [String: Any] = ["group_id": "\(dict.id)", "product_id": "\(self.productId)", "quantity": "1", "item_type": "listed", "order_id": ""]
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.add_Item_To_Usual, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let msg = responseJSON["message"].stringValue
+            self.showBanner(message: msg, status: .success)
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }
 

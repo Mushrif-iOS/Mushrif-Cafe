@@ -14,6 +14,11 @@ private enum Defaults: String {
     case language = "language"
     case isLanguageSelected = "isLanguageSelected"
     case authToken = "authToken"
+    case totalPrice = "totalPrice"
+    case orderType = "orderType"
+    case hallId = "hallId"
+    case tableId = "tableId"
+    case groupId = "groupId"
 }
 
 final class UserDefaultHelper {
@@ -66,6 +71,46 @@ final class UserDefaultHelper {
         }
     }
     
+    static var totalPrice: String? {
+        set {
+            _set(value: newValue, key: .totalPrice)
+        } get {
+            return _get(valueForKay: .totalPrice) as? String ?? ""
+        }
+    }
+    
+    static var orderType: String? {
+        set {
+            _set(value: newValue, key: .orderType)
+        } get {
+            return _get(valueForKay: .orderType) as? String ?? ""
+        }
+    }
+    
+    static var hallId: String? {
+        set {
+            _set(value: newValue, key: .hallId)
+        } get {
+            return _get(valueForKay: .hallId) as? String ?? ""
+        }
+    }
+    
+    static var tableId: String? {
+        set {
+            _set(value: newValue, key: .tableId)
+        } get {
+            return _get(valueForKay: .tableId) as? String ?? ""
+        }
+    }
+    
+    static var groupId: String? {
+        set {
+            _set(value: newValue, key: .groupId)
+        } get {
+            return _get(valueForKay: .groupId) as? String ?? ""
+        }
+    }
+    
     private static func _set(value: Any?, key: Defaults) {
         UserDefaults.standard.set(value, forKey: key.rawValue)
     }
@@ -96,5 +141,25 @@ final class UserDefaultHelper {
     
     static func deleteAuthToken() {
         UserDefaults.standard.removeObject(forKey: Defaults.authToken.rawValue)
+    }
+    
+    static func deleteTotalPrice() {
+        UserDefaults.standard.removeObject(forKey: Defaults.totalPrice.rawValue)
+    }
+    
+    static func deleteOrderType() {
+        UserDefaults.standard.removeObject(forKey: Defaults.orderType.rawValue)
+    }
+    
+    static func deleteHallId() {
+        UserDefaults.standard.removeObject(forKey: Defaults.hallId.rawValue)
+    }
+    
+    static func deleteTableId() {
+        UserDefaults.standard.removeObject(forKey: Defaults.tableId.rawValue)
+    }
+    
+    static func deleteGroupId() {
+        UserDefaults.standard.removeObject(forKey: Defaults.groupId.rawValue)
     }
 }

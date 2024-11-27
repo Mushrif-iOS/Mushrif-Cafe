@@ -68,6 +68,10 @@ extension CreateNewUsualVC: UITextFieldDelegate {
             
             if self.title == "Update" {
                 
+                if txtUsual.text == self.myUsual?.title {
+                    return
+                }
+                
                 let aParams: [String: Any] = ["title": txtUsual.text!, "group_id": "\(self.myUsual?.id ?? 0)"]
                 print(aParams)
                 
@@ -97,6 +101,7 @@ extension CreateNewUsualVC: UITextFieldDelegate {
                     self.showBanner(message: msg, status: .success)
                     
                     DispatchQueue.main.async {
+                        self.delegate?.completed()
                         self.dismiss(animated: true)
                     }
                     

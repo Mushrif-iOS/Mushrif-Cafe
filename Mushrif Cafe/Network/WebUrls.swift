@@ -95,4 +95,18 @@ struct APPURL {
     static var update_usuals_group: String {
         return BaseURL  + "my-usuals/update"
     }
+    static var add_Item_To_Usual: String {
+        return BaseURL  + "my-usuals/add-item"
+    }
+    static var update_usuals_Qty: String {
+        return BaseURL  + "my-usuals/update-quantity"
+    }
+    
+    //Cart
+    static var add_item_cart: String {
+        return BaseURL  + "add-item-to-cart"
+    }
+    static var add_cart_table_wise: String {
+        return BaseURL  + "cart"
+    }
 }

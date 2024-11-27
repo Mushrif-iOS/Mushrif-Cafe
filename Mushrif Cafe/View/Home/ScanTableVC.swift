@@ -97,7 +97,12 @@ class ScanTableVC: UIViewController, Instantiatable {
             
             let tabName = dataDict["table_name"]?.stringValue
             
+            UserDefaultHelper.hallId = dataDict["hall_id"]?.stringValue
+            UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
+            UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
+            
             DispatchQueue.main.async {
+                UserDefaultHelper.orderType = "takeaway"
                 let dashboardVC = DashboardVC.instantiate()
                 dashboardVC.selectedTable = tabName ?? ""
                 self.navigationController?.push(viewController: dashboardVC)
@@ -206,6 +211,12 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 
 //                let custata = dataDict["customer"]
 //                self.customerData = Customer(fromJson: custata)
+                
+                UserDefaultHelper.orderType = "dinein"
+                                                
+                UserDefaultHelper.hallId = dataDict["hall_id"]?.stringValue
+                UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
+                UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)

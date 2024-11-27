@@ -162,8 +162,15 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let detailVC = MealDetailsViewController.instantiate()
+//        self.navigationController?.modalPresentationStyle = .formSheet
+//        self.navigationController?.present(detailVC, animated: true)
+        
+        let dict = self.searchData[indexPath.item]
         let detailVC = MealDetailsViewController.instantiate()
         self.navigationController?.modalPresentationStyle = .formSheet
+        detailVC.itemId = "\(dict.id)"
+        detailVC.descString = dict.name
         self.navigationController?.present(detailVC, animated: true)
     }
 }

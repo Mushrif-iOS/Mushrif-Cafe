@@ -50,7 +50,7 @@ class DashboardVC: UIViewController, Instantiatable {
     var ourBestData: [TryOurBest] = [TryOurBest]()
     
     var activeData = [JSON]()
-    var myUsualData = [JSON]()
+    var myUsualData = [DashboardMyUsual]()
     var bannerData = [JSON]()
     
     var selectedTable: String = ""
@@ -58,12 +58,6 @@ class DashboardVC: UIViewController, Instantiatable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        
-//        let pickerView = UIPickerView()
-//        pickerView.delegate = self
-//        selectTableTxt.inputView = pickerView
-        
         if self.selectedTable != "" {
             selectTableLabel.text = self.selectedTable
         }
@@ -126,7 +120,9 @@ class DashboardVC: UIViewController, Instantiatable {
             print(self.activeData.count)
             
             let myUsualDict = responseJSON["response"]["my_usuals"].arrayValue
-            self.myUsualData = myUsualDict
+            for obj in myUsualDict {
+                self.myUsualData.append(DashboardMyUsual(fromJson: obj))
+            }
             
             let bannerDict = responseJSON["response"]["banner"].arrayValue
             self.bannerData = bannerDict
@@ -202,6 +198,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.activeData.count == 0 && self.bannerData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                cell.usualObj = self.myUsualData
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
@@ -239,6 +236,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         else if self.activeData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                cell.usualObj = self.myUsualData
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
@@ -286,6 +284,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                cell.usualObj = self.myUsualData
                 return cell
             } else if indexPath.row == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
@@ -308,6 +307,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
+                cell.usualObj = self.myUsualData
                 return cell
             } else if indexPath.row == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell

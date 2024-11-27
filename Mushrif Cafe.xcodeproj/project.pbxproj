@@ -27,6 +27,8 @@
 		C6600C2C2CB32249009B0445 /* CreateNewUsualVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */; };
 		C66906D92CA46A2500E74833 /* OTPFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D62CA46A2400E74833 /* OTPFieldView.swift */; };
 		C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D72CA46A2400E74833 /* OTPTextView.swift */; };
+		C678318F2CEBCDB400E643A9 /* SingleSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */; };
+		C67831902CEBCDB400E643A9 /* SingleSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */; };
 		C68A611F2CB58A700037094D /* CellSelectionTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A611E2CB58A700037094D /* CellSelectionTVC.xib */; };
 		C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A611D2CB58A700037094D /* CellSelectionTVC.swift */; };
 		C68A61232CB6C3650037094D /* WebUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61222CB6C3650037094D /* WebUrls.swift */; };
@@ -134,6 +136,8 @@
 		C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewUsualVC.swift; sourceTree = "<group>"; };
 		C66906D62CA46A2400E74833 /* OTPFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPFieldView.swift; sourceTree = "<group>"; };
 		C66906D72CA46A2400E74833 /* OTPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPTextView.swift; sourceTree = "<group>"; };
+		C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionCell.swift; sourceTree = "<group>"; };
+		C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleSelectionCell.xib; sourceTree = "<group>"; };
 		C68A611D2CB58A700037094D /* CellSelectionTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSelectionTVC.swift; sourceTree = "<group>"; };
 		C68A611E2CB58A700037094D /* CellSelectionTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellSelectionTVC.xib; sourceTree = "<group>"; };
 		C68A61222CB6C3650037094D /* WebUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUrls.swift; sourceTree = "<group>"; };
@@ -499,6 +503,8 @@
 				C6600C282CB31CA6009B0445 /* UsualListTableViewCell.xib */,
 				C68A611D2CB58A700037094D /* CellSelectionTVC.swift */,
 				C68A611E2CB58A700037094D /* CellSelectionTVC.xib */,
+				C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */,
+				C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */,
 			);
 			path = TVC;
 			sourceTree = "<group>";
@@ -614,6 +620,7 @@
 				C6C818B22CB1B72000905A39 /* ManageUsualTableViewCell.xib in Resources */,
 				C6C8189C2CB06CEC00905A39 /* ProfileTVC.xib in Resources */,
 				C68A614D2CD35B7F0037094D /* SearchCollectionViewCell.xib in Resources */,
+				C67831902CEBCDB400E643A9 /* SingleSelectionCell.xib in Resources */,
 				C68E72762CA30F4300F223A8 /* Poppins-Regular.ttf in Resources */,
 				C6C08A022CAADEB70050F034 /* MealCVCell.xib in Resources */,
 				C68E72642CA3000300F223A8 /* Base in Resources */,
@@ -713,6 +720,7 @@
 				C6337B5A2CAB21E000ACDD86 /* MyOrderTableViewCell.swift in Sources */,
 				C68A613A2CC2684A0037094D /* DashboardModel.swift in Sources */,
 				C6C089E92CA992B90050F034 /* MyUsualCVCell.swift in Sources */,
+				C678318F2CEBCDB400E643A9 /* SingleSelectionCell.swift in Sources */,
 				C68A612E2CB948BA0037094D /* APIManager.swift in Sources */,
 				C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */,
 				C68A61572CD931650037094D /* ItemDetailsModel.swift in Sources */,
@@ -932,7 +940,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -971,7 +979,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

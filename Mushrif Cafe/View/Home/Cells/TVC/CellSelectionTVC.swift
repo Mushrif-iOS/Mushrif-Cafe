@@ -21,20 +21,10 @@ class CellSelectionTVC: UITableViewCell {
         }
     }
     
-    @IBOutlet var priceLabel: UILabel! {
-        didSet {
-            let attrString = NSMutableAttributedString(string: " \(valuePrice.toRoundedString(toPlaces: 3))",
-                                                       attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 17)])
-            attrString.append(NSMutableAttributedString(string: " KD",
-                                                        attributes: [NSAttributedString.Key.font: UIFont.poppinsLightFontWith(size: 11)]))
-            priceLabel.attributedText =  attrString
-        }
-    }
+    @IBOutlet var priceLabel: UILabel!
     
     @IBOutlet var tickButton: UIButton!
-    
-    var valuePrice: Double = 0.569
-    
+        
     static let identifier = "CellSelectionTVC"
     
     static func nib() -> UINib {

@@ -53,11 +53,9 @@ class MealCVCell: UICollectionViewCell {
         }
     }
     
-    @IBOutlet weak var addUsual: UIButton! {
-        didSet {
-            addUsual.addTarget(self, action: #selector(addUsualAction(sender:)), for: .touchUpInside)
-        }
-    }
+    @IBOutlet weak var saveButton: UIButton!
+    
+    @IBOutlet weak var addUsual: UIButton!
     
     static let identifier = "MealCVCell"
     
@@ -70,9 +68,4 @@ class MealCVCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
-    @objc func addUsualAction(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-    }
-
 }

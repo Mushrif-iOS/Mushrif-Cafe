@@ -96,6 +96,7 @@ class LoginVC: UIViewController, Instantiatable {
                 DispatchQueue.main.async {
                     let otpVC = OTPViewController.instantiate()
                     otpVC.enteredNumber = self.mobileNumberText.text!
+                    otpVC.tempOTP = "\(dataDict["otp"] ?? "")"
                     self.navigationController?.pushViewController(otpVC, animated: true)
                 }
             } failure: { error in

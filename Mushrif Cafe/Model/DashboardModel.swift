@@ -32,7 +32,7 @@ class DashboardResponse {
     //var banner : [AnyObject]!
     var categories : [Category]!
 //    var myActiveOrders : [AnyObject]!
-//    var myUsuals : [AnyObject]!
+    var myUsuals : [DashboardMyUsual]!
     var tryOurBest : [TryOurBest]!
 
 
@@ -56,17 +56,41 @@ class DashboardResponse {
 //        for myActiveOrdersJson in myActiveOrdersArray{
 //            myActiveOrders.append(myActiveOrdersJson.stringValue)
 //        }
-//        myUsuals = [AnyObject]()
-//        let myUsualsArray = json["my_usuals"].arrayValue
-//        for myUsualsJson in myUsualsArray{
-//            myUsuals.append(myUsualsJson.stringValue)
-//        }
+        myUsuals = [DashboardMyUsual]()
+        let myUsualsArray = json["my_usuals"].arrayValue
+        for myUsualsJson in myUsualsArray{
+            let value = DashboardMyUsual(fromJson: myUsualsJson)
+            myUsuals.append(value)
+        }
         tryOurBest = [TryOurBest]()
         let tryOurBestArray = json["try_our_best"].arrayValue
-        for tryOurBestJson in tryOurBestArray{
+        for tryOurBestJson in tryOurBestArray {
             let value = TryOurBest(fromJson: tryOurBestJson)
             tryOurBest.append(value)
         }
+    }
+}
+
+class DashboardMyUsual {
+    
+    var customerId : Int = 0
+    var id : Int = 0
+    var items : [UsualItem]!
+    var title : String = ""
+    
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        customerId = json["customer_id"].intValue
+        id = json["id"].intValue
+        items = [UsualItem]()
+        let itemsArray = json["items"].arrayValue
+        for itemsJson in itemsArray {
+            let value = UsualItem(fromJson: itemsJson)
+            items.append(value)
+        }
+        title = json["title"].stringValue
     }
 }
 

@@ -190,9 +190,6 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell") as! CategoryTableViewCell
-        cell.addUsual.tag = indexPath.row
-        cell.addUsual.addTarget(self, action: #selector(addUsual(sender:)), for: .touchUpInside)
-        
         let dict = self.foodItemArr[indexPath.row]
         cell.nameLabel.text = dict.name
         cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "pizza"))
@@ -206,6 +203,11 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.descLabel.text = dict.name
+        cell.addButton.tag = indexPath.item
+        cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+        
+        cell.addUsual.tag = indexPath.item
+        cell.addUsual.addTarget(self, action: #selector(addUsualAction(sender:)), for: .touchUpInside)
         
         return cell
     }
@@ -255,8 +257,43 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
         detailVC.itemId = "\(dict.id)"
         self.navigationController?.present(detailVC, animated: true)
     }
-
-    @objc func addUsual(sender: UIButton) {
+    
+    @objc func addAction(sender: UIButton) {
+        
+        let dict = self.foodItemArr[sender.tag]
+        
+        let orderType = UserDefaultHelper.orderType ?? ""
+        let hallId = UserDefaultHelper.hallId ?? ""
+        let tableId = UserDefaultHelper.tableId ?? ""
+        let groupId = UserDefaultHelper.groupId ?? ""
+        
+        let aParams = ["hall_id": hallId, "table_id": tableId, "group_id": groupId, "order_type": orderType, "item_id": "\(dict.id)", "variation_id": "", "combo_id": "", "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+        
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let searchDataDict = responseJSON["response"]["data"].arrayValue
+            print(searchDataDict)
+            //            for obj in searchDataDict {
+            //                self.searchData.append(SearchData(fromJson: obj))
+            //            }
+            //
+            //            DispatchQueue.main.async {
+            //
+            //            }
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    
+    @objc func addUsualAction(sender: UIButton) {
+        if let cell = self.mainTableView.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as? CategoryTableViewCell {
+            cell.saveButton.isSelected.toggle()
+        }
+        let dict = self.foodItemArr[sender.tag]
         let addVC = AddUsualsVC.instantiate()
         if #available(iOS 15.0, *) {
             if let sheet = addVC.sheetPresentationController {
@@ -264,6 +301,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource {
                 sheet.preferredCornerRadius = 15
             }
         }
+        addVC.productId = "\(dict.id)"
         self.present(addVC, animated: true, completion: nil)
     }
 }

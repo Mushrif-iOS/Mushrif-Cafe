@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SYBanner
 
 class OTPViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
@@ -24,6 +25,7 @@ class OTPViewController: UIViewController, Instantiatable {
     }
     
     var enteredNumber: String = ""
+    var tempOTP: String = ""
     
     @IBOutlet weak var otpContainerView: UIView!
     
@@ -52,6 +54,17 @@ class OTPViewController: UIViewController, Instantiatable {
         super.viewDidLoad()
         
         enterText.text = "\("please_enter_otp".localized()) \n\(enteredNumber)"
+        
+        self.showBanner(message: "otp_error".localized(), status: .success)
+        
+        let styleBanner = SYDefaultBanner("OTP: \(tempOTP)", direction: .top, style: .success)
+        styleBanner.show(queuePosition: .front)
+        styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
+        styleBanner.messageColor = .white
+        styleBanner.dismissOnSwipe = true
+        styleBanner.autoDismiss = true
+        styleBanner.appearanceDuration = 20.0
+        styleBanner.show()
         
         setupOtpView()
     }

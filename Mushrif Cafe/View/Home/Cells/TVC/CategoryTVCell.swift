@@ -40,10 +40,14 @@ class CategoryTVCell: UITableViewCell {
     }
     
     func reloadCollection() {
-        self.clcHeight.constant = CGFloat(((self.categoryObj.count/3)*146) + ((self.categoryObj.count/3)*10))
-        DispatchQueue.main.async {
-            self.dataCollection.reloadData()
+        if categoryObj.count >= 3 {
+            let fData = (Double(categoryObj.count)/Double(3))*146
+            let lData = (Double(categoryObj.count)/Double(3))*10
+            self.clcHeight.constant = CGFloat(fData + lData)
+        } else {
+            self.clcHeight.constant = 146
         }
+        self.dataCollection.reloadData()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

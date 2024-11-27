@@ -18,7 +18,9 @@ class MyUsualTVCell: UITableViewCell {
     
     @IBOutlet var dataCollection: UICollectionView!
     
-    var colorData: [UIColor] = [UIColor.appPink, UIColor.usualGray, UIColor.appPink, UIColor.usualGray, UIColor.appPink, UIColor.usualGray]
+    //var colorData: [UIColor] = [UIColor.appPink, UIColor.usualGray, UIColor.appPink, UIColor.usualGray, UIColor.appPink, UIColor.usualGray]
+    
+    var usualObj = [DashboardMyUsual]()
     
     static let identifier = "MyUsualTVCell"
     
@@ -32,6 +34,7 @@ class MyUsualTVCell: UITableViewCell {
         dataCollection.register(MyUsualCVCell.nib(), forCellWithReuseIdentifier: MyUsualCVCell.identifier)
         dataCollection.delegate = self
         dataCollection.dataSource = self
+        dataCollection.reloadData()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -44,14 +47,21 @@ class MyUsualTVCell: UITableViewCell {
 extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return colorData.count
+        return usualObj.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyUsualCVCell.identifier, for: indexPath) as! MyUsualCVCell
-        cell.backView.backgroundColor = colorData[indexPath.item]
-        cell.foodLabel.text = "Chicken Shawarma, Pepsi, Fries"
+        let dict = usualObj[indexPath.item]
+        cell.foodLabel.text = dict.title
+        
+        if (indexPath.item % 2 == 0) {
+            cell.backView.backgroundColor = UIColor.appPink
+        } else {
+            cell.backView.backgroundColor = UIColor.usualGray
+        }
+        
         return cell
     }
     

@@ -62,6 +62,11 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2L-V2-fXn">
+                        <rect key="frame" x="17" y="210.5" width="176" height="36"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    </button>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pizza" translatesAutoresizingMaskIntoConstraints="NO" id="IcC-4G-gbU">
                         <rect key="frame" x="236" y="20" width="182" height="164"/>
                         <constraints>
@@ -113,13 +118,17 @@
                     <constraint firstItem="oIl-G8-Olx" firstAttribute="bottom" secondItem="IcC-4G-gbU" secondAttribute="bottom" constant="25" id="2Ng-N9-elX"/>
                     <constraint firstItem="hdU-0f-fcn" firstAttribute="leading" secondItem="1vc-O8-GHb" secondAttribute="leading" id="3Au-I5-pzm"/>
                     <constraint firstItem="IcC-4G-gbU" firstAttribute="top" secondItem="kkW-Mb-Rgk" secondAttribute="top" constant="20" id="4vU-Lh-vMP"/>
+                    <constraint firstItem="f2L-V2-fXn" firstAttribute="trailing" secondItem="9JD-Ey-TM5" secondAttribute="trailing" id="70F-6R-mJv"/>
                     <constraint firstAttribute="trailing" secondItem="IcC-4G-gbU" secondAttribute="trailing" constant="16" id="7zX-Kz-Ee4"/>
                     <constraint firstAttribute="bottom" secondItem="j4n-l6-YLc" secondAttribute="bottom" constant="12" id="Bia-5D-NjV"/>
+                    <constraint firstItem="f2L-V2-fXn" firstAttribute="top" secondItem="9JD-Ey-TM5" secondAttribute="top" id="Eg2-ga-BDc"/>
                     <constraint firstItem="j4n-l6-YLc" firstAttribute="top" secondItem="oIl-G8-Olx" secondAttribute="bottom" constant="9" id="M3I-wd-cFs"/>
                     <constraint firstItem="OWr-cO-xgg" firstAttribute="leading" secondItem="1vc-O8-GHb" secondAttribute="leading" id="Sh1-YU-nFe"/>
+                    <constraint firstItem="f2L-V2-fXn" firstAttribute="bottom" secondItem="9JD-Ey-TM5" secondAttribute="bottom" id="Tpj-vI-ydW"/>
                     <constraint firstItem="hdU-0f-fcn" firstAttribute="trailing" secondItem="1vc-O8-GHb" secondAttribute="trailing" id="WBD-yw-2TQ"/>
                     <constraint firstItem="hdU-0f-fcn" firstAttribute="top" secondItem="1vc-O8-GHb" secondAttribute="bottom" constant="7" id="Xnd-Pl-kPz"/>
                     <constraint firstItem="1vc-O8-GHb" firstAttribute="top" secondItem="kkW-Mb-Rgk" secondAttribute="top" constant="28" id="d2T-ez-Blx"/>
+                    <constraint firstItem="f2L-V2-fXn" firstAttribute="leading" secondItem="OWr-cO-xgg" secondAttribute="leading" id="dQe-7m-l7w"/>
                     <constraint firstItem="IcC-4G-gbU" firstAttribute="leading" secondItem="1vc-O8-GHb" secondAttribute="trailing" constant="8" id="f9S-QN-cQT"/>
                     <constraint firstItem="9JD-Ey-TM5" firstAttribute="top" secondItem="egz-3c-nHt" secondAttribute="bottom" constant="5" id="fDY-ql-Ecd"/>
                     <constraint firstItem="j4n-l6-YLc" firstAttribute="centerX" secondItem="oIl-G8-Olx" secondAttribute="centerX" id="fmD-ZA-7e3"/>
@@ -136,13 +145,14 @@
             <size key="customSize" width="434" height="271"/>
             <connections>
                 <outlet property="addButton" destination="oIl-G8-Olx" id="aYA-hT-heR"/>
-                <outlet property="addUsual" destination="9JD-Ey-TM5" id="qtV-xB-0e6"/>
+                <outlet property="addUsual" destination="f2L-V2-fXn" id="bpe-PW-Ecp"/>
                 <outlet property="addUsualLabel" destination="OWr-cO-xgg" id="WIB-RQ-xLC"/>
                 <outlet property="customizeLabel" destination="j4n-l6-YLc" id="Juu-Yx-ckW"/>
                 <outlet property="descLabel" destination="egz-3c-nHt" id="T5p-mc-2wP"/>
                 <outlet property="img" destination="IcC-4G-gbU" id="4Xv-Lx-S0j"/>
                 <outlet property="nameLabel" destination="1vc-O8-GHb" id="F4D-Y3-pZJ"/>
                 <outlet property="priceLabel" destination="hdU-0f-fcn" id="L2N-G7-b27"/>
+                <outlet property="saveButton" destination="9JD-Ey-TM5" id="bJq-vf-xTE"/>
             </connections>
             <point key="canvasLocation" x="480" y="410.38732394366195"/>
         </collectionViewCell>
@@ -150,6 +160,6 @@
     <resources>
         <image name="bookmark" width="12.5" height="13.5"/>
         <image name="pizza" width="546" height="492"/>
-        <image name="saved" width="16" height="16"/>
+        <image name="saved" width="15" height="16"/>
     </resources>
 </document>

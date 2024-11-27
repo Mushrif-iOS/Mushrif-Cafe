@@ -49,18 +49,11 @@ class CategoryTableViewCell: UITableViewCell {
         }
     }
     
-    @IBOutlet weak var customizeLabel: UILabel! {
-        didSet {
-            customizeLabel.font = UIFont.poppinsRegularFontWith(size: 15)
-            customizeLabel.text = "Customizable".localized()
-        }
-    }
+    @IBOutlet weak var customizeLabel: UILabel!
     
-    @IBOutlet weak var addUsual: UIButton! {
-        didSet {
-            addUsual.addTarget(self, action: #selector(addUsualAction(sender:)), for: .touchUpInside)
-        }
-    }
+    @IBOutlet weak var saveButton: UIButton!
+    
+    @IBOutlet weak var addUsual: UIButton!
     
     static let identifier = "CategoryTableViewCell"
     
@@ -77,9 +70,5 @@ class CategoryTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    
-    @objc func addUsualAction(sender: UIButton) {
-        sender.isSelected = !sender.isSelected
     }
 }

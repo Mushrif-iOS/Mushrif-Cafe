@@ -65,18 +65,43 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     @IBOutlet weak var stuffTblView: UITableView!
     @IBOutlet var stuffTblHeight: NSLayoutConstraint!
     
+    @IBOutlet var categoryStack: UIStackView!
     @IBOutlet var categoryTop: NSLayoutConstraint!
-    @IBOutlet var categoryView: UIView!
-    @IBOutlet var categorySeperatorHeight: NSLayoutConstraint!
-    @IBOutlet var categoryTitleTop: NSLayoutConstraint!
-    @IBOutlet var categoryTitleBottom: NSLayoutConstraint!
-    @IBOutlet var categoryLabel: UILabel! {
+    @IBOutlet var categoryView1: UIView!
+    @IBOutlet var categorySeperatorHeight1: NSLayoutConstraint!
+    @IBOutlet var categoryTitleTop1: NSLayoutConstraint!
+    @IBOutlet var categoryTitleBottom1: NSLayoutConstraint!
+    @IBOutlet var categoryLabel1: UILabel! {
         didSet {
-            categoryLabel.font = UIFont.poppinsMediumFontWith(size: 17)
+            categoryLabel1.font = UIFont.poppinsMediumFontWith(size: 17)
         }
     }
-    @IBOutlet weak var categoryTblView: UITableView!
-    @IBOutlet var categoryTblHeight: NSLayoutConstraint!
+    @IBOutlet weak var categoryTblView1: UITableView!
+    @IBOutlet var categoryTblHeight1: NSLayoutConstraint!
+    
+    @IBOutlet var categoryView2: UIView!
+    @IBOutlet var categorySeperatorHeight2: NSLayoutConstraint!
+    @IBOutlet var categoryTitleTop2: NSLayoutConstraint!
+    @IBOutlet var categoryTitleBottom2: NSLayoutConstraint!
+    @IBOutlet var categoryLabel2: UILabel! {
+        didSet {
+            categoryLabel2.font = UIFont.poppinsMediumFontWith(size: 17)
+        }
+    }
+    @IBOutlet weak var categoryTblView2: UITableView!
+    @IBOutlet var categoryTblHeight2: NSLayoutConstraint!
+    
+    @IBOutlet var categoryView3: UIView!
+    @IBOutlet var categorySeperatorHeight3: NSLayoutConstraint!
+    @IBOutlet var categoryTitleTop3: NSLayoutConstraint!
+    @IBOutlet var categoryTitleBottom3: NSLayoutConstraint!
+    @IBOutlet var categoryLabel3: UILabel! {
+        didSet {
+            categoryLabel3.font = UIFont.poppinsMediumFontWith(size: 17)
+        }
+    }
+    @IBOutlet weak var categoryTblView3: UITableView!
+    @IBOutlet var categoryTblHeight3: NSLayoutConstraint!
     
     @IBOutlet var variationLabel: UILabel! {
         didSet {
@@ -111,23 +136,42 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     @IBOutlet weak var addButton: UIButton!
     
     var basePrice: Double = Double()
-    var totalValue: Double = Double()
+    var originalBasePrice: Double = Double()
+    
+    var itemPrice: Double = Double()
+    var qtyChangeValue: Double = Double()
+    var mealTypePrice: Double = Double()
+    var variationPrice: Double = Double()
+    var adOnPrice: Double = Double()
+    
     var qtyValue: Int = 1
     
     var descString = String()
     
     let userLanguage = UserDefaultHelper.language
     
-    var arrSelectedRows: [IndexPath] = []
+    var firstBoxSelectedRows: [IndexPath] = []
+    var ingredientSelectedRows: [IndexPath] = []
+    var categorySelecteIndex1: IndexPath?
+    var categorySelecteIndex2: IndexPath?
+    var categorySelecteIndex3: IndexPath?
+    var variationSelectedIndex: IndexPath?
+    var addOnSelectedRows: [IndexPath] = []
+    var isPlainSelected: Bool = false
     
     var itemId: String = ""
     
     var detailsData: ItemDetailsResponse?
     var ingredientsArr : [FoodItemIngredient] = [FoodItemIngredient]()
     var comboDetails: ItemComboDetail?
-    var categoryArr : [Category] = [Category]()
+    var categoryArr1 : [Category] = [Category]()
+    var categoryArr2 : [Category] = [Category]()
+    var categoryArr3 : [Category] = [Category]()
     var variationArr : [VariationPrice] = [VariationPrice]()
     var addOnArr : [AddonProduct] = [AddonProduct]()
+    
+    var selectedVariationId: Int?
+    var selectedComboId: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,62 +179,24 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         // Do any additional setup after loading the view.
         self.mealTypeTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
         self.stuffTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
-        self.categoryTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
-        self.variationTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
+        self.categoryTblView1.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
+        self.categoryTblView2.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
+        self.categoryTblView3.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
+        self.variationTblView.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
         self.addOnTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
         
-//        self.mealTypeTblView.addObserver(self, forKeyPath: "contentSize", options: [.old, .new], context: nil)
-//        self.stuffTblView.addObserver(self, forKeyPath: "contentSize1", options: [.old, .new], context: nil)
-//        self.variationTblView.addObserver(self, forKeyPath: "contentSize2", options: [.old, .new], context: nil)
-//        self.addOnTblView.addObserver(self, forKeyPath: "contentSize3", options: [.old, .new], context: nil)
         if #available(iOS 15.0, *) {
             mealTypeTblView.sectionHeaderTopPadding = 0
             stuffTblView.sectionHeaderTopPadding = 0
+            categoryTblView1.sectionHeaderTopPadding = 0
+            categoryTblView2.sectionHeaderTopPadding = 0
+            categoryTblView3.sectionHeaderTopPadding = 0
             variationTblView.sectionHeaderTopPadding = 0
             addOnTblView.sectionHeaderTopPadding = 0
         }
         
         self.getDetails()
     }
-    
-    /*override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if(keyPath == "contentSize") {
-            if let newvalue = change?[.newKey] {
-                DispatchQueue.main.async {
-                    let newsize  = newvalue as! CGSize
-                    self.mealTypeTblHeight.constant = newsize.height
-                }
-            }
-            print(keyPath)
-        }
-        else if(keyPath == "contentSize1") {
-            if let newvalue = change?[.newKey] {
-                DispatchQueue.main.async {
-                    let newsize  = newvalue as! CGSize
-                    self.stuffTblHeight.constant = newsize.height
-                }
-            }
-            print(keyPath)
-        }
-        else if(keyPath == "contentSize2") {
-            if let newvalue = change?[.newKey] {
-                DispatchQueue.main.async {
-                    let newsize  = newvalue as! CGSize
-                    self.variationTblHeight.constant = newsize.height
-                }
-            }
-            print(keyPath)
-        }
-        else if(keyPath == "contentSize3") {
-            if let newvalue2 = change?[.newKey] {
-                DispatchQueue.main.async {
-                    let newsize  = newvalue2 as! CGSize
-                    self.addOnTblHeight.constant = newsize.height
-                }
-            }
-            print(keyPath)
-        }
-    }*/
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -205,34 +211,26 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         if qtyValue > 1 {
             qtyValue -= 1
             
-            self.totalValue = (self.basePrice*Double(qtyValue))
+            self.qtyChangeValue = (self.itemPrice*Double(qtyValue))
         }
-        qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
+        qty.text = userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
         
-        let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(totalValue.toRoundedString(toPlaces: 2))",
-                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
-        attrString.append(NSMutableAttributedString(string: " KD",
-                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
-        self.addButton.setAttributedTitle(attrString, for: .normal)
+        self.setPriceAttritubte()
     }
     
     @IBAction func plusAction(_ sender: Any) {
         if qtyValue < 10 {
             qtyValue += 1
             
-            self.totalValue = (self.basePrice*Double(qtyValue))
+            self.qtyChangeValue = (self.itemPrice*Double(qtyValue))
         }
-        qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
+        qty.text = userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
         
-        let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(totalValue.toRoundedString(toPlaces: 2))",
-                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
-        attrString.append(NSMutableAttributedString(string: " KD",
-                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
-        self.addButton.setAttributedTitle(attrString, for: .normal)
+        self.setPriceAttritubte()
     }
     
     @IBAction func nextAscreenAction(_ sender: Any) {
-        self.dismiss(animated: true)
+        self.addToCartApi()
     }
     
     func adjustTextViewHeight() {
@@ -265,12 +263,23 @@ class MealDetailsViewController: UIViewController, Instantiatable {
                 self.ingredientsArr.append(FoodItemIngredient(fromJson: obj))
             }
             
-            let catDataDict = responseJSON["response"].dictionaryValue
             let comboData = dataDict["combo_details"]
             self.comboDetails = ItemComboDetail(fromJson: comboData)
-                   
+            
             if self.detailsData?.haveCombo == 1 {
-                self.categoryArr = self.comboDetails?.categories.first?.comboItems ?? [Category]()
+                
+                if self.comboDetails?.categories.count == 1 {
+                    self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [Category]()
+                }
+                if self.comboDetails?.categories.count == 2 {
+                    self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [Category]()
+                    self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [Category]()
+                }
+                if self.comboDetails?.categories.count == 3 {
+                    self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [Category]()
+                    self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [Category]()
+                    self.categoryArr3 = self.comboDetails?.categories[2].comboItems ?? [Category]()
+                }
             }
             
             let varDict = responseJSON["response"]["variation_prices"].arrayValue
@@ -320,23 +329,69 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             self.mealTypeTblHeight.constant = 0
             
             self.categoryTop.constant = 0
-            self.categorySeperatorHeight.constant = 0
             self.variationTop.constant = 0
-            self.categoryTblHeight.constant = 0
-            self.categoryTitleTop.constant = 0
-            self.categoryTitleBottom.constant = 0
-            self.categoryLabel.text = ""
-            self.categoryView.isHidden = true
+            self.categorySeperatorHeight1.constant = 0
+            self.categorySeperatorHeight2.constant = 0
+            self.categorySeperatorHeight3.constant = 0
+            self.categoryTblHeight1.constant = 0
+            self.categoryTblHeight2.constant = 0
+            self.categoryTblHeight3.constant = 0
+            self.categoryLabel1.text = ""
+            self.categoryLabel2.text = ""
+            self.categoryLabel3.text = ""
+            
+            self.categoryView1.isHidden = true
+            self.categoryView2.isHidden = true
+            self.categoryView3.isHidden = true
+            
+            self.selectedComboId = nil
+            
         } else {
             self.typeOfMealLabel.text = data?.name
             self.requiredLabel.text = data?.comboDetails.comboTitle
             self.mealTypeTblHeight.constant = 2 * 52
             self.mealTypeTblView.reloadData()
             
-            self.categoryView.isHidden = false
-            self.categoryLabel.text = self.comboDetails?.categories.first?.name
-            self.categoryTblHeight.constant = CGFloat(self.categoryArr.count * 52)
-            self.categoryTblView.reloadData()
+            if self.comboDetails?.categories.count == 1 {
+                self.categoryView1.isHidden = false
+                self.categoryView2.isHidden = true
+                self.categoryView3.isHidden = true
+                self.categoryLabel1.text = self.comboDetails?.categories[0].name
+                self.categoryTblHeight1.constant = CGFloat(self.categoryArr1.count * 52)
+                self.categoryTblView1.reloadData()
+            }
+            
+            if self.comboDetails?.categories.count == 2 {
+                self.categoryView1.isHidden = false
+                self.categoryLabel1.text = self.comboDetails?.categories[0].name
+                self.categoryTblHeight1.constant = CGFloat(self.categoryArr1.count * 52)
+                self.categoryTblView1.reloadData()
+                
+                self.categoryView2.isHidden = false
+                self.categoryLabel2.text = self.comboDetails?.categories[1].name
+                self.categoryTblHeight2.constant = CGFloat(self.categoryArr2.count * 52)
+                self.categoryTblView2.reloadData()
+                
+                self.categoryView3.isHidden = true
+            }
+            
+            if self.comboDetails?.categories.count == 3 {
+                self.categoryView1.isHidden = false
+                self.categoryLabel1.text = self.comboDetails?.categories[0].name
+                self.categoryTblHeight1.constant = CGFloat(self.categoryArr1.count * 52)
+                self.categoryTblView1.reloadData()
+                
+                self.categoryView2.isHidden = false
+                self.categoryLabel2.text = self.comboDetails?.categories[1].name
+                self.categoryTblHeight2.constant = CGFloat(self.categoryArr2.count * 52)
+                self.categoryTblView2.reloadData()
+                
+                self.categoryView3.isHidden = false
+                self.categoryLabel3.text = self.comboDetails?.categories[2].name
+                self.categoryTblHeight3.constant = CGFloat(self.categoryArr3.count * 52)
+                self.categoryTblView3.reloadData()
+            }
+            self.selectedComboId = data?.comboDetails.id
         }
         if self.ingredientsArr.count > 0 {
             self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
@@ -347,7 +402,6 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         
         if self.variationArr.count == 0 {
             self.variationTop.constant = 20
-            //self.variationViewHeight.constant = 0
             self.variationSeperatorHeight.constant = 0
             self.addOnTop.constant = 0
             self.variationTblHeight.constant = 0
@@ -356,6 +410,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             self.variationLabel.text = ""
             self.variationView.isHidden = true
         } else {
+            self.variationTop.constant = 20
             self.variationView.isHidden = false
             self.variationLabel.text = "variations".localized()
             self.variationTblHeight.constant = CGFloat(self.variationArr.count * 52)
@@ -379,19 +434,23 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             self.addOnTblView.reloadData()
         }
         
-        if data?.specialPrice != "" {
-            self.totalValue = Double(data?.specialPrice ?? "") ?? 0.0
-            self.basePrice = Double(data?.specialPrice ?? "") ?? 0.0
-        } else {
-            self.totalValue = Double(data?.price ?? "") ?? 0.0
-            self.basePrice = Double(data?.price ?? "") ?? 0.0
+        if data?.haveCombo != 1 && self.variationArr.count == 0 {
+            self.categoryTop.constant = 0
+            self.variationTop.constant = 0
+            self.addOnTop.constant = 0
         }
         
-        let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(totalValue.toRoundedString(toPlaces: 2))",
-                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
-        attrString.append(NSMutableAttributedString(string: " KD",
-                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
-        self.addButton.setAttributedTitle(attrString, for: .normal)
+        if data?.specialPrice != "" {
+            self.itemPrice = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
+            self.basePrice = self.itemPrice + self.mealTypePrice + self.variationPrice + self.adOnPrice
+            self.originalBasePrice = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
+        } else {
+            self.itemPrice = Double(self.detailsData?.price ?? "") ?? 0.0
+            self.basePrice = self.itemPrice + self.mealTypePrice + self.variationPrice + self.adOnPrice
+            self.originalBasePrice = Double(self.detailsData?.price ?? "") ?? 0.0
+        }
+        self.qtyChangeValue = (self.itemPrice*Double(qtyValue))
+        self.setPriceAttritubte()
     }
 }
 
@@ -402,8 +461,12 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             return 2
         } else if tableView == self.stuffTblView {
             return self.ingredientsArr.count
-        } else if tableView == self.categoryTblView {
-            return self.categoryArr.count
+        } else if tableView == self.categoryTblView1 {
+            return self.categoryArr1.count
+        } else if tableView == self.categoryTblView2 {
+            return self.categoryArr2.count
+        } else if tableView == self.categoryTblView3 {
+            return self.categoryArr3.count
         } else if tableView == self.variationTblView {
             return self.variationArr.count
         } else {
@@ -415,15 +478,12 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         
         if tableView == self.mealTypeTblView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
-            if arrSelectedRows.contains(indexPath) {
+            if firstBoxSelectedRows.contains(indexPath) {
                 cell.tickButton.isSelected = true
             } else {
                 cell.tickButton.isSelected = false
             }
-            cell.callBackTap = {
-                cell.tickButton.isSelected = !cell.tickButton.isSelected
-            }
-            
+                        
             if indexPath.row == 0 {
                 cell.nameLabel.text = self.detailsData?.name
                 if self.detailsData?.specialPrice != "" {
@@ -444,30 +504,57 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 }
             }
             
-            return cell
-        } else if tableView == self.categoryTblView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
-            
-            let dict = self.categoryArr[indexPath.row]
-            cell.nameLabel.text = dict.name
-            cell.priceLabel.text = ""
-            
-            if arrSelectedRows.contains(indexPath) {
-                cell.tickButton.isSelected = true
-                cell.isUserInteractionEnabled = false
-            } else {
-                cell.tickButton.isSelected = false
-                cell.isUserInteractionEnabled = true
-            }
             cell.callBackTap = {
-                if self.arrSelectedRows.contains(indexPath) {
-                    self.arrSelectedRows.remove(at: self.arrSelectedRows.firstIndex(of: indexPath)!)
+                if self.firstBoxSelectedRows.contains(indexPath) {
+                    self.firstBoxSelectedRows.remove(at: self.firstBoxSelectedRows.firstIndex(of: indexPath)!)
+                    if indexPath.row == 0 {
+                        if self.detailsData?.specialPrice != "" {
+                            let doubleValue = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
+                            self.mealTypePrice -= doubleValue
+                        } else {
+                            let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
+                            self.mealTypePrice -= doubleValue
+                        }
+                        print("self.mealTypePrice", self.mealTypePrice)
+                    } else {
+                        if self.detailsData?.comboDetails.offerPrice != "" {
+                            let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
+                            self.mealTypePrice -= doubleValue
+                            
+                        } else {
+                            let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
+                            self.mealTypePrice -= doubleValue
+                        }
+                        print("self.mealTypePrice", self.mealTypePrice)
+                    }
                 } else {
-                    self.arrSelectedRows.append(indexPath)
+                    self.firstBoxSelectedRows.append(indexPath)
+                    if indexPath.row == 0 {
+                        if self.detailsData?.specialPrice != "" {
+                            let doubleValue = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
+                            self.mealTypePrice += doubleValue
+                        } else {
+                            let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
+                            self.mealTypePrice += doubleValue
+                        }
+                        print("self.mealTypePrice", self.mealTypePrice)
+                    } else {
+                        if self.detailsData?.comboDetails.offerPrice != "" {
+                            let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
+                            self.mealTypePrice += doubleValue
+                            
+                        } else {
+                            let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
+                            self.mealTypePrice += doubleValue
+                        }
+                        print("self.mealTypePrice", self.mealTypePrice)
+                    }
                 }
                 cell.tickButton.isSelected = !cell.tickButton.isSelected
-                print("IndexPath: ", self.arrSelectedRows)
+                self.setPriceAttritubte()
+                //print("IndexPath firstBoxSelectedRows: ", self.firstBoxSelectedRows)
             }
+            
             return cell
         } else if tableView == self.stuffTblView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
@@ -476,25 +563,71 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             cell.nameLabel.text = dict.ingredientDetails.name
             cell.priceLabel.text = ""
             
-            if arrSelectedRows.contains(indexPath) || dict.requirementStatus == 1 {
+            if ingredientSelectedRows.contains(indexPath) || dict.requirementStatus == 1 {
                 cell.tickButton.isSelected = true
+                cell.nameLabel.textColor = UIColor.lightGray.withAlphaComponent(0.8)
                 cell.isUserInteractionEnabled = false
+                self.ingredientSelectedRows.append(indexPath)
             } else {
                 cell.tickButton.isSelected = false
+                cell.nameLabel.textColor = UIColor.black
                 cell.isUserInteractionEnabled = true
+                self.ingredientSelectedRows.removeAll()
             }
             cell.callBackTap = {
-                if self.arrSelectedRows.contains(indexPath) {
-                    self.arrSelectedRows.remove(at: self.arrSelectedRows.firstIndex(of: indexPath)!)
+                if self.ingredientSelectedRows.contains(indexPath) {
+                    self.ingredientSelectedRows.remove(at: self.ingredientSelectedRows.firstIndex(of: indexPath)!)
                 } else {
-                    self.arrSelectedRows.append(indexPath)
+                    self.ingredientSelectedRows.append(indexPath)
                 }
                 cell.tickButton.isSelected = !cell.tickButton.isSelected
-                print("IndexPath: ", self.arrSelectedRows)
+                print("IndexPath ingredientSelectedRows: ", self.ingredientSelectedRows)
             }
             return cell
+        } else if tableView == self.categoryTblView1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SingleSelectionCell") as! SingleSelectionCell
+            
+            let dict = self.categoryArr1[indexPath.row]
+            cell.nameLabel.text = dict.name
+            cell.priceLabel.text = ""
+            
+            if indexPath == self.categorySelecteIndex1 {
+                cell.tickButton.isSelected = true
+            } else {
+                cell.tickButton.isSelected = false
+            }
+            
+            return cell
+        } else if tableView == self.categoryTblView2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SingleSelectionCell") as! SingleSelectionCell
+            
+            let dict = self.categoryArr2[indexPath.row]
+            cell.nameLabel.text = dict.name
+            cell.priceLabel.text = ""
+            
+            if indexPath == self.categorySelecteIndex2 {
+                cell.tickButton.isSelected = true
+            } else {
+                cell.tickButton.isSelected = false
+            }
+            
+            return cell
+        } else if tableView == self.categoryTblView3 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SingleSelectionCell") as! SingleSelectionCell
+            
+            let dict = self.categoryArr3[indexPath.row]
+            cell.nameLabel.text = dict.name
+            cell.priceLabel.text = ""
+            
+            if indexPath == self.categorySelecteIndex3 {
+                cell.tickButton.isSelected = true
+            } else {
+                cell.tickButton.isSelected = false
+            }
+            
+            return cell
         } else if tableView == self.variationTblView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SingleSelectionCell") as! SingleSelectionCell
             
             let dict = self.variationArr[indexPath.row]
             var nameArr = [String]()
@@ -504,6 +637,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             }
             
             cell.nameLabel.text = nameArr.joined(separator: ", ")
+            self.selectedVariationId = dict.id
             if dict.specialPrice != "" {
                 let doubleValue = Double(dict.specialPrice) ?? 0.0
                 cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
@@ -512,37 +646,39 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
             }
             
-            if arrSelectedRows.contains(indexPath) {
+            if indexPath == self.variationSelectedIndex {
                 cell.tickButton.isSelected = true
-                cell.isUserInteractionEnabled = false
             } else {
                 cell.tickButton.isSelected = false
-                cell.isUserInteractionEnabled = true
             }
-            cell.callBackTap = {
-                if self.arrSelectedRows.contains(indexPath) {
-                    self.arrSelectedRows.remove(at: self.arrSelectedRows.firstIndex(of: indexPath)!)
-                } else {
-                    self.arrSelectedRows.append(indexPath)
-                }
-                cell.tickButton.isSelected = !cell.tickButton.isSelected
-                print("IndexPath: ", self.arrSelectedRows)
-            }
+            
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
             
             let dict = self.addOnArr[indexPath.row]
             cell.nameLabel.text = dict.name
-            let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            let doubleValueAddOn = Double(dict.price) ?? 0.0
+            cell.priceLabel.text = "\(doubleValueAddOn.rounded(toPlaces: 2)) KD"
             
-            if arrSelectedRows.contains(indexPath) {
+            if addOnSelectedRows.contains(indexPath) {
                 cell.tickButton.isSelected = true
             } else {
                 cell.tickButton.isSelected = false
             }
             cell.callBackTap = {
+                if self.addOnSelectedRows.contains(indexPath) {
+                    let doubleValueRemoved = Double(self.addOnArr[indexPath.row].price) ?? 0.0
+                    self.adOnPrice -= doubleValueRemoved
+                    print("self.adOnPrice", self.adOnPrice)
+                    self.addOnSelectedRows.remove(at: self.addOnSelectedRows.firstIndex(of: indexPath)!)
+                    self.setPriceAttritubte()
+                } else {
+                    self.addOnSelectedRows.append(indexPath)
+                    self.adOnPrice += doubleValueAddOn
+                    print("self.adOnPrice", self.adOnPrice)
+                    self.setPriceAttritubte()
+                }
                 cell.tickButton.isSelected = !cell.tickButton.isSelected
             }
             return cell
@@ -554,23 +690,35 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if tableView == self.stuffTblView {
-            let headerView = tableView.dequeueReusableCell(withIdentifier: CellSelectionTVC.identifier) as! CellSelectionTVC
-            headerView.nameLabel.text = "plain".localized()
-            headerView.priceLabel.text = ""
-            
-            //            if arrSelectedRows.contains(IndexPath(row: 0, section: section)) {
-            //                headerView.tickButton.isSelected = true
-            //            } else {
-            //                headerView.tickButton.isSelected = false
-            //            }
-            headerView.callBackTap = {
-                headerView.tickButton.isSelected = !headerView.tickButton.isSelected
+        let headerView = tableView.dequeueReusableCell(withIdentifier: CellSelectionTVC.identifier) as! CellSelectionTVC
+        headerView.nameLabel.text = "plain".localized()
+        headerView.priceLabel.text = ""
+        
+        var tempArr = [FoodItemIngredient]()
+        var tempRows = [IndexPath]()
+        
+        for i in 0..<self.ingredientsArr.count {
+            if self.ingredientsArr[i].plainRequirementStatus == 1 {
+                print("Index Number: ", "\(i)")
+                tempArr.append(self.ingredientsArr[i])
+                tempRows.append(IndexPath(row: i, section: 0))
+                print("tempRows", tempRows)
             }
-            return headerView
-        } else {
-            return UIView()
         }
+        
+        headerView.callBackTap = {
+            if headerView.tickButton.isSelected {
+                headerView.tickButton.isSelected = false
+                print("self.ingredientSelectedRows TRUE", self.ingredientSelectedRows)
+            } else {
+                headerView.tickButton.isSelected = true
+                print("self.ingredientSelectedRows FALSE", self.ingredientSelectedRows)
+            }
+//                self.isPlainSelected.toggle()
+//                self.ingredientSelectedRows.append(contentsOf: tempRows)
+            tableView.reloadData()
+        }
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -579,5 +727,106 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         } else {
             return 0
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView == self.categoryTblView1 {
+            if let currentSelectedIndex = self.categorySelecteIndex1, currentSelectedIndex == indexPath {
+                self.categorySelecteIndex1 = nil
+                tableView.deselectRow(at: indexPath, animated: true)
+            } else {
+                self.categorySelecteIndex1 = indexPath
+            }
+            tableView.reloadData()
+        } else if tableView == self.categoryTblView2 {
+            if let currentSelectedIndex = self.categorySelecteIndex2, currentSelectedIndex == indexPath {
+                self.categorySelecteIndex2 = nil
+                tableView.deselectRow(at: indexPath, animated: true)
+            } else {
+                self.categorySelecteIndex2 = indexPath
+            }
+            tableView.reloadData()
+        } else if tableView == self.categoryTblView3 {
+            if let currentSelectedIndex = self.categorySelecteIndex3, currentSelectedIndex == indexPath {
+                self.categorySelecteIndex3 = nil
+                tableView.deselectRow(at: indexPath, animated: true)
+            } else {
+                self.categorySelecteIndex3 = indexPath
+            }
+            tableView.reloadData()
+        } else if tableView == self.variationTblView {
+            
+            let dict = self.variationArr[indexPath.row]
+            if let currentSelectedIndex = self.variationSelectedIndex, currentSelectedIndex == indexPath {
+                self.variationSelectedIndex = nil
+                tableView.deselectRow(at: indexPath, animated: true)
+                self.selectedVariationId = nil
+                self.variationPrice = 0
+                if self.qtyChangeValue > 0 {
+                    self.qtyChangeValue = self.originalBasePrice
+                } else {
+                    self.itemPrice = self.originalBasePrice
+                }
+                print("self.variationPrice", self.variationPrice)
+                self.setPriceAttritubte()
+            } else {
+                self.selectedVariationId = dict.id
+                self.variationSelectedIndex = indexPath
+                if dict.specialPrice != "" {
+                    self.variationPrice = Double(dict.specialPrice) ?? 0.0
+                } else {
+                    self.variationPrice = Double(dict.price) ?? 0.0
+                }
+                print("self.variationPrice", self.variationPrice)
+                self.setPriceAttritubte()
+            }
+            tableView.reloadData()
+        }
+    }
+    
+    func setPriceAttritubte() {
+        if self.qtyChangeValue > 0 {
+            self.basePrice = self.qtyChangeValue + self.mealTypePrice + self.variationPrice + self.adOnPrice
+            //self.originalBasePrice = self.qtyChangeValue + self.mealTypePrice + self.variationPrice + self.adOnPrice
+        } else {
+            self.basePrice = self.itemPrice + self.mealTypePrice + self.variationPrice + self.adOnPrice
+            //self.originalBasePrice = self.itemPrice + self.mealTypePrice + self.variationPrice + self.adOnPrice
+        }
+        
+        let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2))",
+                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+        attrString.append(NSMutableAttributedString(string: " KD",
+                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
+        self.addButton.setAttributedTitle(attrString, for: .normal)
+    }
+    
+    func addToCartApi() {
+                
+//        let orderType = UserDefaultHelper.orderType ?? ""
+//        let hallId = UserDefaultHelper.hallId ?? ""
+//        let tableId = UserDefaultHelper.tableId ?? ""
+//        let groupId = UserDefaultHelper.groupId ?? ""
+//        
+//        let aParams = ["hall_id": hallId, "table_id": tableId, "group_id": groupId, "order_type": orderType, "item_id": "\(self.detailsData?.id ?? 0)", "variation_id": "\(self.selectedVariationId ?? 0)", "combo_id": "\(self.selectedComboId ?? 0)", "unit_price": "\(self.basePrice)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+//        
+//        print(aParams)
+//        
+//        APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+//            print("Response JSON \(responseJSON)")
+//            
+//            let searchDataDict = responseJSON["response"]["data"].arrayValue
+//            print(searchDataDict)
+////            for obj in searchDataDict {
+////                self.searchData.append(SearchData(fromJson: obj))
+////            }
+////            
+////            DispatchQueue.main.async {
+////
+////            }
+//            
+//        } failure: { error in
+//            print("Error \(error.localizedDescription)")
+//        }
     }
 }

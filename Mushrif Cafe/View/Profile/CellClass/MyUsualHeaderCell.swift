@@ -15,6 +15,8 @@ class MyUsualHeaderCell: UITableViewCell {
             headerTitle.font = UIFont.poppinsBoldFontWith(size: 20)
         }
     }
+    
+    @IBOutlet var editButton: UIButton!
         
     static let identifier = "MyUsualHeaderCell"
     

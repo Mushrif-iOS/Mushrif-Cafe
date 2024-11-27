@@ -74,7 +74,11 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         }
         
         cell.descLabel.text = dict.descriptionField
+        cell.addButton.tag = indexPath.item
+        cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
         
+        cell.addUsual.tag = indexPath.item
+        cell.addUsual.addTarget(self, action: #selector(addUsualAction(sender:)), for: .touchUpInside)
         return cell
     }
     
@@ -90,6 +94,53 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         detailVC.itemId = "\(dict.id ?? 0)"
         detailVC.descString = dict.descriptionField
         self.navController?.present(detailVC, animated: true)
+    }
+    
+    @objc func addAction(sender: UIButton) {
+        
+        let dict = mealObj[sender.tag]
+        
+        let orderType = UserDefaultHelper.orderType ?? ""
+        let hallId = UserDefaultHelper.hallId ?? ""
+        let tableId = UserDefaultHelper.tableId ?? ""
+        let groupId = UserDefaultHelper.groupId ?? ""
+        
+        let aParams = ["hall_id": hallId, "table_id": tableId, "group_id": groupId, "order_type": orderType, "item_id": "\(dict.id ?? 0)", "variation_id": "", "combo_id": "", "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+        
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let searchDataDict = responseJSON["response"]["data"].arrayValue
+            print(searchDataDict)
+            //            for obj in searchDataDict {
+            //                self.searchData.append(SearchData(fromJson: obj))
+            //            }
+            //
+            //            DispatchQueue.main.async {
+            //
+            //            }
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    
+    @objc func addUsualAction(sender: UIButton) {
+        if let cell = self.dataCollection.cellForItem(at: IndexPath(row: sender.tag, section: 0)) as? MealCVCell {
+            cell.saveButton.isSelected.toggle()
+        }
+        let dict = mealObj[sender.tag]
+        let addVC = AddUsualsVC.instantiate()
+        if #available(iOS 15.0, *) {
+            if let sheet = addVC.sheetPresentationController {
+                sheet.detents = [.medium()]
+                sheet.preferredCornerRadius = 15
+            }
+        }
+        addVC.productId = "\(dict.id ?? 0)"
+        self.navController?.present(addVC, animated: true, completion: nil)
     }
 }
 
