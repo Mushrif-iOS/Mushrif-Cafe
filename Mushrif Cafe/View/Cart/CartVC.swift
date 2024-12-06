@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CartVC: UIViewController, Instantiatable {
+class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelegate {
     static var storyboard: AppStoryboard = .cart
     
     @IBOutlet weak var titleLabel: UILabel! {
@@ -56,15 +56,7 @@ class CartVC: UIViewController, Instantiatable {
         }
     }
     
-    @IBOutlet weak var priceLabel: UILabel! {
-        didSet {
-            let attrString = NSMutableAttributedString(string: "\(totalValue.toRoundedString(toPlaces: 2))",
-                                                       attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 18)])
-            attrString.append(NSMutableAttributedString(string: " KD",
-                                                        attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 13)]))
-            priceLabel.attributedText =  attrString
-        }
-    }
+    @IBOutlet weak var priceLabel: UILabel!
     
     @IBOutlet weak var placeOrderLabel: UILabel! {
         didSet {
@@ -160,7 +152,6 @@ class CartVC: UIViewController, Instantiatable {
     @IBOutlet var totalLabel: UILabel! {
         didSet {
             totalLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            totalLabel.text = "3.000 KD"
         }
     }
     
@@ -202,8 +193,11 @@ class CartVC: UIViewController, Instantiatable {
             dateTimeLabel.text = "2/2/22 - 23:13"
         }
     }
-        
-    var totalValue: Double = 2.400
+    
+    var cartData: CartResponse?
+    var cartArray : [CartItem] = [CartItem]()
+    
+    var paymentType: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -215,6 +209,8 @@ class CartVC: UIViewController, Instantiatable {
             mainTableView.sectionHeaderTopPadding = 0
         }
         self.mainTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        
+        self.getCartItem()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -227,6 +223,24 @@ class CartVC: UIViewController, Instantiatable {
     
     @IBAction func addFundAction(_ sender: Any) {
         
+        let addVC = AddFundViewController.instantiate()
+        
+        if #available(iOS 15.0, *) {
+            if let sheet = addVC.sheetPresentationController {
+                sheet.detents = [.medium()]
+                sheet.preferredCornerRadius = 15
+            }
+        }
+        addVC.delegate = self
+        self.present(addVC, animated: true, completion: nil)
+    }
+    
+    func completed() {
+        print("Wallet Amount")
+    }
+    
+    @IBAction func changePaymentAction(_ sender: Any) {
+        
         let addVC = PaymentMethodVC.instantiate()
         if #available(iOS 15.0, *) {
             if let sheet = addVC.sheetPresentationController {
@@ -234,7 +248,26 @@ class CartVC: UIViewController, Instantiatable {
                 sheet.preferredCornerRadius = 15
             }
         }
+        addVC.delegate = self
         self.present(addVC, animated: true, completion: nil)
+    }
+    
+    func onInput(text: String) {
+        self.paymentType = text
+        
+        if text == "apple_pay" {
+            self.paymentLabel.text =  "Apple Pay"
+            self.paymentIconBtn.setImage(UIImage(named: "cc-apple-pay"), for: .normal)
+        } else if text == "knet" {
+            self.paymentLabel.text =  "Online KNET"
+            self.paymentIconBtn.setImage(UIImage(named: "kNet"), for: .normal)
+        } else if text == "knet_swipe" {
+            self.paymentLabel.text =  "KNET - Swipe Machine"
+            self.paymentIconBtn.setImage(UIImage(named: "knet_swipe"), for: .normal)
+        } else if text == "open" {
+            self.paymentLabel.text =  "Open Order"
+            self.paymentIconBtn.setImage(UIImage(named: "plate-utensils_black"), for: .normal)
+        }
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -248,42 +281,111 @@ class CartVC: UIViewController, Instantiatable {
         }
     }
     
+    private func getCartItem() {
+        
+        let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+        
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            let dataDict = responseJSON["response"]
+            self.cartData = CartResponse(fromJson: dataDict)
+            
+            let cartItemDict = responseJSON["response"]["cart_items"].arrayValue
+            
+            for obj in cartItemDict {
+                self.cartArray.append(CartItem(fromJson: obj))
+            }
+            
+            DispatchQueue.main.async {
+                self.setupUI()
+            }
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    
+    private func setupUI() {
+        
+        let data = self.cartData
+        
+        self.totalLabel.text = "\(data?.subTotal ?? "") KD"
+        self.setPriceAttritubte(price: Double(data?.subTotal ?? "") ?? 0.0, label: self.priceLabel)
+        
+        if self.cartArray.count > 0 {
+            self.mainTableView.reloadData()
+        }
+    }
+    
+    private func setPriceAttritubte(price: Double, label: UILabel) {
+        
+        let attrString = NSMutableAttributedString(string: "\(price.toRoundedString(toPlaces: 2))",
+                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 18)])
+        attrString.append(NSMutableAttributedString(string: " KD",
+                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 13)]))
+        label.attributedText =  attrString
+    }
+    
+    
     @IBAction func placeOrderAction(_ sender: Any) {
         
+        let aParams = ["cart_id": "", "payment_type": self.paymentType, "payment_id": ""]
+        
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.send_kitchen, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            DispatchQueue.main.async {
+                let orderVC = OrderSuccessVC.instantiate()
+                self.navigationController?.pushViewController(orderVC, animated: true)
+            }
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }
 
 extension CartVC: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 2
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 2
-        } else {
-            return 2
-        }
+        return self.cartArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ManageUsualTableViewCell") as! ManageUsualTableViewCell
-        
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == 1 {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
-            }
-        } else {
-            if indexPath.row == 0 {
-                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == 1 {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
-            }
+        cell.isCart = "Y"
+        cell.didRemoveBlock = {
+            self.cartArray.removeAll()
+            self.getCartItem()
         }
+        if indexPath.row == 0 {
+            cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
+        } else if indexPath.row == self.cartArray.count - 1 {
+            cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
+        } else {
+            cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 0)
+        }
+        
+        let dict = self.cartArray[indexPath.row]
+        cell.nameLabel.text = dict.product.name
+        cell.itemId = "\(dict.id)"
+        if dict.product.specialPrice != "" {
+            let doubleValue = Double(dict.product.specialPrice) ?? 0.0
+            cell.priceLabel.text = "\(doubleValue) KD"
+        } else {
+            let doubleValue = Double(dict.product.price) ?? 0.0
+            cell.priceLabel.text = "\(doubleValue) KD"
+        }
+        
+        cell.descLabel.text = dict.instruction
+        cell.qty.text = "\(dict.quantity)"
+        cell.otherPriceLabel.text = "\(dict.unitPrice) KD"
         
         return cell
     }

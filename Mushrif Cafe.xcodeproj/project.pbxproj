@@ -110,6 +110,9 @@
 		C6EDC6E72CA5A1A0003C40B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */; };
 		C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E82CA5A208003C40B0 /* OTPViewController.swift */; };
 		C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6EA2CA5B3A5003C40B0 /* CompleteProfileVC.swift */; };
+		C6FE3FD72CF799E80049FFB1 /* ChoiceHeaderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE3FD62CF799E80049FFB1 /* ChoiceHeaderTVCell.swift */; };
+		C6FE3FD92CF79AFB0049FFB1 /* ChoiceRowTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE3FD82CF79AFB0049FFB1 /* ChoiceRowTVCell.swift */; };
+		C6FE3FDB2CFF45B60049FFB1 /* CartItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */; };
 		E15A2BD7273CC8C0E684E4BA /* Pods_Mushrif_Cafe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E6F4D0B4EF17FB6B41AFBA9 /* Pods_Mushrif_Cafe.framework */; };
 /* End PBXBuildFile section */
 
@@ -226,6 +229,9 @@
 		C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C6EDC6E82CA5A208003C40B0 /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
 		C6EDC6EA2CA5B3A5003C40B0 /* CompleteProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileVC.swift; sourceTree = "<group>"; };
+		C6FE3FD62CF799E80049FFB1 /* ChoiceHeaderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceHeaderTVCell.swift; sourceTree = "<group>"; };
+		C6FE3FD82CF79AFB0049FFB1 /* ChoiceRowTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceRowTVCell.swift; sourceTree = "<group>"; };
+		C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemModel.swift; sourceTree = "<group>"; };
 		DBCFF08B626657023215016A /* Pods-Mushrif Cafe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mushrif Cafe.release.xcconfig"; path = "Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -340,6 +346,7 @@
 				C68A61522CD4D5B50037094D /* FoodItemModel.swift */,
 				C68A61542CD515600037094D /* UsualsModel.swift */,
 				C68A61562CD931650037094D /* ItemDetailsModel.swift */,
+				C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -505,6 +512,8 @@
 				C68A611E2CB58A700037094D /* CellSelectionTVC.xib */,
 				C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */,
 				C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */,
+				C6FE3FD62CF799E80049FFB1 /* ChoiceHeaderTVCell.swift */,
+				C6FE3FD82CF79AFB0049FFB1 /* ChoiceRowTVCell.swift */,
 			);
 			path = TVC;
 			sourceTree = "<group>";
@@ -725,12 +734,14 @@
 				C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */,
 				C68A61572CD931650037094D /* ItemDetailsModel.swift in Sources */,
 				C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */,
+				C6FE3FDB2CFF45B60049FFB1 /* CartItemModel.swift in Sources */,
 				C6C818A12CB105B100905A39 /* ContacUsVC.swift in Sources */,
 				C68A61342CBC3EAE0037094D /* LoginModel.swift in Sources */,
 				C6C089AC2CA677810050F034 /* LanguageSelectionVC.swift in Sources */,
 				C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */,
 				C6C089FF2CAADE9C0050F034 /* MealTVCell.swift in Sources */,
 				C68A61412CCCF9B20037094D /* OrderDetailsVC.swift in Sources */,
+				C6FE3FD92CF79AFB0049FFB1 /* ChoiceRowTVCell.swift in Sources */,
 				C6C089D62CA8781F0050F034 /* ScanHelperClass.swift in Sources */,
 				C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */,
 				C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */,
@@ -746,6 +757,7 @@
 				C6C089AE2CA680C80050F034 /* UserDefault+Helper.swift in Sources */,
 				C68A61382CBEB8440037094D /* WalletModel.swift in Sources */,
 				C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */,
+				C6FE3FD72CF799E80049FFB1 /* ChoiceHeaderTVCell.swift in Sources */,
 				C65010272CAF2203003BCA53 /* ProfileViewController.swift in Sources */,
 				C6C08A032CAADEB70050F034 /* MealCVCell.swift in Sources */,
 				C68A61322CBA98000037094D /* NetworkReachability.swift in Sources */,

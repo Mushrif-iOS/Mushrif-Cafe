@@ -9,6 +9,11 @@ import UIKit
 
 class ChoiceHeaderTVCell: UITableViewCell {
     
+    @IBOutlet var backView: UIView! {
+        didSet {
+            backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
+        }
+    }
     @IBOutlet var typeOfMealLabel: UILabel! {
         didSet {
             typeOfMealLabel.font = UIFont.poppinsMediumFontWith(size: 17)

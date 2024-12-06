@@ -86,7 +86,7 @@ class ScanTableVC: UIViewController, Instantiatable {
     
     @IBAction func continueAction(_ sender: UIButton) {
         
-        let aParams: [String: Any] = ["hall_id": "1", "table_id": "1"]
+        let aParams: [String: Any] = ["hall_id": "5", "table_id": "103"]
         
         print(aParams)
         

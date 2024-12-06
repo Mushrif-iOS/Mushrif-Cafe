@@ -32,6 +32,7 @@ class ItemDetailsResponse {
     var addonProducts : [AddonProduct]!
     var category : ItemCategory!
     var categoryId : Int = 0
+    var choiceGroups : [ChoiceGroup]!
     var combo : [Combo]!
     var comboDetails : ItemComboDetail!
     var haveCombo : Int = 0
@@ -62,6 +63,12 @@ class ItemDetailsResponse {
             category = ItemCategory(fromJson: categoryJson)
         }
         categoryId = json["category_id"].intValue
+        choiceGroups = [ChoiceGroup]()
+        let choiceGroupsArray = json["choice_groups"].arrayValue
+        for choiceGroupsJson in choiceGroupsArray {
+            let value = ChoiceGroup(fromJson: choiceGroupsJson)
+            choiceGroups.append(value)
+        }
         combo = [Combo]()
         let comboArray = json["combo"].arrayValue
         for comboJson in comboArray {
@@ -139,6 +146,52 @@ class ItemCategory {
     }
 }
 
+class ChoiceGroup {
+    
+    var choices : [Choice]!
+    var id : Int = 0
+    var maxSelection : Int = 0
+    var minSelection : Int = 0
+    var productId : Int = 0
+    var title : String = ""
+    
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        choices = [Choice]()
+        let choicesArray = json["choices"].arrayValue
+        for choicesJson in choicesArray{
+            let value = Choice(fromJson: choicesJson)
+            choices.append(value)
+        }
+        id = json["id"].intValue
+        maxSelection = json["max_selection"].intValue
+        minSelection = json["min_selection"].intValue
+        productId = json["product_id"].intValue
+        title = json["title"].stringValue
+    }
+}
+
+class Choice {
+    var choice : String = ""
+    var choicePrice : String = ""
+    var groupId : Int = 0
+    var id : Int = 0
+    var isDeleted : String = ""
+    
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        choice = json["choice"].stringValue
+        choicePrice = json["choice_price"].stringValue
+        groupId = json["group_id"].intValue
+        id = json["id"].intValue
+        isDeleted = json["is_deleted"].stringValue
+    }
+}
+
 class ItemComboDetail {
     
     var categories : [ComboDetailCategory]!
@@ -167,11 +220,11 @@ class ItemComboDetail {
 }
 
 class ComboDetailCategory {
-
+    
     var id : Int = 0
     var name : String = ""
     var comboItems : [Category]!
-
+    
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return

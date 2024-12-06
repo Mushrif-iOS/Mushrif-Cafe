@@ -55,6 +55,9 @@ class ManageUsualTableViewCell: UITableViewCell {
     
     let userLanguage = UserDefaultHelper.language
     
+    var isCart: String = ""
+    var didRemoveBlock : (() -> Void)? = nil
+    
     static let identifier = "ManageUsualTableViewCell"
     
     static func nib() -> UINib {
@@ -73,18 +76,36 @@ class ManageUsualTableViewCell: UITableViewCell {
     }
     
     @IBAction func minusAction(_ sender: Any) {
-        if qtyValue > 1 {
+        if qtyValue > 0 {
             qtyValue -= 1
             
             qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
-                    
-            let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "0"]
-            print(aParams)
-            
-            APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
-                print("Response JSON \(responseJSON)")
-            } failure: { error in
-                print("Error \(error.localizedDescription)")
+                                
+            if isCart == "N" {
+                let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "0"]
+                print(aParams)
+                
+                APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
+                    print("Response JSON \(responseJSON)")
+                    if self.qtyValue == 0 {
+                        self.didRemoveBlock?()
+                    }
+                } failure: { error in
+                    print("Error \(error.localizedDescription)")
+                }
+            } else {
+                
+                let aParams: [String: Any] = ["cart_item_id": "\(self.itemId)"]
+                print(aParams)
+                
+                APIManager.shared.postCall(APPURL.remove_cart_Qty, params: aParams, withHeader: true) { responseJSON in
+                    print("Response JSON \(responseJSON)")
+                    if self.qtyValue == 0 {
+                        self.didRemoveBlock?()
+                    }
+                } failure: { error in
+                    print("Error \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -95,14 +116,18 @@ class ManageUsualTableViewCell: UITableViewCell {
         }
         qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
         
-        
-        let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "1"]
-        print(aParams)
-        
-        APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
-            print("Response JSON \(responseJSON)")
-        } failure: { error in
-            print("Error \(error.localizedDescription)")
+        if isCart == "N" {
+            let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "1"]
+            print(aParams)
+            
+            
+            APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else {
+            print("Cart Side")
         }
     }
 }

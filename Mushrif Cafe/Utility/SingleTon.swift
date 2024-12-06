@@ -85,4 +85,17 @@ class SingleTon: NSObject {
         }
         return ""
     }
+    
+    func convertToJSON(arrayObject: [Any]) -> String? {
+        do {
+            let jsonData: Data = try JSONSerialization.data(withJSONObject: arrayObject, options: [])
+            if let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue) {
+                return jsonString as String
+            }
+        }
+        catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        return nil
+    }
 }

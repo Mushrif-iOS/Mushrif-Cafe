@@ -18,7 +18,7 @@ class MyUsualTVCell: UITableViewCell {
     
     @IBOutlet var dataCollection: UICollectionView!
     
-    //var colorData: [UIColor] = [UIColor.appPink, UIColor.usualGray, UIColor.appPink, UIColor.usualGray, UIColor.appPink, UIColor.usualGray]
+    var navController: UINavigationController?
     
     var usualObj = [DashboardMyUsual]()
     
@@ -62,10 +62,20 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
             cell.backView.backgroundColor = UIColor.usualGray
         }
         
+        cell.addButton.tag = indexPath.item
+        cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 202, height: 145)
     }
+    
+    @objc func addAction(sender: UIButton) {
+        
+        let dict = usualObj[sender.tag]
+        let cartVC = CartVC.instantiate()
+        self.navController?.pushViewController(cartVC, animated: true)
+    }    
 }

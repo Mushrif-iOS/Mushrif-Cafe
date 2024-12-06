@@ -123,23 +123,12 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ManageUsualTableViewCell") as! ManageUsualTableViewCell
-        
-        /*if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == 1 {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 0)
-            } else {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
-            }
-        } else {
-            if indexPath.row == 0 {
-                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == 1 {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
-            }
-        }*/
-        
+        cell.isCart = "N"
+        cell.didRemoveBlock = {
+            self.pageNo = 1
+            self.usualData.removeAll()
+            self.getMyUsual(page: self.pageNo)
+        }
         let dict = self.usualData[indexPath.section].items[indexPath.row]
         cell.itemId = "\(dict.id)"
         cell.qtyValue = dict.quantity

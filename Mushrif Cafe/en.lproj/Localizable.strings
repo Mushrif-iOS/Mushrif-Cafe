@@ -107,3 +107,7 @@
 "plain" = "Plain";
 "addOns" = "Addons";
 "variations" = "Variations";
+"required" = "Required";
+"optional" = "Optional";
+"selectAny" = "Select any";
+"option" = "option";

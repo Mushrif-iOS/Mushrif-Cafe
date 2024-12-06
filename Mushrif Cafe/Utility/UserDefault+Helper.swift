@@ -91,7 +91,7 @@ final class UserDefaultHelper {
         set {
             _set(value: newValue, key: .hallId)
         } get {
-            return _get(valueForKay: .hallId) as? String ?? ""
+            return _get(valueForKay: .hallId) as? String ?? "0"
         }
     }
     
@@ -99,7 +99,7 @@ final class UserDefaultHelper {
         set {
             _set(value: newValue, key: .tableId)
         } get {
-            return _get(valueForKay: .tableId) as? String ?? ""
+            return _get(valueForKay: .tableId) as? String ?? "0"
         }
     }
     
@@ -107,7 +107,7 @@ final class UserDefaultHelper {
         set {
             _set(value: newValue, key: .groupId)
         } get {
-            return _get(valueForKay: .groupId) as? String ?? ""
+            return _get(valueForKay: .groupId) as? String ?? "0"
         }
     }
     

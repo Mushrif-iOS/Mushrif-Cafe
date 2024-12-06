@@ -106,3 +106,7 @@
 "plain" = "سهل";
 "addOns" = "إضافات";
 "variations" = "الاختلافات";
+"required" = "مطلوب";
+"optional" = "خياري";
+"selectAny" = "حدد أي";
+"option" = "خيار";

@@ -106,7 +106,13 @@ struct APPURL {
     static var add_item_cart: String {
         return BaseURL  + "add-item-to-cart"
     }
-    static var add_cart_table_wise: String {
+    static var get_cart: String {
         return BaseURL  + "cart"
+    }
+    static var remove_cart_Qty: String {
+        return BaseURL  + "remove-cart-item"
+    }
+    static var send_kitchen: String {
+        return BaseURL  + "send-to-kitchen"
     }
 }

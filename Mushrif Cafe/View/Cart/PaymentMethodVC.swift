@@ -34,7 +34,7 @@ class PaymentMethodVC: UIViewController, Instantiatable {
     @IBOutlet weak var swipeKnetLabel: UILabel! {
         didSet {
             swipeKnetLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            swipeKnetLabel.text = "KNET - Swipe Mschine"
+            swipeKnetLabel.text = "KNET - Swipe Machine"
         }
     }
     
@@ -45,6 +45,8 @@ class PaymentMethodVC: UIViewController, Instantiatable {
         }
     }
     
+    var delegate: InputBoxDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -52,42 +54,51 @@ class PaymentMethodVC: UIViewController, Instantiatable {
     }
     
     @IBAction func appleAction(_ sender: Any) {
-        let confirmVC = OrderSuccessVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = confirmVC.sheetPresentationController {
-                sheet.detents = [.large()]
-            }
-        }
-        self.present(confirmVC, animated: true, completion: nil)
+//        let confirmVC = OrderSuccessVC.instantiate()
+//        if #available(iOS 15.0, *) {
+//            if let sheet = confirmVC.sheetPresentationController {
+//                sheet.detents = [.large()]
+//            }
+//        }
+//        self.delegate?.onInput(text: "apple_pay")
+//        self.present(confirmVC, animated: true, completion: nil)
+        self.delegate?.onInput(text: "apple_pay")
+        self.dismiss(animated: true)
     }
     
     @IBAction func onlineKnetAction(_ sender: Any) {
-        let confirmVC = OrderSuccessVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = confirmVC.sheetPresentationController {
-                sheet.detents = [.large()]
-            }
-        }
-        self.present(confirmVC, animated: true, completion: nil)
+//        let confirmVC = OrderSuccessVC.instantiate()
+//        if #available(iOS 15.0, *) {
+//            if let sheet = confirmVC.sheetPresentationController {
+//                sheet.detents = [.large()]
+//            }
+//        }
+//        self.present(confirmVC, animated: true, completion: nil)
+        self.delegate?.onInput(text: "knet")
+        self.dismiss(animated: true)
     }
     
     @IBAction func swipeKnetAction(_ sender: Any) {
-        let confirmVC = OrderSuccessVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = confirmVC.sheetPresentationController {
-                sheet.detents = [.large()]
-            }
-        }
-        self.present(confirmVC, animated: true, completion: nil)
+//        let confirmVC = OrderSuccessVC.instantiate()
+//        if #available(iOS 15.0, *) {
+//            if let sheet = confirmVC.sheetPresentationController {
+//                sheet.detents = [.large()]
+//            }
+//        }
+//        self.present(confirmVC, animated: true, completion: nil)
+        self.delegate?.onInput(text: "knet_swipe")
+        self.dismiss(animated: true)
     }
     
     @IBAction func keepAction(_ sender: Any) {
-        let confirmVC = OrderSuccessVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = confirmVC.sheetPresentationController {
-                sheet.detents = [.large()]
-            }
-        }
-        self.present(confirmVC, animated: true, completion: nil)
+//        let confirmVC = OrderSuccessVC.instantiate()
+//        if #available(iOS 15.0, *) {
+//            if let sheet = confirmVC.sheetPresentationController {
+//                sheet.detents = [.large()]
+//            }
+//        }
+//        self.present(confirmVC, animated: true, completion: nil)
+        self.delegate?.onInput(text: "open")
+        self.dismiss(animated: true)
     }
 }
