@@ -70,13 +70,17 @@ class LoginVC: UIViewController, Instantiatable {
                                                object: nil)
     }
     
+    @IBAction func backAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     @IBAction func submitAction(_ sender: Any) {
         postLoginCall()
     }
     
     private func postLoginCall() {
         
-        if mobileNumberText.text!.count < 10 {
+        if mobileNumberText.text!.count < 8 {
 //            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
 //            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
 //            ProgressHUD.colorBanner = UIColor.red

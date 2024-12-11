@@ -83,7 +83,8 @@ class OrderSuccessVC: UIViewController, Instantiatable {
         // Do any additional setup after loading the view.
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewControllers(viewsToPop: 2)
+            //NotificationCenter.default.post(name: Notification.Name("OrderView"), object: nil)
         }
     }
 }

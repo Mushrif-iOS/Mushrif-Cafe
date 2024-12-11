@@ -104,6 +104,7 @@ class OTPViewController: UIViewController, Instantiatable {
                 print("Customer Data", self.customerData!.phone)
                 UserDefaultHelper.userloginId = "\(self.customerData?.id ?? 0)"
                 UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
+                UserDefaultHelper.walletBalance = "\(self.customerData?.balance ?? "")"
                 
                 DispatchQueue.main.async {
                     if "\(self.customerData?.name ?? "")" == "" {

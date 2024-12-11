@@ -48,7 +48,7 @@ class ManageUsualTableViewCell: UITableViewCell {
         }
     }
     
-    var totalValue: Double = Double()
+    var itemValue = String()
     var qtyValue: Int = 1
     
     var itemId = String()
@@ -95,14 +95,15 @@ class ManageUsualTableViewCell: UITableViewCell {
                 }
             } else {
                 
-                let aParams: [String: Any] = ["cart_item_id": "\(self.itemId)"]
+                let aParams: [String: Any] = ["cart_item_id": "\(self.itemId)", "quantity": "1", "is_increment": "0"]
                 print(aParams)
                 
-                APIManager.shared.postCall(APPURL.remove_cart_Qty, params: aParams, withHeader: true) { responseJSON in
+                APIManager.shared.postCall(APPURL.update_cart_Qty, params: aParams, withHeader: true) { responseJSON in
                     print("Response JSON \(responseJSON)")
                     if self.qtyValue == 0 {
                         self.didRemoveBlock?()
                     }
+                    self.otherPriceLabel.text = "\((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))"
                 } failure: { error in
                     print("Error \(error.localizedDescription)")
                 }
@@ -127,7 +128,16 @@ class ManageUsualTableViewCell: UITableViewCell {
                 print("Error \(error.localizedDescription)")
             }
         } else {
-            print("Cart Side")
+            
+            let aParams: [String: Any] = ["cart_item_id": "\(self.itemId)", "quantity": "1", "is_increment": "1"]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.update_cart_Qty, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                self.otherPriceLabel.text = "\((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))"
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         }
     }
 }

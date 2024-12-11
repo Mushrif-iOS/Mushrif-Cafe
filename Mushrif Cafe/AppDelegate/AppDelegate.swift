@@ -117,7 +117,12 @@ extension AppDelegate {
         let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
         
         if isLanguageSelected == "yes" {
-            let navigationController = UINavigationController.init(rootViewController: loginVC)
+//            let navigationController = UINavigationController.init(rootViewController: loginVC)
+//            navigationController.isNavigationBarHidden = true
+//            self.window?.rootViewController = navigationController
+            let scanSB = UIStoryboard.init(name: "Home", bundle: nil)
+            let scanVC = scanSB.instantiateViewController(withIdentifier: "ScanTableVC") as! ScanTableVC
+            let navigationController = UINavigationController.init(rootViewController: scanVC)
             navigationController.isNavigationBarHidden = true
             self.window?.rootViewController = navigationController
         } else {
@@ -127,7 +132,7 @@ extension AppDelegate {
         }
         
         print("UserDefaultHelper.authToken", UserDefaultHelper.authToken!)
-        if UserDefaultHelper.authToken != "" {
+        if UserDefaultHelper.orderType != "" {
             let storyboard = UIStoryboard.init(name: "Home", bundle: nil)
             let scanVC = storyboard.instantiateViewController(withIdentifier: "DashboardVC") as! DashboardVC
             let navigationController = UINavigationController.init(rootViewController: scanVC)
@@ -141,10 +146,15 @@ extension AppDelegate {
     
     func afterLogout() {
         
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-        
-        let navigationController = UINavigationController.init(rootViewController: loginVC)
+//        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+//        let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+//        
+//        let navigationController = UINavigationController.init(rootViewController: loginVC)
+//        navigationController.isNavigationBarHidden = true
+//        self.window?.rootViewController = navigationController
+        let scanSB = UIStoryboard.init(name: "Home", bundle: nil)
+        let scanVC = scanSB.instantiateViewController(withIdentifier: "ScanTableVC") as! ScanTableVC
+        let navigationController = UINavigationController.init(rootViewController: scanVC)
         navigationController.isNavigationBarHidden = true
         self.window?.rootViewController = navigationController
     }

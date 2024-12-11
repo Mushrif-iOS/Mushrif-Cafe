@@ -52,7 +52,7 @@ class MealTVCell: UITableViewCell {
     }
 }
 
-extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ToastDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return mealObj.count
@@ -92,6 +92,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         let detailVC = MealDetailsViewController.instantiate()
         self.navController?.modalPresentationStyle = .formSheet
         detailVC.itemId = "\(dict.id ?? 0)"
+        detailVC.delegate = self
         detailVC.descString = dict.descriptionField
         self.navController?.present(detailVC, animated: true)
     }
@@ -100,57 +101,80 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         
         let dict = mealObj[sender.tag]
         
-        let orderType = UserDefaultHelper.orderType ?? ""
-        let hallId = UserDefaultHelper.hallId ?? ""
-        let tableId = UserDefaultHelper.tableId ?? ""
-        let groupId = UserDefaultHelper.groupId ?? ""
-        
-        let aParams = ["hall_id": hallId,
-                       "table_id": tableId,
-                       "group_id": groupId,
-                       "order_type": orderType,
-                       "item_id": "\(dict.id ?? 0)",
-                       "combo_id": "",
-                       "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
-                       "quantity": "1",
-                       "is_customized": "N",
-                       "is_plain": "Y",
-                       "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-        
-        print(aParams)
-        
-        APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
-            print("Response JSON \(responseJSON)")
+        if UserDefaultHelper.authToken != "" {
+            let orderType = UserDefaultHelper.orderType ?? ""
+            let hallId = UserDefaultHelper.hallId ?? ""
+            let tableId = UserDefaultHelper.tableId ?? ""
+            let groupId = UserDefaultHelper.groupId ?? ""
             
-            let dataDict = responseJSON["response"]["data"].arrayValue
-            print(dataDict)
+            let aParams = ["hall_id": hallId,
+                           "table_id": tableId,
+                           "group_id": groupId,
+                           "order_type": orderType,
+                           "item_id": "\(dict.id ?? 0)",
+                           "combo_id": "",
+                           "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
+                           "quantity": "1",
+                           "is_customized": "N",
+                           "is_plain": "Y",
+                           "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             
-            let msg = responseJSON["message"].stringValue
-            print(msg)
-            DispatchQueue.main.async {
-                self.navController?.showBanner(message: msg, status: .success)
-                let cartVC = CartVC.instantiate()
-                self.navController?.pushViewController(cartVC, animated: true)
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"]["data"].arrayValue
+                print(dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                DispatchQueue.main.async {
+                    self.navController?.showBanner(message: msg, status: .success)
+                    UserDefaultHelper.totalItems! += 1
+                    UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
+                    let cartVC = CartVC.instantiate()
+                    self.navController?.pushViewController(cartVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
             }
-        } failure: { error in
-            print("Error \(error.localizedDescription)")
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navController?.pushViewController(profileVC, animated: true)
         }
     }
     
     @objc func addUsualAction(sender: UIButton) {
-        if let cell = self.dataCollection.cellForItem(at: IndexPath(row: sender.tag, section: 0)) as? MealCVCell {
-            cell.saveButton.isSelected.toggle()
-        }
-        let dict = mealObj[sender.tag]
-        let addVC = AddUsualsVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = addVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.preferredCornerRadius = 15
+        
+        if UserDefaultHelper.authToken != "" {
+            if let cell = self.dataCollection.cellForItem(at: IndexPath(row: sender.tag, section: 0)) as? MealCVCell {
+                cell.saveButton.isSelected.toggle()
             }
+            let dict = mealObj[sender.tag]
+            let addVC = AddUsualsVC.instantiate()
+            if #available(iOS 15.0, *) {
+                if let sheet = addVC.sheetPresentationController {
+                    sheet.detents = [.medium()]
+                    sheet.preferredCornerRadius = 15
+                }
+            }
+            addVC.productId = "\(dict.id ?? 0)"
+            self.navController?.present(addVC, animated: true, completion: nil)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navController?.pushViewController(profileVC, animated: true)
         }
-        addVC.productId = "\(dict.id ?? 0)"
-        self.navController?.present(addVC, animated: true, completion: nil)
+    }
+    
+    func dismissed() {
+        if UserDefaultHelper.authToken != "" {
+            let cartVC = CartVC.instantiate()
+            self.navController?.pushViewController(cartVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navController?.pushViewController(profileVC, animated: true)
+        }
     }
 }
 

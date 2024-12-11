@@ -9,11 +9,11 @@ import Foundation
 import SwiftyJSON
 
 class CartRootClass {
-
+    
     var message : String = ""
     var response : CartResponse!
     var success : Bool = false
-
+    
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
@@ -28,7 +28,7 @@ class CartRootClass {
 }
 
 class CartResponse {
-
+    
     var cartItems : [CartItem]!
     var customerId : Int = 0
     var groupId : Int = 0
@@ -41,7 +41,7 @@ class CartResponse {
     var orderType : String = ""
     var subTotal : String = ""
     var tableId : Int = 0
-
+    
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
@@ -67,7 +67,7 @@ class CartResponse {
 }
 
 class CartItem {
-
+    
     var cartId : Int = 0
     var comboId : Int = 0
     var id : Int = 0
@@ -81,7 +81,7 @@ class CartItem {
     var quantity : Int = 0
     var unitPrice : String = ""
     var variationId : Int = 0
-
+    
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
@@ -106,11 +106,11 @@ class CartItem {
 }
 
 class CartProduct {
-
-    var category : Category!
+    
+    var category : CartComboDetailCategory!
     var categoryId : Int = 0
     var choiceGroups : [ChoiceGroup]!
-    var comboDetails : ItemComboDetail!
+    var comboDetails : CartComboDetail!
     var haveCombo : Int = 0
     var id : Int = 0
     var image : String = ""
@@ -121,14 +121,14 @@ class CartProduct {
     var specialPrice : String = ""
     var subCategory : CartSubCategory!
     var subCategoryId : Int = 0
-
+    
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
         }
         let categoryJson = json["category"]
         if !categoryJson.isEmpty {
-            category = Category(fromJson: categoryJson)
+            category = CartComboDetailCategory(fromJson: categoryJson)
         }
         categoryId = json["category_id"].intValue
         choiceGroups = [ChoiceGroup]()
@@ -139,7 +139,7 @@ class CartProduct {
         }
         let comboDetailsJson = json["combo_details"]
         if !comboDetailsJson.isEmpty {
-            comboDetails = ItemComboDetail(fromJson: comboDetailsJson)
+            comboDetails = CartComboDetail(fromJson: comboDetailsJson)
         }
         haveCombo = json["have_combo"].intValue
         id = json["id"].intValue
@@ -163,11 +163,11 @@ class CartProduct {
 }
 
 class CartSubCategory {
-
+    
     var categoryId : Int = 0
     var id : Int = 0
     var name : String = ""
-
+    
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
@@ -175,5 +175,69 @@ class CartSubCategory {
         categoryId = json["category_id"].intValue
         id = json["id"].intValue
         name = json["name"].stringValue
+    }
+}
+
+class CartComboDetail {
+    
+    var categories : [CartComboDetailCategory]!
+    var comboTitle : String = ""
+    var id : Int = 0
+    var offerPrice : String = ""
+    var price : String = ""
+    var productId : Int = 0
+    
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        categories = [CartComboDetailCategory]()
+        let categoriesArray = json["categories"].arrayValue
+        for categoriesJson in categoriesArray {
+            let value = CartComboDetailCategory(fromJson: categoriesJson)
+            categories.append(value)
+        }
+        comboTitle = json["combo_title"].stringValue
+        id = json["id"].intValue
+        offerPrice = json["offer_price"].stringValue
+        price = json["price"].stringValue
+        productId = json["product_id"].intValue
+    }
+}
+
+class CartComboDetailCategory {
+    
+    var id : Int = 0
+    var name : String = ""
+    var comboItems : [CartComboItem]!
+    
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        id = json["id"].intValue
+        name = json["name"].stringValue
+        comboItems = [CartComboItem]()
+        let comboItemsArray = json["combo_items"].arrayValue
+        for comboItemsJson in comboItemsArray{
+            let value = CartComboItem(fromJson: comboItemsJson)
+            comboItems.append(value)
+        }
+    }
+}
+
+class CartComboItem {
+    
+    var id : Int = 0
+    var name : String = ""
+    var selectionStatus : Int = 0
+    
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        id = json["id"].intValue
+        name = json["name"].stringValue
+        selectionStatus = json["selection_status"].intValue
     }
 }

@@ -81,7 +81,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
-            let loginVC = LoginVC.instantiate()
+            let loginVC = DashboardVC.instantiate()
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }
@@ -92,7 +92,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
-            let loginVC = LoginVC.instantiate()
+            let loginVC = DashboardVC.instantiate()
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }

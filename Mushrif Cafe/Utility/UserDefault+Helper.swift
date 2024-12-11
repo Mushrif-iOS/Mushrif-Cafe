@@ -14,11 +14,14 @@ private enum Defaults: String {
     case language = "language"
     case isLanguageSelected = "isLanguageSelected"
     case authToken = "authToken"
+    case totalItems = "totalItems"
     case totalPrice = "totalPrice"
     case orderType = "orderType"
     case hallId = "hallId"
     case tableId = "tableId"
     case groupId = "groupId"
+    case walletBalance = "walletBalance"
+    case tableName = "tableName"
 }
 
 final class UserDefaultHelper {
@@ -71,11 +74,19 @@ final class UserDefaultHelper {
         }
     }
     
-    static var totalPrice: String? {
+    static var totalItems: Int? {
+        set {
+            _set(value: newValue, key: .totalItems)
+        } get {
+            return _get(valueForKay: .totalItems) as? Int ?? 0
+        }
+    }
+    
+    static var totalPrice: Double? {
         set {
             _set(value: newValue, key: .totalPrice)
         } get {
-            return _get(valueForKay: .totalPrice) as? String ?? ""
+            return _get(valueForKay: .totalPrice) as? Double ?? 0.0
         }
     }
     
@@ -111,6 +122,22 @@ final class UserDefaultHelper {
         }
     }
     
+    static var walletBalance: String? {
+        set {
+            _set(value: newValue, key: .walletBalance)
+        } get {
+            return _get(valueForKay: .walletBalance) as? String ?? ""
+        }
+    }
+    
+    static var tableName: String? {
+        set {
+            _set(value: newValue, key: .tableName)
+        } get {
+            return _get(valueForKay: .tableName) as? String ?? ""
+        }
+    }
+    
     private static func _set(value: Any?, key: Defaults) {
         UserDefaults.standard.set(value, forKey: key.rawValue)
     }
@@ -143,6 +170,10 @@ final class UserDefaultHelper {
         UserDefaults.standard.removeObject(forKey: Defaults.authToken.rawValue)
     }
     
+    static func deleteTotalItems() {
+        UserDefaults.standard.removeObject(forKey: Defaults.totalItems.rawValue)
+    }
+    
     static func deleteTotalPrice() {
         UserDefaults.standard.removeObject(forKey: Defaults.totalPrice.rawValue)
     }
@@ -161,5 +192,13 @@ final class UserDefaultHelper {
     
     static func deleteGroupId() {
         UserDefaults.standard.removeObject(forKey: Defaults.groupId.rawValue)
+    }
+    
+    static func deleteWalletBalance() {
+        UserDefaults.standard.removeObject(forKey: Defaults.walletBalance.rawValue)
+    }
+    
+    static func deleteTableName() {
+        UserDefaults.standard.removeObject(forKey: Defaults.tableName.rawValue)
     }
 }

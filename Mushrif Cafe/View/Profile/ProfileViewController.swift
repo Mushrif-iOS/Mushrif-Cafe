@@ -158,6 +158,8 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
                         UserDefaultHelper.deleteUserLoginId()
                         UserDefaultHelper.deleteUserName()
                         UserDefaultHelper.deleteAuthToken()
+                        UserDefaultHelper.deleteTotalItems()
+                        UserDefaultHelper.deleteTotalPrice()
                         
                         AlertView.show(message: msg, preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
                             if button == "ok".localized() {

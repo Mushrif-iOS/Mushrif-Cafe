@@ -125,17 +125,17 @@ extension UITextField {
 }
 
 public extension UINavigationController {
-
+    
     func pop(transitionType type: CATransitionType = .fade, duration: CFTimeInterval = 0.3) {
         self.addTransition(transitionType: type, duration: duration)
         self.popViewController(animated: false)
     }
-
+    
     func push(viewController vc: UIViewController, transitionType type: CATransitionType = .fade, duration: CFTimeInterval = 0.3) {
         self.addTransition(transitionType: type, duration: duration)
         self.pushViewController(vc, animated: false)
     }
-
+    
     private func addTransition(transitionType type: CATransitionType = .fade, duration: CFTimeInterval = 0.3) {
         let transition = CATransition()
         transition.duration = duration
@@ -143,6 +143,13 @@ public extension UINavigationController {
         transition.type = type
         self.view.layer.add(transition, forKey: nil)
     }
+    
+    func popViewControllers(viewsToPop: Int, animated: Bool = true) {
+        if viewControllers.count > viewsToPop {
+          let vc = viewControllers[viewControllers.count - viewsToPop - 1]
+          popToViewController(vc, animated: animated)
+        }
+      }
 }
 
 extension Double {

@@ -29,7 +29,6 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet weak var walletBalanceLabel: UILabel! {
         didSet {
             walletBalanceLabel.font = UIFont.poppinsRegularFontWith(size: 16)
-            walletBalanceLabel.text =  "\("balance".localized()): 10.000 KWD"
         }
     }
     
@@ -99,7 +98,6 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet weak var tableLabel: UILabel! {
         didSet {
             tableLabel.font = UIFont.poppinsRegularFontWith(size: 16)
-            tableLabel.text =  "Table # 1/1"
         }
     }
     
@@ -125,7 +123,6 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet var amtLabel: UILabel! {
         didSet {
             amtLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            amtLabel.text = "23.000 KD"
         }
     }
     
@@ -310,12 +307,25 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
         
         let data = self.cartData
         
+        self.amtLabel.text = "\(data?.subTotal ?? "") KD"
         self.totalLabel.text = "\(data?.subTotal ?? "") KD"
         self.setPriceAttritubte(price: Double(data?.subTotal ?? "") ?? 0.0, label: self.priceLabel)
+        
+        UserDefaultHelper.totalItems! = self.cartArray.count
+        UserDefaultHelper.totalPrice! = Double("\(data?.subTotal ?? "")") ?? 0.0
         
         if self.cartArray.count > 0 {
             self.mainTableView.reloadData()
         }
+        
+        if self.cartData?.orderType == "takeaway" {
+            self.tableLabel.text =  ""
+        } else {
+            self.tableLabel.text =  UserDefaultHelper.tableName
+        }
+        
+        let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+        self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
     }
     
     private func setPriceAttritubte(price: Double, label: UILabel) {
@@ -327,16 +337,23 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
         label.attributedText =  attrString
     }
     
+    @IBAction func selectTableAction(_ sender: Any) {
+        let scanVC = ScanTableVC.instantiate()
+        self.navigationController?.push(viewController: scanVC)
+    }
     
     @IBAction func placeOrderAction(_ sender: Any) {
         
-        let aParams = ["cart_id": "", "payment_type": self.paymentType, "payment_id": ""]
+        let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": self.paymentType, "payment_id": ""]
         
         print(aParams)
         
-        APIManager.shared.postCall(APPURL.send_kitchen, params: aParams, withHeader: true) { responseJSON in
+        APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
+            let msg = responseJSON["message"].stringValue
+            print(msg)
             DispatchQueue.main.async {
+                self.showBanner(message: msg, status: .success)
                 let orderVC = OrderSuccessVC.instantiate()
                 self.navigationController?.pushViewController(orderVC, animated: true)
             }
@@ -386,7 +403,10 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
         cell.descLabel.text = dict.instruction
         cell.qty.text = "\(dict.quantity)"
         cell.otherPriceLabel.text = "\(dict.unitPrice) KD"
+        cell.itemValue = "\(dict.unitPrice)"
         
+        cell.editButton.tag = indexPath.row
+        cell.editButton.addTarget(self, action: #selector(editAction(sender: )), for: .touchUpInside)
         return cell
     }
     
@@ -402,5 +422,14 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 15
+    }
+    
+    @objc func editAction(sender: UIButton) {
+        
+        let dict = self.cartArray[sender.tag]
+        
+        let editVC = EditCartVC.instantiate()
+        editVC.cartDetails = dict
+        self.navigationController?.pushViewController(editVC, animated: true)
     }
 }

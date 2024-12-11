@@ -37,6 +37,13 @@ class SearchViewController: UIViewController, Instantiatable {
         self.mainClcView.isScrollEnabled = true
         self.mainClcView.isUserInteractionEnabled = true
         self.mainClcView.alwaysBounceVertical = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
+    }
+    
+    @objc func methodOfReceivedNotification(notification: Notification) {
+        let orderVC = MyOrderViewController.instantiate()
+        self.navigationController?.pushViewController(orderVC, animated: true)
     }
     
     @IBAction func backAction(_ sender: UIButton) {
@@ -44,7 +51,7 @@ class SearchViewController: UIViewController, Instantiatable {
     }
 }
 
-extension SearchViewController: UISearchBarDelegate {
+extension SearchViewController: UISearchBarDelegate, ToastDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchString = searchBar.searchTextField.text ?? ""
@@ -162,15 +169,22 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let detailVC = MealDetailsViewController.instantiate()
-//        self.navigationController?.modalPresentationStyle = .formSheet
-//        self.navigationController?.present(detailVC, animated: true)
-        
         let dict = self.searchData[indexPath.item]
         let detailVC = MealDetailsViewController.instantiate()
         self.navigationController?.modalPresentationStyle = .formSheet
         detailVC.itemId = "\(dict.id)"
         detailVC.descString = dict.name
+        detailVC.delegate = self
         self.navigationController?.present(detailVC, animated: true)
+    }
+    
+    func dismissed() {
+        if UserDefaultHelper.authToken != "" {
+            let cartVC = CartVC.instantiate()
+            self.navigationController?.pushViewController(cartVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
     }
 }

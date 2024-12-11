@@ -126,6 +126,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     let userLanguage = UserDefaultHelper.language
     
     var firstBoxSelectedRows: [IndexPath] = []
+    var mealTypeIndex: IndexPath?
     var ingredientSelectedRows: [IndexPath] = []
     var existingIngredientRows: [IndexPath] = []
     var categorySelecteIndex1: IndexPath?
@@ -148,11 +149,13 @@ class MealDetailsViewController: UIViewController, Instantiatable {
 
     var selectedComboId: Int?
     
+    var delegate: ToastDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.mealTypeTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
+        self.mealTypeTblView.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
         self.stuffTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
         self.categoryTblView1.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
         self.categoryTblView2.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
@@ -166,6 +169,16 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             categoryTblView3.sectionHeaderTopPadding = 0
             choiceTblView.sectionHeaderTopPadding = 0
         }
+        
+        self.mealTypeTblView.allowsMultipleSelection = false
+        
+        let firstIndexPath = IndexPath(row: 0, section: 0)
+        self.mealTypeTblView.selectRow(at: firstIndexPath, animated: false, scrollPosition: .none)
+        
+        if let selectedIndexPath = self.mealTypeTblView.indexPathForSelectedRow {
+            self.mealTypeIndex = selectedIndexPath
+        }
+        
         self.choiceTblView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         self.getDetails()
     }
@@ -311,7 +324,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             self.categoryView2.isHidden = true
             self.categoryView3.isHidden = true
             
-            //self.selectedComboId = nil
+            self.selectedComboId = nil
             
         } else {
             self.typeOfMealLabel.text = data?.name
@@ -358,7 +371,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
                 self.categoryTblHeight3.constant = CGFloat(self.categoryArr3.count * 52)
                 self.categoryTblView3.reloadData()
             }
-            //self.selectedComboId = data?.comboDetails.id
+            self.selectedComboId = data?.comboDetails.id
         }
         if self.ingredientsArr.count > 0 {
             self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
@@ -419,8 +432,14 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == self.mealTypeTblView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
-            if firstBoxSelectedRows.contains(indexPath) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SingleSelectionCell") as! SingleSelectionCell
+//            if firstBoxSelectedRows.contains(indexPath) {
+//                cell.tickButton.isSelected = true
+//            } else {
+//                cell.tickButton.isSelected = false
+//            }
+            
+            if indexPath == self.mealTypeIndex {
                 cell.tickButton.isSelected = true
             } else {
                 cell.tickButton.isSelected = false
@@ -435,10 +454,10 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                     let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
                     cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
                 }
-                cell.tickButton.isSelected = true
-                cell.isUserInteractionEnabled = false
+                //cell.tickButton.isSelected = true
+                //cell.isUserInteractionEnabled = false
             } else {
-                cell.isUserInteractionEnabled = true
+                //cell.isUserInteractionEnabled = true
                 cell.nameLabel.text = self.detailsData?.comboDetails.comboTitle
                 if self.detailsData?.comboDetails.offerPrice != "" {
                     let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
@@ -449,11 +468,20 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 }
             }
             
-            cell.callBackTap = {
+            /*cell.callBackTap = {
                 if self.firstBoxSelectedRows.contains(indexPath) {
                     self.firstBoxSelectedRows.remove(at: self.firstBoxSelectedRows.firstIndex(of: indexPath)!)
                     if indexPath.row == 0 {
-                        cell.isUserInteractionEnabled = false
+                        //cell.isUserInteractionEnabled = false
+                        if self.detailsData?.specialPrice != "" {
+                            let doubleValue = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
+                            self.mealTypePrice -= doubleValue
+                        } else {
+                            let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
+                            self.mealTypePrice -= doubleValue
+                        }
+                        self.selectedComboId = nil
+                        print("self.mealTypePrice", self.mealTypePrice)
                     } else {
                         if self.detailsData?.comboDetails.offerPrice != "" {
                             let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
@@ -469,7 +497,16 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 } else {
                     self.firstBoxSelectedRows.append(indexPath)
                     if indexPath.row == 0 {
-                        cell.isUserInteractionEnabled = false
+                        //cell.isUserInteractionEnabled = false
+                        if self.detailsData?.specialPrice != "" {
+                            let doubleValue = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
+                            self.mealTypePrice += doubleValue
+                        } else {
+                            let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
+                            self.mealTypePrice += doubleValue
+                        }
+                        self.selectedComboId = self.detailsData?.comboDetails.id
+                        print("self.mealTypePrice", self.mealTypePrice)
                     } else {
                         if self.detailsData?.comboDetails.offerPrice != "" {
                             let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
@@ -485,7 +522,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 }
                 cell.tickButton.isSelected = !cell.tickButton.isSelected
                 self.setPriceAttritubte()
-            }
+            }*/
             
             return cell
         } else if tableView == self.stuffTblView {
@@ -713,7 +750,49 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if tableView == self.categoryTblView1 {
+        if tableView == self.mealTypeTblView {
+            if let currentSelectedIndex = self.mealTypeIndex, currentSelectedIndex == indexPath {
+                self.mealTypeIndex = indexPath                
+                if indexPath.row == 0 {
+                    self.mealTypePrice = 0
+                    self.selectedComboId = self.detailsData?.id
+                    print("self.mealTypePrice", self.mealTypePrice)
+                } else {
+                    if self.detailsData?.comboDetails.offerPrice != "" {
+                        let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
+                        self.mealTypePrice = doubleValue
+                        
+                    } else {
+                        let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
+                        self.mealTypePrice = doubleValue
+                    }
+                    self.selectedComboId = self.detailsData?.id
+                    print("self.mealTypePrice", self.mealTypePrice)
+                }
+                
+            } else {
+                self.mealTypeIndex = indexPath
+                
+                if indexPath.row == 0 {
+                    self.mealTypePrice = 0
+                    self.selectedComboId = self.detailsData?.comboDetails.id
+                    print("self.mealTypePrice", self.mealTypePrice)
+                } else {
+                    if self.detailsData?.comboDetails.offerPrice != "" {
+                        let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
+                        self.mealTypePrice = doubleValue
+                        
+                    } else {
+                        let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
+                        self.mealTypePrice = doubleValue
+                    }
+                    self.selectedComboId = self.detailsData?.comboDetails.id
+                    print("self.mealTypePrice", self.mealTypePrice)
+                }
+            }
+            self.setPriceAttritubte()
+            tableView.reloadData()
+        } else if tableView == self.categoryTblView1 {
             if let currentSelectedIndex = self.categorySelecteIndex1, currentSelectedIndex == indexPath {
                 self.categorySelecteIndex1 = nil
                 tableView.deselectRow(at: indexPath, animated: true)
@@ -843,8 +922,11 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             print(msg)
             DispatchQueue.main.async {
                 self.showBanner(message: msg, status: .success)
-                let cartVC = CartVC.instantiate()
-                self.navigationController?.pushViewController(cartVC, animated: true)
+                UserDefaultHelper.totalItems! += self.qtyValue
+                UserDefaultHelper.totalPrice! += Double("\(self.basePrice)") ?? 0.0
+                self.dismiss(animated: true) {
+                    self.delegate?.dismissed()
+                }
             }
         } failure: { error in
             print("Error \(error.localizedDescription)")

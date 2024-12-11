@@ -101,10 +101,11 @@ class ScanTableVC: UIViewController, Instantiatable {
             UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
             UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
             
+            UserDefaultHelper.tableName = tabName
+            
             DispatchQueue.main.async {
                 UserDefaultHelper.orderType = "takeaway"
                 let dashboardVC = DashboardVC.instantiate()
-                dashboardVC.selectedTable = tabName ?? ""
                 self.navigationController?.push(viewController: dashboardVC)
             }
             
@@ -200,7 +201,7 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
             captureSession.stopRunning()
             
             
-            let aParams: [String: Any] = ["hall_id": "1", "table_id": "1"]
+            let aParams: [String: Any] = ["hall_id": "5", "table_id": "103"]
             
             print(aParams)
             
@@ -211,8 +212,6 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 
 //                let custata = dataDict["customer"]
 //                self.customerData = Customer(fromJson: custata)
-                
-                UserDefaultHelper.orderType = "dinein"
                                                 
                 UserDefaultHelper.hallId = dataDict["hall_id"]?.stringValue
                 UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
@@ -220,6 +219,15 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
+                
+                let tabName = dataDict["table_name"]?.stringValue
+                UserDefaultHelper.tableName = tabName
+                
+                DispatchQueue.main.async {
+                    UserDefaultHelper.orderType = "dinein"
+                    let dashboardVC = DashboardVC.instantiate()
+                    self.navigationController?.push(viewController: dashboardVC)
+                }
  
             } failure: { error in
                 print("Error \(error.localizedDescription)")

@@ -52,14 +52,12 @@ class DashboardVC: UIViewController, Instantiatable {
     var activeData = [JSON]()
     var myUsualData = [DashboardMyUsual]()
     var bannerData = [JSON]()
-    
-    var selectedTable: String = ""
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if self.selectedTable != "" {
-            selectTableLabel.text = self.selectedTable
+        if UserDefaultHelper.tableName != "" {
+            selectTableLabel.text = UserDefaultHelper.tableName
         }
                 
         mainTableView.register(HomeOrderTVCell.nib(), forCellReuseIdentifier: HomeOrderTVCell.identifier)
@@ -70,12 +68,23 @@ class DashboardVC: UIViewController, Instantiatable {
         mainTableView.register(MealTVCell.nib(), forCellReuseIdentifier: MealTVCell.identifier)
         
         self.getDashboardData()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
+    }
+    
+    @objc func methodOfReceivedNotification(notification: Notification) {
+        let orderVC = MyOrderViewController.instantiate()
+        self.navigationController?.pushViewController(orderVC, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        profileButton.setTitle(UserDefaultHelper.userName?.getAcronym(), for: .normal)
+        if UserDefaultHelper.authToken != "" {
+            profileButton.setTitle(UserDefaultHelper.userName?.getAcronym(), for: .normal)
+        } else {
+            profileButton.setTitle("Guest User".getAcronym(), for: .normal)
+        }
     }
     @IBAction func selectTableAction(_ sender: UIButton) {
         
@@ -84,8 +93,14 @@ class DashboardVC: UIViewController, Instantiatable {
     }
     
     @IBAction func viewProfileAction(_ sender: Any) {
-        let profileVC = ProfileViewController.instantiate()
-        self.navigationController?.pushViewController(profileVC, animated: true)
+        
+        if UserDefaultHelper.authToken != "" {
+            let profileVC = ProfileViewController.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
     }
     
     @IBAction func searchAction(_ sender: Any) {
@@ -349,7 +364,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-
+/*
 extension DashboardVC: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -391,3 +406,4 @@ extension DashboardVC: UIPickerViewDelegate, UIPickerViewDataSource {
         return label
     }
 }
+*/
