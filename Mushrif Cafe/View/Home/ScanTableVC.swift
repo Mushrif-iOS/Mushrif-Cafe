@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import ProgressHUD
 
 class ScanTableVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -86,31 +87,15 @@ class ScanTableVC: UIViewController, Instantiatable {
     
     @IBAction func continueAction(_ sender: UIButton) {
         
-        let aParams: [String: Any] = ["hall_id": "5", "table_id": "103"]
+        UserDefaultHelper.hallId = ""
+        UserDefaultHelper.tableId = ""
+        UserDefaultHelper.groupId = ""
+        UserDefaultHelper.tableName = ""
         
-        print(aParams)
-        
-        APIManager.shared.postCall(APPURL.select_table, params: aParams, withHeader: false) { responseJSON in
-            print("Response JSON \(responseJSON)")
-            
-            let dataDict = responseJSON["response"].dictionaryValue
-            
-            let tabName = dataDict["table_name"]?.stringValue
-            
-            UserDefaultHelper.hallId = dataDict["hall_id"]?.stringValue
-            UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
-            UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
-            
-            UserDefaultHelper.tableName = tabName
-            
-            DispatchQueue.main.async {
-                UserDefaultHelper.orderType = "takeaway"
-                let dashboardVC = DashboardVC.instantiate()
-                self.navigationController?.push(viewController: dashboardVC)
-            }
-            
-        } failure: { error in
-            print("Error \(error.localizedDescription)")
+        DispatchQueue.main.async {
+            UserDefaultHelper.orderType = "takeaway"
+            let dashboardVC = DashboardVC.instantiate()
+            self.navigationController?.push(viewController: dashboardVC)
         }
     }
     
@@ -197,11 +182,31 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
               let stringValue = metadataObject.stringValue else { return }
         
         print(stringValue)
+        ProgressHUD.animationType = .circleDotSpinFade
+        ProgressHUD.colorAnimation = UIColor.primaryBrown
+        ProgressHUD.animate(interaction: false)
+        
         if stringValue != "" {
             captureSession.stopRunning()
+           
+            let jsonData = stringValue.data(using: .utf8)!
             
+            var hallIds : Int = 0
+            var tableIds : Int = 0
+
+            do {
+                let decoder = JSONDecoder()
+                let qr = try decoder.decode(QRCodeModel.self, from: jsonData)
+                print("Hall ID: \(qr.hallId), Table ID: \(qr.tableId)")
+                hallIds = qr.hallId
+                tableIds = qr.tableId
+                ProgressHUD.dismiss()
+            } catch {
+                print("Error decoding JSON: \(error)")
+                ProgressHUD.dismiss()
+            }
             
-            let aParams: [String: Any] = ["hall_id": "5", "table_id": "103"]
+            let aParams: [String: Any] = ["hall_id": "\(hallIds)", "table_id": "\(tableIds)"]
             
             print(aParams)
             
@@ -209,10 +214,7 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 print("Response JSON \(responseJSON)")
                 
                 let dataDict = responseJSON["response"].dictionaryValue
-                
-//                let custata = dataDict["customer"]
-//                self.customerData = Customer(fromJson: custata)
-                                                
+
                 UserDefaultHelper.hallId = dataDict["hall_id"]?.stringValue
                 UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
                 UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
@@ -265,5 +267,16 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
         overlayView.clipsToBounds = true
         
         return overlayView
+    }
+}
+
+struct QRCodeModel: Decodable {
+    
+    let hallId: Int
+    let tableId: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case hallId = "hall_id"
+        case tableId = "table_id"
     }
 }

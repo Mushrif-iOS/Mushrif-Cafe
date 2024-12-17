@@ -28,6 +28,7 @@
 		C66906D92CA46A2500E74833 /* OTPFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D62CA46A2400E74833 /* OTPFieldView.swift */; };
 		C66906DA2CA46A2500E74833 /* OTPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66906D72CA46A2400E74833 /* OTPTextView.swift */; };
 		C66FE8C12D047FB300DB24EF /* EditCartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FE8C02D047FB200DB24EF /* EditCartVC.swift */; };
+		C66FE8C52D11C54F00DB24EF /* OrderListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FE8C42D11C54F00DB24EF /* OrderListModel.swift */; };
 		C678318F2CEBCDB400E643A9 /* SingleSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */; };
 		C67831902CEBCDB400E643A9 /* SingleSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */; };
 		C68A611F2CB58A700037094D /* CellSelectionTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A611E2CB58A700037094D /* CellSelectionTVC.xib */; };
@@ -141,6 +142,7 @@
 		C66906D62CA46A2400E74833 /* OTPFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPFieldView.swift; sourceTree = "<group>"; };
 		C66906D72CA46A2400E74833 /* OTPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPTextView.swift; sourceTree = "<group>"; };
 		C66FE8C02D047FB200DB24EF /* EditCartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCartVC.swift; sourceTree = "<group>"; };
+		C66FE8C42D11C54F00DB24EF /* OrderListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListModel.swift; sourceTree = "<group>"; };
 		C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionCell.swift; sourceTree = "<group>"; };
 		C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleSelectionCell.xib; sourceTree = "<group>"; };
 		C68A611D2CB58A700037094D /* CellSelectionTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSelectionTVC.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 				C68A61542CD515600037094D /* UsualsModel.swift */,
 				C68A61562CD931650037094D /* ItemDetailsModel.swift */,
 				C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */,
+				C66FE8C42D11C54F00DB24EF /* OrderListModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -713,6 +716,7 @@
 				C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */,
 				C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */,
 				C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */,
+				C66FE8C52D11C54F00DB24EF /* OrderListModel.swift in Sources */,
 				C6C089D82CA8EC500050F034 /* DashboardVC.swift in Sources */,
 				C6C8189F2CB0F4FD00905A39 /* EditProfileVC.swift in Sources */,
 				C6EDC6E72CA5A1A0003C40B0 /* Extensions.swift in Sources */,
@@ -956,7 +960,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -995,7 +999,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

@@ -49,7 +49,7 @@ class DashboardVC: UIViewController, Instantiatable {
     var categoryData: [Category] = [Category]()
     var ourBestData: [TryOurBest] = [TryOurBest]()
     
-    var activeData = [JSON]()
+    var activeData = [MyActiveOrder]()
     var myUsualData = [DashboardMyUsual]()
     var bannerData = [JSON]()
         
@@ -69,12 +69,18 @@ class DashboardVC: UIViewController, Instantiatable {
         
         self.getDashboardData()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("ShowOrders"), object: nil)
     }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
-        let orderVC = MyOrderViewController.instantiate()
-        self.navigationController?.pushViewController(orderVC, animated: true)
+//        let orderVC = MyOrderViewController.instantiate()
+//        self.navigationController?.pushViewController(orderVC, animated: true)
+        self.categoryData.removeAll()
+        self.ourBestData.removeAll()
+        self.activeData.removeAll()
+        self.myUsualData.removeAll()
+        self.bannerData.removeAll()
+        self.getDashboardData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +103,16 @@ class DashboardVC: UIViewController, Instantiatable {
         if UserDefaultHelper.authToken != "" {
             let profileVC = ProfileViewController.instantiate()
             self.navigationController?.pushViewController(profileVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+    }
+    
+    @IBAction func showCartAction(_ sender: UIButton) {
+        if UserDefaultHelper.authToken != "" {
+            let cartVC = CartVC.instantiate()
+            self.navigationController?.pushViewController(cartVC, animated: true)
         } else {
             let profileVC = LoginVC.instantiate()
             self.navigationController?.pushViewController(profileVC, animated: true)
@@ -131,8 +147,9 @@ class DashboardVC: UIViewController, Instantiatable {
             }
             
             let activeDataDict = responseJSON["response"]["my_active_orders"].arrayValue
-            self.activeData = activeDataDict
-            print(self.activeData.count)
+            for obj in activeDataDict {
+                self.activeData.append(MyActiveOrder(fromJson: obj))
+            }
             
             let myUsualDict = responseJSON["response"]["my_usuals"].arrayValue
             for obj in myUsualDict {
@@ -232,6 +249,14 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.myUsualData.count == 0 && self.bannerData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                let dict = self.activeData[indexPath.row]
+                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
+                cell.statusLabel.text = "OPEN ORDER"
+                cell.noOfItemLabel.text = ""
+                cell.dateTimeLabel.text = ""
+                let amt = Double("\(dict.grandTotal)")
+                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
+                
                 cell.payNowButton.tag = indexPath.row
                 cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
                 return cell
@@ -274,6 +299,13 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.myUsualData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                let dict = self.activeData[indexPath.row]
+                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
+                cell.statusLabel.text = "OPEN ORDER"
+                cell.noOfItemLabel.text = ""
+                cell.dateTimeLabel.text = ""
+                let amt = Double("\(dict.grandTotal)")
+                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
                 cell.payNowButton.tag = indexPath.row
                 cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
                 return cell
@@ -296,6 +328,13 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.bannerData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                let dict = self.activeData[indexPath.row]
+                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
+                cell.statusLabel.text = "OPEN ORDER"
+                cell.noOfItemLabel.text = ""
+                cell.dateTimeLabel.text = ""
+                let amt = Double("\(dict.grandTotal)")
+                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
                 cell.payNowButton.tag = indexPath.row
                 cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
                 return cell
@@ -320,6 +359,13 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         }    else {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
+                let dict = self.activeData[indexPath.row]
+                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
+                cell.statusLabel.text = "OPEN ORDER"
+                cell.noOfItemLabel.text = ""
+                cell.dateTimeLabel.text = ""
+                let amt = Double("\(dict.grandTotal)")
+                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
                 cell.payNowButton.tag = indexPath.row
                 cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
                 return cell

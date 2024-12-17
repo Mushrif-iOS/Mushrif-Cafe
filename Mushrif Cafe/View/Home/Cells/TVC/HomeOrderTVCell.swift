@@ -14,13 +14,12 @@ class HomeOrderTVCell: UITableViewCell {
     @IBOutlet var orderLabel: UILabel! {
         didSet {
             orderLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            orderLabel.text = "Order ID # 377"
         }
     }
     @IBOutlet var statusLabel: UILabel! {
         didSet {
             statusLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            statusLabel.text = "OPEN ORDER"
+            //statusLabel.text = "OPEN ORDER"
         }
     }
     
@@ -46,19 +45,16 @@ class HomeOrderTVCell: UITableViewCell {
     @IBOutlet var noOfItemLabel: UILabel! {
         didSet {
             noOfItemLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            noOfItemLabel.text = "5"
         }
     }
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            dateTimeLabel.text = "24 Aug, 2024, 13:02 PM"
         }
     }
     @IBOutlet var amtLabel: UILabel! {
         didSet {
             amtLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            amtLabel.text = "23.00 KWD"
         }
     }
     

@@ -75,12 +75,12 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     @objc func addAction(sender: UIButton) {
         
         let dict = usualObj[sender.tag]
-        if UserDefaultHelper.authToken != "" {
-            let cartVC = CartVC.instantiate()
-            self.navController?.pushViewController(cartVC, animated: true)
-        } else {
-            let profileVC = LoginVC.instantiate()
-            self.navController?.pushViewController(profileVC, animated: true)
-        }
+//        if UserDefaultHelper.authToken != "" {
+//            let cartVC = CartVC.instantiate()
+//            self.navController?.pushViewController(cartVC, animated: true)
+//        } else {
+//            let profileVC = LoginVC.instantiate()
+//            self.navController?.pushViewController(profileVC, animated: true)
+//        }
     }
 }

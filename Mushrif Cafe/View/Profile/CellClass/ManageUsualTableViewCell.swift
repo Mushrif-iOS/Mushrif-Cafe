@@ -58,6 +58,8 @@ class ManageUsualTableViewCell: UITableViewCell {
     var isCart: String = ""
     var didRemoveBlock : (() -> Void)? = nil
     
+    var didChangePriceBlock : (() -> Void)? = nil
+    
     static let identifier = "ManageUsualTableViewCell"
     
     static func nib() -> UINib {
@@ -103,7 +105,13 @@ class ManageUsualTableViewCell: UITableViewCell {
                     if self.qtyValue == 0 {
                         self.didRemoveBlock?()
                     }
-                    self.otherPriceLabel.text = "\((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))"
+                    
+                    self.didChangePriceBlock?()
+                    let total = responseJSON["response"]["sub_total"].stringValue
+                    UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
+                    
+                    let prc = Double((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))
+                    self.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
                 } failure: { error in
                     print("Error \(error.localizedDescription)")
                 }
@@ -134,7 +142,13 @@ class ManageUsualTableViewCell: UITableViewCell {
             
             APIManager.shared.postCall(APPURL.update_cart_Qty, params: aParams, withHeader: true) { responseJSON in
                 print("Response JSON \(responseJSON)")
-                self.otherPriceLabel.text = "\((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))"
+                
+                self.didChangePriceBlock?()
+                let total = responseJSON["response"]["sub_total"].stringValue
+                UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
+                
+                let prc = Double((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))
+                self.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }

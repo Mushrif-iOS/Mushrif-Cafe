@@ -13,7 +13,6 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
-            titleLabel.text =  "ID # 134"
         }
     }
     
@@ -49,7 +48,6 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var amtLabel: UILabel! {
         didSet {
             amtLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            amtLabel.text = "23.000 KD"
         }
     }
     
@@ -63,7 +61,6 @@ class OrderDetailsVC: UIViewController, Instantiatable {
         didSet {
             discountLabel.font = UIFont.poppinsMediumFontWith(size: 16)
             discountLabel.textColor = UIColor.red
-            discountLabel.text = "-9.000 KD"
         }
     }
     
@@ -76,7 +73,6 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var totalLabel: UILabel! {
         didSet {
             totalLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            totalLabel.text = "3.000 KD"
         }
     }
     
@@ -89,7 +85,6 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var orderIdLabel: UILabel! {
         didSet {
             orderIdLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            orderIdLabel.text = "233332"
         }
     }
     
@@ -102,7 +97,6 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var paidByLabel: UILabel! {
         didSet {
             paidByLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            paidByLabel.text = "Bhushan"
         }
     }
     
@@ -115,9 +109,10 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            dateTimeLabel.text = "2/2/22 - 23:13"
         }
     }
+    
+    var orderDetails: OrderData?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,6 +125,8 @@ class OrderDetailsVC: UIViewController, Instantiatable {
             mainTableView.sectionHeaderTopPadding = 0
         }
         self.mainTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        
+        self.setupUI()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -141,7 +138,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
             if let newvalue = change?[.newKey] {
                 DispatchQueue.main.async {
                     let newsize  = newvalue as! CGSize
-                    self.tblHeight.constant = newsize.height
+                    self.tblHeight.constant = 0//newsize.height
                 }
             }
         }
@@ -149,6 +146,38 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     
     @IBAction func addUsualAction(_ sender: Any) {
         
+        let dict = self.orderDetails
+        
+        let aParams: [String: Any] = ["group_id": "", "product_id": "", "quantity": "1", "item_type": "ordered", "order_id": "\(dict?.id ?? 0)"]
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.add_Item_To_Usual, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let msg = responseJSON["message"].stringValue
+            self.showBanner(message: msg, status: .success)
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    
+    private func setupUI() {
+        DispatchQueue.main.async {
+            self.titleLabel.text = "ID #\(self.orderDetails?.orderNumber ?? 0)"
+            let amt = Double("\(self.orderDetails?.subTotal ?? "")")
+            self.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
+            
+            let disc = Double("\(self.orderDetails?.discount ?? "")")
+            self.discountLabel.text = "-\(disc?.rounded(toPlaces: 2) ?? 0.0) KWD"
+            
+            let total = Double("\(self.orderDetails?.grandTotal ?? "")")
+            self.totalLabel.text = "\(total?.rounded(toPlaces: 2) ?? 0.0) KWD"
+            
+            self.orderIdLabel.text = "#\(self.orderDetails?.orderNumber ?? 0)"
+            self.paidByLabel.text = "-"
+            self.dateTimeLabel.text = "\(self.orderDetails?.createdAt ?? "")"
+        }
     }
 }
 

@@ -118,4 +118,9 @@ struct APPURL {
     static var customize_cart_item: String {
         return BaseURL  + "customize-cart-item"
     }
+    
+    //Order
+    static var get_order: String {
+        return BaseURL  + "my-orders"
+    }
 }

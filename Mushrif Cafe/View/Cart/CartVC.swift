@@ -161,7 +161,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet var orderIdLabel: UILabel! {
         didSet {
             orderIdLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            orderIdLabel.text = "233332"
+            orderIdLabel.text = "-"
         }
     }
     
@@ -174,7 +174,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet var paidByLabel: UILabel! {
         didSet {
             paidByLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            paidByLabel.text = "Bhushan"
+            paidByLabel.text = "-"
         }
     }
     
@@ -187,14 +187,14 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            dateTimeLabel.text = "2/2/22 - 23:13"
+            dateTimeLabel.text = "-"
         }
     }
     
     var cartData: CartResponse?
     var cartArray : [CartItem] = [CartItem]()
     
-    var paymentType: String = ""
+    var paymentType: String = "apple_pay"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -297,6 +297,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
             
             DispatchQueue.main.async {
                 self.setupUI()
+                self.mainTableView.reloadData()
             }
         } failure: { error in
             print("Error \(error.localizedDescription)")
@@ -309,14 +310,11 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
         
         self.amtLabel.text = "\(data?.subTotal ?? "") KD"
         self.totalLabel.text = "\(data?.subTotal ?? "") KD"
-        self.setPriceAttritubte(price: Double(data?.subTotal ?? "") ?? 0.0, label: self.priceLabel)
+//        self.setPriceAttritubte(price: Double(data?.subTotal ?? "") ?? 0.0)
         
         UserDefaultHelper.totalItems! = self.cartArray.count
         UserDefaultHelper.totalPrice! = Double("\(data?.subTotal ?? "")") ?? 0.0
-        
-        if self.cartArray.count > 0 {
-            self.mainTableView.reloadData()
-        }
+        self.setPriceAttritubte(price: UserDefaultHelper.totalPrice ?? 0.0)
         
         if self.cartData?.orderType == "takeaway" {
             self.tableLabel.text =  ""
@@ -328,13 +326,13 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
         self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
     }
     
-    private func setPriceAttritubte(price: Double, label: UILabel) {
+    private func setPriceAttritubte(price: Double) {
         
         let attrString = NSMutableAttributedString(string: "\(price.toRoundedString(toPlaces: 2))",
                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 18)])
         attrString.append(NSMutableAttributedString(string: " KD",
                                                     attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 13)]))
-        label.attributedText =  attrString
+        self.priceLabel.attributedText = attrString
     }
     
     @IBAction func selectTableAction(_ sender: Any) {
@@ -389,19 +387,26 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 0)
         }
         
+        cell.didChangePriceBlock = {
+            DispatchQueue.main.async {
+                self.setPriceAttritubte(price: UserDefaultHelper.totalPrice ?? 0.0)
+            }
+        }
+        
         let dict = self.cartArray[indexPath.row]
         cell.nameLabel.text = dict.product.name
         cell.itemId = "\(dict.id)"
         if dict.product.specialPrice != "" {
             let doubleValue = Double(dict.product.specialPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue) KD"
+            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
         } else {
             let doubleValue = Double(dict.product.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue) KD"
+            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
         }
         
         cell.descLabel.text = dict.instruction
         cell.qty.text = "\(dict.quantity)"
+        cell.qtyValue = dict.quantity
         cell.otherPriceLabel.text = "\(dict.unitPrice) KD"
         cell.itemValue = "\(dict.unitPrice)"
         

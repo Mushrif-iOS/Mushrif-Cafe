@@ -20,7 +20,6 @@ class UsualListTableViewCell: UITableViewCell {
         didSet {
             descLabel.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
             descLabel.font = UIFont.poppinsRegularFontWith(size: 16)
-            descLabel.text = "Pizza Maargita, Pepsi and 2 more"
             let userLanguage = UserDefaultHelper.language
             descLabel.textAlignment =  userLanguage == "ar" ? .right :  .left
         }

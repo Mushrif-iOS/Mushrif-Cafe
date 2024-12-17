@@ -114,6 +114,7 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         
         let dict = self.usualData[indexPath.row]
         cell.nameLabel.text = dict.title
+        cell.descLabel.text = dict.items.first != nil ? dict.items.first?.product.descriptionField : ""
         
         cell.addButton.tag = indexPath.row
         cell.addButton.addTarget(self, action: #selector(addAction(sender: )), for: .touchUpInside)

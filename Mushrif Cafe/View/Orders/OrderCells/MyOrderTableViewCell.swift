@@ -14,7 +14,6 @@ class MyOrderTableViewCell: UITableViewCell {
     @IBOutlet var orderLabel: UILabel! {
         didSet {
             orderLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            orderLabel.text = "Order ID # 377"
         }
     }
     @IBOutlet var statusLabel: UILabel! {
@@ -58,31 +57,26 @@ class MyOrderTableViewCell: UITableViewCell {
     @IBOutlet var noOfItemLabel: UILabel! {
         didSet {
             noOfItemLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            noOfItemLabel.text = "5"
         }
     }
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            dateTimeLabel.text = "24 Aug, 2024, 13:02 PM"
         }
     }
     @IBOutlet var payTypeLabel: UILabel! {
         didSet {
             payTypeLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            payTypeLabel.text = "CASH"
         }
     }
     @IBOutlet var amtLabel: UILabel! {
         didSet {
             amtLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            amtLabel.text = "23.00 KWD"
         }
     }
     @IBOutlet var typeLabel: UILabel! {
         didSet {
             typeLabel.font = UIFont.poppinsLightFontWith(size: 16)
-            typeLabel.text = "Dine In"
         }
     }
     
