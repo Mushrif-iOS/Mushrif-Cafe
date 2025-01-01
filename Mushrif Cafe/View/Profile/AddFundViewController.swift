@@ -84,10 +84,28 @@ class AddFundViewController: UIViewController, Instantiatable {
             
             payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "Add to Wallet", amount: NSDecimalNumber(string: txtAmt.text!))]
                         
-            let controller = PKPaymentAuthorizationViewController(paymentRequest: payment)
-            if controller != nil {
-                controller!.delegate = self
-                self.present(controller!, animated: true, completion: nil)
+            
+            let aParams: [String: Any] = ["amount": "\(self.txtAmt.text!)"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.add_money, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+
+                self.showBanner(message: msg, status: .success)
+                
+                UserDefaultHelper.walletBalance = responseJSON["response"]["balance"].stringValue
+                let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+                if controller != nil {
+                    controller!.delegate = self
+                    self.present(controller!, animated: true, completion: nil)
+                }
+                
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
             }
         }
     }
@@ -109,7 +127,9 @@ class AddFundViewController: UIViewController, Instantiatable {
                 print(msg)
 
                 self.showBanner(message: msg, status: .success)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                
+                UserDefaultHelper.walletBalance = responseJSON["response"]["balance"].stringValue
+                DispatchQueue.main.async {
                     self.delegate?.completed()
                     self.dismiss(animated: true)
                 }
@@ -147,13 +167,20 @@ extension AddFundViewController: UITextFieldDelegate {
 
 extension AddFundViewController : PKPaymentAuthorizationViewControllerDelegate {
     
-    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        let transactionID = payment.token.transactionIdentifier
+        print("Transaction ID: \(transactionID)")
+        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        
         controller.dismiss(animated: true) {
+            self.delegate?.completed()
             self.dismiss(animated: true)
         }
     }
     
-    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
-        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        controller.dismiss(animated: true) {
+            self.dismiss(animated: true)
+        }
     }
 }

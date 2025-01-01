@@ -124,6 +124,7 @@ class UsualProduct {
     var howToCook : String = ""
     var id : Int = 0
     var image : String = ""
+    var imageUrl : String = ""
     var ingredients : [UsualIngredient]!
     var kitchenId : Int = 0
     var name : String = ""
@@ -147,6 +148,7 @@ class UsualProduct {
         howToCook = json["how_to_cook"].stringValue
         id = json["id"].intValue
         image = json["image"].stringValue
+        imageUrl = json["image_url"].stringValue
         ingredients = [UsualIngredient]()
         let ingredientsArray = json["ingredients"].arrayValue
         for ingredientsJson in ingredientsArray {

@@ -13,6 +13,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
+            titleLabel.text = ""
         }
     }
     
@@ -48,6 +49,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var amtLabel: UILabel! {
         didSet {
             amtLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+            amtLabel.text = ""
         }
     }
     
@@ -61,6 +63,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
         didSet {
             discountLabel.font = UIFont.poppinsMediumFontWith(size: 16)
             discountLabel.textColor = UIColor.red
+            discountLabel.text = ""
         }
     }
     
@@ -73,6 +76,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var totalLabel: UILabel! {
         didSet {
             totalLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+            totalLabel.text = ""
         }
     }
     
@@ -85,6 +89,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var orderIdLabel: UILabel! {
         didSet {
             orderIdLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+            orderIdLabel.text = ""
         }
     }
     
@@ -97,6 +102,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var paidByLabel: UILabel! {
         didSet {
             paidByLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+            paidByLabel.text = ""
         }
     }
     
@@ -109,10 +115,15 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsMediumFontWith(size: 16)
+            dateTimeLabel.numberOfLines = 0
+            dateTimeLabel.text = ""
         }
     }
     
-    var orderDetails: OrderData?
+    var orderId: String = ""
+    var orderDetails: OrderDetailsData?
+    
+    var cartArray : [OrderDetailsItem] = [OrderDetailsItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,7 +137,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
         }
         self.mainTableView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         
-        self.setupUI()
+        self.getDetails()
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -138,28 +149,47 @@ class OrderDetailsVC: UIViewController, Instantiatable {
             if let newvalue = change?[.newKey] {
                 DispatchQueue.main.async {
                     let newsize  = newvalue as! CGSize
-                    self.tblHeight.constant = 0//newsize.height
+                    self.tblHeight.constant = newsize.height
                 }
             }
         }
     }
     
-    @IBAction func addUsualAction(_ sender: Any) {
+    func getDetails() {
         
-        let dict = self.orderDetails
-        
-        let aParams: [String: Any] = ["group_id": "", "product_id": "", "quantity": "1", "item_type": "ordered", "order_id": "\(dict?.id ?? 0)"]
+        let aParams = ["order_id": "\(self.orderId)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         print(aParams)
         
-        APIManager.shared.postCall(APPURL.add_Item_To_Usual, params: aParams, withHeader: true) { responseJSON in
+        APIManager.shared.postCall(APPURL.order_Details, params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
             
-            let msg = responseJSON["message"].stringValue
-            self.showBanner(message: msg, status: .success)
+            let dataDict = responseJSON["response"]
+            self.orderDetails = OrderDetailsData(fromJson: dataDict)
+            
+            let cartItemDict = responseJSON["response"]["items"].arrayValue
+            for obj in cartItemDict {
+                self.cartArray.append(OrderDetailsItem(fromJson: obj))
+            }
+            
+            self.setupUI()
             
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }
+    }
+    
+    @IBAction func addUsualAction(_ sender: Any) {
+        
+        let addVC = AddUsualsVC.instantiate()
+        if #available(iOS 15.0, *) {
+            if let sheet = addVC.sheetPresentationController {
+                sheet.detents = [.medium()]
+                sheet.preferredCornerRadius = 15
+            }
+        }
+        addVC.productId = "\(orderId)"
+        addVC.itemType = "ordered"
+        self.present(addVC, animated: true, completion: nil)
     }
     
     private func setupUI() {
@@ -175,8 +205,14 @@ class OrderDetailsVC: UIViewController, Instantiatable {
             self.totalLabel.text = "\(total?.rounded(toPlaces: 2) ?? 0.0) KWD"
             
             self.orderIdLabel.text = "#\(self.orderDetails?.orderNumber ?? 0)"
-            self.paidByLabel.text = "-"
+            self.paidByLabel.text = "\(self.orderDetails?.customerName ?? "")"
             self.dateTimeLabel.text = "\(self.orderDetails?.createdAt ?? "")"
+            
+            if self.cartArray.count > 0 {
+                self.mainTableView.reloadData()
+            } else {
+                self.tblHeight.constant = 0
+            }
         }
     }
 }
@@ -184,19 +220,40 @@ class OrderDetailsVC: UIViewController, Instantiatable {
 extension OrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return self.cartArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: OrderDetailsTableViewCell.identifier) as! OrderDetailsTableViewCell
         
-        if indexPath.row == 0 {
-            cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-        } else if indexPath.row == 1 {
-            cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
-        }
+        let dict = self.cartArray[indexPath.row]
+        cell.nameLabel.text = dict.productName
+        let doubleValue = Double(dict.subTotal) ?? 0.0
+        cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"
         
+        cell.descLabel.text = dict.descriptionField
+        cell.qtyLabel.text = "x\(dict.quantity)"
+        
+        let prc = Double((Double(dict.unitCost) ?? 0.0)*(Double(dict.quantity) ?? 0.0))
+        cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
+        
+        cell.backView.layer.masksToBounds = true
+        DispatchQueue.main.async {
+            if self.cartArray.count == 1 {
+                cell.backView.roundCorners(corners: .allCorners, radius: 18)
+            } else {
+                if indexPath.row == 0 {
+                    cell.backView.layer.cornerRadius = 18
+                    cell.backView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                } else if indexPath.row == self.cartArray.count - 1 {
+                    cell.backView.layer.cornerRadius = 18
+                    cell.backView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+                } else {
+                    cell.backView.roundCorners(corners: .allCorners, radius: 0)
+                }
+            }
+        }
         return cell
     }
     

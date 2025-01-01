@@ -151,8 +151,10 @@
                 <outlet property="backView" destination="1eF-bd-At3" id="3Lc-gK-3cK"/>
                 <outlet property="descLabel" destination="1Ap-6M-tOR" id="3Zc-uM-8RR"/>
                 <outlet property="editButton" destination="hBI-Sw-sQY" id="Rg5-qI-72M"/>
+                <outlet property="minusButton" destination="d26-fo-7JA" id="a58-Ur-roA"/>
                 <outlet property="nameLabel" destination="g2d-CX-ob5" id="QkF-YH-GgB"/>
                 <outlet property="otherPriceLabel" destination="kgN-gQ-B57" id="J5F-Ac-F3P"/>
+                <outlet property="plusButton" destination="X4I-jV-ASB" id="2wd-J8-aBd"/>
                 <outlet property="priceLabel" destination="kK0-KK-4Ts" id="TYl-Tx-k4b"/>
                 <outlet property="qty" destination="lpM-vc-gx3" id="w9p-Aq-ojE"/>
             </connections>

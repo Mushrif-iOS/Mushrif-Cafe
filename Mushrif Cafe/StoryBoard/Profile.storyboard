@@ -64,7 +64,7 @@
                                     <action selector="languageAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="55s-nJ-2DR"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-aK-ugC">
+                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-aK-ugC">
                                 <rect key="frame" x="257" y="35" width="46" height="46"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -98,6 +98,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="languageButton" destination="hun-Pi-2iR" id="ULI-s6-MA2"/>
                         <outlet property="mainTableView" destination="iud-S7-DML" id="Auf-ws-DYK"/>
                         <outlet property="selectLanguageTxt" destination="Ueb-aK-ugC" id="t7C-JL-cA0"/>
                     </connections>

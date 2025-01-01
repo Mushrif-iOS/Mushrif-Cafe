@@ -23,6 +23,8 @@ class SearchCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var img: UIImageView!
     
+    @IBOutlet weak var addUsual: UIButton!
+    
     @IBOutlet weak var addButton: UIButton! {
         didSet {
             addButton.titleLabel?.font = UIFont.poppinsBoldFontWith(size: 14)

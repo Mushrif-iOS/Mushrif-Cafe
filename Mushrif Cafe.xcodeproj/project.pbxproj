@@ -106,6 +106,10 @@
 		C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C818B72CB2664B00905A39 /* CartVC.swift */; };
 		C6C818BA2CB2675100905A39 /* Cart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C6C818B92CB2675100905A39 /* Cart.storyboard */; };
 		C6C818BC2CB2688100905A39 /* OrderSuccessVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C818BB2CB2688100905A39 /* OrderSuccessVC.swift */; };
+		C6E42D4C2D15E379006E00E3 /* HomeOrderCVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6E42D4B2D15E379006E00E3 /* HomeOrderCVCell.xib */; };
+		C6E42D4D2D15E379006E00E3 /* HomeOrderCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E42D4A2D15E379006E00E3 /* HomeOrderCVCell.swift */; };
+		C6E42D4F2D161BF1006E00E3 /* SuccesOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E42D4E2D161BF1006E00E3 /* SuccesOrderModel.swift */; };
+		C6E42D512D19B85D006E00E3 /* OrderDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E42D502D19B85D006E00E3 /* OrderDetailsModel.swift */; };
 		C6E661B52CA3544700AFF47F /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E661B42CA3544700AFF47F /* Color+Extension.swift */; };
 		C6E661B72CA358EB00AFF47F /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E661B62CA358EB00AFF47F /* UIView+Extension.swift */; };
 		C6EDC6E52CA586C3003C40B0 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E42CA586C3003C40B0 /* LoginVC.swift */; };
@@ -227,6 +231,10 @@
 		C6C818B72CB2664B00905A39 /* CartVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartVC.swift; sourceTree = "<group>"; };
 		C6C818B92CB2675100905A39 /* Cart.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Cart.storyboard; sourceTree = "<group>"; };
 		C6C818BB2CB2688100905A39 /* OrderSuccessVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSuccessVC.swift; sourceTree = "<group>"; };
+		C6E42D4A2D15E379006E00E3 /* HomeOrderCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeOrderCVCell.swift; sourceTree = "<group>"; };
+		C6E42D4B2D15E379006E00E3 /* HomeOrderCVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeOrderCVCell.xib; sourceTree = "<group>"; };
+		C6E42D4E2D161BF1006E00E3 /* SuccesOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccesOrderModel.swift; sourceTree = "<group>"; };
+		C6E42D502D19B85D006E00E3 /* OrderDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsModel.swift; sourceTree = "<group>"; };
 		C6E661B42CA3544700AFF47F /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		C6E661B62CA358EB00AFF47F /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		C6EDC6E42CA586C3003C40B0 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
@@ -352,6 +360,8 @@
 				C68A61562CD931650037094D /* ItemDetailsModel.swift */,
 				C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */,
 				C66FE8C42D11C54F00DB24EF /* OrderListModel.swift */,
+				C6E42D4E2D161BF1006E00E3 /* SuccesOrderModel.swift */,
+				C6E42D502D19B85D006E00E3 /* OrderDetailsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -537,6 +547,8 @@
 				C65010152CAD5940003BCA53 /* TagsCVCell.swift */,
 				C68A614A2CD35B7F0037094D /* SearchCollectionViewCell.swift */,
 				C68A614B2CD35B7F0037094D /* SearchCollectionViewCell.xib */,
+				C6E42D4A2D15E379006E00E3 /* HomeOrderCVCell.swift */,
+				C6E42D4B2D15E379006E00E3 /* HomeOrderCVCell.xib */,
 			);
 			path = CVC;
 			sourceTree = "<group>";
@@ -545,7 +557,7 @@
 			isa = PBXGroup;
 			children = (
 				C6C818B72CB2664B00905A39 /* CartVC.swift */,
-				C6C818B52CB2596D00905A39 /* PaymentMethodVC.swift */,
+				C6F8C79D2D233205009C0128 /* Payments */,
 				C6C818BB2CB2688100905A39 /* OrderSuccessVC.swift */,
 				C66FE8C02D047FB200DB24EF /* EditCartVC.swift */,
 			);
@@ -563,6 +575,14 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		C6F8C79D2D233205009C0128 /* Payments */ = {
+			isa = PBXGroup;
+			children = (
+				C6C818B52CB2596D00905A39 /* PaymentMethodVC.swift */,
+			);
+			path = Payments;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -575,6 +595,7 @@
 				C68E72512CA3000200F223A8 /* Frameworks */,
 				C68E72522CA3000200F223A8 /* Resources */,
 				01A8E205694B967B8A98AA20 /* [CP] Embed Pods Frameworks */,
+				D2F3C0A562D5A3E31A0D32C4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -650,6 +671,7 @@
 				C6C089E42CA9927F0050F034 /* MyUsualTVCell.xib in Resources */,
 				C6337B5B2CAB21E000ACDD86 /* MyOrderTableViewCell.xib in Resources */,
 				C6337B652CAC764500ACDD86 /* CategoryTableViewCell.xib in Resources */,
+				C6E42D4C2D15E379006E00E3 /* HomeOrderCVCell.xib in Resources */,
 				C65010292CAF224D003BCA53 /* Profile.storyboard in Resources */,
 				C6337B5F2CAB34FC00ACDD86 /* HomeOrderTVCell.xib in Resources */,
 				C6C089EE2CA9C1C40050F034 /* CategoryTVCell.xib in Resources */,
@@ -702,6 +724,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D2F3C0A562D5A3E31A0D32C4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -713,6 +752,7 @@
 				C6600C262CB31938009B0445 /* AddUsualsVC.swift in Sources */,
 				C6600C2C2CB32249009B0445 /* CreateNewUsualVC.swift in Sources */,
 				C6C089EF2CA9C1C40050F034 /* CategoryTVCell.swift in Sources */,
+				C6E42D4F2D161BF1006E00E3 /* SuccesOrderModel.swift in Sources */,
 				C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */,
 				C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */,
 				C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */,
@@ -733,6 +773,7 @@
 				C66906D92CA46A2500E74833 /* OTPFieldView.swift in Sources */,
 				C65010162CAD5940003BCA53 /* TagsCVCell.swift in Sources */,
 				C6C818B32CB1B72000905A39 /* ManageUsualTableViewCell.swift in Sources */,
+				C6E42D512D19B85D006E00E3 /* OrderDetailsModel.swift in Sources */,
 				C6337B5A2CAB21E000ACDD86 /* MyOrderTableViewCell.swift in Sources */,
 				C68A613A2CC2684A0037094D /* DashboardModel.swift in Sources */,
 				C6C089E92CA992B90050F034 /* MyUsualCVCell.swift in Sources */,
@@ -779,6 +820,7 @@
 				C6C089FB2CA9DFA70050F034 /* BannersTVCell.swift in Sources */,
 				C6C8189D2CB06CEC00905A39 /* ProfileTVC.swift in Sources */,
 				C68A61232CB6C3650037094D /* WebUrls.swift in Sources */,
+				C6E42D4D2D15E379006E00E3 /* HomeOrderCVCell.swift in Sources */,
 				C6C818A92CB1220F00905A39 /* AddFundViewController.swift in Sources */,
 				C65010202CADC18D003BCA53 /* MealDetailsViewController.swift in Sources */,
 				C68A61442CCD09800037094D /* OrderDetailsTableViewCell.swift in Sources */,
@@ -960,7 +1002,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -999,7 +1041,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

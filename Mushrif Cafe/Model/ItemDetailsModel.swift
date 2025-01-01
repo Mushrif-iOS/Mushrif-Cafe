@@ -179,6 +179,7 @@ class Choice {
     var groupId : Int = 0
     var id : Int = 0
     var isDeleted : String = ""
+    var selectionStatus : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -189,6 +190,7 @@ class Choice {
         groupId = json["group_id"].intValue
         id = json["id"].intValue
         isDeleted = json["is_deleted"].stringValue
+        selectionStatus = json["selection_status"].intValue
     }
 }
 

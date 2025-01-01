@@ -11,6 +11,8 @@ private enum Defaults: String {
     case countryCode = "countryCode"
     case userloginId   = "userloginid"
     case userName = "userName"
+    case userEmail = "userEmail"
+    case mobile = "mobile"
     case language = "language"
     case isLanguageSelected = "isLanguageSelected"
     case authToken = "authToken"
@@ -47,6 +49,22 @@ final class UserDefaultHelper {
             _set(value: newValue, key: .userName)
         } get {
             return _get(valueForKay: .userName) as? String ?? ""
+        }
+    }
+    
+    static var userEmail: String? {
+        set {
+            _set(value: newValue, key: .userEmail)
+        } get {
+            return _get(valueForKay: .userEmail) as? String ?? ""
+        }
+    }
+    
+    static var mobile: String? {
+        set {
+            _set(value: newValue, key: .mobile)
+        } get {
+            return _get(valueForKay: .mobile) as? String ?? ""
         }
     }
     
@@ -156,6 +174,14 @@ final class UserDefaultHelper {
     
     static func deleteUserName() {
         UserDefaults.standard.removeObject(forKey: Defaults.userName.rawValue)
+    }
+    
+    static func deleteUserEmail() {
+        UserDefaults.standard.removeObject(forKey: Defaults.userEmail.rawValue)
+    }
+    
+    static func deleteMobile() {
+        UserDefaults.standard.removeObject(forKey: Defaults.mobile.rawValue)
     }
     
     static func deleteLanguage() {

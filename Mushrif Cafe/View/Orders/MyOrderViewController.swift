@@ -84,20 +84,18 @@ extension MyOrderViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MyOrderTableViewCell") as! MyOrderTableViewCell
         
-//        if indexPath.row == 0 {
-//            cell.statusLabel.text = "Preparing"
-//            cell.topView.backgroundColor = UIColor.primaryBrown
-//        } else {
-//            cell.statusLabel.text = "Completed"
-//            cell.topView.backgroundColor = UIColor.borderPink
-//        }
-        cell.topView.backgroundColor = UIColor.primaryBrown
-        
         let dict = self.orderData[indexPath.row]
         
-        cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
-        cell.statusLabel.text = "Completed"
-        cell.noOfItemLabel.text = ""
+        if dict.status == 0 || dict.status == 1 || dict.status == 2 || dict.status == 3 || dict.status == 4 {
+            cell.statusLabel.text = "open_order".localized()
+            cell.topView.backgroundColor = UIColor.primaryBrown
+        } else if dict.status == 5 {
+            cell.statusLabel.text = "completed".localized()
+            cell.topView.backgroundColor = UIColor.borderPink
+        }        
+        
+        cell.orderLabel.text = "\("order_id".localized()) #\(dict.orderNumber)"
+        cell.noOfItemLabel.text = "-"
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         if "\(dict.paymentMethod)" == "apple_pay" {
             cell.payTypeLabel.text = "Apple Pay"
@@ -158,7 +156,7 @@ extension MyOrderViewController: UITableViewDelegate, UITableViewDataSource {
         
         let dict = self.orderData[indexPath.row]
         let detailVC = OrderDetailsVC.instantiate()
-        detailVC.orderDetails = dict
+        detailVC.orderId = "\(dict.id)"
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }

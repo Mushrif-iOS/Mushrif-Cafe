@@ -116,7 +116,7 @@ class EditCartVC: UIViewController, Instantiatable {
     
     var itemPrice: Double = Double()
     var qtyChangeValue: Double = Double()
-    var mealTypePrice: Double = Double()
+    //var mealTypePrice: Double = Double()
     var variationPrice: Double = Double()
     
     var qtyValue: Int = 1
@@ -150,11 +150,13 @@ class EditCartVC: UIViewController, Instantiatable {
     
     var cartDetails : CartItem?
     
+    var mealTypeIndex: IndexPath?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        self.mealTypeTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
+        self.mealTypeTblView.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
         self.stuffTblView.register(CellSelectionTVC.nib(), forCellReuseIdentifier: CellSelectionTVC.identifier)
         self.categoryTblView1.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
         self.categoryTblView2.register(SingleSelectionCell.nib(), forCellReuseIdentifier: SingleSelectionCell.identifier)
@@ -169,6 +171,8 @@ class EditCartVC: UIViewController, Instantiatable {
             choiceTblView.sectionHeaderTopPadding = 0
         }
         self.choiceTblView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        
+        self.mealTypeTblView.allowsMultipleSelection = false
         
         DispatchQueue.main.async {
             self.setupUI()
@@ -231,29 +235,50 @@ class EditCartVC: UIViewController, Instantiatable {
         
         let data = self.cartDetails
         
-        self.mealImg.loadURL(urlString: data?.product.image, placeholderImage: UIImage(named: "pizza"))
+        self.mealImg.loadURL(urlString: data?.product.image, placeholderImage: UIImage(named: "appLogo"))
         self.nameLabel.text = data?.product.name
         self.descLabel.text = data?.product.name
         
         self.comboDetails = data?.product.comboDetails
         
-        if data?.comboId != nil {
-            
-            if self.comboDetails?.categories.count == 1 {
-                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
-            }
-            if self.comboDetails?.categories.count == 2 {
-                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
-                self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
-            }
-            if self.comboDetails?.categories.count == 3 {
-                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
-                self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
-                self.categoryArr3 = self.comboDetails?.categories[2].comboItems ?? [CartComboItem]()
+        self.selectedComboId = data?.comboId
+        
+        if self.cartDetails?.product?.comboDetails != nil {
+            if self.cartDetails?.product?.comboDetails.selectionStatus == 1 {
+                
+                let firstIndexPath = IndexPath(row: 1, section: 0)
+                self.mealTypeTblView.selectRow(at: firstIndexPath, animated: false, scrollPosition: .none)
+                
+                if let selectedIndexPath = self.mealTypeTblView.indexPathForSelectedRow {
+                    self.mealTypeIndex = selectedIndexPath
+                }
+            } else if self.cartDetails?.product?.comboDetails.selectionStatus == 0 {
+                let firstIndexPath = IndexPath(row: 0, section: 0)
+                self.mealTypeTblView.selectRow(at: firstIndexPath, animated: false, scrollPosition: .none)
+                
+                if let selectedIndexPath = self.mealTypeTblView.indexPathForSelectedRow {
+                    self.mealTypeIndex = selectedIndexPath
+                }
             }
         }
+        
+//        if data?.comboId != nil {
+//            
+//            if self.comboDetails?.categories.count == 1 {
+//                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
+//            }
+//            if self.comboDetails?.categories.count == 2 {
+//                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
+//                self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
+//            }
+//            if self.comboDetails?.categories.count == 3 {
+//                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
+//                self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
+//                self.categoryArr3 = self.comboDetails?.categories[2].comboItems ?? [CartComboItem]()
+//            }
+//        }
                 
-        if data?.comboId == nil || data?.comboId == 0 {
+        if data?.product.haveCombo == 0 {
             self.typeOfMealTop.constant = 20
             self.typeOfMealHeight.constant = 0
             self.typeOfMealSeperatorHeight.constant = 0
@@ -334,26 +359,152 @@ class EditCartVC: UIViewController, Instantiatable {
             self.stuffTblHeight.constant = 52
         }
         
+        print(data?.isPlain ?? "")
+        self.isPlainSelected = data?.isPlain ?? "" == "Y" ? true : false
+        self.stuffTblView.reloadData()
+        
         if data?.comboId == nil {
             self.categoryTop.constant = 0
         }
         
         self.choiceArr = data?.product.choiceGroups ?? []
         if self.choiceArr.count > 0 {
+            
+            for obj in 0..<self.choiceArr.count {
+                if self.choiceArr[0].choices[obj].selectionStatus == 1 {
+                    self.choiceSelectedRows.append(IndexPath(row: obj, section: 0))
+                }
+            }
             self.choiceTblView.reloadData()
         }
         
+        self.showComboDetailsView()
+        
         if data?.product.specialPrice != "" {
             self.itemPrice = Double(data?.product.specialPrice ?? "") ?? 0.0
-            self.basePrice = self.itemPrice + self.mealTypePrice + self.variationPrice
+            self.basePrice = self.itemPrice + self.variationPrice//self.itemPrice + self.mealTypePrice + self.variationPrice
             self.originalBasePrice = Double(data?.product.specialPrice ?? "") ?? 0.0
         } else {
             self.itemPrice = Double(data?.product.price ?? "") ?? 0.0
-            self.basePrice = self.itemPrice + self.mealTypePrice + self.variationPrice
+            self.basePrice = self.itemPrice + self.variationPrice//self.itemPrice + self.mealTypePrice + self.variationPrice
             self.originalBasePrice = Double(data?.product.price ?? "") ?? 0.0
         }
         self.qtyChangeValue = (self.itemPrice*Double(qtyValue))
         self.setPriceAttritubte()
+    }
+    
+    private func showComboDetailsView() {
+        
+        if self.cartDetails?.product?.haveCombo == 1 {
+            if self.selectedComboId == self.cartDetails?.product?.comboDetails.id {
+                
+                if self.comboDetails?.categories.count == 1 {
+                    self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
+                    for obj in 0..<self.categoryArr1.count {
+                        if self.comboDetails?.categories[0].comboItems[obj].selectionStatus == 1 {
+                            self.categorySelecteIndex1 = IndexPath(row: obj, section: 0)
+                        }
+                    }
+                }
+                if self.comboDetails?.categories.count == 2 {
+                    self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
+                    for obj in 0..<self.categoryArr1.count {
+                        if self.comboDetails?.categories[0].comboItems[obj].selectionStatus == 1 {
+                            self.categorySelecteIndex1 = IndexPath(row: obj, section: 0)
+                        }
+                    }
+                    self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
+                    for obj in 0..<self.categoryArr2.count {
+                        if self.comboDetails?.categories[1].comboItems[obj].selectionStatus == 1 {
+                            self.categorySelecteIndex2 = IndexPath(row: obj, section: 0)
+                        }
+                    }
+                }
+                if self.comboDetails?.categories.count == 3 {
+                    self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
+                    for obj in 0..<self.categoryArr1.count {
+                        if self.comboDetails?.categories[0].comboItems[obj].selectionStatus == 1 {
+                            self.categorySelecteIndex1 = IndexPath(row: obj, section: 0)
+                        }
+                    }
+                    self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
+                    for obj in 0..<self.categoryArr2.count {
+                        if self.comboDetails?.categories[1].comboItems[obj].selectionStatus == 1 {
+                            self.categorySelecteIndex2 = IndexPath(row: obj, section: 0)
+                        }
+                    }
+                    self.categoryArr3 = self.comboDetails?.categories[2].comboItems ?? [CartComboItem]()
+                    for obj in 0..<self.categoryArr3.count {
+                        if self.comboDetails?.categories[2].comboItems[obj].selectionStatus == 1 {
+                            self.categorySelecteIndex3 = IndexPath(row: obj, section: 0)
+                        }
+                    }
+                }
+                
+                if self.comboDetails?.categories.count == 1 {
+                    self.categoryView1.isHidden = false
+                    self.categoryView2.isHidden = true
+                    self.categoryView3.isHidden = true
+                    self.categoryLabel1.text = self.comboDetails?.categories[0].name
+                    self.categoryTblHeight1.constant = CGFloat(self.categoryArr1.count * 52)
+                    self.categoryTblView1.reloadData()
+                }
+                
+                if self.comboDetails?.categories.count == 2 {
+                    self.categoryView1.isHidden = false
+                    self.categoryLabel1.text = self.comboDetails?.categories[0].name
+                    self.categoryTblHeight1.constant = CGFloat(self.categoryArr1.count * 52)
+                    self.categoryTblView1.reloadData()
+                    
+                    self.categoryView2.isHidden = false
+                    self.categoryLabel2.text = self.comboDetails?.categories[1].name
+                    self.categoryTblHeight2.constant = CGFloat(self.categoryArr2.count * 52)
+                    self.categoryTblView2.reloadData()
+                    
+                    self.categoryView3.isHidden = true
+                }
+                
+                if self.comboDetails?.categories.count == 3 {
+                    self.categoryView1.isHidden = false
+                    self.categoryLabel1.text = self.comboDetails?.categories[0].name
+                    self.categoryTblHeight1.constant = CGFloat(self.categoryArr1.count * 52)
+                    self.categoryTblView1.reloadData()
+                    
+                    self.categoryView2.isHidden = false
+                    self.categoryLabel2.text = self.comboDetails?.categories[1].name
+                    self.categoryTblHeight2.constant = CGFloat(self.categoryArr2.count * 52)
+                    self.categoryTblView2.reloadData()
+                    
+                    self.categoryView3.isHidden = false
+                    self.categoryLabel3.text = self.comboDetails?.categories[2].name
+                    self.categoryTblHeight3.constant = CGFloat(self.categoryArr3.count * 52)
+                    self.categoryTblView3.reloadData()
+                }
+                self.categoryTop.constant = 20
+                self.categorySeperatorHeight1.constant = 0.3
+                self.categorySeperatorHeight2.constant = 0.3
+                self.categorySeperatorHeight3.constant = 0.3
+            } else {
+                self.categoryTop.constant = 0
+                self.categorySeperatorHeight1.constant = 0
+                self.categorySeperatorHeight2.constant = 0
+                self.categorySeperatorHeight3.constant = 0
+                self.categoryTblHeight1.constant = 0
+                self.categoryTblHeight2.constant = 0
+                self.categoryTblHeight3.constant = 0
+                self.categoryLabel1.text = ""
+                self.categoryLabel2.text = ""
+                self.categoryLabel3.text = ""
+                
+                self.categoryView1.isHidden = true
+                self.categoryView2.isHidden = true
+                self.categoryView3.isHidden = true
+                
+                self.categorySelecteIndex1 = nil
+                self.categorySelecteIndex2 = nil
+                self.categorySelecteIndex3 = nil
+            }
+        }
     }
 }
 
@@ -387,13 +538,14 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == self.mealTypeTblView {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
-            if firstBoxSelectedRows.contains(indexPath) {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SingleSelectionCell") as! SingleSelectionCell
+            
+            if indexPath == self.mealTypeIndex {
                 cell.tickButton.isSelected = true
             } else {
                 cell.tickButton.isSelected = false
             }
-            
+                        
             if indexPath.row == 0 {
                 cell.nameLabel.text = self.cartDetails?.product?.name
                 if self.cartDetails?.product?.specialPrice != "" {
@@ -403,10 +555,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                     let doubleValue = Double(self.cartDetails?.product?.price ?? "") ?? 0.0
                     cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
                 }
-                cell.tickButton.isSelected = true
-                cell.isUserInteractionEnabled = false
             } else {
-                cell.isUserInteractionEnabled = true
                 if self.cartDetails?.product?.comboDetails != nil {
                     cell.nameLabel.text = self.cartDetails?.product?.comboDetails.comboTitle
                     if self.cartDetails?.product?.comboDetails.offerPrice != "" {
@@ -418,47 +567,6 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                     }
                 }
             }
-            
-            cell.callBackTap = {
-                if self.cartDetails?.product?.comboDetails != nil {
-                    if self.firstBoxSelectedRows.contains(indexPath) {
-                        self.firstBoxSelectedRows.remove(at: self.firstBoxSelectedRows.firstIndex(of: indexPath)!)
-                        if indexPath.row == 0 {
-                            cell.isUserInteractionEnabled = false
-                        } else {
-                            if self.cartDetails?.product?.comboDetails.offerPrice != "" {
-                                let doubleValue = Double(self.cartDetails?.product?.comboDetails.offerPrice ?? "") ?? 0.0
-                                self.mealTypePrice -= doubleValue
-                                
-                            } else {
-                                let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
-                                self.mealTypePrice -= doubleValue
-                            }
-                            self.selectedComboId = nil
-                            print("self.mealTypePrice", self.mealTypePrice)
-                        }
-                    } else {
-                        self.firstBoxSelectedRows.append(indexPath)
-                        if indexPath.row == 0 {
-                            cell.isUserInteractionEnabled = false
-                        } else {
-                            if self.cartDetails?.product?.comboDetails.offerPrice != "" {
-                                let doubleValue = Double(self.cartDetails?.product?.comboDetails.offerPrice ?? "") ?? 0.0
-                                self.mealTypePrice += doubleValue
-                                
-                            } else {
-                                let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
-                                self.mealTypePrice += doubleValue
-                            }
-                            self.selectedComboId = self.cartDetails?.product?.comboDetails.id
-                            print("self.mealTypePrice", self.mealTypePrice)
-                        }
-                    }
-                    cell.tickButton.isSelected = !cell.tickButton.isSelected
-                    self.setPriceAttritubte()
-                }
-            }
-            
             return cell
         } else if tableView == self.stuffTblView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
@@ -467,7 +575,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = dict.ingredientDetails.name
             cell.priceLabel.text = ""
             
-            if dict.requirementStatus == 1 {
+            if dict.requirementStatus == 1 || dict.ingredientDetails.selectionStatus == 0 {
                 self.existingIngredientRows.append(indexPath)
             }
             
@@ -482,6 +590,13 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 cell.isUserInteractionEnabled = true
                 self.ingredientSelectedRows.removeAll()
             }
+            
+            if dict.ingredientDetails.selectionStatus == 1 {
+                cell.tickButton.isSelected = true
+            } else {
+                cell.tickButton.isSelected = false
+            }
+            
             self.ingredientSelectedRows = self.existingIngredientRows
             cell.callBackTap = {
                 if self.ingredientSelectedRows.contains(indexPath) {
@@ -489,6 +604,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 } else {
                     self.ingredientSelectedRows.append(indexPath)
                 }
+                print("self.ingredientSelectedRows", self.ingredientSelectedRows)
                 cell.tickButton.isSelected = !cell.tickButton.isSelected
             }
             return cell
@@ -637,11 +753,11 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             if self.isPlainSelected {
-                headerView.tickButton.isSelected = false
-                self.isPlainSelected = false
-            } else {
                 headerView.tickButton.isSelected = true
-                self.isPlainSelected = true
+                //self.isPlainSelected = false
+            } else {
+                headerView.tickButton.isSelected = false
+                //self.isPlainSelected = true
             }
             
             headerView.callBackTap = {
@@ -655,8 +771,10 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                             }
                         }
                         self.ingredientSelectedRows.remove(at: self.ingredientSelectedRows.firstIndex(of: IndexPath(row: i, section: 0))!)
+                        print("self.ingredientSelectedRows", self.ingredientSelectedRows)
                     } else {
                         self.ingredientSelectedRows.append(IndexPath(row: i, section: 0))
+                        print("self.ingredientSelectedRows", self.ingredientSelectedRows)
                         if let cell = self.stuffTblView.cellForRow(at: IndexPath(row: tempRows[i].row, section: 0)) as? CellSelectionTVC {
                             DispatchQueue.main.asyncAfter(deadline: .now()) {
                                 cell.tickButton.isSelected = !cell.tickButton.isSelected
@@ -682,8 +800,63 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if tableView == self.categoryTblView1 {
+                
+        if tableView == self.mealTypeTblView {
+            if let currentSelectedIndex = self.mealTypeIndex, currentSelectedIndex == indexPath {
+                self.mealTypeIndex = indexPath
+                if indexPath.row == 0 {
+
+                    if self.cartDetails?.product.specialPrice != "" {
+                        self.itemPrice = Double(self.cartDetails?.product.specialPrice ?? "") ?? 0.0
+                    } else {
+                        self.itemPrice = Double(self.cartDetails?.product?.price ?? "") ?? 0.0
+                    }
+                    self.selectedComboId = nil
+                    print("self.itemPrice", self.itemPrice)
+                } else {
+                    if self.cartDetails?.product?.comboDetails.offerPrice != "" {
+                        let doubleValue = Double(self.cartDetails?.product?.comboDetails.offerPrice ?? "") ?? 0.0
+                        self.itemPrice = doubleValue
+                        
+                    } else {
+                        let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
+                        self.itemPrice = doubleValue
+                    }
+                    self.selectedComboId = self.cartDetails?.product.comboDetails.id
+                    print("self.itemPrice", self.itemPrice)
+                }
+                self.showComboDetailsView()
+            } else {
+                self.mealTypeIndex = indexPath
+                
+                if indexPath.row == 0 {
+                    
+                    if self.cartDetails?.product.specialPrice != "" {
+                        self.itemPrice = Double(self.cartDetails?.product.specialPrice ?? "") ?? 0.0
+                    } else {
+                        self.itemPrice = Double(self.cartDetails?.product.price ?? "") ?? 0.0
+                    }
+                    self.selectedComboId = nil
+                    print("self.itemPrice", self.itemPrice)
+                } else {
+                    if self.cartDetails?.product?.comboDetails.offerPrice != "" {
+                        let doubleValue = Double(self.cartDetails?.product?.comboDetails.offerPrice ?? "") ?? 0.0
+                        self.itemPrice = doubleValue
+                        
+                    } else {
+                        let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
+                        self.itemPrice = doubleValue
+                    }
+                    self.selectedComboId = self.cartDetails?.product?.comboDetails.id
+                    print("self.itemPrice", self.itemPrice)
+                }
+                self.showComboDetailsView()
+            }
+            self.qtyChangeValue = (self.itemPrice*Double(qtyValue))
+            self.setPriceAttritubte()
+            tableView.reloadData()
+            
+        } else if tableView == self.categoryTblView1 {
             if let currentSelectedIndex = self.categorySelecteIndex1, currentSelectedIndex == indexPath {
                 self.categorySelecteIndex1 = nil
                 tableView.deselectRow(at: indexPath, animated: true)
@@ -712,9 +885,9 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
     
     func setPriceAttritubte() {
         if self.qtyChangeValue > 0 {
-            self.basePrice = self.qtyChangeValue + self.mealTypePrice + self.variationPrice
+            self.basePrice = self.qtyChangeValue + self.variationPrice//self.qtyChangeValue + self.mealTypePrice + self.variationPrice
         } else {
-            self.basePrice = self.itemPrice + self.mealTypePrice + self.variationPrice
+            self.basePrice = self.itemPrice + self.variationPrice//self.itemPrice + self.mealTypePrice + self.variationPrice
         }
         
         let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2))",
@@ -743,8 +916,8 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         for i in 0..<finalChoiceRows.count {
             choiceIds.append(self.choiceArr[finalChoiceRows[i].section].choices[finalChoiceRows[i].row].id)
         }
-        let choicejsonString = SingleTon.sharedSingleTon.convertToJSON(arrayObject: choiceIds)
-        
+        let choicejsonString = choiceIds.map{String($0)}.joined(separator: ", ")//SingleTon.sharedSingleTon.convertToJSON(arrayObject: choiceIds)
+                
         let orderType = UserDefaultHelper.orderType ?? ""
         let hallId = UserDefaultHelper.hallId ?? ""
         let tableId = UserDefaultHelper.tableId ?? ""
@@ -764,8 +937,8 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         for i in 0..<finalIngredientRows.count {
             ingredients_id.append(self.ingredientsArr[finalIngredientRows[i].row].ingredientDetails.id)
         }
-        let ingredientsjsonString = SingleTon.sharedSingleTon.convertToJSON(arrayObject: ingredients_id)
-        
+        let ingredientsjsonString = ingredients_id.map{String($0)}.joined(separator: ", ")//SingleTon.sharedSingleTon.convertToJSON(arrayObject: ingredients_id)
+                
         var comboProduct = [CartComboItem]()
         if categorySelecteIndex1 != nil {
             comboProduct.append(self.categoryArr1[categorySelecteIndex1!.row])
@@ -780,21 +953,22 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         for i in 0..<comboProduct.count {
             combo_product_id.append(comboProduct[i].id)
         }
-        let combojsonString = SingleTon.sharedSingleTon.convertToJSON(arrayObject: combo_product_id)
+        let combojsonString = combo_product_id.map{String($0)}.joined(separator: ", ")//SingleTon.sharedSingleTon.convertToJSON(arrayObject: combo_product_id)
         
         let aParams = ["hall_id": hallId,
                        "table_id": tableId,
                        "group_id": groupId,
                        "order_type": orderType,
                        "item_id": "\(self.cartDetails?.id ?? 0)",
+                       "cart_item_id": "\(self.cartDetails?.id ?? 0)",
                        "combo_id": "\(self.selectedComboId ?? 0)",
                        "unit_price": "\(self.basePrice)",
                        "quantity": "\(self.qtyValue)",
                        "is_customized": "Y",
                        "is_plain": self.isPlainSelected ? "Y" : "N",
-                       "ingredients_id[]": "\(ingredientsjsonString ?? "")",
-                       "combo_product_id[]": "\(combojsonString ?? "")",
-                       "choice_group_id[]": "\(choicejsonString ?? "")",
+                       "ingredients_id[]": "\(ingredientsjsonString)",
+                       "combo_product_id[]": "\(combojsonString)",
+                       "choice_group_id[]": "\(choicejsonString)",
                        "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         
         print(aParams)
@@ -808,8 +982,8 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             print(msg)
             DispatchQueue.main.async {
                 self.showBanner(message: msg, status: .success)
-                let cartVC = CartVC.instantiate()
-                self.navigationController?.pushViewController(cartVC, animated: true)
+                //let cartVC = CartVC.instantiate()
+                self.navigationController?.popViewController(animated: true)
             }
         } failure: { error in
             print("Error \(error.localizedDescription)")

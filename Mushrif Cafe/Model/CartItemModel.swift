@@ -29,6 +29,8 @@ class CartRootClass {
 
 class CartResponse {
     
+    var activeItems : [CartItem]!
+    var inactiveItems : [CartItem]!
     var cartItems : [CartItem]!
     var customerId : Int = 0
     var groupId : Int = 0
@@ -36,7 +38,9 @@ class CartResponse {
     var id : Int = 0
     var isPaid : String = ""
     var items : Int = 0
+    var orderDate : String = ""
     var orderId : Int = 0
+    var orderNo : String = ""
     var orderStatus : String = ""
     var orderType : String = ""
     var subTotal : String = ""
@@ -45,6 +49,18 @@ class CartResponse {
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
+        }
+        activeItems = [CartItem]()
+        let activeItemsArray = json["active_items"].arrayValue
+        for activeItemsJson in activeItemsArray{
+            let value = CartItem(fromJson: activeItemsJson)
+            activeItems.append(value)
+        }
+        inactiveItems = [CartItem]()
+        let inactiveItemsArray = json["inactive_items"].arrayValue
+        for inactiveItemsJson in inactiveItemsArray{
+            let value = CartItem(fromJson: inactiveItemsJson)
+            inactiveItems.append(value)
         }
         cartItems = [CartItem]()
         let cartItemsArray = json["cart_items"].arrayValue
@@ -58,6 +74,8 @@ class CartResponse {
         id = json["id"].intValue
         isPaid = json["is_paid"].stringValue
         items = json["items"].intValue
+        orderDate = json["order_date"].stringValue
+        orderNo = json["order_no"].stringValue
         orderId = json["order_id"].intValue
         orderStatus = json["order_status"].stringValue
         orderType = json["order_type"].stringValue
@@ -186,6 +204,7 @@ class CartComboDetail {
     var offerPrice : String = ""
     var price : String = ""
     var productId : Int = 0
+    var selectionStatus : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -202,6 +221,7 @@ class CartComboDetail {
         offerPrice = json["offer_price"].stringValue
         price = json["price"].stringValue
         productId = json["product_id"].intValue
+        selectionStatus = json["selection_status"].intValue
     }
 }
 

@@ -41,6 +41,7 @@ class AddUsualsVC: UIViewController, Instantiatable {
     var lastPage: Int = Int()
     
     var productId = String()
+    var itemType = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,6 +114,7 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UsualListTableViewCell") as! UsualListTableViewCell
         
         let dict = self.usualData[indexPath.row]
+        cell.img.loadURL(urlString: dict.items.first != nil ? dict.items.first?.product.imageUrl : "", placeholderImage: UIImage(named: "appLogo"))
         cell.nameLabel.text = dict.title
         cell.descLabel.text = dict.items.first != nil ? dict.items.first?.product.descriptionField : ""
         
@@ -164,15 +166,24 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         
         let dict = self.usualData[sender.tag]
         
-        let aParams: [String: Any] = ["group_id": "\(dict.id)", "product_id": "\(self.productId)", "quantity": "1", "item_type": "listed", "order_id": ""]
-        print(aParams)
+        //itemType = "ordered"
         
+        var aParams = [String: Any]()
+        
+        if self.itemType == "listed" {
+            aParams = ["group_id": "\(dict.id)", "product_id": "\(self.productId)", "quantity": "1", "item_type": "listed", "order_id": ""]
+            print(aParams)
+        } else {
+            aParams = ["group_id": "\(dict.id)", "product_id": "", "quantity": "1", "item_type": "ordered", "order_id": "\(self.productId)"]
+            print(aParams)
+        }
+
         APIManager.shared.postCall(APPURL.add_Item_To_Usual, params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
             
             let msg = responseJSON["message"].stringValue
             self.showBanner(message: msg, status: .success)
-            
+            self.completed()
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }

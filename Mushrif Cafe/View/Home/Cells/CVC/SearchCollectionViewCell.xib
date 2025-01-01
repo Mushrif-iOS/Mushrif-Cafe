@@ -17,6 +17,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="307" height="126"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pizza" translatesAutoresizingMaskIntoConstraints="NO" id="Jba-3O-iiV">
+                        <rect key="frame" x="217" y="10" width="80" height="80"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="80" id="mbn-EE-PvW"/>
+                            <constraint firstAttribute="width" constant="80" id="v6Q-im-zui"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pL0-KT-JLG">
                         <rect key="frame" x="10" y="14.999999999999998" width="199" height="20.333333333333329"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -30,13 +45,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add to my Usuals" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d04-O1-RU6">
-                        <rect key="frame" x="10" y="75.333333333333329" width="133" height="20.333333333333329"/>
+                        <rect key="frame" x="10" y="75.333333333333329" width="133" height="34"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="91E-AU-16y">
-                        <rect key="frame" x="145" y="72.666666666666671" width="26" height="26"/>
+                        <rect key="frame" x="145" y="79.333333333333329" width="26" height="26"/>
                         <color key="backgroundColor" red="0.94509803920000002" green="0.94509803920000002" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="26" id="Zau-VL-W3z"/>
@@ -54,21 +69,11 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pizza" translatesAutoresizingMaskIntoConstraints="NO" id="Jba-3O-iiV">
-                        <rect key="frame" x="217" y="10" width="80" height="80"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="80" id="mbn-EE-PvW"/>
-                            <constraint firstAttribute="width" constant="80" id="v6Q-im-zui"/>
-                        </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                <real key="value" value="8"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                <color key="value" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
-                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQP-Fg-aDf">
+                        <rect key="frame" x="10" y="75.333333333333329" width="161" height="34"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    </button>
                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FUn-U8-hy8">
                         <rect key="frame" x="227" y="70" width="60" height="30"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -101,6 +106,8 @@
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="BQP-Fg-aDf" firstAttribute="trailing" secondItem="91E-AU-16y" secondAttribute="trailing" id="5PU-0J-ju0"/>
+                    <constraint firstItem="BQP-Fg-aDf" firstAttribute="bottom" secondItem="d04-O1-RU6" secondAttribute="bottom" id="7Ok-Ex-Tr8"/>
                     <constraint firstItem="91E-AU-16y" firstAttribute="leading" secondItem="d04-O1-RU6" secondAttribute="trailing" constant="2" id="CvO-Wk-kNV"/>
                     <constraint firstItem="pL0-KT-JLG" firstAttribute="top" secondItem="D4q-wz-wM6" secondAttribute="top" constant="15" id="R4s-vp-a0d"/>
                     <constraint firstItem="Jba-3O-iiV" firstAttribute="leading" secondItem="pL0-KT-JLG" secondAttribute="trailing" constant="8" id="TkA-7O-8UU"/>
@@ -118,6 +125,8 @@
                     <constraint firstAttribute="trailing" secondItem="Jba-3O-iiV" secondAttribute="trailing" constant="10" id="kk5-7g-DuP"/>
                     <constraint firstItem="d04-O1-RU6" firstAttribute="top" secondItem="c6s-0M-Yof" secondAttribute="bottom" constant="12" id="oY5-Tk-3kW"/>
                     <constraint firstItem="c6s-0M-Yof" firstAttribute="leading" secondItem="pL0-KT-JLG" secondAttribute="leading" id="pLU-0p-EHm"/>
+                    <constraint firstItem="BQP-Fg-aDf" firstAttribute="top" secondItem="d04-O1-RU6" secondAttribute="top" id="qJY-7f-yNX"/>
+                    <constraint firstItem="BQP-Fg-aDf" firstAttribute="leading" secondItem="d04-O1-RU6" secondAttribute="leading" id="xNO-39-3Ns"/>
                     <constraint firstAttribute="bottom" secondItem="MmT-Ql-i63" secondAttribute="bottom" constant="10" id="xS6-e7-hIn"/>
                 </constraints>
                 <userDefinedRuntimeAttributes>
@@ -130,6 +139,7 @@
             <size key="customSize" width="307" height="109"/>
             <connections>
                 <outlet property="addButton" destination="FUn-U8-hy8" id="Jik-if-aUr"/>
+                <outlet property="addUsual" destination="BQP-Fg-aDf" id="Kdg-we-88c"/>
                 <outlet property="addUsualLabel" destination="d04-O1-RU6" id="cVF-G8-JmM"/>
                 <outlet property="customizeLabel" destination="MmT-Ql-i63" id="L7f-4M-lHd"/>
                 <outlet property="img" destination="Jba-3O-iiV" id="nG7-R8-1HA"/>

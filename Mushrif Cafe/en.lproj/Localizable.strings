@@ -74,8 +74,9 @@
 "add_new" = "Add New";
 "keep_order_open" = "Keep the Order Open";
 "order_confirm" = "Your order has been confirmed";
-"order_id" = "Order ID";
+"order_id" = "Order Number";
 "payment" = "Payment";
+"open_order" = "OPEN ORDER";
 
 "cart" = "Cart";
 "balance" = "Balance";
@@ -91,6 +92,7 @@
 "total" = "Total";
 "paid_by" = "Paid by";
 "order_on" = "Ordered on";
+"completed" = "Completed";
 
 "my_usual" = "My Usuals";
 "create_new" = "Create New";
@@ -112,4 +114,4 @@
 "selectAny" = "Select any";
 "option" = "option";
 "no_orders" = "No Orders Yet";
-"order_Id" = "Order ID";
+"please_scan" = "Please scan the table first";

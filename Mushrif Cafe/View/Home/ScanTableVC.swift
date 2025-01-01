@@ -81,8 +81,16 @@ class ScanTableVC: UIViewController, Instantiatable {
     }
     
     @IBAction func skipAction(_ sender: UIButton) {
-        let dashboardVC = DashboardVC.instantiate()
-        self.navigationController?.push(viewController: dashboardVC)
+        UserDefaultHelper.hallId = ""
+        UserDefaultHelper.tableId = ""
+        UserDefaultHelper.groupId = ""
+        UserDefaultHelper.tableName = ""
+        
+        DispatchQueue.main.async {
+            UserDefaultHelper.orderType = "takeaway"
+            let dashboardVC = DashboardVC.instantiate()
+            self.navigationController?.push(viewController: dashboardVC)
+        }
     }
     
     @IBAction func continueAction(_ sender: UIButton) {

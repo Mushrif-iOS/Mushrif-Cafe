@@ -18,10 +18,15 @@ class CellSelectionTVC: UITableViewCell {
     @IBOutlet var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.poppinsMediumFontWith(size: 17)
+            nameLabel.text = ""
         }
     }
     
-    @IBOutlet var priceLabel: UILabel!
+    @IBOutlet var priceLabel: UILabel! {
+        didSet {
+            priceLabel.text = ""
+        }
+    }
     
     @IBOutlet var tickButton: UIButton!
         

@@ -63,7 +63,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         
         let dict = mealObj[indexPath.item]
         cell.nameLabel.text = dict.name
-        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "pizza"))
+        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "appLogo"))
         
         if dict.specialPrice != "" {
             let doubleValue = Double(dict.specialPrice) ?? 0.0
@@ -148,9 +148,9 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
     @objc func addUsualAction(sender: UIButton) {
         
         if UserDefaultHelper.authToken != "" {
-            if let cell = self.dataCollection.cellForItem(at: IndexPath(row: sender.tag, section: 0)) as? MealCVCell {
-                cell.saveButton.isSelected.toggle()
-            }
+//            if let cell = self.dataCollection.cellForItem(at: IndexPath(row: sender.tag, section: 0)) as? MealCVCell {
+//                cell.saveButton.isSelected.toggle()
+//            }
             let dict = mealObj[sender.tag]
             let addVC = AddUsualsVC.instantiate()
             if #available(iOS 15.0, *) {
@@ -160,6 +160,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                 }
             }
             addVC.productId = "\(dict.id ?? 0)"
+            addVC.itemType = "listed"
             self.navController?.present(addVC, animated: true, completion: nil)
         } else {
             let profileVC = LoginVC.instantiate()

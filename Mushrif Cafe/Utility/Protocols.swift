@@ -40,3 +40,6 @@ protocol SetLocationDelegate {
     func onSelect(location: CLLocation, address: String)
 }
 
+protocol PayNowDelegate {
+    func onSelect(type: String, paymentId: String)
+}

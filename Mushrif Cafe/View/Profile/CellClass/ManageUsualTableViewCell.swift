@@ -35,6 +35,10 @@ class ManageUsualTableViewCell: UITableViewCell {
                                                                 [.underlineStyle: NSUnderlineStyle.single.rawValue]), for: .normal)
         }
     }
+    
+    @IBOutlet weak var minusButton: UIButton!
+    @IBOutlet weak var plusButton: UIButton!
+    
     @IBOutlet weak var otherPriceLabel: UILabel! {
         didSet {
             otherPriceLabel.font = UIFont.poppinsBoldFontWith(size: 14)

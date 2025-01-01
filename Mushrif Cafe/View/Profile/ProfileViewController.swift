@@ -18,10 +18,43 @@ class ProfileViewController: UIViewController, Instantiatable {
     
     @IBOutlet weak var selectLanguageTxt: UITextField!
     
+    @IBOutlet weak var languageButton: UIButton!
+    
     var menuItems = ["my_orders".localized(), "manage".localized(), "wallet".localized(), "contact_us".localized(), "terms_and_conditions".localized(), "logout".localized()]
     var menuImgs = [UIImage(named: "plate-utensils"), UIImage(named: "saved"), UIImage(named: "wallet"), UIImage(named: "headset"), UIImage(named: "document"), UIImage(named: "leave")]
     
     var profileData: Customer?
+    
+    var languageMenu: UIMenu {
+        return UIMenu(title: "select_language".localized(), image: nil, identifier: .none, options: .singleSelection, children: langMenuItems)
+    }
+    
+    var langMenuItems: [UIAction] {
+        return [
+            UIAction(title: "English", image: nil, state: UserDefaultHelper.language == "en" ? .on : .off, handler: { (_) in
+                print("English")
+                UserDefaultHelper.language = "en"
+                DispatchQueue.main.async {
+                    let userLanguage = UserDefaultHelper.language
+                    UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
+                    UserDefaultHelper.isLanguageSelected = "yes"
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.restartApp()
+                }
+            }),
+            UIAction(title: "العربية", image: nil, state: UserDefaultHelper.language == "ar" ? .on : .off, handler: { (_) in
+                print("Arabic")
+                UserDefaultHelper.language = "ar"
+                DispatchQueue.main.async {
+                    let userLanguage = UserDefaultHelper.language
+                    UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
+                    UserDefaultHelper.isLanguageSelected = "yes"
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    appDelegate.restartApp()
+                }
+            }),
+        ]
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,14 +64,17 @@ class ProfileViewController: UIViewController, Instantiatable {
             mainTableView.sectionHeaderTopPadding = 0
         }
         
-        let pickerView = UIPickerView()
-        pickerView.delegate = self
-        selectLanguageTxt.inputView = pickerView
+//        let pickerView = UIPickerView()
+//        pickerView.delegate = self
+//        selectLanguageTxt.inputView = pickerView
         
         mainTableView.register(ProfileHeaderTVC.nib(), forCellReuseIdentifier: ProfileHeaderTVC.identifier)
         mainTableView.register(ProfileTVC.nib(), forCellReuseIdentifier: ProfileTVC.identifier)
         
         print("UserDefaultHelper.userloginId", UserDefaultHelper.userloginId!)
+        
+        languageButton.menu = languageMenu
+        languageButton.showsMenuAsPrimaryAction = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,7 +86,7 @@ class ProfileViewController: UIViewController, Instantiatable {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func languageAction(_ sender: Any) {
+    @IBAction func languageAction(_ sender: UIButton) {
     }
     
     private func getProfile() {
@@ -157,6 +193,8 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
                         UserDefaultHelper.deleteCountryCode()
                         UserDefaultHelper.deleteUserLoginId()
                         UserDefaultHelper.deleteUserName()
+                        UserDefaultHelper.deleteUserEmail()
+                        UserDefaultHelper.deleteMobile()
                         UserDefaultHelper.deleteAuthToken()
                         UserDefaultHelper.deleteTotalItems()
                         UserDefaultHelper.deleteTotalPrice()

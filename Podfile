@@ -14,6 +14,7 @@ target 'Mushrif Cafe' do
   pod 'ProgressHUD'
   pod 'SYBanner'
   pod 'Siren'
+  pod 'MyFatoorah'
 
 end
 

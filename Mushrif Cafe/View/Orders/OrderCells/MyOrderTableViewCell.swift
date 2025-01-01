@@ -14,6 +14,7 @@ class MyOrderTableViewCell: UITableViewCell {
     @IBOutlet var orderLabel: UILabel! {
         didSet {
             orderLabel.font = UIFont.poppinsMediumFontWith(size: 18)
+            orderLabel.adjustsFontSizeToFitWidth = true
         }
     }
     @IBOutlet var statusLabel: UILabel! {
@@ -62,6 +63,8 @@ class MyOrderTableViewCell: UITableViewCell {
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsLightFontWith(size: 16)
+            dateTimeLabel.numberOfLines = 0
+            dateTimeLabel.adjustsFontSizeToFitWidth = true
         }
     }
     @IBOutlet var payTypeLabel: UILabel! {

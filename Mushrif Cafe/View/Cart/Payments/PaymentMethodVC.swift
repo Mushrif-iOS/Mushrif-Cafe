@@ -7,6 +7,8 @@
 
 import UIKit
 import MFSDK
+import ProgressHUD
+import PassKit
 
 class PaymentMethodVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .cart
@@ -46,90 +48,148 @@ class PaymentMethodVC: UIViewController, Instantiatable {
         }
     }
     
-    var delegate: InputBoxDelegate?
+    var delegate: PayNowDelegate?
     
-    var paymentMethods: [MFPaymentMethod]?
+    var totalCost: String = ""
+        
+    private var payment : PKPaymentRequest = PKPaymentRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         MFSettings.shared.delegate = self
         
+        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
+        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
+            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
+            payment.supportedCountries = ["IN", "KW"]
+            payment.merchantCapabilities = .capability3DS
+            payment.countryCode = "KW"
+            payment.currencyCode = "KWD"
+            payment.supportedNetworks = paymentNetworks
+        } else {
+            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+                
+            }
+        }
+        
+        self.initiatePayment()
     }
     
     @IBAction func appleAction(_ sender: Any) {
-        //        let confirmVC = OrderSuccessVC.instantiate()
-        //        if #available(iOS 15.0, *) {
-        //            if let sheet = confirmVC.sheetPresentationController {
-        //                sheet.detents = [.large()]
-        //            }
-        //        }
-        //        self.delegate?.onInput(text: "apple_pay")
-        //        self.present(confirmVC, animated: true, completion: nil)
-        self.delegate?.onInput(text: "apple_pay")
-        self.dismiss(animated: true)
+        payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
+                    
+        let controller = PKPaymentAuthorizationViewController(paymentRequest: payment)
+        if controller != nil {
+            controller!.delegate = self
+            self.present(controller!, animated: true, completion: nil)
+        }
     }
     
     @IBAction func onlineKnetAction(_ sender: Any) {
-        //        let confirmVC = OrderSuccessVC.instantiate()
-        //        if #available(iOS 15.0, *) {
-        //            if let sheet = confirmVC.sheetPresentationController {
-        //                sheet.detents = [.large()]
-        //            }
-        //        }
-        //        self.present(confirmVC, animated: true, completion: nil)
-        self.delegate?.onInput(text: "knet")
-        self.dismiss(animated: true)
+        //self.delegate?.onInput(text: "knet")
+        
+        self.executePayment(paymentMethodId: 1)
     }
     
     @IBAction func swipeKnetAction(_ sender: Any) {
-        //        let confirmVC = OrderSuccessVC.instantiate()
-        //        if #available(iOS 15.0, *) {
-        //            if let sheet = confirmVC.sheetPresentationController {
-        //                sheet.detents = [.large()]
-        //            }
-        //        }
-        //        self.present(confirmVC, animated: true, completion: nil)
-        //self.delegate?.onInput(text: "knet_swipe")
-        
-        for obj in 0..<(paymentMethods?.count ?? 0) - 1 {
-            print(paymentMethods?[obj].paymentMethodEn ?? "")
-        }
-        
-        // initiatePayment
-        let invoiceValue = 5.0
-        var selectedPaymentMethod = 1
-        let initiatePayment = MFInitiatePaymentRequest(invoiceAmount: Decimal(invoiceValue), currencyIso: .kuwait_KWD)
-        MFPaymentRequest.shared.initiatePayment(request: initiatePayment, apiLanguage: .english) { [weak self] (response) in
-            switch response {
-            case .success(let initiatePaymentResponse):
-                var paymentMethods = initiatePaymentResponse.paymentMethods
-                if let paymentMethods = initiatePaymentResponse.paymentMethods, !paymentMethods.isEmpty {
-                    selectedPaymentMethod = paymentMethods[0].paymentMethodId
-                }
-            case .failure(let failError):
-                print(failError)
-            }
-        }
+        self.delegate?.onSelect(type: "knet_swipe", paymentId: "")
         
         self.dismiss(animated: true)
     }
     
     @IBAction func keepAction(_ sender: Any) {
-        //        let confirmVC = OrderSuccessVC.instantiate()
-        //        if #available(iOS 15.0, *) {
-        //            if let sheet = confirmVC.sheetPresentationController {
-        //                sheet.detents = [.large()]
-        //            }
-        //        }
-        //        self.present(confirmVC, animated: true, completion: nil)
-        self.delegate?.onInput(text: "open")
+        self.delegate?.onSelect(type: "open", paymentId: "")
         self.dismiss(animated: true)
+    }
+}
+
+extension PaymentMethodVC : PKPaymentAuthorizationViewControllerDelegate {
+    
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        let transactionID = payment.token.transactionIdentifier
+        print("Transaction ID: \(transactionID)")
+        completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
+        
+        controller.dismiss(animated: true) {
+            self.delegate?.onSelect(type: "apple_pay", paymentId: "\(transactionID)")
+            self.dismiss(animated: true)
+        }
+    }
+    
+    func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        controller.dismiss(animated: true) {
+            self.dismiss(animated: true)
+        }
     }
 }
 
 extension PaymentMethodVC: MFPaymentDelegate {
     func didInvoiceCreated(invoiceId: String) {
         print("#\(invoiceId)")
+    }
+    
+    func initiatePayment() {
+        ProgressHUD.animate()
+        ProgressHUD.colorAnimation = UIColor.primaryBrown
+        let initiatePayment = MFInitiatePaymentRequest(invoiceAmount: Decimal(string: self.totalCost) ?? 0, currencyIso: .kuwait_KWD)
+        MFPaymentRequest.shared.initiatePayment(request: initiatePayment, apiLanguage: UserDefaultHelper.language == "ar" ? .arabic :  .english, completion: { (result) in
+            ProgressHUD.dismiss()
+            switch result {
+            case .success(let initiatePaymentResponse):
+                for obj in 0..<(initiatePaymentResponse.paymentMethods?.count ?? 0) {
+                    print(initiatePaymentResponse.paymentMethods?[obj].paymentMethodEn ?? "")
+                    print(initiatePaymentResponse.paymentMethods?[obj].paymentMethodId ?? "")
+                }
+            case .failure(let failError):
+                ProgressHUD.error(failError)
+            }
+        })
+    }
+
+    func executePayment(paymentMethodId: Int) {
+        let request = getExecutePaymentRequest(paymentMethodId: paymentMethodId)
+        ProgressHUD.animate()
+        ProgressHUD.colorAnimation = UIColor.primaryBrown
+        MFPaymentRequest.shared.executePayment(request: request, apiLanguage: .arabic) { response, invoiceId  in
+            ProgressHUD.dismiss()
+            switch response {
+            case .success(let executePaymentResponse):
+                if let invoiceStatus = executePaymentResponse.invoiceStatus {
+                    ProgressHUD.success(invoiceStatus)
+                }
+                if let invoiceId = invoiceId {
+                    print("Success with invoiceId \(invoiceId)")
+                    self.delegate?.onSelect(type: "knet", paymentId: "\(invoiceId)")
+                    self.dismiss(animated: true)
+                }
+            case .failure(let failError):
+                ProgressHUD.error(failError)
+            }
+        }
+    }
+    
+    private func getExecutePaymentRequest(paymentMethodId: Int) -> MFExecutePaymentRequest {
+        let invoiceValue = Decimal(string: self.totalCost) ?? 0
+        let request = MFExecutePaymentRequest(invoiceValue: invoiceValue , paymentMethod: paymentMethodId)
+        request.customerEmail = UserDefaultHelper.userEmail ?? ""
+        request.customerMobile = UserDefaultHelper.mobile ?? ""
+        request.customerCivilId = ""
+        request.customerName = UserDefaultHelper.userName ?? ""
+//        let address = MFCustomerAddress(block: "ddd", street: "sss", houseBuildingNo: "sss", address: "sss", addressInstructions: "sss")
+//        request.customerAddress = address
+        request.customerReference = "\(Bundle.applicationName) Customer"
+        request.language = UserDefaultHelper.language == "ar" ? .arabic :  .english
+        request.mobileCountryCode = MFMobileCountryCodeISO.kuwait.rawValue
+        request.displayCurrencyIso = .kuwait_KWD
+        let date = Date().addingTimeInterval(1000)
+        request.expiryDate = date
+        
+        // Uncomment this to add products for your invoice
+        //         var productList = [MFProduct]()
+        //        let product = MFProduct(name: "ABC", unitPrice: 1.887, quantity: 1)
+        //         productList.append(product)
+        //         request.invoiceItems = productList
+        return request
     }
 }

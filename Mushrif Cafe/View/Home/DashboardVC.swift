@@ -33,10 +33,7 @@ class DashboardVC: UIViewController, Instantiatable {
             profileButton.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 20)
         }
     }
-    
-    var pickOption = ["Table 1", "Table 2", "Table 3", "Table 4", "Table 5"]
-    var pickerView: UIPickerView!
-    
+
     @IBOutlet weak var searchLabel: UILabel! {
         didSet {
             searchLabel.font = UIFont.poppinsRegularFontWith(size: 16)
@@ -50,6 +47,7 @@ class DashboardVC: UIViewController, Instantiatable {
     var ourBestData: [TryOurBest] = [TryOurBest]()
     
     var activeData = [MyActiveOrder]()
+    var finalActiveData = [MyActiveOrder]()
     var myUsualData = [DashboardMyUsual]()
     var bannerData = [JSON]()
         
@@ -73,10 +71,9 @@ class DashboardVC: UIViewController, Instantiatable {
     }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
-//        let orderVC = MyOrderViewController.instantiate()
-//        self.navigationController?.pushViewController(orderVC, animated: true)
         self.categoryData.removeAll()
         self.ourBestData.removeAll()
+        self.finalActiveData.removeAll()
         self.activeData.removeAll()
         self.myUsualData.removeAll()
         self.bannerData.removeAll()
@@ -149,6 +146,14 @@ class DashboardVC: UIViewController, Instantiatable {
             let activeDataDict = responseJSON["response"]["my_active_orders"].arrayValue
             for obj in activeDataDict {
                 self.activeData.append(MyActiveOrder(fromJson: obj))
+            }
+            
+            if self.activeData.count > 0 {
+                for obj in 0..<self.activeData.count {
+                    if self.activeData[obj].status == 1 || self.activeData[obj].status == 2 || self.activeData[obj].status == 3 || self.activeData[obj].status == 4 {
+                        self.finalActiveData.append(self.activeData[obj])
+                    }
+                }
             }
             
             let myUsualDict = responseJSON["response"]["my_usuals"].arrayValue
@@ -249,16 +254,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.myUsualData.count == 0 && self.bannerData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
-                let dict = self.activeData[indexPath.row]
-                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
-                cell.statusLabel.text = "OPEN ORDER"
-                cell.noOfItemLabel.text = ""
-                cell.dateTimeLabel.text = ""
-                let amt = Double("\(dict.grandTotal)")
-                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
-                
-                cell.payNowButton.tag = indexPath.row
-                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                //let dict = self.activeData[indexPath.row]
+                cell.usualObj = self.finalActiveData
+                cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
@@ -299,15 +297,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.myUsualData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
-                let dict = self.activeData[indexPath.row]
-                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
-                cell.statusLabel.text = "OPEN ORDER"
-                cell.noOfItemLabel.text = ""
-                cell.dateTimeLabel.text = ""
-                let amt = Double("\(dict.grandTotal)")
-                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
-                cell.payNowButton.tag = indexPath.row
-                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                //let dict = self.activeData[indexPath.row]
+                cell.usualObj = self.finalActiveData
+                cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTVCell") as! CategoryTVCell
@@ -328,15 +320,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         } else if self.bannerData.count == 0 {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
-                let dict = self.activeData[indexPath.row]
-                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
-                cell.statusLabel.text = "OPEN ORDER"
-                cell.noOfItemLabel.text = ""
-                cell.dateTimeLabel.text = ""
-                let amt = Double("\(dict.grandTotal)")
-                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
-                cell.payNowButton.tag = indexPath.row
-                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                //let dict = self.activeData[indexPath.row]
+                cell.usualObj = self.finalActiveData
+                cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
@@ -359,15 +345,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
         }    else {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
-                let dict = self.activeData[indexPath.row]
-                cell.orderLabel.text = "\("order_Id".localized()) #\(dict.orderNumber)"
-                cell.statusLabel.text = "OPEN ORDER"
-                cell.noOfItemLabel.text = ""
-                cell.dateTimeLabel.text = ""
-                let amt = Double("\(dict.grandTotal)")
-                cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
-                cell.payNowButton.tag = indexPath.row
-                cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+                //let dict = self.activeData[indexPath.row]
+                cell.usualObj = self.finalActiveData
+                cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
@@ -396,60 +376,4 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
-    @objc func payNowAction(sender: UIButton) {
-        
-        let addVC = PaymentMethodVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = addVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.preferredCornerRadius = 15
-            }
-        }
-        self.present(addVC, animated: true, completion: nil)
-    }
 }
-
-/*
-extension DashboardVC: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickOption.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickOption[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectTableLabel.text = pickOption[row]
-        
-        guard let label = pickerView.view(forRow: row, forComponent: component) as? UILabel else {
-            return
-        }
-        label.backgroundColor = UIColor.primaryBrown.withAlphaComponent(0.5)
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
-        return NSAttributedString(string: pickOption[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.primaryBrown])
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        
-        let rowSize = pickerView.rowSize(forComponent: component)
-        let width = rowSize.width
-        let height = rowSize.height
-        let frame = CGRect(x: 0, y: 0, width: width, height: height)
-        let label = UILabel(frame: frame)
-        label.textAlignment = .center
-        label.text = pickOption[row]
-        label.clipsToBounds = true
-        label.layer.cornerRadius = 8
-        return label
-    }
-}
-*/

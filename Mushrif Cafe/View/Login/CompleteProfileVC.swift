@@ -112,6 +112,8 @@ class CompleteProfileVC: UIViewController, Instantiatable {
                 
                 print("Customer Data", self.customerData!.name)
                 UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
+                UserDefaultHelper.userEmail = "\(self.customerData?.email ?? "")"
+                UserDefaultHelper.mobile = "\(self.customerData?.phone ?? "")"
                 
                 DispatchQueue.main.async {
                     let scanVC = DashboardVC.instantiate()

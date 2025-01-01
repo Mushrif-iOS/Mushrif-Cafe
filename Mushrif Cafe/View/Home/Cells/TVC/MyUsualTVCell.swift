@@ -75,12 +75,40 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     @objc func addAction(sender: UIButton) {
         
         let dict = usualObj[sender.tag]
-//        if UserDefaultHelper.authToken != "" {
-//            let cartVC = CartVC.instantiate()
-//            self.navController?.pushViewController(cartVC, animated: true)
-//        } else {
-//            let profileVC = LoginVC.instantiate()
-//            self.navController?.pushViewController(profileVC, animated: true)
-//        }
+        if UserDefaultHelper.authToken != "" {
+            
+            let hallId = UserDefaultHelper.hallId ?? ""
+            let tableId = UserDefaultHelper.tableId ?? ""
+            let groupId = UserDefaultHelper.groupId ?? ""
+            
+            if hallId != "" {
+                
+                let aParams = ["usual_id": "\(dict.id)",
+                               "hall_id": hallId,
+                               "table_id": tableId,
+                               "group_id": groupId]
+                print(aParams)
+                
+                APIManager.shared.postCall(APPURL.usuals_move_to_cart, params: aParams, withHeader: true) { responseJSON in
+                    print("Response JSON \(responseJSON)")
+                    
+                    let msg = responseJSON["message"].stringValue
+                    self.navController?.showBanner(message: msg, status: .success)
+                    
+                    let cartVC = CartVC.instantiate()
+                    self.navController?.pushViewController(cartVC, animated: true)
+                    
+                } failure: { error in
+                    print("Error \(error.localizedDescription)")
+                }
+            } else {
+                self.navController?.showBanner(message: "please_scan".localized(), status: .success)
+                let scanVC = ScanTableVC.instantiate()
+                self.navController?.push(viewController: scanVC)
+            }
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navController?.pushViewController(profileVC, animated: true)
+        }
     }
 }

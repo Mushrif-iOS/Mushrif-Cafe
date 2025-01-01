@@ -107,6 +107,8 @@ class EditProfileVC: UIViewController, Instantiatable {
                 
                 print("Customer Data", self.customerData!.name)
                 UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
+                UserDefaultHelper.userEmail = "\(self.customerData?.email ?? "")"
+                UserDefaultHelper.mobile = "\(self.customerData?.phone ?? "")"
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)

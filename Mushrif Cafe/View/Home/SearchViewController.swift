@@ -102,7 +102,7 @@ extension SearchViewController: UISearchBarDelegate, ToastDelegate {
         
         APIManager.shared.postCall(APPURL.search_product + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
-                        
+            
             let lPage = responseJSON["response"]["last_page"].intValue
             self.lastPage = lPage
             
@@ -140,7 +140,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         let dict = self.searchData[indexPath.item]
         cell.nameLabel.text = dict.name
-        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "pizza"))
+        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "appLogo"))
         
         if dict.specialPrice != "" {
             let doubleValue = Double(dict.specialPrice) ?? 0.0
@@ -149,11 +149,17 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             let doubleValue = Double(dict.price) ?? 0.0
             cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
         }
+        
+        cell.addButton.tag = indexPath.item
+        cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
+        
+        cell.addUsual.tag = indexPath.item
+        cell.addUsual.addTarget(self, action: #selector(addUsualAction(sender:)), for: .touchUpInside)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.frame.size.width / 2) - 15, height: 120)
+        return CGSize(width: (collectionView.frame.size.width / 2) - 15, height: 130)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -176,6 +182,74 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         detailVC.descString = dict.name
         detailVC.delegate = self
         self.navigationController?.present(detailVC, animated: true)
+    }
+    
+    @objc func addUsualAction(sender: UIButton) {
+        
+        if UserDefaultHelper.authToken != "" {
+            let dict = self.searchData[sender.tag]
+            let addVC = AddUsualsVC.instantiate()
+            if #available(iOS 15.0, *) {
+                if let sheet = addVC.sheetPresentationController {
+                    sheet.detents = [.medium()]
+                    sheet.preferredCornerRadius = 15
+                }
+            }
+            addVC.productId = "\(dict.id)"
+            addVC.itemType = "listed"
+            self.navigationController?.present(addVC, animated: true, completion: nil)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+    }
+    
+    @objc func addAction(sender: UIButton) {
+        
+        let dict = self.searchData[sender.tag]
+        
+        if UserDefaultHelper.authToken != "" {
+            let orderType = UserDefaultHelper.orderType ?? ""
+            let hallId = UserDefaultHelper.hallId ?? ""
+            let tableId = UserDefaultHelper.tableId ?? ""
+            let groupId = UserDefaultHelper.groupId ?? ""
+            
+            let aParams = ["hall_id": hallId,
+                           "table_id": tableId,
+                           "group_id": groupId,
+                           "order_type": orderType,
+                           "item_id": "\(dict.id)",
+                           "combo_id": "",
+                           "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
+                           "quantity": "1",
+                           "is_customized": "N",
+                           "is_plain": "Y",
+                           "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+            
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"]["data"].arrayValue
+                print(dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    UserDefaultHelper.totalItems! += 1
+                    UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
+                    let cartVC = CartVC.instantiate()
+                    self.navigationController?.pushViewController(cartVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
     }
     
     func dismissed() {

@@ -75,6 +75,7 @@ class DashboardResponse {
 class MyActiveOrder {
 
     var businessId : Int = 0
+    var createdAt : String = ""
     var cart : MyActiveCart!
     var createdUserId : Int = 0
     var customerAddress : String = ""
@@ -102,6 +103,7 @@ class MyActiveOrder {
     var paid : String = ""
     var paymentId : String = ""
     var paymentMethod : String = ""
+    var printStatus : String = ""
     var serviceCharge : String = ""
     var status : Int = 0
     var subTotal : String = ""
@@ -116,6 +118,7 @@ class MyActiveOrder {
             return
         }
         businessId = json["business_id"].intValue
+        createdAt = json["created_at"].stringValue
         let cartJson = json["cart"]
         if !cartJson.isEmpty {
             cart = MyActiveCart(fromJson: cartJson)
@@ -146,6 +149,7 @@ class MyActiveOrder {
         paid = json["paid"].stringValue
         paymentId = json["payment_id"].stringValue
         paymentMethod = json["payment_method"].stringValue
+        printStatus = json["print_status"].stringValue
         serviceCharge = json["service_charge"].stringValue
         status = json["status"].intValue
         subTotal = json["sub_total"].stringValue
@@ -193,7 +197,7 @@ class DashboardMyUsual {
     
     var customerId : Int = 0
     var id : Int = 0
-    var items : [UsualItem]!
+    var items : [CartItem]!
     var title : String = ""
     
     init(fromJson json: JSON!) {
@@ -202,10 +206,10 @@ class DashboardMyUsual {
         }
         customerId = json["customer_id"].intValue
         id = json["id"].intValue
-        items = [UsualItem]()
+        items = [CartItem]()
         let itemsArray = json["items"].arrayValue
         for itemsJson in itemsArray {
-            let value = UsualItem(fromJson: itemsJson)
+            let value = CartItem(fromJson: itemsJson)
             items.append(value)
         }
         title = json["title"].stringValue

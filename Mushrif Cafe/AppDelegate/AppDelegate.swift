@@ -10,6 +10,7 @@ import IQKeyboardManagerSwift
 import Siren
 import SYBanner
 import ProgressHUD
+import MFSDK
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -41,6 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         reachabilityObserver()
         
         self.restartApp()
+        
+        
+        MFSettings.shared.configure(token: "rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL",
+                                    country: .kuwait, environment: .test)
+        
+        let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
+        MFSettings.shared.setTheme(theme: them)
+        
         return true
     }
     
@@ -61,41 +70,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    private func customViewDefault() -> UIView {
-        let contentView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 300, height: 200)))
-        contentView.layer.cornerRadius = 20
-        contentView.layer.masksToBounds = true
-        
-        let label = UILabel()
-        label.text = "Content"
-        label.font = .systemFont(ofSize: 14, weight: .bold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-        ])
-        
-        contentView.backgroundColor = .systemGray2
-        return contentView
-    }
-    
-    private func customView() -> UIView {
-        let contentView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 300, height: 200)))
-        
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.image = UIImage(named: "pizza")
-        
-        contentView.addSubview(imageView)
-        
-        return contentView
-    }
-    
-    func getTraitColor() -> UIColor {
-        return UIColor { (traits) -> UIColor in
-            return traits.userInterfaceStyle == .light ? .white : UIColor.init(red: 28/255, green: 27/255, blue: 29/255, alpha: 1)
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if let paymentId = url[MFConstants.paymentId] {
+            NotificationCenter.default.post(name: .applePayCheck, object: paymentId)
         }
+        return true
     }
 }
 
@@ -114,7 +93,7 @@ extension AppDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
         let languageVC = storyboard.instantiateViewController(withIdentifier: "LanguageSelectionVC") as! LanguageSelectionVC
-        let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
+        //let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
         
         if isLanguageSelected == "yes" {
 //            let navigationController = UINavigationController.init(rootViewController: loginVC)

@@ -36,6 +36,8 @@ class CategoryViewController: UIViewController, Instantiatable {
         }
     }
     
+    @IBOutlet var heightBottom: NSLayoutConstraint!
+    
     var categoryId = String()
     var categoryName = String()
     
@@ -59,8 +61,6 @@ class CategoryViewController: UIViewController, Instantiatable {
         layout.sectionInset = UIEdgeInsets(top: 6.0, left: 16.0, bottom: 0.0, right: 16.0)
         self.mainCollectionView.collectionViewLayout = layout
         
-        self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KD"
-        
         self.getSubCategories()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
@@ -78,6 +78,19 @@ class CategoryViewController: UIViewController, Instantiatable {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         bottomView.applyGradient(isVertical: true, colorArray: [UIColor.primaryBrown, UIColor.borderPink])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if UserDefaultHelper.totalItems ?? 0 == 0 {
+            self.heightBottom.constant = 0
+            self.bottomView.isHidden = true
+        } else {
+            self.heightBottom.constant = 90
+            self.bottomView.isHidden = false
+            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KD"
+        }
     }
     
     @IBAction func backAction(_ sender: Any) {
@@ -203,7 +216,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryTableViewCell") as! CategoryTableViewCell
         let dict = self.foodItemArr[indexPath.row]
         cell.nameLabel.text = dict.name
-        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "pizza"))
+        cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "appLogo"))
         
         if dict.specialPrice != "" {
             let doubleValue = Double(dict.specialPrice) ?? 0.0
@@ -322,7 +335,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
     @objc func addUsualAction(sender: UIButton) {
         if UserDefaultHelper.authToken != "" {
             if let cell = self.mainTableView.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as? CategoryTableViewCell {
-                cell.saveButton.isSelected.toggle()
+                //cell.saveButton.isSelected.toggle()
             }
             let dict = self.foodItemArr[sender.tag]
             let addVC = AddUsualsVC.instantiate()
@@ -333,6 +346,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                 }
             }
             addVC.productId = "\(dict.id)"
+            addVC.itemType = "listed"
             self.present(addVC, animated: true, completion: nil)
         } else {
             let profileVC = LoginVC.instantiate()

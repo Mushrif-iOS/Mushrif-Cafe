@@ -31,7 +31,7 @@ class OrderDetailsTableViewCell: UITableViewCell {
     @IBOutlet weak var qtyLabel: UILabel! {
         didSet {
             qtyLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            qtyLabel.text = "x1"
+            //qtyLabel.text = "x1"
         }
     }
     

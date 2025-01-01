@@ -101,6 +101,9 @@ struct APPURL {
     static var update_usuals_Qty: String {
         return BaseURL  + "my-usuals/update-quantity"
     }
+    static var usuals_move_to_cart: String {
+        return BaseURL  + "my-usuals/move-to-cart"
+    }
     
     //Cart
     static var add_item_cart: String {
@@ -122,5 +125,8 @@ struct APPURL {
     //Order
     static var get_order: String {
         return BaseURL  + "my-orders"
+    }
+    static var order_Details: String {
+        return BaseURL  + "my-orders/details"
     }
 }

@@ -63,7 +63,7 @@ class OTPViewController: UIViewController, Instantiatable {
         styleBanner.messageColor = .white
         styleBanner.dismissOnSwipe = true
         styleBanner.autoDismiss = true
-        styleBanner.appearanceDuration = 20.0
+        styleBanner.appearanceDuration = 5.0
         styleBanner.show()
         
         setupOtpView()
@@ -104,6 +104,8 @@ class OTPViewController: UIViewController, Instantiatable {
                 print("Customer Data", self.customerData!.phone)
                 UserDefaultHelper.userloginId = "\(self.customerData?.id ?? 0)"
                 UserDefaultHelper.userName = "\(self.customerData?.name ?? "")"
+                UserDefaultHelper.userEmail = "\(self.customerData?.email ?? "")"
+                UserDefaultHelper.mobile = "\(self.customerData?.phone ?? "")"
                 UserDefaultHelper.walletBalance = "\(self.customerData?.balance ?? "")"
                 
                 DispatchQueue.main.async {

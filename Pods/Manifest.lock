@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (5.0.0)
   - IQKeyboardManagerSwift (7.1.1)
+  - MyFatoorah (2.0.154)
   - ProgressHUD (14.1.1)
   - ReachabilitySwift (5.2.3)
   - SDWebImage (5.19.7):
@@ -13,6 +14,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (= 5.0.0)
   - IQKeyboardManagerSwift
+  - MyFatoorah
   - ProgressHUD
   - ReachabilitySwift
   - SDWebImage
@@ -24,6 +26,7 @@ SPEC REPOS:
   trunk:
     - Alamofire
     - IQKeyboardManagerSwift
+    - MyFatoorah
     - ProgressHUD
     - ReachabilitySwift
     - SDWebImage
@@ -34,6 +37,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 58ff2bfb8daaacaa233d5c36e37b10a5248f59b1
   IQKeyboardManagerSwift: d7f3d3a562c237a0e7335e657cd598c452f57f1b
+  MyFatoorah: ed7d58908212ebbfca2fc6841fbaa66cd4ff72c8
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
   ReachabilitySwift: 7f151ff156cea1481a8411701195ac6a984f4979
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
@@ -41,6 +45,6 @@ SPEC CHECKSUMS:
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   SYBanner: 3dfbf763489b6089a8fa835eb0fe43c3bdc6492c
 
-PODFILE CHECKSUM: d0a761d78e8c2e1c104902779ab31ff18533dacc
+PODFILE CHECKSUM: 2b21bbf34eda3932340b923587d9300c3bf58805
 
 COCOAPODS: 1.15.2
