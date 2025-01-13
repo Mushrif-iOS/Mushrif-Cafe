@@ -135,12 +135,12 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         cell.nameLabel.text = dict.product.name
         if dict.product.specialPrice != "" {
             let doubleValue = Double(dict.product.specialPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
-            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         } else {
             let doubleValue = Double(dict.product.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
-            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         }
         cell.descLabel.text = dict.product.descriptionField
         cell.qty.text = "\(dict.quantity)"

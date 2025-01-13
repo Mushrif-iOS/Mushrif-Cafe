@@ -115,7 +115,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                     UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
                     
                     let prc = Double((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))
-                    self.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
+                    self.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
                 } failure: { error in
                     print("Error \(error.localizedDescription)")
                 }
@@ -152,7 +152,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                 UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
                 
                 let prc = Double((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))
-                self.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
+                self.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }

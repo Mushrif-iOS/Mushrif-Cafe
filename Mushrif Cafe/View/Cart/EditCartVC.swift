@@ -116,7 +116,6 @@ class EditCartVC: UIViewController, Instantiatable {
     
     var itemPrice: Double = Double()
     var qtyChangeValue: Double = Double()
-    //var mealTypePrice: Double = Double()
     var variationPrice: Double = Double()
     
     var qtyValue: Int = 1
@@ -126,8 +125,6 @@ class EditCartVC: UIViewController, Instantiatable {
     let userLanguage = UserDefaultHelper.language
     
     var firstBoxSelectedRows: [IndexPath] = []
-    var ingredientSelectedRows: [IndexPath] = []
-    var existingIngredientRows: [IndexPath] = []
     var categorySelecteIndex1: IndexPath?
     var categorySelecteIndex2: IndexPath?
     var categorySelecteIndex3: IndexPath?
@@ -143,9 +140,12 @@ class EditCartVC: UIViewController, Instantiatable {
     var categoryArr2 : [CartComboItem] = [CartComboItem]()
     var categoryArr3 : [CartComboItem] = [CartComboItem]()
     var choiceArr : [ChoiceGroup] = [ChoiceGroup]()
+    var selectedChoices: [IndexPath: Choice] = [:]
+    var selectedChoiceIDs: [Int] = []
     
-    var finalIngredientsArr : [IndexPath] = [IndexPath]()
-    
+    var finalngredientIDs: [Int] = []
+    var footerView: CellSelectionTVC?
+        
     var selectedComboId: Int?
     
     var cartDetails : CartItem?
@@ -173,6 +173,9 @@ class EditCartVC: UIViewController, Instantiatable {
         self.choiceTblView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
         
         self.mealTypeTblView.allowsMultipleSelection = false
+        self.choiceTblView.allowsMultipleSelection = true
+        
+        print(self.cartDetails?.isPlain ?? "")
         
         DispatchQueue.main.async {
             self.setupUI()
@@ -261,22 +264,6 @@ class EditCartVC: UIViewController, Instantiatable {
                 }
             }
         }
-        
-//        if data?.comboId != nil {
-//            
-//            if self.comboDetails?.categories.count == 1 {
-//                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
-//            }
-//            if self.comboDetails?.categories.count == 2 {
-//                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
-//                self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
-//            }
-//            if self.comboDetails?.categories.count == 3 {
-//                self.categoryArr1 = self.comboDetails?.categories[0].comboItems ?? [CartComboItem]()
-//                self.categoryArr2 = self.comboDetails?.categories[1].comboItems ?? [CartComboItem]()
-//                self.categoryArr3 = self.comboDetails?.categories[2].comboItems ?? [CartComboItem]()
-//            }
-//        }
                 
         if data?.product.haveCombo == 0 {
             self.typeOfMealTop.constant = 20
@@ -352,6 +339,18 @@ class EditCartVC: UIViewController, Instantiatable {
             }
         }
         self.ingredientsArr = data?.product.ingredients ?? []
+        
+        for index in self.ingredientsArr.indices {
+            self.ingredientsArr[index].isChecked = self.ingredientsArr[index].ingredientDetails.selectionStatus == 1
+            if self.ingredientsArr[index].ingredientDetails.selectionStatus == 1 || self.ingredientsArr[index].requirementStatus == 1 {
+                self.finalngredientIDs.append(self.ingredientsArr[index].ingredientDetails.id)
+            }
+        }
+        
+        self.isPlainSelected = self.cartDetails?.isPlain ?? "" == "Y" ? true : false
+        self.updateFooterView()
+        self.stuffTblView.reloadData()
+        
         if self.ingredientsArr.count > 0 {
             self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
             self.stuffTblView.reloadData()
@@ -359,25 +358,14 @@ class EditCartVC: UIViewController, Instantiatable {
             self.stuffTblHeight.constant = 52
         }
         
-        print(data?.isPlain ?? "")
-        self.isPlainSelected = data?.isPlain ?? "" == "Y" ? true : false
-        self.stuffTblView.reloadData()
-        
         if data?.comboId == nil {
             self.categoryTop.constant = 0
         }
         
         self.choiceArr = data?.product.choiceGroups ?? []
-        if self.choiceArr.count > 0 {
-            
-            for obj in 0..<self.choiceArr.count {
-                if self.choiceArr[0].choices[obj].selectionStatus == 1 {
-                    self.choiceSelectedRows.append(IndexPath(row: obj, section: 0))
-                }
-            }
-            self.choiceTblView.reloadData()
-        }
-        
+        self.preselectChoices()
+        self.choiceTblView.reloadData()
+
         self.showComboDetailsView()
         
         if data?.product.specialPrice != "" {
@@ -506,6 +494,65 @@ class EditCartVC: UIViewController, Instantiatable {
             }
         }
     }
+    
+    @objc func footerViewTapped() {
+        togglePlainSelection()
+    }
+    
+    func togglePlainSelection() {
+        self.isPlainSelected.toggle()
+        
+        // Select/deselect ingredients with plain_requirement_status == 1
+        for index in self.ingredientsArr.indices {
+            if self.ingredientsArr[index].plainRequirementStatus == 1 {
+                self.ingredientsArr[index].isChecked = self.isPlainSelected
+                if self.isPlainSelected {
+                    if !finalngredientIDs.contains(self.ingredientsArr[index].ingredientDetails.id) {
+                        finalngredientIDs.append(self.ingredientsArr[index].ingredientDetails.id)
+                    }
+                } else {
+                    if self.ingredientsArr[index].ingredientDetails.selectionStatus != 1 && self.ingredientsArr[index].requirementStatus != 1 {
+                        if let idIndex = finalngredientIDs.firstIndex(of: self.ingredientsArr[index].ingredientDetails.id) {
+                            finalngredientIDs.remove(at: idIndex)
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Reload the table view to update the checkbox images for affected cells
+        var indexPathsToReload: [IndexPath] = []
+        for index in self.ingredientsArr.indices {
+            if self.ingredientsArr[index].plainRequirementStatus == 1 {
+                let cellIndexPath = IndexPath(row: index, section: 0)
+                indexPathsToReload.append(cellIndexPath)
+            }
+        }
+        self.stuffTblView.reloadRows(at: indexPathsToReload, with: .automatic)
+        self.updateFooterView()
+        self.updatePlainCheckedStatus()
+        
+        print("self.finalngredientIDs", self.finalngredientIDs)
+    }
+    
+    func updateFooterView() {
+        footerView?.isChecked = isPlainSelected
+    }
+    
+    func preselectChoices() {
+        for (sectionIndex, group) in self.choiceArr.enumerated() {
+            for (rowIndex, choice) in group.choices.enumerated() {
+                if choice.selectionStatus == 1 {
+                    let indexPath = IndexPath(row: rowIndex, section: sectionIndex)
+                    self.selectedChoices[indexPath] = choice
+                    self.selectedChoiceIDs.append(choice.id)
+                    if let price = Double(choice.choicePrice) {
+                        self.variationPrice += price
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
@@ -550,20 +597,20 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 cell.nameLabel.text = self.cartDetails?.product?.name
                 if self.cartDetails?.product?.specialPrice != "" {
                     let doubleValue = Double(self.cartDetails?.product?.specialPrice ?? "") ?? 0.0
-                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
                 } else {
                     let doubleValue = Double(self.cartDetails?.product?.price ?? "") ?? 0.0
-                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
                 }
             } else {
                 if self.cartDetails?.product?.comboDetails != nil {
                     cell.nameLabel.text = self.cartDetails?.product?.comboDetails.comboTitle
                     if self.cartDetails?.product?.comboDetails.offerPrice != "" {
                         let doubleValue = Double(self.cartDetails?.product?.comboDetails.offerPrice ?? "") ?? 0.0
-                        cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+                        cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
                     } else {
                         let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
-                        cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+                        cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
                     }
                 }
             }
@@ -571,41 +618,21 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         } else if tableView == self.stuffTblView {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
             
-            let dict = self.ingredientsArr[indexPath.row]
-            cell.nameLabel.text = dict.ingredientDetails.name
+            let ingredient = self.ingredientsArr[indexPath.row]
+            cell.nameLabel.text = ingredient.ingredientDetails.name
             cell.priceLabel.text = ""
+            cell.isChecked = ingredient.isChecked
             
-            if dict.requirementStatus == 1 || dict.ingredientDetails.selectionStatus == 0 {
-                self.existingIngredientRows.append(indexPath)
-            }
-            
-            if ingredientSelectedRows.contains(indexPath) || dict.requirementStatus == 1 {
+            if ingredient.requirementStatus == 1 {
                 cell.tickButton.isSelected = true
+                cell.tickButton.alpha = 0.6
                 cell.nameLabel.textColor = UIColor.lightGray.withAlphaComponent(0.8)
                 cell.isUserInteractionEnabled = false
-                self.ingredientSelectedRows.append(indexPath)
             } else {
                 cell.tickButton.isSelected = false
+                cell.tickButton.alpha = 1
                 cell.nameLabel.textColor = UIColor.black
                 cell.isUserInteractionEnabled = true
-                self.ingredientSelectedRows.removeAll()
-            }
-            
-            if dict.ingredientDetails.selectionStatus == 1 {
-                cell.tickButton.isSelected = true
-            } else {
-                cell.tickButton.isSelected = false
-            }
-            
-            self.ingredientSelectedRows = self.existingIngredientRows
-            cell.callBackTap = {
-                if self.ingredientSelectedRows.contains(indexPath) {
-                    self.ingredientSelectedRows.remove(at: self.ingredientSelectedRows.firstIndex(of: indexPath)!)
-                } else {
-                    self.ingredientSelectedRows.append(indexPath)
-                }
-                print("self.ingredientSelectedRows", self.ingredientSelectedRows)
-                cell.tickButton.isSelected = !cell.tickButton.isSelected
             }
             return cell
         } else if tableView == self.categoryTblView1 {
@@ -660,11 +687,13 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             let dict = self.choiceArr[indexPath.section].choices[indexPath.row]
-            cell.nameLabel.text = dict.choice
-            let doubleValue = Double(dict.choicePrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+//            cell.nameLabel.text = dict.choice
+//            let doubleValue = Double(dict.choicePrice) ?? 0.0
+//            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            let isSelected = selectedChoices[indexPath] != nil
+            cell.configure(with: dict, isSelected: isSelected)
             
-            if choiceSelectedRows.contains(indexPath) {
+            /*if choiceSelectedRows.contains(indexPath) {
                 cell.tickButton.isSelected = true
                 self.choiceSelectedRows.append(indexPath)
             } else {
@@ -698,7 +727,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 cell.tickButton.isSelected = !cell.tickButton.isSelected
                 print("IndexPath choiceSelectedRows: ", self.choiceSelectedRows)
                 self.setPriceAttritubte()
-            }
+            }*/
             return cell
         }
     }
@@ -734,58 +763,18 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if tableView == self.stuffTblView {
-            let headerView = tableView.dequeueReusableCell(withIdentifier: CellSelectionTVC.identifier) as! CellSelectionTVC
-            headerView.nameLabel.text = "plain".localized()
-            headerView.priceLabel.text = ""
-            
-            var tempArr = [FoodItemIngredient]()
-            var tempRows = [IndexPath]()
-            
-            for i in 0..<self.ingredientsArr.count {
-                if self.ingredientsArr[i].plainRequirementStatus == 1 && self.ingredientsArr[i].requirementStatus != 1 {
-                    tempArr.append(self.ingredientsArr[i])
-                    tempRows.append(IndexPath(row: i, section: 0))
-                }
+            if footerView == nil {
+                footerView = Bundle.main.loadNibNamed("CellSelectionTVC", owner: self, options: nil)?.first as? CellSelectionTVC
+                footerView?.nameLabel.text = "plain".localized()
+                footerView?.priceLabel.text = ""
+                footerView?.isChecked = isPlainSelected
                 
-                if self.ingredientsArr[i].plainRequirementStatus == 1 {
-                    self.finalIngredientsArr = tempRows
-                }
+                // Add tap gesture recognizer to footer view
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(footerViewTapped))
+                tapGesture.numberOfTapsRequired = 1
+                footerView?.addGestureRecognizer(tapGesture)
             }
-            
-            if self.isPlainSelected {
-                headerView.tickButton.isSelected = true
-                //self.isPlainSelected = false
-            } else {
-                headerView.tickButton.isSelected = false
-                //self.isPlainSelected = true
-            }
-            
-            headerView.callBackTap = {
-                for i in 0..<tempRows.count {
-                    if self.ingredientSelectedRows.contains(IndexPath(row: i, section: 0)) {
-                        if let cell = self.stuffTblView.cellForRow(at: IndexPath(row: tempRows[i].row, section: 0)) as? CellSelectionTVC {
-                            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                                cell.tickButton.isSelected = !cell.tickButton.isSelected
-                                headerView.tickButton.isSelected = !headerView.tickButton.isSelected
-                                self.isPlainSelected.toggle()
-                            }
-                        }
-                        self.ingredientSelectedRows.remove(at: self.ingredientSelectedRows.firstIndex(of: IndexPath(row: i, section: 0))!)
-                        print("self.ingredientSelectedRows", self.ingredientSelectedRows)
-                    } else {
-                        self.ingredientSelectedRows.append(IndexPath(row: i, section: 0))
-                        print("self.ingredientSelectedRows", self.ingredientSelectedRows)
-                        if let cell = self.stuffTblView.cellForRow(at: IndexPath(row: tempRows[i].row, section: 0)) as? CellSelectionTVC {
-                            DispatchQueue.main.asyncAfter(deadline: .now()) {
-                                cell.tickButton.isSelected = !cell.tickButton.isSelected
-                                headerView.tickButton.isSelected = !headerView.tickButton.isSelected
-                                self.isPlainSelected.toggle()
-                            }
-                        }
-                    }
-                }
-            }
-            return headerView
+            return footerView
         } else {
             return UIView()
         }
@@ -880,7 +869,81 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 self.categorySelecteIndex3 = indexPath
             }
             tableView.reloadData()
+        } else if tableView == self.choiceTblView {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            let group = self.choiceArr[indexPath.section]
+            let selectedForSection = selectedChoices.filter { $0.key.section == indexPath.section }
+            
+            if selectedChoices[indexPath] != nil {
+                if let price = Double(group.choices[indexPath.row].choicePrice) {
+                    self.variationPrice -= price
+                }
+                selectedChoices.removeValue(forKey: indexPath)
+                if let index = selectedChoiceIDs.firstIndex(of: group.choices[indexPath.row].id) {
+                    selectedChoiceIDs.remove(at: index)
+                }
+            } else if selectedForSection.count < group.maxSelection {
+                if let price = Double(group.choices[indexPath.row].choicePrice) {
+                    self.variationPrice += price
+                }
+                selectedChoices[indexPath] = group.choices[indexPath.row]
+                selectedChoiceIDs.append(group.choices[indexPath.row].id)
+            } else {
+                print("Maximum selection reached")
+                ProgressHUD.error("Only \(group.maxSelection) allowed")
+                return
+            }
+            
+            let selectedCount = selectedChoices.filter { $0.key.section == indexPath.section }.count
+            if selectedCount >= group.minSelection, selectedCount <= group.maxSelection {
+                print("Total selected price: \(self.variationPrice)")
+                print("Selected choice IDs: \(self.selectedChoiceIDs)")
+                self.setPriceAttritubte()
+            } else {
+                print("Selection out of bounds")
+                self.setPriceAttritubte()
+            }
+            
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        } else if tableView == self.stuffTblView {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            let ingredient = self.ingredientsArr[indexPath.row]
+            
+            if ingredient.requirementStatus == 1 {
+                return
+            }
+            self.ingredientsArr[indexPath.row].isChecked.toggle()
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            
+            if self.ingredientsArr[indexPath.row].isChecked {
+                self.finalngredientIDs.append(ingredient.ingredientDetails.id)
+            } else {
+                if let index = self.finalngredientIDs.firstIndex(of: ingredient.ingredientDetails.id) {
+                    self.finalngredientIDs.remove(at: index)
+                }
+            }
+            print("self.finalngredientIDs", self.finalngredientIDs)
+            print("self.isPlainSelected", self.isPlainSelected)
+            //self.updatePlainCheckedStatus()
         }
+    }
+    
+    func updatePlainCheckedStatus() {
+        // Check if there is any plain cell selected
+        let anyPlainSelected = self.ingredientsArr.contains { ingredient in
+            ingredient.plainRequirementStatus != 1 && ingredient.isChecked
+        }
+        
+        // Check if there is any ingredient with plainRequirementStatus == 1 that is selected
+        let anyPlainRequirementSelected = self.ingredientsArr.contains { ingredient in
+            ingredient.plainRequirementStatus == 1 && ingredient.isChecked
+        }
+        
+        // Update the isPlainChecked status based on the conditions
+        self.isPlainSelected = anyPlainSelected || anyPlainRequirementSelected
+        updateFooterView()
     }
     
     func setPriceAttritubte() {
@@ -892,52 +955,30 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         
         let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2))",
                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
-        attrString.append(NSMutableAttributedString(string: " KD",
+        attrString.append(NSMutableAttributedString(string: " KWD",
                                                     attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
         self.addButton.setAttributedTitle(attrString, for: .normal)
     }
     
     func addToCartApi() {
         
-        for obj in 0..<self.choiceArr.count {
-            if (self.choiceSelectedRows.count < self.choiceArr[obj].minSelection) {
-                ProgressHUD.error("Please \(self.choiceArr[obj].title) minimum \(self.choiceArr[obj].minSelection) ")
+        for (sectionIndex, group) in self.choiceArr.enumerated() {
+            let selectedForSection = selectedChoices.filter { $0.key.section == sectionIndex }
+            if selectedForSection.count < group.minSelection {
+                ProgressHUD.error("Please select at least \(group.minSelection) choices for \(group.title).")
                 return
             }
         }
         
-        var finalChoiceRows: [IndexPath] = []
-        for obj in 0..<self.choiceArr.count {
-            finalChoiceRows.append(IndexPath(row: choiceSelectedRows[obj].row, section: choiceSelectedRows[obj].section))
-        }
-        print("finalChoiceRows", finalChoiceRows)
-        
-        var choiceIds = [Int]()
-        for i in 0..<finalChoiceRows.count {
-            choiceIds.append(self.choiceArr[finalChoiceRows[i].section].choices[finalChoiceRows[i].row].id)
-        }
-        let choicejsonString = choiceIds.map{String($0)}.joined(separator: ", ")//SingleTon.sharedSingleTon.convertToJSON(arrayObject: choiceIds)
+        let choicejsonString = self.selectedChoiceIDs.map{String($0)}.joined(separator: ", ")
+        print(choicejsonString)
                 
         let orderType = UserDefaultHelper.orderType ?? ""
         let hallId = UserDefaultHelper.hallId ?? ""
         let tableId = UserDefaultHelper.tableId ?? ""
         let groupId = UserDefaultHelper.groupId ?? ""
         
-        var finalIngredientRows: [IndexPath] = []
-        finalIngredientRows.append(contentsOf: existingIngredientRows)
-        finalIngredientRows.append(contentsOf: ingredientSelectedRows)
-        finalIngredientRows = finalIngredientRows.uniqued()
-        
-        if self.isPlainSelected {
-            finalIngredientRows.append(contentsOf: self.finalIngredientsArr)
-            finalIngredientRows = finalIngredientRows.uniqued()
-        }
-        
-        var ingredients_id = [Int]()
-        for i in 0..<finalIngredientRows.count {
-            ingredients_id.append(self.ingredientsArr[finalIngredientRows[i].row].ingredientDetails.id)
-        }
-        let ingredientsjsonString = ingredients_id.map{String($0)}.joined(separator: ", ")//SingleTon.sharedSingleTon.convertToJSON(arrayObject: ingredients_id)
+        let ingredientsjsonString = finalngredientIDs.map{String($0)}.joined(separator: ", ")
                 
         var comboProduct = [CartComboItem]()
         if categorySelecteIndex1 != nil {

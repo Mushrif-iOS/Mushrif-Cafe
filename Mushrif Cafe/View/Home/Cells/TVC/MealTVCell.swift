@@ -67,10 +67,10 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         
         if dict.specialPrice != "" {
             let doubleValue = Double(dict.specialPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         } else {
             let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         }
         
         cell.descLabel.text = dict.descriptionField

@@ -116,6 +116,7 @@ class FoodItemIngredient {
     var productId : Int = 0
     var plainRequirementStatus : Int = 0
     var requirementStatus : Int = 0
+    var isChecked: Bool = false
     
     init(fromJson json: JSON!) {
         if json.isEmpty {

@@ -92,7 +92,7 @@ class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
                 
                 let balance = responseJSON["response"]["balance"].stringValue
                 let doubleValue = Double(balance) ?? 0.0
-                self.balanceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+                self.balanceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
             }
             
         } failure: { error in

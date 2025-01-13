@@ -89,7 +89,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         } else {
             self.heightBottom.constant = 90
             self.bottomView.isHidden = false
-            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KD"
+            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
         }
     }
     
@@ -220,10 +220,10 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
         
         if dict.specialPrice != "" {
             let doubleValue = Double(dict.specialPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         } else {
             let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         }
         
         cell.descLabel.text = dict.name
@@ -319,7 +319,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                     self.showBanner(message: msg, status: .success)
                     UserDefaultHelper.totalItems! += 1
                     UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                    self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KD"
+                    self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
                     let cartVC = CartVC.instantiate()
                     self.navigationController?.pushViewController(cartVC, animated: true)
                 }

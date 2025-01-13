@@ -146,7 +146,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, PayNowDelegate
         didSet {
             discountLabel.font = UIFont.poppinsMediumFontWith(size: 16)
             discountLabel.textColor = UIColor.red
-            discountLabel.text = "-9.000 KD"
+            discountLabel.text = "-9.000 KWD"
         }
     }
     
@@ -277,7 +277,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, PayNowDelegate
     func completed() {
         print("Wallet Amount")
         let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-        self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KD"
+        self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
     }
     
     @IBAction func changePaymentAction(_ sender: Any) {
@@ -361,8 +361,8 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, PayNowDelegate
         
         DispatchQueue.main.async {
             
-            self.amtLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KD"
-            self.totalLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KD"
+            self.amtLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KWD"
+            self.totalLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KWD"
             
             self.orderIdLabel.text = "\(data?.orderNo ?? "")" != "" ? "#\(data?.orderNo ?? "")" : "-"
 
@@ -379,7 +379,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, PayNowDelegate
             }
             
             let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-            self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KD"
+            self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
             
             if self.inActiveCartArray.count > 0 {
                 self.inactiveTableView.isHidden = false
@@ -403,9 +403,9 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, PayNowDelegate
     
     private func setPriceAttritubte(price: Double) {
         
-        let attrString = NSMutableAttributedString(string: "\(price.toRoundedString(toPlaces: 2))",
+        let attrString = NSMutableAttributedString(string: "\(price.toRoundedString(toPlaces: 3))",
                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 18)])
-        attrString.append(NSMutableAttributedString(string: " KD",
+        attrString.append(NSMutableAttributedString(string: " KWD",
                                                     attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 13)]))
         self.priceLabel.attributedText = attrString
     }
@@ -474,7 +474,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
 //                cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
 //            }
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
+            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
             cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             
             cell.descLabel.text = dict.instruction
@@ -484,7 +484,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qtyValue = dict.quantity
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-            cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
+            cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
             cell.otherPriceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.itemValue = "\(dict.unitPrice)"
             cell.contentView.isUserInteractionEnabled = false
@@ -520,8 +520,8 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
                 DispatchQueue.main.async {
                     self.setPriceAttritubte(price: UserDefaultHelper.totalPrice ?? 0.0)
                     let doubleValue = Double(UserDefaultHelper.totalPrice ?? 0.0)
-                    self.amtLabel.text =  "\(doubleValue.rounded(toPlaces: 2)) KD"
-                    self.totalLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KD"
+                    self.amtLabel.text =  "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                    self.totalLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
                 }
             }
             
@@ -536,14 +536,14 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
 //                cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
 //            }
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
+            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
             
             cell.descLabel.text = dict.instruction
             cell.qty.text = "\(dict.quantity)"
             cell.qtyValue = dict.quantity
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-            cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
+            cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
             cell.itemValue = "\(dict.unitPrice)"
             
             cell.editButton.tag = indexPath.row

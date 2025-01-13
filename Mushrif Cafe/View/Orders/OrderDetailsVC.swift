@@ -230,13 +230,13 @@ extension OrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
         let dict = self.cartArray[indexPath.row]
         cell.nameLabel.text = dict.productName
         let doubleValue = Double(dict.subTotal) ?? 0.0
-        cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"
+        cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"
         
         cell.descLabel.text = dict.descriptionField
         cell.qtyLabel.text = "x\(dict.quantity)"
         
         let prc = Double((Double(dict.unitCost) ?? 0.0)*(Double(dict.quantity) ?? 0.0))
-        cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KD"
+        cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
         
         cell.backView.layer.masksToBounds = true
         DispatchQueue.main.async {

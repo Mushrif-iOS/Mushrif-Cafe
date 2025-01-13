@@ -11,11 +11,7 @@ class ChoiceRowTVCell: UITableViewCell {
     
     @IBOutlet var backView: UIView!
 
-    @IBOutlet var titleImg: UIImageView! {
-        didSet {
-            titleImg.image = UIImage(named: "mainDish")
-        }
-    }
+    @IBOutlet var titleImg: UIImageView!
     
     @IBOutlet var nameLabel: UILabel! {
         didSet {
@@ -25,7 +21,13 @@ class ChoiceRowTVCell: UITableViewCell {
     
     @IBOutlet var priceLabel: UILabel!
     
-    @IBOutlet var tickButton: UIButton!
+    @IBOutlet var tickButton: UIButton! {
+        didSet {
+            tickButton.setImage(UIImage(named: "unchecked"), for: .normal)
+            tickButton.setImage(UIImage(named: "checkbox"), for: .selected)
+            tickButton.isUserInteractionEnabled = false
+        }
+    }
     
     var callBackTap: (()->())?
     
@@ -33,10 +35,10 @@ class ChoiceRowTVCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(postTap(_:)))
-        tapGesture.numberOfTapsRequired = 1
-        tapGesture.delegate = self
-        self.contentView.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(postTap(_:)))
+//        tapGesture.numberOfTapsRequired = 1
+//        tapGesture.delegate = self
+//        self.contentView.addGestureRecognizer(tapGesture)
     }
     
     @objc func postTap(_ sender: UIGestureRecognizer) {
@@ -49,4 +51,10 @@ class ChoiceRowTVCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    func configure(with choice: Choice, isSelected: Bool) {
+        nameLabel.text = "\(choice.choice)"
+        let doubleValue = Double(choice.choicePrice) ?? 0.0
+        priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+        tickButton.isSelected = isSelected
+    }
 }

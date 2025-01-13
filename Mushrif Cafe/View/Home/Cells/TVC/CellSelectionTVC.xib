@@ -20,20 +20,20 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wF4-kT-nII">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="52"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainDish" translatesAutoresizingMaskIntoConstraints="NO" id="OVJ-dh-dJB">
-                                <rect key="frame" x="12" y="8.6666666666666643" width="35" height="35"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OVJ-dh-dJB">
+                                <rect key="frame" x="12" y="8.6666666666666643" width="0.0" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="CMH-KB-pYQ"/>
-                                    <constraint firstAttribute="width" constant="35" id="mtU-f1-LSw"/>
+                                    <constraint firstAttribute="width" id="mtU-f1-LSw"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Sandwich only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nDh-ux-ShR">
-                                <rect key="frame" x="59" y="15" width="123" height="22"/>
+                                <rect key="frame" x="24" y="15" width="158" height="22"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.950 KD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a3K-91-7sl">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.950 KWD" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a3K-91-7sl">
                                 <rect key="frame" x="187" y="15.666666666666664" width="80" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="xE9-46-j2B"/>
@@ -89,7 +89,6 @@
     </objects>
     <resources>
         <image name="checkbox" width="64" height="64"/>
-        <image name="mainDish" width="159" height="165"/>
         <image name="unchecked" width="64" height="64"/>
     </resources>
 </document>
