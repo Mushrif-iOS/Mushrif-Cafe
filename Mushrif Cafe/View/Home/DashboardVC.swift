@@ -49,7 +49,7 @@ class DashboardVC: UIViewController, Instantiatable {
     var activeData = [MyActiveOrder]()
     var finalActiveData = [MyActiveOrder]()
     var myUsualData = [DashboardMyUsual]()
-    var bannerData = [JSON]()
+    var bannerData = [String]()
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,7 +162,9 @@ class DashboardVC: UIViewController, Instantiatable {
             }
             
             let bannerDict = responseJSON["response"]["banner"].arrayValue
-            self.bannerData = bannerDict
+            for obj in bannerDict {
+                self.bannerData.append(obj.stringValue)
+            }
             
             DispatchQueue.main.async {
                 self.mainTableView.delegate = self
@@ -224,6 +226,8 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                cell.bannerData = self.bannerData
+                cell.reloadCollection()
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
@@ -256,6 +260,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
                 //let dict = self.activeData[indexPath.row]
                 cell.usualObj = self.finalActiveData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -286,6 +291,8 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else if indexPath.row == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                cell.bannerData = self.bannerData
+                cell.reloadCollection()
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
@@ -299,6 +306,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
                 //let dict = self.activeData[indexPath.row]
                 cell.usualObj = self.finalActiveData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -309,6 +317,8 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else if indexPath.row == 2 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                cell.bannerData = self.bannerData
+                cell.reloadCollection()
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
@@ -322,6 +332,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
                 //let dict = self.activeData[indexPath.row]
                 cell.usualObj = self.finalActiveData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -347,6 +358,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "HomeOrderTVCell") as! HomeOrderTVCell
                 //let dict = self.activeData[indexPath.row]
                 cell.usualObj = self.finalActiveData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -362,6 +374,8 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 return cell
             } else if indexPath.row == 3 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "BannersTVCell") as! BannersTVCell
+                cell.bannerData = self.bannerData
+                cell.reloadCollection()
                 return cell
             } else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell

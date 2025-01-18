@@ -48,7 +48,7 @@ class PaymentMethodVC: UIViewController, Instantiatable {
         }
     }
     
-    var delegate: PayNowDelegate?
+    var delegate: InputBoxDelegate?
     
     var totalCost: String = ""
         
@@ -57,49 +57,42 @@ class PaymentMethodVC: UIViewController, Instantiatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        MFSettings.shared.delegate = self
-        
-        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
-        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
-            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
-            payment.supportedCountries = ["IN", "KW"]
-            payment.merchantCapabilities = .capability3DS
-            payment.countryCode = "KW"
-            payment.currencyCode = "KWD"
-            payment.supportedNetworks = paymentNetworks
-        } else {
-            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
-                
-            }
-        }
-        
+        //MFSettings.shared.delegate = self
+//
+//        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
+//        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
+//            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
+//            payment.supportedCountries = ["IN", "KW"]
+//            payment.merchantCapabilities = .capability3DS
+//            payment.countryCode = "KW"
+//            payment.currencyCode = "KWD"
+//            payment.supportedNetworks = paymentNetworks
+//        } else {
+//            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+//                
+//            }
+//        }
+//        
         self.initiatePayment()
     }
     
     @IBAction func appleAction(_ sender: Any) {
-        payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
-                    
-        let controller = PKPaymentAuthorizationViewController(paymentRequest: payment)
-        if controller != nil {
-            controller!.delegate = self
-            self.present(controller!, animated: true, completion: nil)
-        }
+        self.delegate?.onInput(text: "apple_pay")
+        self.dismiss(animated: true)
     }
     
     @IBAction func onlineKnetAction(_ sender: Any) {
-        //self.delegate?.onInput(text: "knet")
-        
-        self.executePayment(paymentMethodId: 1)
+        self.delegate?.onInput(text: "knet")
+        self.dismiss(animated: true)
     }
     
     @IBAction func swipeKnetAction(_ sender: Any) {
-        self.delegate?.onSelect(type: "knet_swipe", paymentId: "")
-        
+        self.delegate?.onInput(text: "knet_swipe")
         self.dismiss(animated: true)
     }
     
     @IBAction func keepAction(_ sender: Any) {
-        self.delegate?.onSelect(type: "open", paymentId: "")
+        self.delegate?.onInput(text: "open")
         self.dismiss(animated: true)
     }
 }
@@ -112,7 +105,7 @@ extension PaymentMethodVC : PKPaymentAuthorizationViewControllerDelegate {
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
         
         controller.dismiss(animated: true) {
-            self.delegate?.onSelect(type: "apple_pay", paymentId: "\(transactionID)")
+            //self.delegate?.onSelect(type: "apple_pay", paymentId: "\(transactionID)")
             self.dismiss(animated: true)
         }
     }
@@ -160,7 +153,7 @@ extension PaymentMethodVC: MFPaymentDelegate {
                 }
                 if let invoiceId = invoiceId {
                     print("Success with invoiceId \(invoiceId)")
-                    self.delegate?.onSelect(type: "knet", paymentId: "\(invoiceId)")
+                    //self.delegate?.onSelect(type: "knet", paymentId: "\(invoiceId)")
                     self.dismiss(animated: true)
                 }
             case .failure(let failError):

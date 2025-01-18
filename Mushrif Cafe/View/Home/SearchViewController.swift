@@ -179,7 +179,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         let detailVC = MealDetailsViewController.instantiate()
         self.navigationController?.modalPresentationStyle = .formSheet
         detailVC.itemId = "\(dict.id)"
-        detailVC.descString = dict.name
+        //detailVC.descString = dict.name
         detailVC.delegate = self
         self.navigationController?.present(detailVC, animated: true)
     }

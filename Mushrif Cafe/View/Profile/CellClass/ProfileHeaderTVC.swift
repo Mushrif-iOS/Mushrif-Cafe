@@ -18,6 +18,7 @@ class ProfileHeaderTVC: UITableViewCell {
     @IBOutlet var idLabel: UILabel! {
         didSet {
             idLabel.font = UIFont.poppinsRegularFontWith(size: 16)
+            idLabel.text = ""
         }
     }
     

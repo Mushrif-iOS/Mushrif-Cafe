@@ -193,7 +193,7 @@ class AlertView {
     static func show(title: String? = Bundle.applicationName, message: String?, preferredStyle: UIAlertController.Style = .alert, buttons: [String], completionHandler: @escaping (String) -> Void) {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
-
+        alert.view.tintColor = UIColor.primaryBrown
         for button in buttons {
 
             var style = UIAlertAction.Style.default

@@ -41,6 +41,7 @@ class ItemDetailsResponse {
     var ingredients : [FoodItemIngredient]!
     var kitchenId : Int = 0
     var name : String = ""
+    var prodDetails : String = ""
     var price : String = ""
     var productOptions : [ProductOption]!
     var specialPrice : String = ""
@@ -90,6 +91,7 @@ class ItemDetailsResponse {
         }
         kitchenId = json["kitchen_id"].intValue
         name = json["name"].stringValue
+        prodDetails = json["description"].stringValue
         price = json["price"].stringValue
         productOptions = [ProductOption]()
         let productOptionsArray = json["product_options"].arrayValue

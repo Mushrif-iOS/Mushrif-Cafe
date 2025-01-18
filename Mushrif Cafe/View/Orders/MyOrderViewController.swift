@@ -95,7 +95,7 @@ extension MyOrderViewController: UITableViewDelegate, UITableViewDataSource {
         }        
         
         cell.orderLabel.text = "\("order_id".localized()) #\(dict.orderNumber)"
-        cell.noOfItemLabel.text = "-"
+        cell.noOfItemLabel.text = "\(dict.itemCount)"
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         if "\(dict.paymentMethod)" == "apple_pay" {
             cell.payTypeLabel.text = "Apple Pay"

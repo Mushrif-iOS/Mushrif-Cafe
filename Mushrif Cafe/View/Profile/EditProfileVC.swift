@@ -125,9 +125,8 @@ class EditProfileVC: UIViewController, Instantiatable {
     
     @IBAction func deleteAction(_ sender: Any) {
         
-        AlertView.show(message: "Are you sure ?", preferredStyle: .alert, buttons: ["delete".localized(), "cancel".localized()]) { (button) in
+        AlertView.show(message: "Are you sure ?", preferredStyle: .alert, buttons: ["cancel".localized(), "delete".localized()]) { (button) in
             if button == "delete".localized() {
-                print("Done")
                 
                 let aParams: [String: Any] = [:]
                 
@@ -137,9 +136,25 @@ class EditProfileVC: UIViewController, Instantiatable {
                     let msg = responseJSON["message"].stringValue
                     print(msg)
                     
-                    self.showBanner(message: msg, status: .success)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-                        self.navigationController?.popViewController(animated: true)
+                    //self.showBanner(message: msg, status: .success)
+                    DispatchQueue.main.asyncAfter(deadline: .now()) {
+                        UserDefaultHelper.deleteCountryCode()
+                        UserDefaultHelper.deleteUserLoginId()
+                        UserDefaultHelper.deleteUserName()
+                        UserDefaultHelper.deleteUserEmail()
+                        UserDefaultHelper.deleteMobile()
+                        UserDefaultHelper.deleteAuthToken()
+                        UserDefaultHelper.deleteTotalItems()
+                        UserDefaultHelper.deleteTotalPrice()
+                        UserDefaultHelper.deletePaymentKey()
+                        UserDefaultHelper.deletePaymentEnv()
+                        
+                        AlertView.show(message: msg, preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+                            if button == "ok".localized() {
+                                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                                appDelegate.afterLogout()
+                            }
+                        }
                     }
                     
                 } failure: {error in

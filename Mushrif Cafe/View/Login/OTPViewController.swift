@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import SYBanner
+import MFSDK
 
 class OTPViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
@@ -27,12 +27,16 @@ class OTPViewController: UIViewController, Instantiatable {
     var enteredNumber: String = ""
     var tempOTP: String = ""
     
+    var countdownTimer: Timer?
+    var remainingTime = Int()
+    
     @IBOutlet weak var otpContainerView: UIView!
     
     @IBOutlet weak var resendButton: UIButton! {
         didSet {
             resendButton.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 18)
-            resendButton.setTitle("resend_otp".localized(), for: .normal)
+            resendButton.setTitle("\("resend_otp".localized()) (\(remainingTime)s)", for: .normal)
+            resendButton.isEnabled = false
         }
     }
     @IBOutlet weak var submitBtn: UIButton! {
@@ -44,27 +48,27 @@ class OTPViewController: UIViewController, Instantiatable {
     
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var otpValueText: UILabel! {
+        didSet {
+            otpValueText.font = UIFont.poppinsMediumFontWith(size: 18)
+        }
+    }
+    
     var otpView: OTPFieldView = OTPFieldView()
     var enteredOtp: String = ""
     var hasEnterd: Bool = false
     
     var customerData: Customer?
     
+    var paymentData: [PaymentTypeResponse] = [PaymentTypeResponse]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         enterText.text = "\("please_enter_otp".localized()) \n\(enteredNumber)"
         
-        self.showBanner(message: "otp_error".localized(), status: .success)
-        
-        let styleBanner = SYDefaultBanner("OTP: \(tempOTP)", direction: .top, style: .success)
-        styleBanner.show(queuePosition: .front)
-        styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-        styleBanner.messageColor = .white
-        styleBanner.dismissOnSwipe = true
-        styleBanner.autoDismiss = true
-        styleBanner.appearanceDuration = 5.0
-        styleBanner.show()
+        self.otpValueText.text = tempOTP
+        self.startTimer()
         
         setupOtpView()
     }
@@ -72,12 +76,47 @@ class OTPViewController: UIViewController, Instantiatable {
     @IBAction func backAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.countdownTimer?.invalidate()
+        self.countdownTimer = nil
+    }
+    
+    deinit {
+        // Invalidate the timer when the view controller is deallocated
+        self.countdownTimer?.invalidate()
+        self.countdownTimer = nil
+    }
+    
     @IBAction func resendAction(_ sender: Any) {
         
+        let aParams: [String: String] = ["phone": "\(self.enteredNumber)"]
+        
+        print(aParams)
+
+        APIManager.shared.loginWithRetry(to: APPURL.getOTP, parameters: aParams, maxRetries: 2) { result in
+            switch result {
+            case .success(let data):
+                self.otpValueText.text = "\(data.otp)"
+                
+                guard self.remainingTime == 0 else {
+                    self.showBanner(message: "Please wait \(self.remainingTime) seconds before retrying.", status: .error)
+                    return
+                }
+                
+                // Reset the timer and resend OTP
+                self.remainingTime = data.otpValidityPeriodInSeconds
+                self.resendButton.setTitle("\("resend_otp".localized()) (\(self.remainingTime)s)", for: .normal)
+                self.resendButton.isEnabled = false
+                self.startTimer()
+            case .failure(let error):
+                print("Error \(error.localizedDescription)")
+            }
+        }
     }
     
     @IBAction func submitAction(_ sender: Any) {
-        
         postOTPCall()
     }
     
@@ -85,6 +124,9 @@ class OTPViewController: UIViewController, Instantiatable {
         
         if !hasEnterd {
             self.showBanner(message: "otp_error".localized(), status: .error)
+        } else if self.enteredOtp != self.otpValueText.text {
+            self.showBanner(message: "otp_not_valid".localized(), status: .error)
+            return
         } else {
             
             let aParams: [String: Any] = ["phone": "\(self.enteredNumber)", "otp": "\(self.enteredOtp)"]
@@ -107,9 +149,9 @@ class OTPViewController: UIViewController, Instantiatable {
                 UserDefaultHelper.userEmail = "\(self.customerData?.email ?? "")"
                 UserDefaultHelper.mobile = "\(self.customerData?.phone ?? "")"
                 UserDefaultHelper.walletBalance = "\(self.customerData?.balance ?? "")"
-                
+                self.getPaymentGateway()
                 DispatchQueue.main.async {
-                    if "\(self.customerData?.name ?? "")" == "" {
+                    if "\(self.customerData?.name ?? "")" == "" || "\(self.customerData?.name ?? "")" == "Guest" || "\(self.customerData?.name ?? "")" == "Guest User" {
                         let nextVC = CompleteProfileVC.instantiate()
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     } else {
@@ -120,6 +162,33 @@ class OTPViewController: UIViewController, Instantiatable {
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }
+        }
+    }
+    
+    private func getPaymentGateway() {
+        
+        let aParams = ["": ""]
+        
+        print(aParams)
+        
+        APIManager.shared.getCallWithParams(APPURL.payment_gateway, params: aParams) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let dataDict = responseJSON["response"].arrayValue
+            
+            for obj in dataDict {
+                self.paymentData.append(PaymentTypeResponse(fromJson: obj))
+            }
+            UserDefaultHelper.paymentKey = "\(self.paymentData.first?.parameters.apiKey ?? "")"
+            UserDefaultHelper.paymentEnv = "\(self.paymentData.first?.parameters.environment ?? "")"
+            
+            MFSettings.shared.configure(token: UserDefaultHelper.paymentKey ?? "",
+                                        country: .kuwait, environment: UserDefaultHelper.paymentEnv == "sandbox" ? .test : .live)
+            
+            let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
+            MFSettings.shared.setTheme(theme: them)
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
         }
     }
     
@@ -149,6 +218,23 @@ class OTPViewController: UIViewController, Instantiatable {
         self.otpView.shouldAllowIntermediateEditing = false
         self.otpView.delegate = self
         self.otpView.initializeUI()
+    }
+    
+    func startTimer() {
+        self.countdownTimer?.invalidate()
+        self.countdownTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateTimer() {
+        if self.remainingTime > 0 {
+            self.remainingTime -= 1
+            self.resendButton.setTitle("\("resend_otp".localized()) (\(remainingTime)s)", for: .normal)
+            self.resendButton.isEnabled = false
+        } else {
+            self.countdownTimer?.invalidate()
+            self.resendButton.isEnabled = true
+            self.resendButton.setTitle("\("resend_otp".localized())", for: .normal)
+        }
     }
 }
 

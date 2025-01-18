@@ -52,6 +52,7 @@ class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
     }
 
     func completed() {
+        self.transactionData.removeAll()
         self.getWalletDetails()
     }
     

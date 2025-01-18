@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 //import ProgressHUD
 
 class LoginVC: UIViewController, Instantiatable {
@@ -88,23 +89,24 @@ class LoginVC: UIViewController, Instantiatable {
             self.showBanner(message: "mobile_error".localized(), status: .error)
         } else {
             
-            let aParams: [String: Any] = ["phone": "\(self.mobileNumberText.text!)"]
+            let aParams: [String: String] = ["phone": "\(self.mobileNumberText.text!)"]
             
             print(aParams)
             
-            APIManager.shared.postCall(APPURL.getOTP, params: aParams, withHeader: false) { responseJSON in
-                print("Response JSON \(responseJSON)")
-                let dataDict = responseJSON["response"].dictionaryValue
-                print("OTP: \(dataDict["otp"] ?? "")")
-                UserDefaultHelper.countryCode = "\(self.countryCode.text!)"
-                DispatchQueue.main.async {
-                    let otpVC = OTPViewController.instantiate()
-                    otpVC.enteredNumber = self.mobileNumberText.text!
-                    otpVC.tempOTP = "\(dataDict["otp"] ?? "")"
-                    self.navigationController?.pushViewController(otpVC, animated: true)
+            APIManager.shared.loginWithRetry(to: APPURL.getOTP, parameters: aParams, maxRetries: 2) { result in
+                switch result {
+                case .success(let data):
+                    print("OTP: \(data.otp)")
+                    DispatchQueue.main.async {
+                        let otpVC = OTPViewController.instantiate()
+                        otpVC.enteredNumber = self.mobileNumberText.text!
+                        otpVC.tempOTP = "\(data.otp)"
+                        otpVC.remainingTime = data.otpValidityPeriodInSeconds
+                        self.navigationController?.push(viewController: otpVC)
+                    }
+                case .failure(let error):
+                    print("Upload Failed: \(error.localizedDescription)")
                 }
-            } failure: { error in
-                print("Error \(error.localizedDescription)")
             }
         }
     }

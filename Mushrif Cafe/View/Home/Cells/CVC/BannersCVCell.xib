@@ -17,7 +17,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="377" height="191"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BannerImg" translatesAutoresizingMaskIntoConstraints="NO" id="u88-KV-Ty7">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u88-KV-Ty7">
                         <rect key="frame" x="0.0" y="0.0" width="377" height="191"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="191" id="gtk-I0-h14"/>
@@ -48,7 +48,4 @@
             <point key="canvasLocation" x="225.19083969465649" y="73.591549295774655"/>
         </collectionViewCell>
     </objects>
-    <resources>
-        <image name="BannerImg" width="1191" height="573"/>
-    </resources>
 </document>

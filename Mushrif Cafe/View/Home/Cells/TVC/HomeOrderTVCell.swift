@@ -9,62 +9,6 @@ import UIKit
 
 class HomeOrderTVCell: UITableViewCell {
     
-//    @IBOutlet var topView: UIView!
-//    
-//    @IBOutlet var orderLabel: UILabel! {
-//        didSet {
-//            orderLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-//        }
-//    }
-//    @IBOutlet var statusLabel: UILabel! {
-//        didSet {
-//            statusLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-//            //statusLabel.text = "OPEN ORDER"
-//        }
-//    }
-//    
-//    @IBOutlet var noOfItemTitle: UILabel! {
-//        didSet {
-//            noOfItemTitle.font = UIFont.poppinsLightFontWith(size: 16)
-//            noOfItemTitle.text = "no_of_items".localized()
-//        }
-//    }
-//    @IBOutlet var dateTimeTitle: UILabel! {
-//        didSet {
-//            dateTimeTitle.font = UIFont.poppinsLightFontWith(size: 16)
-//            dateTimeTitle.text = "date_time".localized()
-//        }
-//    }
-//    @IBOutlet var amtTitle: UILabel! {
-//        didSet {
-//            amtTitle.font = UIFont.poppinsLightFontWith(size: 16)
-//            amtTitle.text = "amount".localized()
-//        }
-//    }
-//    
-//    @IBOutlet var noOfItemLabel: UILabel! {
-//        didSet {
-//            noOfItemLabel.font = UIFont.poppinsLightFontWith(size: 16)
-//        }
-//    }
-//    @IBOutlet var dateTimeLabel: UILabel! {
-//        didSet {
-//            dateTimeLabel.font = UIFont.poppinsLightFontWith(size: 16)
-//        }
-//    }
-//    @IBOutlet var amtLabel: UILabel! {
-//        didSet {
-//            amtLabel.font = UIFont.poppinsLightFontWith(size: 16)
-//        }
-//    }
-//    
-//    @IBOutlet weak var payNowButton: UIButton! {
-//        didSet {
-//            payNowButton.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 16)
-//            payNowButton.setTitle("pay_now".localized(), for: .normal)
-//        }
-//    }
-    
     @IBOutlet var dataCollection: UICollectionView!
     
     var navController: UINavigationController?
@@ -77,7 +21,7 @@ class HomeOrderTVCell: UITableViewCell {
     static func nib() -> UINib {
         return UINib(nibName: "HomeOrderTVCell", bundle: nil)
     }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -86,11 +30,15 @@ class HomeOrderTVCell: UITableViewCell {
         dataCollection.dataSource = self
         dataCollection.reloadData()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
+    }
+    
+    func reloadCollection() {
+        self.dataCollection.reloadData()
     }
 }
 
@@ -110,6 +58,13 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
         cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
+        
+        if dict.paymentStatus == "Paid" {
+            cell.payNowButton.isHidden = true
+        } else {
+            cell.payNowButton.isHidden = false
+        }
+        
         cell.payNowButton.tag = indexPath.item
         cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
         return cell
@@ -123,7 +78,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         
         let dict = usualObj[sender.tag]
         self.cartId = "\(dict.cart.id)"
-        let addVC = PaymentMethodVC.instantiate()
+        let addVC = HomePaymentMethodVC.instantiate()
         if #available(iOS 15.0, *) {
             if let sheet = addVC.sheetPresentationController {
                 sheet.detents = [.medium()]
@@ -131,21 +86,53 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             }
         }
         addVC.delegate = self
+        addVC.cardID = "\(dict.cart.id)"
         addVC.totalCost = dict.grandTotal
         self.navController?.present(addVC, animated: true, completion: nil)
     }
     
-    func onSelect(type: String, paymentId: String) {
+    func onSelect(type: String, paymentId: String, orderId: String, amount: String) {
         print(type)
         print(paymentId)
         
-        let aParams = ["cart_id": self.cartId, "payment_type": type, "payment_id": paymentId]
+        if type == "knet_swipe" || type == "open" {
+            let aParams = ["cart_id": self.cartId, "payment_type": type]
+            print(aParams)
+            
+            var successOrderDetails: SuccessOrderResponse?
+            
+            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                DispatchQueue.main.async {
+                    let orderVC = OrderSuccessVC.instantiate()
+                    orderVC.successOrderDetails = successOrderDetails
+                    orderVC.successMsg = msg
+                    orderVC.title = "Dashboard"
+                    self.navController?.pushViewController(orderVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else if type == "apple_pay" {
+            self.paymentOrder(orderId: orderId, type: type, payId: paymentId, paymentStatus: "Paid", amt: amount)
+        } else if type == "knet" {
+            self.paymentOrder(orderId: orderId, type: type, payId: paymentId, paymentStatus: "Paid", amt: amount)
+        }
+    }
+    
+    private func paymentOrder(orderId: String, type: String, payId: String, paymentStatus: String, amt: String) {
         
+        let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": amt]
         print(aParams)
         
         var successOrderDetails: SuccessOrderResponse?
         
-        APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+        APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
             let dataDict = responseJSON["response"]
             successOrderDetails = SuccessOrderResponse(fromJson: dataDict)

@@ -29,14 +29,22 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             englishLbl.font = UIFont.poppinsRegularFontWith(size: 18)
         }
     }
-    @IBOutlet weak var enlishImg: UIImageView!
+    @IBOutlet weak var enlishImg: UIImageView! {
+        didSet {
+            enlishImg.image = nil
+        }
+    }
     
     @IBOutlet weak var arabLbl: UILabel! {
         didSet {
             arabLbl.font = UIFont.poppinsRegularFontWith(size: 18)
         }
     }
-    @IBOutlet weak var arabImg: UIImageView!
+    @IBOutlet weak var arabImg: UIImageView! {
+        didSet {
+            arabImg.image = nil
+        }
+    }
     
     var languageData: [Languages] = [Languages]()
     
@@ -60,13 +68,14 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             
             DispatchQueue.main.async {
                 self.englishLbl.text = self.languageData.first?.title
-                self.enlishImg.downloadImage(url: self.languageData.first?.icon) { img in
-                    self.enlishImg.image = img
-                }
+                self.arabLbl.text = self.languageData.last?.title
                 
-                self.arabLbl.text = self.languageData.last?.title //"العربية"
-                self.arabImg.downloadImage(url: self.languageData.last?.icon) { img in
-                    self.arabImg.image = img
+                if self.languageData.first?.key == "ae" {
+                    self.enlishImg.image = UIImage(named: "ArabFlag")
+                    self.arabImg.image = UIImage(named: "EnglishFlag")
+                } else {
+                    self.enlishImg.image = UIImage(named: "ArabFlag")
+                    self.arabImg.image = UIImage(named: "EnglishFlag")
                 }
             }
             
@@ -81,7 +90,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
-            let loginVC = DashboardVC.instantiate()
+            let loginVC = ScanTableVC.instantiate()
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }
@@ -92,7 +101,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
-            let loginVC = DashboardVC.instantiate()
+            let loginVC = ScanTableVC.instantiate()
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }

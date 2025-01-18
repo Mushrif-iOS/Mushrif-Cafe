@@ -94,6 +94,7 @@ class OrderData {
     var paid : String = ""
     var paymentId : String = ""
     var paymentMethod : String = ""
+    var itemCount : Int = 0
     var serviceCharge : String = ""
     var status : Int = 0
     var subTotal : String = ""
@@ -135,6 +136,7 @@ class OrderData {
         paid = json["paid"].stringValue
         paymentId = json["payment_id"].stringValue
         paymentMethod = json["payment_method"].stringValue
+        itemCount = json["item_count"].intValue
         serviceCharge = json["service_charge"].stringValue
         status = json["status"].intValue
         subTotal = json["sub_total"].stringValue

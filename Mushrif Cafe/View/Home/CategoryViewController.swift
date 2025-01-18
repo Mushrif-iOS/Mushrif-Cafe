@@ -63,10 +63,6 @@ class CategoryViewController: UIViewController, Instantiatable {
         
         self.getSubCategories()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            self.mainCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .centeredHorizontally)
-        }
-        
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
     }
     
@@ -89,7 +85,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         } else {
             self.heightBottom.constant = 90
             self.bottomView.isHidden = false
-            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
+            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
         }
     }
     
@@ -133,11 +129,15 @@ class CategoryViewController: UIViewController, Instantiatable {
             }
             
             DispatchQueue.main.async {
-                self.subTitleLabel.text = self.subCategoriesArr.first?.name
-                self.mainCollectionView.reloadData()
+                if self.subCategoriesArr.count > 0 {
+                    self.subTitleLabel.text = self.subCategoriesArr.first?.name
+                    self.mainCollectionView.reloadData()
+                    self.mainCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .centeredHorizontally)
+                    self.getProductList(subCatId: "\(self.subCategoriesArr.first?.id ?? 0)", page: self.pageNo)
+                } else {
+                    self.showBanner(message: "no_subcategory".localized(), status: .error)
+                }
             }
-            
-            self.getProductList(subCatId: "\(self.subCategoriesArr.first?.id ?? 0)", page: self.pageNo)
             
         } failure: { error in
             print("Error \(error.localizedDescription)")
@@ -319,7 +319,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                     self.showBanner(message: msg, status: .success)
                     UserDefaultHelper.totalItems! += 1
                     UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                    self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) Item added - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
+                    self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
                     let cartVC = CartVC.instantiate()
                     self.navigationController?.pushViewController(cartVC, animated: true)
                 }

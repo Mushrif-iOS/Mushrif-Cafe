@@ -93,7 +93,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         self.navController?.modalPresentationStyle = .formSheet
         detailVC.itemId = "\(dict.id ?? 0)"
         detailVC.delegate = self
-        detailVC.descString = dict.descriptionField
+        //detailVC.descString = dict.descriptionField
         self.navController?.present(detailVC, animated: true)
     }
     

@@ -41,5 +41,5 @@ protocol SetLocationDelegate {
 }
 
 protocol PayNowDelegate {
-    func onSelect(type: String, paymentId: String)
+    func onSelect(type: String, paymentId: String, orderId: String, amount: String)
 }

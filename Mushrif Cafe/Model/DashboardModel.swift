@@ -29,7 +29,7 @@ class DashboardRoot {
 
 class DashboardResponse {
 
-    //var banner : [AnyObject]!
+    var banner : [String]!
     var categories : [Category]!
     var myActiveOrders : [MyActiveOrder]!
     var myUsuals : [DashboardMyUsual]!
@@ -40,11 +40,11 @@ class DashboardResponse {
         if json.isEmpty {
             return
         }
-//        banner = [AnyObject]()
-//        let bannerArray = json["banner"].arrayValue
-//        for bannerJson in bannerArray{
-//            banner.append(bannerJson.stringValue)
-//        }
+        banner = [String]()
+        let bannerArray = json["banner"].arrayValue
+        for bannerJson in bannerArray{
+            banner.append(bannerJson.stringValue)
+        }
         categories = [Category]()
         let categoriesArray = json["categories"].arrayValue
         for categoriesJson in categoriesArray{
@@ -103,6 +103,7 @@ class MyActiveOrder {
     var paid : String = ""
     var paymentId : String = ""
     var paymentMethod : String = ""
+    var paymentStatus : String = ""
     var printStatus : String = ""
     var serviceCharge : String = ""
     var status : Int = 0
@@ -149,6 +150,7 @@ class MyActiveOrder {
         paid = json["paid"].stringValue
         paymentId = json["payment_id"].stringValue
         paymentMethod = json["payment_method"].stringValue
+        paymentStatus = json["payment_status"].stringValue
         printStatus = json["print_status"].stringValue
         serviceCharge = json["service_charge"].stringValue
         status = json["status"].intValue

@@ -18,6 +18,7 @@
 "resend_otp" = "Resend OTP";
 "verify" = "Verify";
 "otp_error" = "Please enter 6 digit OTP";
+"otp_not_valid" = "The OTP you entered was incorrect or expired";
 "complete_profile" = "Complete your Profile";
 "full_name" = "Full Name";
 "name_error" = "Please enter full name";
@@ -77,6 +78,10 @@
 "order_id" = "Order Number";
 "payment" = "Payment";
 "open_order" = "OPEN ORDER";
+"no_subcategory" = "No Sub-Category Found";
+"item_added" = "Item added";
+"add_to_wallet" = "Add to Wallet";
+"type_of_meal" = "Type of Meal";
 
 "cart" = "Cart";
 "balance" = "Balance";

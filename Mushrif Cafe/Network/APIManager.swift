@@ -82,6 +82,14 @@ class APIManager: NSObject {
             
             AF.request(urlString, method: .get, headers: withHeader ? headers : nil).responseJSON { responseObj in
                 
+                if let statusCode = responseObj.response?.statusCode {
+                    print("HTTP Status Code: \(statusCode)")
+                    
+                    if statusCode == 401 {
+                        self.logoutUserAndRedirectToLogin()
+                    }
+                }
+                
                 if let error = responseObj.error {
                     failure(error)
                     self.showBanner(message: error.localizedDescription, status: .error)
@@ -95,7 +103,7 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: "something_wrong".localized(), status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .error)
                             ProgressHUD.dismiss()
                         }
                     }
@@ -121,6 +129,14 @@ class APIManager: NSObject {
             
             AF.request(strURL, method: .get, parameters: params, headers: headers).responseJSON { responseObj in
                 
+                if let statusCode = responseObj.response?.statusCode {
+                    print("HTTP Status Code: \(statusCode)")
+                    
+                    if statusCode == 401 {
+                        self.logoutUserAndRedirectToLogin()
+                    }
+                }
+                
                 if let error = responseObj.error {
                     failure(error)
                     self.showBanner(message: error.localizedDescription, status: .error)
@@ -134,7 +150,7 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: "something_wrong".localized(), status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .error)
                             ProgressHUD.dismiss()
                         }
                     }
@@ -163,6 +179,14 @@ class APIManager: NSObject {
             
             AF.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil).responseJSON { responseObj in
                 
+                if let statusCode = responseObj.response?.statusCode {
+                    print("HTTP Status Code: \(statusCode)")
+                    
+                    if statusCode == 401 {
+                        self.logoutUserAndRedirectToLogin()
+                    }
+                }
+                
                 if let error = responseObj.error {
                     failure(error)
                     ProgressHUD.dismiss()
@@ -176,7 +200,7 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: "something_wrong".localized(), status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .error)
                             ProgressHUD.dismiss()
                         }
                     }
@@ -205,6 +229,14 @@ class APIManager: NSObject {
             
             AF.request(fullUrl, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { responseObj in
                 
+                if let statusCode = responseObj.response?.statusCode {
+                    print("HTTP Status Code: \(statusCode)")
+                    
+                    if statusCode == 401 {
+                        self.logoutUserAndRedirectToLogin()
+                    }
+                }
+                
                 if let error = responseObj.error {
                     failure(error)
                     ProgressHUD.dismiss()
@@ -218,7 +250,7 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: "something_wrong".localized(), status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .error)
                             ProgressHUD.dismiss()
                         }
                     }
@@ -226,6 +258,91 @@ class APIManager: NSObject {
             }
         } else {
             self.showBanner(message: "no_internet".localized(), status: .error)
+        }
+    }
+    
+    // MARK: - Login Methods
+    func loginWithRetry(
+        to url: String,
+        parameters: [String: String],
+        maxRetries: Int,
+        currentRetry: Int = 0,
+        showLoader: Bool = true,
+        completion: @escaping (Result<OTPResponse, AFError>) -> Void) {
+            
+            if SingleTon.isInternetAvailable() {
+                
+                if showLoader, currentRetry == 0 {
+                    DispatchQueue.main.async {
+                        self.showLoader()
+                    }
+                }
+                
+                let fullUrl = (url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
+                print(fullUrl)
+                
+                AF.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default)
+                    .validate()
+                    .responseJSON { response in
+                        
+                        if let statusCode = response.response?.statusCode {
+                            print("HTTP Status Code: \(statusCode)")
+                            
+                            if statusCode == 401 {
+                                self.logoutUserAndRedirectToLogin()
+                            }
+                        }
+                        
+                        switch response.result {
+                        case .success(let value):
+                            let json = JSON(value)
+                            let otpResponse = OTPResponse(json: json)
+                            DispatchQueue.main.async {
+                                ProgressHUD.dismiss()
+                            }
+                            completion(.success(otpResponse))
+                        case .failure(let error):
+                            
+                            if currentRetry < maxRetries {
+                                print("Retrying... Attempt \(currentRetry + 1)")
+                                self.loginWithRetry(
+                                    to: url,
+                                    parameters: parameters,
+                                    maxRetries: maxRetries,
+                                    currentRetry: currentRetry + 1,
+                                    showLoader: false,
+                                    completion: completion
+                                )
+                            } else {
+                                // Hide loader after failure
+                                DispatchQueue.main.async {
+                                    ProgressHUD.dismiss()
+                                }
+                                completion(.failure(error))
+                                self.showBanner(message: error.localizedDescription, status: .error)
+                            }
+                        }
+                    }
+            } else {
+                self.showBanner(message: "no_internet".localized(), status: .error)
+            }
+        }
+    
+    func logoutUserAndRedirectToLogin() {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            UserDefaultHelper.deleteCountryCode()
+            UserDefaultHelper.deleteUserLoginId()
+            UserDefaultHelper.deleteUserName()
+            UserDefaultHelper.deleteUserEmail()
+            UserDefaultHelper.deleteMobile()
+            UserDefaultHelper.deleteAuthToken()
+            UserDefaultHelper.deleteTotalItems()
+            UserDefaultHelper.deleteTotalPrice()
+            UserDefaultHelper.deletePaymentKey()
+            UserDefaultHelper.deletePaymentEnv()
+            
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.afterLogout()
         }
     }
 }

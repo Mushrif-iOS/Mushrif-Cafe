@@ -129,4 +129,12 @@ struct APPURL {
     static var order_Details: String {
         return BaseURL  + "my-orders/details"
     }
+    
+    static var payment_gateway: String {
+        return BaseURL  + "payment-gateways"
+    }
+    
+    static var payment_order: String {
+        return BaseURL  + "payment"
+    }
 }

@@ -124,7 +124,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileHeaderTVC") as! ProfileHeaderTVC
             
             cell.nameLabel.text = self.profileData?.name ?? ""
-            cell.idLabel.text = UserDefaultHelper.userloginId
+            cell.idLabel.text = "\(UserDefaultHelper.mobile ?? "")"
             
             cell.editButton.addTarget(self, action: #selector(editAction), for: .touchUpInside)
             return cell
@@ -179,7 +179,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
             }
             
         case 6:
-            AlertView.show(message: "logout_message".localized(), preferredStyle: .alert, buttons: ["logout".localized(), "cancel".localized()]) { (button) in
+            AlertView.show(message: "logout_message".localized(), preferredStyle: .alert, buttons: ["cancel".localized(), "logout".localized(), ]) { (button) in
                 if button == "logout".localized() {
                     
                     let aParams: [String: Any] = [:]
@@ -198,6 +198,8 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
                         UserDefaultHelper.deleteAuthToken()
                         UserDefaultHelper.deleteTotalItems()
                         UserDefaultHelper.deleteTotalPrice()
+                        UserDefaultHelper.deletePaymentKey()
+                        UserDefaultHelper.deletePaymentEnv()
                         
                         AlertView.show(message: msg, preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
                             if button == "ok".localized() {

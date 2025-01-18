@@ -983,9 +983,11 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         var comboProduct = [CartComboItem]()
         if categorySelecteIndex1 != nil {
             comboProduct.append(self.categoryArr1[categorySelecteIndex1!.row])
-        } else if categorySelecteIndex2 != nil {
+        }
+        if categorySelecteIndex2 != nil {
             comboProduct.append(self.categoryArr2[categorySelecteIndex2!.row])
-        } else if categorySelecteIndex3 != nil {
+        }
+        if categorySelecteIndex3 != nil {
             comboProduct.append(self.categoryArr3[categorySelecteIndex3!.row])
         }
         
@@ -994,7 +996,16 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         for i in 0..<comboProduct.count {
             combo_product_id.append(comboProduct[i].id)
         }
-        let combojsonString = combo_product_id.map{String($0)}.joined(separator: ", ")//SingleTon.sharedSingleTon.convertToJSON(arrayObject: combo_product_id)
+        let combojsonString = combo_product_id.map{String($0)}.joined(separator: ", ")
+        
+        if self.cartDetails?.product?.haveCombo == 1 {
+            if self.selectedComboId == self.cartDetails?.product?.comboDetails.id {
+                if combo_product_id.count == 0 {
+                    ProgressHUD.error("Please select at least 1 combo")
+                    return
+                }
+            }
+        }
         
         let aParams = ["hall_id": hallId,
                        "table_id": tableId,

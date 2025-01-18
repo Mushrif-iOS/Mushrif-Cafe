@@ -119,9 +119,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     var variationPrice: Double = Double()
     
     var qtyValue: Int = 1
-    
-    var descString = String()
-    
+        
     let userLanguage = UserDefaultHelper.language
     
     var firstBoxSelectedRows: [IndexPath] = []
@@ -227,7 +225,13 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func nextAscreenAction(_ sender: Any) {
-        self.addToCartApi()
+        if UserDefaultHelper.authToken != "" {
+            self.addToCartApi()
+        } else {
+            self.dismiss(animated: true) {
+                self.delegate?.dismissed()
+            }
+        }
     }
     
     func adjustTextViewHeight() {
@@ -280,7 +284,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
                 
                 self.mealImg.loadURL(urlString: self.detailsData?.image, placeholderImage: UIImage(named: "appLogo"))
                 self.nameLabel.text = self.detailsData?.name
-                self.descLabel.text = self.descString
+                self.descLabel.text = self.detailsData?.prodDetails
                 
                 self.setupUI()
             }
@@ -363,7 +367,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             self.selectedComboId = nil
             
         } else {
-            self.typeOfMealLabel.text = data?.name
+            self.typeOfMealLabel.text = "type_of_meal".localized()//data?.name
             self.requiredLabel.text = data?.comboDetails.comboTitle
             self.mealTypeTblHeight.constant = 2 * 52
             self.mealTypeTblView.reloadData()
@@ -946,9 +950,11 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         var comboProduct = [Category]()
         if categorySelecteIndex1 != nil {
             comboProduct.append(self.categoryArr1[categorySelecteIndex1!.row])
-        } else if categorySelecteIndex2 != nil {
+        } 
+        if categorySelecteIndex2 != nil {
             comboProduct.append(self.categoryArr2[categorySelecteIndex2!.row])
-        } else if categorySelecteIndex3 != nil {
+        } 
+        if categorySelecteIndex3 != nil {
             comboProduct.append(self.categoryArr3[categorySelecteIndex3!.row])
         }
         
@@ -959,8 +965,17 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         }
         let combojsonString = combo_product_id.map{String($0)}.joined(separator: ", ")
         
+        if self.detailsData?.haveCombo == 1 {
+            if self.selectedComboId == self.detailsData?.comboDetails.id {
+                if combo_product_id.count == 0 {
+                    ProgressHUD.error("Please select at least 1 combo")
+                    return
+                }
+            }
+        }
+        
         var isCustomized: Bool = false
-        if selectedComboId != nil || self.isPlainSelected == true || combo_product_id.count != 0 || self.basePrice != self.originalBasePrice {
+            if selectedComboId != nil || self.isPlainSelected == true || self.finalngredientIDs.count != 0 || combo_product_id.count != 0 || self.selectedChoiceIDs.count != 0 || self.basePrice != self.originalBasePrice {
             isCustomized = true
         }
         

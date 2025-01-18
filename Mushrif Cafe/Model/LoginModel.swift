@@ -8,6 +8,24 @@
 import Foundation
 import SwiftyJSON
 
+struct OTPResponse {
+    var success : Bool = false
+    var otp: Int
+    var isExisting: Bool
+    var otpValidity: String
+    var otpValidityPeriodInSeconds: Int
+    var message: String
+
+    init(json: JSON) {
+        self.success = json["success"].boolValue
+        self.otp = json["response"]["otp"].intValue
+        self.isExisting = json["response"]["is_existing"].boolValue
+        self.otpValidity = json["response"]["otp_validity"].stringValue
+        self.otpValidityPeriodInSeconds = json["response"]["otp_validity_period_in_second"].intValue
+        self.message = json["message"].stringValue
+    }
+}
+
 class LoginRootClass {
 
     var message : String = ""
@@ -89,5 +107,66 @@ class Customer {
         state = json["state"].stringValue
         status = json["status"].intValue
         userId = json["user_id"].intValue
+    }
+}
+
+
+class PaymentTypeRootClass {
+
+    var message : String = ""
+    var response : [PaymentTypeResponse]!
+    var success : Bool = false
+
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        message = json["message"].stringValue
+        response = [PaymentTypeResponse]()
+        let responseArray = json["response"].arrayValue
+        for responseJson in responseArray{
+            let value = PaymentTypeResponse(fromJson: responseJson)
+            response.append(value)
+        }
+        success = json["success"].boolValue
+    }
+}
+
+
+class PaymentTypeResponse {
+
+    var id : Int = 0
+    var image : String = ""
+    var name : String = ""
+    var parameters : PaymentTypeParameter!
+    var slug : String = ""
+
+
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        id = json["id"].intValue
+        image = json["image"].stringValue
+        name = json["name"].stringValue
+        let parametersJson = json["parameters"]
+        if !parametersJson.isEmpty{
+            parameters = PaymentTypeParameter(fromJson: parametersJson)
+        }
+        slug = json["slug"].stringValue
+    }
+}
+
+class PaymentTypeParameter {
+
+    var apiKey : String = ""
+    var environment : String = ""
+
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        apiKey = json["api_key"].stringValue
+        environment = json["environment"].stringValue
     }
 }
