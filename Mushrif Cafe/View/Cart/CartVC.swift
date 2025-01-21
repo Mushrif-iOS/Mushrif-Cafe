@@ -35,6 +35,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBOutlet weak var walletBalanceLabel: UILabel! {
         didSet {
             walletBalanceLabel.font = UIFont.poppinsRegularFontWith(size: 16)
+            walletBalanceLabel.text = ""
         }
     }
     
@@ -506,6 +507,13 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
             
             let msg = responseJSON["message"].stringValue
             print(msg)
+            
+            if type == "wallet" {
+                let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(self.totalCost) ?? 0.0)
+                UserDefaultHelper.walletBalance = "\(doubleValue)"
+                self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
+            }
+            
             DispatchQueue.main.async {
                 self.showBanner(message: msg, status: .success)
                 let orderVC = OrderSuccessVC.instantiate()

@@ -112,4 +112,21 @@ class OrderSuccessVC: UIViewController, Instantiatable {
             //NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
         }
     }
+    
+    @IBAction func addUsualAction(_ sender: Any) {
+        AlertView.show(message: "usual_add_error".localized(), preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+            if button == "ok".localized() {
+            }
+        }
+//        let addVC = AddUsualsVC.instantiate()
+//        if #available(iOS 15.0, *) {
+//            if let sheet = addVC.sheetPresentationController {
+//                sheet.detents = [.medium()]
+//                sheet.preferredCornerRadius = 15
+//            }
+//        }
+//        addVC.productId = "\(successOrderDetails?.id ?? 0)"
+//        addVC.itemType = "ordered"
+//        self.present(addVC, animated: true, completion: nil)
+    }
 }

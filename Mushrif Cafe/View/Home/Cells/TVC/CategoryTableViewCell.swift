@@ -12,14 +12,12 @@ class CategoryTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            nameLabel.text = "Beef burger united"
         }
     }
     
     @IBOutlet weak var priceLabel: UILabel! {
         didSet {
             priceLabel.font = UIFont.poppinsBoldFontWith(size: 20)
-            priceLabel.text = "1.500 K.D"
         }
     }
     

@@ -91,6 +91,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
             let loginVC = ScanTableVC.instantiate()
+            loginVC.title = "LanguageSelection"
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }
@@ -102,6 +103,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
             let loginVC = ScanTableVC.instantiate()
+            loginVC.title = "LanguageSelection"
             self.navigationController?.pushViewController(loginVC, animated: true)
         }
     }

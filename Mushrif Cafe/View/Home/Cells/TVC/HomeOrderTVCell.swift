@@ -53,7 +53,6 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeOrderCVCell.identifier, for: indexPath) as! HomeOrderCVCell
         let dict = usualObj[indexPath.item]
         cell.orderLabel.text = "\("order_id".localized()) #\(dict.orderNumber)"
-        cell.statusLabel.text = "open_order".localized()
         cell.noOfItemLabel.text = "\(dict.cart.items)"
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
@@ -61,8 +60,10 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         
         if dict.paymentStatus == "Paid" {
             cell.payNowButton.isHidden = true
+            cell.statusLabel.text = "completed".localized()
         } else {
             cell.payNowButton.isHidden = false
+            cell.statusLabel.text = "open_order".localized()
         }
         
         cell.payNowButton.tag = indexPath.item

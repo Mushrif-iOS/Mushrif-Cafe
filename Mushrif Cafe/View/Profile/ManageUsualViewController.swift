@@ -133,6 +133,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         cell.itemId = "\(dict.id)"
         cell.qtyValue = dict.quantity
         cell.nameLabel.text = dict.product.name
+        cell.editButton.isHidden = true
         if dict.product.specialPrice != "" {
             let doubleValue = Double(dict.product.specialPrice) ?? 0.0
             cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"

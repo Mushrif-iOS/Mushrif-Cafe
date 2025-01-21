@@ -35,7 +35,7 @@ class CompleteProfileVC: UIViewController, Instantiatable {
     @IBOutlet weak var emailTitle: UILabel! {
         didSet {
             emailTitle.font = UIFont.poppinsRegularFontWith(size: 16)
-            emailTitle.text = "email".localized()
+            emailTitle.text = "\("email".localized())*"
         }
     }
     
@@ -86,7 +86,7 @@ class CompleteProfileVC: UIViewController, Instantiatable {
 
         if txtFullName.text!.isEmpty {
             self.showBanner(message: "name_error".localized(), status: .error)
-        } else if (txtEmail.text!.count == 0) && txtEmail.text?.isValidEmail == false {
+        } else if txtEmail.text?.isValidEmail == false {
             self.showBanner(message: "email_error".localized(), status: .error)
         } else {
             

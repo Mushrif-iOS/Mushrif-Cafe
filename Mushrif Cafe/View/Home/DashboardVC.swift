@@ -240,6 +240,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -281,6 +282,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -338,6 +340,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 2 {
@@ -364,6 +367,7 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
             } else if indexPath.row == 1 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
+                cell.reloadCollection()
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 2 {

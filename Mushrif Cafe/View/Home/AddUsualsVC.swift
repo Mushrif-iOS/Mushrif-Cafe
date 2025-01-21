@@ -56,6 +56,11 @@ class AddUsualsVC: UIViewController, Instantiatable {
         self.getMyUsual(page: self.pageNo)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
+    }
+    
     private func getMyUsual(page: Int) {
         
         let aParams: [String: Any] = [:]

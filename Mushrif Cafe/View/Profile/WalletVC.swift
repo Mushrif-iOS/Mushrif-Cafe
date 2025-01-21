@@ -94,6 +94,7 @@ class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
                 let balance = responseJSON["response"]["balance"].stringValue
                 let doubleValue = Double(balance) ?? 0.0
                 self.balanceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                UserDefaultHelper.walletBalance = "\(doubleValue)"
             }
             
         } failure: { error in
@@ -119,12 +120,12 @@ extension WalletVC: UITableViewDelegate, UITableViewDataSource {
             cell.amtLabel.textColor = UIColor.primaryBrown
             
             let doubleValue = Double(dict.amount) ?? 0.0
-            cell.amtLabel.text = "+ \(doubleValue.rounded(toPlaces: 2)) K.D"
+            cell.amtLabel.text = "+ \(doubleValue.rounded(toPlaces: 2)) KWD"
         } else {
             cell.amtLabel.textColor = UIColor.red
             
             let doubleValue = Double(dict.amount) ?? 0.0
-            cell.amtLabel.text = "- \(doubleValue.rounded(toPlaces: 2)) K.D"
+            cell.amtLabel.text = "- \(doubleValue.rounded(toPlaces: 2)) KWD"
         }
         
         return cell

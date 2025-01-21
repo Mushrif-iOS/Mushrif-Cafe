@@ -35,7 +35,7 @@ class EditProfileVC: UIViewController, Instantiatable {
     @IBOutlet weak var emailTitle: UILabel! {
         didSet {
             emailTitle.font = UIFont.poppinsRegularFontWith(size: 16)
-            emailTitle.text = "email".localized()
+            emailTitle.text = "\("email".localized())*"
         }
     }
     
@@ -85,7 +85,7 @@ class EditProfileVC: UIViewController, Instantiatable {
 //            ProgressHUD.colorBanner = UIColor.red
 //            ProgressHUD.banner("error".localized(), "name_error".localized())
             self.showBanner(message: "name_error".localized(), status: .error)
-        } else if !txtEmail.text!.isEmpty && txtEmail.text?.isValidEmail == false {
+        } else if txtEmail.text?.isValidEmail == false {
 //            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
 //            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
 //            ProgressHUD.colorBanner = UIColor.red

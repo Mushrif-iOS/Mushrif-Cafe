@@ -22,7 +22,7 @@
 "complete_profile" = "Complete your Profile";
 "full_name" = "Full Name";
 "name_error" = "Please enter full name";
-"email" = "Email (Optional)";
+"email" = "Email";
 "email_error" = "Please enter valid email";
 "message_error" = "Please enter message";
 "amount_error" = "Please enter valid amount";
@@ -98,6 +98,7 @@
 "paid_by" = "Paid by";
 "order_on" = "Ordered on";
 "completed" = "Completed";
+"usual_add_error" = "You can add it into Usual list from My Order section";
 
 "my_usual" = "My Usuals";
 "create_new" = "Create New";

@@ -12,6 +12,9 @@ import ProgressHUD
 class ScanTableVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
     
+    @IBOutlet var backButton: UIButton!
+    @IBOutlet var backButtonWidth: NSLayoutConstraint!
+    
     @IBOutlet var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -47,6 +50,15 @@ class ScanTableVC: UIViewController, Instantiatable {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        
+        if self.title == "LanguageSelection" {
+            self.backButton.isHidden = false
+            self.backButtonWidth.constant = 46
+        } else {
+            self.backButton.isHidden = true
+            self.backButtonWidth.constant = 0
+        }
+        
         requestCameraAccess { granted in
             if granted {
                 // Start the QR code scanner

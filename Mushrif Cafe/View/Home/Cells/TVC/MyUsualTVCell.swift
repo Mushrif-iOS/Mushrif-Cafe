@@ -34,7 +34,12 @@ class MyUsualTVCell: UITableViewCell {
         dataCollection.register(MyUsualCVCell.nib(), forCellWithReuseIdentifier: MyUsualCVCell.identifier)
         dataCollection.delegate = self
         dataCollection.dataSource = self
-        dataCollection.reloadData()
+    }
+    
+    func reloadCollection() {
+        DispatchQueue.main.async {
+            self.dataCollection.reloadData()
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

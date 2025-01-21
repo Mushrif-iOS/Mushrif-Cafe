@@ -148,6 +148,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="NmT-Da-6NK" id="kYq-sl-6JQ"/>
+                        <outlet property="backButtonWidth" destination="hWb-rm-Xh5" id="lEa-YZ-TLB"/>
                         <outlet property="continueButton" destination="u02-9L-jIJ" id="eVI-Cj-HVp"/>
                         <outlet property="qrImgeView" destination="xi9-fy-QHa" id="4NI-ox-5gQ"/>
                         <outlet property="scanView" destination="6Am-zy-pVY" id="f0J-tN-OVr"/>
