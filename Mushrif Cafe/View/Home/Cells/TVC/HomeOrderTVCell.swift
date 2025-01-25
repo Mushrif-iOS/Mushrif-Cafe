@@ -53,14 +53,16 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeOrderCVCell.identifier, for: indexPath) as! HomeOrderCVCell
         let dict = usualObj[indexPath.item]
         cell.orderLabel.text = "\("order_id".localized()) #\(dict.orderNumber)"
-        cell.noOfItemLabel.text = "\(dict.cart.items)"
+        
+        cell.noOfItemLabel.text = dict.cart != nil ? "\(dict.cart.items)" : ""
+        
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
         cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
         
         if dict.paymentStatus == "Paid" {
             cell.payNowButton.isHidden = true
-            cell.statusLabel.text = "completed".localized()
+            cell.statusLabel.text = "paid_order".localized()
         } else {
             cell.payNowButton.isHidden = false
             cell.statusLabel.text = "open_order".localized()
@@ -78,18 +80,22 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
     @objc func payNowAction(sender: UIButton) {
         
         let dict = usualObj[sender.tag]
-        self.cartId = "\(dict.cart.id)"
-        let addVC = HomePaymentMethodVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = addVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.preferredCornerRadius = 15
+        if dict.cart != nil {
+            self.cartId = "\(dict.cart.id)"
+            let addVC = HomePaymentMethodVC.instantiate()
+            if #available(iOS 15.0, *) {
+                if let sheet = addVC.sheetPresentationController {
+                    sheet.detents = [.medium()]
+                    sheet.preferredCornerRadius = 15
+                }
             }
+            addVC.delegate = self
+            addVC.cardID = "\(dict.cart.id)"
+            addVC.totalCost = dict.grandTotal
+            self.navController?.present(addVC, animated: true, completion: nil)
+        } else {
+            self.navController?.showBanner(message: "no_cart_item".localized(), status: .error)
         }
-        addVC.delegate = self
-        addVC.cardID = "\(dict.cart.id)"
-        addVC.totalCost = dict.grandTotal
-        self.navController?.present(addVC, animated: true, completion: nil)
     }
     
     func onSelect(type: String, paymentId: String, orderId: String, amount: String) {

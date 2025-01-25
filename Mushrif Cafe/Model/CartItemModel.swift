@@ -135,6 +135,7 @@ class CartProduct {
     var ingredients : [FoodItemIngredient]!
     var kitchenId : Int = 0
     var name : String = ""
+    var productDesc : String = ""
     var price : String = ""
     var specialPrice : String = ""
     var subCategory : CartSubCategory!
@@ -170,6 +171,7 @@ class CartProduct {
         }
         kitchenId = json["kitchen_id"].intValue
         name = json["name"].stringValue
+        productDesc = json["description"].stringValue
         price = json["price"].stringValue
         specialPrice = json["special_price"].stringValue
         let subCategoryJson = json["sub_category"]

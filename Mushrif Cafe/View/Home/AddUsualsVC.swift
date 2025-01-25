@@ -66,7 +66,7 @@ class AddUsualsVC: UIViewController, Instantiatable {
         let aParams: [String: Any] = [:]
         
         let userLanguage = UserDefaultHelper.language
-        let dUrl = APPURL.my_usuals + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")" + "?page=\(page)"
+        let dUrl = APPURL.my_usuals + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")" + "&page=\(page)"
         
         APIManager.shared.getCallWithParams(dUrl, params: aParams) { responseJSON in
             print("Response JSON \(responseJSON)")

@@ -92,6 +92,7 @@ class DashboardVC: UIViewController, Instantiatable {
     @IBAction func selectTableAction(_ sender: UIButton) {
         
         let scanVC = ScanTableVC.instantiate()
+        scanVC.title = "LanguageSelection"
         self.navigationController?.push(viewController: scanVC)
     }
     

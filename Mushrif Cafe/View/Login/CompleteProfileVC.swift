@@ -29,13 +29,14 @@ class CompleteProfileVC: UIViewController, Instantiatable {
         didSet {
             txtFullName.font = UIFont.poppinsMediumFontWith(size: 16)
             txtFullName.tintColor = UIColor.primaryBrown
+            txtFullName.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     
     @IBOutlet weak var emailTitle: UILabel! {
         didSet {
             emailTitle.font = UIFont.poppinsRegularFontWith(size: 16)
-            emailTitle.text = "\("email".localized())*"
+            emailTitle.text = "\("email".localized())"
         }
     }
     
@@ -43,6 +44,7 @@ class CompleteProfileVC: UIViewController, Instantiatable {
         didSet {
             txtEmail.font = UIFont.poppinsMediumFontWith(size: 16)
             txtEmail.tintColor = UIColor.primaryBrown
+            txtEmail.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     
@@ -86,7 +88,7 @@ class CompleteProfileVC: UIViewController, Instantiatable {
 
         if txtFullName.text!.isEmpty {
             self.showBanner(message: "name_error".localized(), status: .error)
-        } else if txtEmail.text?.isValidEmail == false {
+        } else if !(self.txtEmail.text?.count == 0) && txtEmail.text?.isValidEmail == false {
             self.showBanner(message: "email_error".localized(), status: .error)
         } else {
             

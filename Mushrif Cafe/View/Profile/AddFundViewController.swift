@@ -26,6 +26,7 @@ class AddFundViewController: UIViewController, Instantiatable {
             txtAmt.font = UIFont.poppinsMediumFontWith(size: 16)
             txtAmt.tintColor = UIColor.primaryBrown
             txtAmt.placeholder = "enter_amt".localized()
+            txtAmt.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     

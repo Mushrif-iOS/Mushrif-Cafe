@@ -109,6 +109,7 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
             } else {
                 self.navController?.showBanner(message: "please_scan".localized(), status: .success)
                 let scanVC = ScanTableVC.instantiate()
+                scanVC.title = "LanguageSelection"
                 self.navController?.push(viewController: scanVC)
             }
         } else {

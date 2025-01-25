@@ -45,7 +45,7 @@ class MyOrderViewController: UIViewController, Instantiatable {
         let aParams: [String: Any] = [:]
         
         let userLanguage = UserDefaultHelper.language
-        let dUrl = APPURL.get_order + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")" + "?page=\(page)"
+        let dUrl = APPURL.get_order + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")" + "&page=\(page)"
         
         APIManager.shared.getCallWithParams(dUrl, params: aParams) { responseJSON in
             print("Response JSON \(responseJSON)")

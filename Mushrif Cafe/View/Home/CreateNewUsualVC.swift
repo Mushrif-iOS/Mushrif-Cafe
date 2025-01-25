@@ -28,6 +28,7 @@ class CreateNewUsualVC: UIViewController, Instantiatable {
             txtUsual.font = UIFont.poppinsRegularFontWith(size: 18)
             txtUsual.tintColor = UIColor.primaryBrown
             txtUsual.placeholder = "usual_name".localized()
+            txtUsual.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     

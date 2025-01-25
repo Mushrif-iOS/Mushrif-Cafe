@@ -106,6 +106,7 @@ class LoginVC: UIViewController, Instantiatable {
                     }
                 case .failure(let error):
                     print("Upload Failed: \(error.localizedDescription)")
+                    return
                 }
             }
         }

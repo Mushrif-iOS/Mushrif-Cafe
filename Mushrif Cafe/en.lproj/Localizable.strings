@@ -22,7 +22,7 @@
 "complete_profile" = "Complete your Profile";
 "full_name" = "Full Name";
 "name_error" = "Please enter full name";
-"email" = "Email";
+"email" = "Email (Optional)";
 "email_error" = "Please enter valid email";
 "message_error" = "Please enter message";
 "amount_error" = "Please enter valid amount";
@@ -82,6 +82,12 @@
 "item_added" = "Item added";
 "add_to_wallet" = "Add to Wallet";
 "type_of_meal" = "Type of Meal";
+"required_combo" = "Required • Select any 1 option";
+"only" = "Only";
+"allowed" = "allowed";
+"select_combo_req" = "Please select at least 1 from";
+"select_atleast" = "Please select at least";
+"choice_for" = "choices for";
 
 "cart" = "Cart";
 "balance" = "Balance";
@@ -98,6 +104,7 @@
 "paid_by" = "Paid by";
 "order_on" = "Ordered on";
 "completed" = "Completed";
+"paid_order" = "Paid Order";
 "usual_add_error" = "You can add it into Usual list from My Order section";
 
 "my_usual" = "My Usuals";
@@ -108,6 +115,7 @@
 
 "item_details" = "Item Details";
 "no_product" = "No Products Found";
+"no_cart_item" = "No Cart Item Found";
 "no_usuals" = "No Usuals Yet";
 "usuals_error" = "Please enter usual group name";
 "usuals_update" = "Update Usual Name";

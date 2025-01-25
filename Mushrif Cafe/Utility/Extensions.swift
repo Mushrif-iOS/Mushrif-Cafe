@@ -122,6 +122,11 @@ extension UITextField {
             }
         }
     }
+    
+    func setPlaceholderColor(_ color: UIColor) {
+        guard let placeholder = self.placeholder else { return }
+        self.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: color])
+    }
 }
 
 public extension UINavigationController {

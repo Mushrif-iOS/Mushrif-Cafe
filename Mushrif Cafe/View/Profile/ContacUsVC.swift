@@ -29,6 +29,7 @@ class ContacUsVC: UIViewController, Instantiatable {
         didSet {
             txtFullName.font = UIFont.poppinsMediumFontWith(size: 16)
             txtFullName.tintColor = UIColor.primaryBrown
+            txtFullName.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     

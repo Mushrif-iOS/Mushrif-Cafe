@@ -27,7 +27,15 @@ class SearchViewController: UIViewController, Instantiatable {
         
         sbSearchBar.placeholder = "search_product".localized()
         sbSearchBar.textField?.font = UIFont.poppinsRegularFontWith(size: 14)
+        sbSearchBar.textField?.attributedPlaceholder = NSAttributedString(
+            string: "search_product".localized(),
+            attributes: [
+                .foregroundColor: UIColor.black.withAlphaComponent(0.6),
+                .font: UIFont.poppinsRegularFontWith(size: 14)
+            ]
+        )
         sbSearchBar.textField?.textColor = UIColor.black
+        sbSearchBar.textField?.clearButtonMode = .never
         sbSearchBar.setLeftImage(UIImage(systemName: "magnifyingglass")!, tintColor: UIColor.primaryBrown)
         sbSearchBar.delegate = self
         

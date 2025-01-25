@@ -145,7 +145,7 @@ class EditCartVC: UIViewController, Instantiatable {
     
     var finalngredientIDs: [Int] = []
     var footerView: CellSelectionTVC?
-        
+    
     var selectedComboId: Int?
     
     var cartDetails : CartItem?
@@ -240,7 +240,7 @@ class EditCartVC: UIViewController, Instantiatable {
         
         self.mealImg.loadURL(urlString: data?.product.image, placeholderImage: UIImage(named: "appLogo"))
         self.nameLabel.text = data?.product.name
-        self.descLabel.text = data?.product.name
+        self.descLabel.text = data?.product.productDesc
         
         self.comboDetails = data?.product.comboDetails
         
@@ -264,7 +264,7 @@ class EditCartVC: UIViewController, Instantiatable {
                 }
             }
         }
-                
+        
         if data?.product.haveCombo == 0 {
             self.typeOfMealTop.constant = 20
             self.typeOfMealHeight.constant = 0
@@ -288,9 +288,9 @@ class EditCartVC: UIViewController, Instantiatable {
             self.categoryView3.isHidden = true
             
         } else {
-            self.typeOfMealLabel.text = data?.product.name
+            self.typeOfMealLabel.text = "type_of_meal".localized()//data?.product.name
             if self.cartDetails?.product?.comboDetails != nil {
-                self.requiredLabel.text = self.cartDetails?.product?.comboDetails.comboTitle
+                self.requiredLabel.text = "required_combo".localized()//self.cartDetails?.product?.comboDetails.comboTitle
                 self.mealTypeTblHeight.constant = 2 * 52
             } else {
                 self.requiredLabel.text = ""
@@ -343,12 +343,13 @@ class EditCartVC: UIViewController, Instantiatable {
         for index in self.ingredientsArr.indices {
             self.ingredientsArr[index].isChecked = self.ingredientsArr[index].ingredientDetails.selectionStatus == 1
             if self.ingredientsArr[index].ingredientDetails.selectionStatus == 1 || self.ingredientsArr[index].requirementStatus == 1 {
+                //self.ingredientsArr[index].isChecked = true
                 self.finalngredientIDs.append(self.ingredientsArr[index].ingredientDetails.id)
             }
         }
         
         self.isPlainSelected = self.cartDetails?.isPlain ?? "" == "Y" ? true : false
-        self.updateFooterView()
+        self.footerView?.isChecked = self.isPlainSelected
         self.stuffTblView.reloadData()
         
         if self.ingredientsArr.count > 0 {
@@ -365,7 +366,7 @@ class EditCartVC: UIViewController, Instantiatable {
         self.choiceArr = data?.product.choiceGroups ?? []
         self.preselectChoices()
         self.choiceTblView.reloadData()
-
+        
         self.showComboDetailsView()
         
         if data?.product.specialPrice != "" {
@@ -501,42 +502,37 @@ class EditCartVC: UIViewController, Instantiatable {
     
     func togglePlainSelection() {
         self.isPlainSelected.toggle()
+        self.footerView?.isChecked = isPlainSelected
+        print("self.isPlainSelected", self.isPlainSelected)
         
-        // Select/deselect ingredients with plain_requirement_status == 1
         for index in self.ingredientsArr.indices {
-            if self.ingredientsArr[index].plainRequirementStatus == 1 {
-                self.ingredientsArr[index].isChecked = self.isPlainSelected
-                if self.isPlainSelected {
-                    if !finalngredientIDs.contains(self.ingredientsArr[index].ingredientDetails.id) {
-                        finalngredientIDs.append(self.ingredientsArr[index].ingredientDetails.id)
+            let ingredient = self.ingredientsArr[index]
+            if self.isPlainSelected {
+                
+                if ingredient.plainRequirementStatus == 1 {
+                    ingredient.isChecked = true
+                    if !self.finalngredientIDs.contains(ingredient.ingredientDetails.id) {
+                        self.finalngredientIDs.append(ingredient.ingredientDetails.id)
                     }
-                } else {
-                    if self.ingredientsArr[index].ingredientDetails.selectionStatus != 1 && self.ingredientsArr[index].requirementStatus != 1 {
-                        if let idIndex = finalngredientIDs.firstIndex(of: self.ingredientsArr[index].ingredientDetails.id) {
-                            finalngredientIDs.remove(at: idIndex)
-                        }
+                }
+                // Deselect and remove from selected IDs if plain_requirement_status is 0
+                else {
+                    ingredient.isChecked = false
+                    if let idIndex = self.finalngredientIDs.firstIndex(of: ingredient.ingredientDetails.id) {
+                        self.finalngredientIDs.remove(at: idIndex)
+                    }
+                }
+            } else {
+                if ingredient.plainRequirementStatus == 1 && ingredient.requirementStatus != 1 {
+                    ingredient.isChecked = false
+                    if let idIndex = self.finalngredientIDs.firstIndex(of: ingredient.ingredientDetails.id) {
+                        self.finalngredientIDs.remove(at: idIndex)
                     }
                 }
             }
         }
-        
-        // Reload the table view to update the checkbox images for affected cells
-        var indexPathsToReload: [IndexPath] = []
-        for index in self.ingredientsArr.indices {
-            if self.ingredientsArr[index].plainRequirementStatus == 1 {
-                let cellIndexPath = IndexPath(row: index, section: 0)
-                indexPathsToReload.append(cellIndexPath)
-            }
-        }
-        self.stuffTblView.reloadRows(at: indexPathsToReload, with: .automatic)
-        self.updateFooterView()
-        self.updatePlainCheckedStatus()
-        
+        self.stuffTblView.reloadData()
         print("self.finalngredientIDs", self.finalngredientIDs)
-    }
-    
-    func updateFooterView() {
-        footerView?.isChecked = isPlainSelected
     }
     
     func preselectChoices() {
@@ -592,7 +588,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             } else {
                 cell.tickButton.isSelected = false
             }
-                        
+            
             if indexPath.row == 0 {
                 cell.nameLabel.text = self.cartDetails?.product?.name
                 if self.cartDetails?.product?.specialPrice != "" {
@@ -630,7 +626,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 cell.isUserInteractionEnabled = false
             } else {
                 cell.tickButton.isSelected = false
-                cell.tickButton.alpha = 1
+                cell.tickButton.alpha = 1.0
                 cell.nameLabel.textColor = UIColor.black
                 cell.isUserInteractionEnabled = true
             }
@@ -687,47 +683,8 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             }
             
             let dict = self.choiceArr[indexPath.section].choices[indexPath.row]
-//            cell.nameLabel.text = dict.choice
-//            let doubleValue = Double(dict.choicePrice) ?? 0.0
-//            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
             let isSelected = selectedChoices[indexPath] != nil
             cell.configure(with: dict, isSelected: isSelected)
-            
-            /*if choiceSelectedRows.contains(indexPath) {
-                cell.tickButton.isSelected = true
-                self.choiceSelectedRows.append(indexPath)
-            } else {
-                cell.tickButton.isSelected = false
-                self.choiceSelectedRows.removeAll()
-            }
-            cell.callBackTap = {
-                if self.choiceSelectedRows.contains(indexPath) {
-                    let doubleValue = Double(dict.choicePrice) ?? 0.0
-                    self.variationPrice -= doubleValue
-                    print("self.variationPrice", self.variationPrice)
-                    self.choiceSelectedRows.remove(at: self.choiceSelectedRows.firstIndex(of: indexPath)!)
-                } else {
-                    for ind in 0..<self.choiceArr.count {
-                        if indexPath.section == 0 {
-                            if self.choiceSelectedRows.count >= self.choiceArr[ind].maxSelection {
-                                return
-                            }
-                        } else if indexPath.section == 1  {
-                            if self.choiceSelectedRows.count >= (self.choiceArr[0].maxSelection)+(self.choiceArr[1].maxSelection) {
-                                return
-                            }
-                        }
-                    }
-                    
-                    let doubleValue = Double(dict.choicePrice) ?? 0.0
-                    self.variationPrice += doubleValue
-                    print("self.variationPrice", self.variationPrice)
-                    self.choiceSelectedRows.append(indexPath)
-                }
-                cell.tickButton.isSelected = !cell.tickButton.isSelected
-                print("IndexPath choiceSelectedRows: ", self.choiceSelectedRows)
-                self.setPriceAttritubte()
-            }*/
             return cell
         }
     }
@@ -789,12 +746,12 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-                
+        
         if tableView == self.mealTypeTblView {
             if let currentSelectedIndex = self.mealTypeIndex, currentSelectedIndex == indexPath {
                 self.mealTypeIndex = indexPath
                 if indexPath.row == 0 {
-
+                    
                     if self.cartDetails?.product.specialPrice != "" {
                         self.itemPrice = Double(self.cartDetails?.product.specialPrice ?? "") ?? 0.0
                     } else {
@@ -891,7 +848,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 selectedChoiceIDs.append(group.choices[indexPath.row].id)
             } else {
                 print("Maximum selection reached")
-                ProgressHUD.error("Only \(group.maxSelection) allowed")
+                ProgressHUD.error("\("only".localized()) \(group.maxSelection) \("allowed".localized())")
                 return
             }
             
@@ -914,37 +871,85 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             if ingredient.requirementStatus == 1 {
                 return
             }
-            self.ingredientsArr[indexPath.row].isChecked.toggle()
-            tableView.reloadRows(at: [indexPath], with: .automatic)
             
-            if self.ingredientsArr[indexPath.row].isChecked {
-                self.finalngredientIDs.append(ingredient.ingredientDetails.id)
+            if ingredient.plainRequirementStatus == 1 {
+                self.isPlainSelected = true
+                self.footerView?.isChecked = isPlainSelected
+                
+                for index in self.ingredientsArr.indices {
+                    let ing = self.ingredientsArr[index]
+                    if ing.plainRequirementStatus == 1 {
+                        ing.isChecked = true
+                        if !self.finalngredientIDs.contains(ing.ingredientDetails.id) {
+                            self.finalngredientIDs.append(ing.ingredientDetails.id)
+                        }
+                    } else {
+                        ing.isChecked = false
+                        if let idIndex = self.finalngredientIDs.firstIndex(of: ing.ingredientDetails.id) {
+                            self.finalngredientIDs.remove(at: idIndex)
+                        }
+                    }
+                }
+                tableView.reloadData()
             } else {
-                if let index = self.finalngredientIDs.firstIndex(of: ingredient.ingredientDetails.id) {
-                    self.finalngredientIDs.remove(at: index)
+                
+                self.isPlainSelected = false
+                self.footerView?.isChecked = isPlainSelected
+                
+                for index in self.ingredientsArr.indices {
+                    let ing = self.ingredientsArr[index]
+                    if ing.plainRequirementStatus == 1 {
+                        ing.isChecked = false
+                        if ing.requirementStatus != 1 {
+                            if let idIndex = self.finalngredientIDs.firstIndex(of: ing.ingredientDetails.id) {
+                                self.finalngredientIDs.remove(at: idIndex)
+                            }
+                        }
+                    }
+                }
+                
+                // Toggle the checkbox state for the selected ingredient cell
+                ingredient.isChecked.toggle()
+                
+                // Update the selectedIngredientDetailIDs array
+                if ingredient.isChecked {
+                    self.finalngredientIDs.append(ingredient.ingredientDetails.id)
+                } else {
+                    if let index = self.finalngredientIDs.firstIndex(of: ingredient.ingredientDetails.id) {
+                        self.finalngredientIDs.remove(at: index)
+                    }
+                }
+                tableView.reloadData()
+            }
+            // Ensure requirement_status == 1 IDs are always in the array
+            for ingr in self.ingredientsArr {
+                if ingr.requirementStatus == 1 && !self.finalngredientIDs.contains(ingr.ingredientDetails.id) {
+                    self.finalngredientIDs.append(ingr.ingredientDetails.id)
                 }
             }
+            //tableView.reloadRows(at: [indexPath], with: .automatic)
+            
             print("self.finalngredientIDs", self.finalngredientIDs)
             print("self.isPlainSelected", self.isPlainSelected)
             //self.updatePlainCheckedStatus()
         }
     }
     
-    func updatePlainCheckedStatus() {
-        // Check if there is any plain cell selected
-        let anyPlainSelected = self.ingredientsArr.contains { ingredient in
-            ingredient.plainRequirementStatus != 1 && ingredient.isChecked
-        }
-        
-        // Check if there is any ingredient with plainRequirementStatus == 1 that is selected
-        let anyPlainRequirementSelected = self.ingredientsArr.contains { ingredient in
-            ingredient.plainRequirementStatus == 1 && ingredient.isChecked
-        }
-        
-        // Update the isPlainChecked status based on the conditions
-        self.isPlainSelected = anyPlainSelected || anyPlainRequirementSelected
-        updateFooterView()
-    }
+    //    func updatePlainCheckedStatus() {
+    //        // Check if there is any plain cell selected
+    //        let anyPlainSelected = self.ingredientsArr.contains { ingredient in
+    //            ingredient.plainRequirementStatus != 1 && ingredient.isChecked
+    //        }
+    //
+    //        // Check if there is any ingredient with plainRequirementStatus == 1 that is selected
+    //        let anyPlainRequirementSelected = self.ingredientsArr.contains { ingredient in
+    //            ingredient.plainRequirementStatus == 1 && ingredient.isChecked
+    //        }
+    //
+    //        // Update the isPlainChecked status based on the conditions
+    //        self.isPlainSelected = anyPlainSelected || anyPlainRequirementSelected
+    //        updateFooterView()
+    //    }
     
     func setPriceAttritubte() {
         if self.qtyChangeValue > 0 {
@@ -962,24 +967,13 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
     
     func addToCartApi() {
         
-        for (sectionIndex, group) in self.choiceArr.enumerated() {
-            let selectedForSection = selectedChoices.filter { $0.key.section == sectionIndex }
-            if selectedForSection.count < group.minSelection {
-                ProgressHUD.error("Please select at least \(group.minSelection) choices for \(group.title).")
-                return
-            }
-        }
-        
-        let choicejsonString = self.selectedChoiceIDs.map{String($0)}.joined(separator: ", ")
-        print(choicejsonString)
-                
         let orderType = UserDefaultHelper.orderType ?? ""
         let hallId = UserDefaultHelper.hallId ?? ""
         let tableId = UserDefaultHelper.tableId ?? ""
         let groupId = UserDefaultHelper.groupId ?? ""
         
-        let ingredientsjsonString = finalngredientIDs.map{String($0)}.joined(separator: ", ")
-                
+        let ingredientsjsonString = finalngredientIDs.map{String($0)}.joined(separator: ",")
+        
         var comboProduct = [CartComboItem]()
         if categorySelecteIndex1 != nil {
             comboProduct.append(self.categoryArr1[categorySelecteIndex1!.row])
@@ -991,21 +985,46 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
             comboProduct.append(self.categoryArr3[categorySelecteIndex3!.row])
         }
         
-        var combo_product_id = [Int]()
-        
-        for i in 0..<comboProduct.count {
-            combo_product_id.append(comboProduct[i].id)
-        }
-        let combojsonString = combo_product_id.map{String($0)}.joined(separator: ", ")
-        
-        if self.cartDetails?.product?.haveCombo == 1 {
-            if self.selectedComboId == self.cartDetails?.product?.comboDetails.id {
-                if combo_product_id.count == 0 {
-                    ProgressHUD.error("Please select at least 1 combo")
+        if categorySelecteIndex1 == nil {
+            if self.cartDetails?.product?.comboDetails != nil {
+                if self.selectedComboId == self.cartDetails?.product?.comboDetails.id {
+                    ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[0].name ?? "")")
                     return
                 }
             }
         }
+        if categorySelecteIndex2 == nil {
+            if self.cartDetails?.product?.comboDetails != nil {
+                if self.selectedComboId == self.cartDetails?.product?.comboDetails.id {
+                    ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[1].name ?? "")")
+                    return
+                }
+            }
+        }
+        if categorySelecteIndex3 == nil {
+            if self.cartDetails?.product?.comboDetails != nil {
+                if self.selectedComboId == self.cartDetails?.product?.comboDetails.id {
+                    ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[2].name ?? "")")
+                    return
+                }
+            }
+        }
+        var combo_product_id = [Int]()
+        for i in 0..<comboProduct.count {
+            combo_product_id.append(comboProduct[i].id)
+        }
+        let combojsonString = combo_product_id.map{String($0)}.joined(separator: ",")
+        
+        for (sectionIndex, group) in self.choiceArr.enumerated() {
+            let selectedForSection = selectedChoices.filter { $0.key.section == sectionIndex }
+            if selectedForSection.count < group.minSelection {
+                ProgressHUD.error("\("select_atleast".localized()) \(group.minSelection) \("choice_for".localized()) \(group.title).")
+                return
+            }
+        }
+        
+        let choicejsonString = self.selectedChoiceIDs.map{String($0)}.joined(separator: ",")
+        print(choicejsonString)
         
         let aParams = ["hall_id": hallId,
                        "table_id": tableId,
@@ -1018,9 +1037,9 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                        "quantity": "\(self.qtyValue)",
                        "is_customized": "Y",
                        "is_plain": self.isPlainSelected ? "Y" : "N",
-                       "ingredients_id[]": "\(ingredientsjsonString)",
-                       "combo_product_id[]": "\(combojsonString)",
-                       "choice_group_id[]": "\(choicejsonString)",
+                       "ingredients_id": "\(ingredientsjsonString)",
+                       "combo_product_id": "\(combojsonString)",
+                       "choice_group_id": "\(choicejsonString)",
                        "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         
         print(aParams)

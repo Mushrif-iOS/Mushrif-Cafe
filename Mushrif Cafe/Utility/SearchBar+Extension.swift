@@ -16,6 +16,7 @@ extension UISearchBar {
         guard let textField = (subViews.filter { $0 is UITextField }).first as? UITextField else {
             return nil
         }
+        textField.clearButtonMode = .never
         return textField
     }
     

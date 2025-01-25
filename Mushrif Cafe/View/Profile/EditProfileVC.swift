@@ -29,13 +29,14 @@ class EditProfileVC: UIViewController, Instantiatable {
         didSet {
             txtFullName.font = UIFont.poppinsMediumFontWith(size: 16)
             txtFullName.tintColor = UIColor.primaryBrown
+            txtFullName.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     
     @IBOutlet weak var emailTitle: UILabel! {
         didSet {
             emailTitle.font = UIFont.poppinsRegularFontWith(size: 16)
-            emailTitle.text = "\("email".localized())*"
+            emailTitle.text = "\("email".localized())"
         }
     }
     
@@ -43,6 +44,7 @@ class EditProfileVC: UIViewController, Instantiatable {
         didSet {
             txtEmail.font = UIFont.poppinsMediumFontWith(size: 16)
             txtEmail.tintColor = UIColor.primaryBrown
+            txtEmail.setPlaceholderColor(UIColor.black.withAlphaComponent(0.6))
         }
     }
     
@@ -80,16 +82,8 @@ class EditProfileVC: UIViewController, Instantiatable {
     @IBAction func submitAction(_ sender: Any) {
         
         if txtFullName.text!.isEmpty {
-//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
-//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
-//            ProgressHUD.colorBanner = UIColor.red
-//            ProgressHUD.banner("error".localized(), "name_error".localized())
             self.showBanner(message: "name_error".localized(), status: .error)
-        } else if txtEmail.text?.isValidEmail == false {
-//            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
-//            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
-//            ProgressHUD.colorBanner = UIColor.red
-//            ProgressHUD.banner("error".localized(), "email_error".localized())
+        } else if !(self.txtEmail.text?.count == 0) && txtEmail.text?.isValidEmail == false {
             self.showBanner(message: "email_error".localized(), status: .error)
         } else {
             

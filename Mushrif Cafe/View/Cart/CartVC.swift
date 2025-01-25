@@ -350,9 +350,11 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     }
     
     private func getCartItem() {
+        self.inActiveCartArray.removeAll()
+        self.activeCartArray.removeAll()
+        self.cartArray.removeAll()
         
         let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-        
         print(aParams)
         
         APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { responseJSON in
@@ -360,14 +362,15 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
             let dataDict = responseJSON["response"]
             self.cartData = CartResponse(fromJson: dataDict)
             
-            let cartItemDict = responseJSON["response"]["cart_items"].arrayValue
-            for obj in cartItemDict {
-                self.cartArray.append(CartItem(fromJson: obj))
-            }
+//            let cartItemDict = responseJSON["response"]["cart_items"].arrayValue
+//            for obj in cartItemDict {
+//                self.cartArray.append(CartItem(fromJson: obj))
+//            }
             
             let activeCartItemDict = responseJSON["response"]["active_items"].arrayValue
             for obj in activeCartItemDict {
-                self.activeCartArray.append(CartItem(fromJson: obj))
+                //self.activeCartArray.append(CartItem(fromJson: obj))
+                self.cartArray.append(CartItem(fromJson: obj))
             }
             
             let inActiveCartItemDict = responseJSON["response"]["inactive_items"].arrayValue
@@ -395,7 +398,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
 
             self.dateTimeLabel.text = "\(data?.orderDate ?? "")" != "" ? "\(data?.orderDate ?? "")" : "-"
             
-            UserDefaultHelper.totalItems! = self.cartArray.count
+            UserDefaultHelper.totalItems! = self.cartData?.items ?? 0
             UserDefaultHelper.totalPrice! = Double("\(data?.subTotal != "" ? data?.subTotal ?? "" : "")") ?? 0.0
             self.setPriceAttritubte(price: UserDefaultHelper.totalPrice ?? 0.0)
             
@@ -417,7 +420,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
                 self.inActiveTblHeight.constant = 0
                 self.inactiveTableView.reloadData()
             }
-            if self.activeCartArray.count > 0 {
+            if self.cartArray.count > 0 {
                 self.activeTableView.isHidden = false
                 self.activeTableView.reloadData()
             } else {
@@ -439,6 +442,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     
     @IBAction func selectTableAction(_ sender: Any) {
         let scanVC = ScanTableVC.instantiate()
+        scanVC.title = "LanguageSelection"
         self.navigationController?.push(viewController: scanVC)
     }
     
@@ -509,9 +513,12 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
             print(msg)
             
             if type == "wallet" {
-                let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(self.totalCost) ?? 0.0)
-                UserDefaultHelper.walletBalance = "\(doubleValue)"
-                self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
+                let bal = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+                if bal > 0 {
+                    let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(self.totalCost) ?? 0.0)
+                    UserDefaultHelper.walletBalance = "\(doubleValue)"
+                    self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
+                }
             }
             
             DispatchQueue.main.async {
@@ -571,13 +578,6 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = dict.product.name
             cell.nameLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.itemId = "\(dict.id)"
-//            if dict.product.specialPrice != "" {
-//                let doubleValue = Double(dict.product.specialPrice) ?? 0.0
-//                cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
-//            } else {
-//                let doubleValue = Double(dict.product.price) ?? 0.0
-//                cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
-//            }
             let doubleValue = Double(dict.unitPrice) ?? 0.0
             cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
             cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
@@ -633,13 +633,6 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             let dict = self.cartArray[indexPath.row]
             cell.nameLabel.text = dict.product.name
             cell.itemId = "\(dict.id)"
-//            if dict.product.specialPrice != "" {
-//                let doubleValue = Double(dict.product.specialPrice) ?? 0.0
-//                cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
-//            } else {
-//                let doubleValue = Double(dict.product.price) ?? 0.0
-//                cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KD"//"\(doubleValue) KD"
-//            }
             let doubleValue = Double(dict.unitPrice) ?? 0.0
             cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
             
