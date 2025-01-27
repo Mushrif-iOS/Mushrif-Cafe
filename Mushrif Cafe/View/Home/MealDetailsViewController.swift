@@ -952,24 +952,30 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         if categorySelecteIndex1 == nil {
             if self.detailsData?.comboDetails != nil {
                 if self.selectedComboId == self.detailsData?.comboDetails.id {
-                    ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[0].name ?? "")")
-                    return
+                    if self.comboDetails?.categories.count ?? 0 > 0 {
+                        ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[0].name ?? "")")
+                        return
+                    }
                 }
             }
         }
         if categorySelecteIndex2 == nil {
             if self.detailsData?.comboDetails != nil {
                 if self.selectedComboId == self.detailsData?.comboDetails.id {
-                    ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[1].name ?? "")")
-                    return
+                    if self.comboDetails?.categories.count ?? 0 > 1 {
+                        ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[1].name ?? "")")
+                        return
+                    }
                 }
             }
         }
         if categorySelecteIndex3 == nil {
             if self.detailsData?.comboDetails != nil {
                 if self.selectedComboId == self.detailsData?.comboDetails.id {
-                    ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[2].name ?? "")")
-                    return
+                    if self.comboDetails?.categories.count ?? 0 > 2 {
+                        ProgressHUD.error("\("select_combo_req".localized()) \(self.comboDetails?.categories[2].name ?? "")")
+                        return
+                    }
                 }
             }
         }
