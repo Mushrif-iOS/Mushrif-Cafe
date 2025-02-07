@@ -115,6 +115,7 @@
 
 "item_details" = "Item Details";
 "no_product" = "No Products Found";
+"no_cost_product" = "You can't place an order with a zero price";
 "no_cart_item" = "No Cart Item Found";
 "no_usuals" = "No Usuals Yet";
 "usuals_error" = "Please enter usual group name";

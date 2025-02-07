@@ -142,6 +142,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     var selectedChoices: [IndexPath: Choice] = [:]
     var selectedChoiceIDs: [Int] = []
     
+    var initfinalngredientIDs: [Int] = []
     var finalngredientIDs: [Int] = []
     var footerView: CellSelectionTVC?
         
@@ -263,11 +264,16 @@ class MealDetailsViewController: UIViewController, Instantiatable {
             for obj in ingredientsDict {
                 self.ingredientsArr.append(FoodItemIngredient(fromJson: obj))
             }
-            self.finalngredientIDs = self.ingredientsArr.filter { $0.requirementStatus == 1 }.map { $0.ingredientDetails.id }
+            //New Changes
+            //self.finalngredientIDs = self.ingredientsArr.filter { $0.requirementStatus == 1 }.map { $0.ingredientDetails.id }
+            self.initfinalngredientIDs = self.ingredientsArr.map { $0.ingredientDetails.id }
+            self.finalngredientIDs = self.ingredientsArr.map { $0.ingredientDetails.id }
             for index in self.ingredientsArr.indices {
-                if self.ingredientsArr[index].requirementStatus == 1 {
-                    self.ingredientsArr[index].isChecked = true
-                }
+                //New Changes
+//                if self.ingredientsArr[index].requirementStatus == 1 {
+//                    self.ingredientsArr[index].isChecked = true
+//                }
+                self.ingredientsArr[index].isChecked = true
             }
             //self.updatePlainCheckedStatus()
             
@@ -997,7 +1003,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         print(choicejsonString)
         
         var isCustomized: Bool = false
-            if selectedComboId != nil || self.isPlainSelected == true || self.finalngredientIDs.count != 0 || combo_product_id.count != 0 || self.selectedChoiceIDs.count != 0 || self.basePrice != self.originalBasePrice {
+            if selectedComboId != nil || self.isPlainSelected == true || self.initfinalngredientIDs != self.finalngredientIDs || combo_product_id.count != 0 || self.selectedChoiceIDs.count != 0 || self.basePrice != self.originalBasePrice {
             isCustomized = true
         }
         

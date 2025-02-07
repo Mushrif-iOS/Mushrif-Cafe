@@ -99,7 +99,7 @@ class ScanTableVC: UIViewController, Instantiatable {
         UserDefaultHelper.tableName = ""
         
         DispatchQueue.main.async {
-            UserDefaultHelper.orderType = "takeaway"
+            //UserDefaultHelper.orderType = "takeaway"
             let dashboardVC = DashboardVC.instantiate()
             self.navigationController?.push(viewController: dashboardVC)
         }
@@ -208,26 +208,26 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
         
         if stringValue != "" {
             captureSession.stopRunning()
-           
-            let jsonData = stringValue.data(using: .utf8)!
+            ProgressHUD.dismiss()
+//            let jsonData = stringValue.data(using: .utf8)!
+//            
+//            var hallIds : Int = 0
+//            var tableIds : Int = 0
+//
+//            do {
+//                let decoder = JSONDecoder()
+//                let qr = try decoder.decode(QRCodeModel.self, from: jsonData)
+//                print("Hall ID: \(qr.hallId), Table ID: \(qr.tableId)")
+//                hallIds = qr.hallId
+//                tableIds = qr.tableId
+//                ProgressHUD.dismiss()
+//            } catch {
+//                print("Error decoding JSON: \(error)")
+//                ProgressHUD.dismiss()
+//            }
             
-            var hallIds : Int = 0
-            var tableIds : Int = 0
-
-            do {
-                let decoder = JSONDecoder()
-                let qr = try decoder.decode(QRCodeModel.self, from: jsonData)
-                print("Hall ID: \(qr.hallId), Table ID: \(qr.tableId)")
-                hallIds = qr.hallId
-                tableIds = qr.tableId
-                ProgressHUD.dismiss()
-            } catch {
-                print("Error decoding JSON: \(error)")
-                ProgressHUD.dismiss()
-            }
-            
-            let aParams: [String: Any] = ["hall_id": "\(hallIds)", "table_id": "\(tableIds)"]
-            
+//            let aParams: [String: Any] = ["hall_id": "\(hallIds)", "table_id": "\(tableIds)"]
+            let aParams: [String: Any] = ["table_no": "\(stringValue)"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.select_table, params: aParams, withHeader: false) { responseJSON in

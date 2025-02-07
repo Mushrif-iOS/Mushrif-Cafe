@@ -50,7 +50,6 @@ class EditCartVC: UIViewController, Instantiatable {
     @IBOutlet weak var qty: UILabel! {
         didSet {
             qty.font = UIFont.poppinsMediumFontWith(size: 30)
-            qty.text =  userLanguage == "ar" ? "١" :  "1"
         }
     }
     @IBOutlet weak var mealTypeTblView: UITableView!
@@ -243,7 +242,8 @@ class EditCartVC: UIViewController, Instantiatable {
         self.descLabel.text = data?.product.productDesc
         
         self.comboDetails = data?.product.comboDetails
-        
+        self.qtyValue = data?.quantity ?? 1
+        self.qty.text = "\(self.qtyValue)"
         self.selectedComboId = data?.comboId
         
         if self.cartDetails?.product?.comboDetails != nil {

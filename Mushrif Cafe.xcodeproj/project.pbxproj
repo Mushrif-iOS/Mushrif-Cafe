@@ -15,6 +15,7 @@
 		C6337B612CAC6C5200ACDD86 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */; };
 		C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B622CAC764500ACDD86 /* CategoryTableViewCell.swift */; };
 		C6337B652CAC764500ACDD86 /* CategoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6337B632CAC764500ACDD86 /* CategoryTableViewCell.xib */; };
+		C640CB9D2D53B20000A09F5D /* QRPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640CB9C2D53B20000A09F5D /* QRPopUpVC.swift */; };
 		C64D43382D36FA390060A318 /* HomePaymentMethodVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64D43372D36FA390060A318 /* HomePaymentMethodVC.swift */; };
 		C65010162CAD5940003BCA53 /* TagsCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65010152CAD5940003BCA53 /* TagsCVCell.swift */; };
 		C65010202CADC18D003BCA53 /* MealDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */; };
@@ -134,6 +135,7 @@
 		C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		C6337B622CAC764500ACDD86 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		C6337B632CAC764500ACDD86 /* CategoryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryTableViewCell.xib; sourceTree = "<group>"; };
+		C640CB9C2D53B20000A09F5D /* QRPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRPopUpVC.swift; sourceTree = "<group>"; };
 		C64D43372D36FA390060A318 /* HomePaymentMethodVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePaymentMethodVC.swift; sourceTree = "<group>"; };
 		C65010152CAD5940003BCA53 /* TagsCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsCVCell.swift; sourceTree = "<group>"; };
 		C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailsViewController.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 				C68A61312CBA98000037094D /* NetworkReachability.swift */,
 				C66906D82CA46A2400E74833 /* OTP Field View */,
 				C68A61352CBE619D0037094D /* CommonWebViewController.swift */,
+				C640CB9C2D53B20000A09F5D /* QRPopUpVC.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */,
 				C6C089FF2CAADE9C0050F034 /* MealTVCell.swift in Sources */,
 				C68A61412CCCF9B20037094D /* OrderDetailsVC.swift in Sources */,
+				C640CB9D2D53B20000A09F5D /* QRPopUpVC.swift in Sources */,
 				C6FE3FD92CF79AFB0049FFB1 /* ChoiceRowTVCell.swift in Sources */,
 				C6C089D62CA8781F0050F034 /* ScanHelperClass.swift in Sources */,
 				C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */,
@@ -1006,7 +1010,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1045,7 +1049,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

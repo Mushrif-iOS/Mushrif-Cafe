@@ -116,7 +116,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                            "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
                            "quantity": "1",
                            "is_customized": "N",
-                           "is_plain": "Y",
+                           "is_plain": "N",
                            "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             
             print(aParams)

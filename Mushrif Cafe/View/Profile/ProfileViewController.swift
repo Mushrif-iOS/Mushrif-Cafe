@@ -89,6 +89,14 @@ class ProfileViewController: UIViewController, Instantiatable {
     @IBAction func languageAction(_ sender: UIButton) {
     }
     
+    @IBAction func qrAction(_ sender: UIButton) {
+        let popupVC = QRPopUpVC()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.image = SingleTon.sharedSingleTon.generateQRCode(from: "\(UserDefaultHelper.userloginId!)")
+        self.present(popupVC, animated: true, completion: nil)
+    }
+    
     private func getProfile() {
         
         let aParams: [String: Any] = [:]

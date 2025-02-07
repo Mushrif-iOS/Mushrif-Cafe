@@ -449,7 +449,9 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     @IBAction func placeOrderAction(_ sender: Any) {
         
         if self.cartArray.count == 0 {
-            self.showBanner(message: "no_product".localized(), status: .warning)
+            self.showBanner(message: "no_cart_item".localized(), status: .error)
+        } else if UserDefaultHelper.totalPrice ?? 0.0 <= 0.0 {
+            self.showBanner(message: "no_cost_product".localized(), status: .error)
         } else {
             if self.paymentType == "apple_pay" {
                                 

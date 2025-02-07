@@ -8,22 +8,43 @@
 import UIKit
 
 class QRPopUpVC: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    
+    private let imageView = UIImageView()
+    
+    var image: UIImage? {
+        didSet {
+            imageView.image = image
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupView()
     }
-    */
-
+    
+    private func setupView() {
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        
+        // Setup imageView
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(imageView)
+        
+        // Layout imageView
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6)
+        ])
+        
+        // Add tap gesture to dismiss the popup
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPopup))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissPopup() {
+        self.dismiss(animated: true, completion: nil)
+    }
 }
