@@ -1139,7 +1139,7 @@
                                 <rect key="frame" x="0.0" y="82" width="320" height="1828"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66M-cc-YFd" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1620.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="1492.5"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zww-XP-R7e" userLabel="HeaderView">
                                                 <rect key="frame" x="17" y="0.0" width="286" height="320"/>
@@ -1250,7 +1250,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="drR-A2-1zz" userLabel="StuffView">
-                                                <rect key="frame" x="17" y="559" width="286" height="177.5"/>
+                                                <rect key="frame" x="17" y="559" width="286" height="49.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRB-rZ-9A7">
                                                         <rect key="frame" x="16" y="15" width="254" height="0.0"/>
@@ -1266,10 +1266,10 @@
                                                         </constraints>
                                                     </view>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="rlD-f1-YjH">
-                                                        <rect key="frame" x="10" y="39.5" width="266" height="128"/>
+                                                        <rect key="frame" x="10" y="39.5" width="266" height="0.0"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="128" id="6P1-3C-3zX"/>
+                                                            <constraint firstAttribute="height" id="6P1-3C-3zX"/>
                                                         </constraints>
                                                         <connections>
                                                             <outlet property="dataSource" destination="571-1H-UZj" id="I0g-Wk-840"/>
@@ -1284,6 +1284,7 @@
                                                     <constraint firstItem="TRB-rZ-9A7" firstAttribute="leading" secondItem="drR-A2-1zz" secondAttribute="leading" constant="16" id="9If-5y-L88"/>
                                                     <constraint firstAttribute="trailing" secondItem="kfZ-4l-w8I" secondAttribute="trailing" constant="10" id="9cP-5Q-Cvn"/>
                                                     <constraint firstItem="kfZ-4l-w8I" firstAttribute="leading" secondItem="drR-A2-1zz" secondAttribute="leading" constant="10" id="ND5-aA-mpx"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" id="UjM-w7-rWB"/>
                                                     <constraint firstItem="TRB-rZ-9A7" firstAttribute="top" secondItem="drR-A2-1zz" secondAttribute="top" constant="15" id="bDP-ho-ELy"/>
                                                     <constraint firstAttribute="bottom" secondItem="rlD-f1-YjH" secondAttribute="bottom" constant="10" id="daW-Py-nZl"/>
                                                     <constraint firstItem="rlD-f1-YjH" firstAttribute="trailing" secondItem="kfZ-4l-w8I" secondAttribute="trailing" id="iIm-GX-ttF"/>
@@ -1297,7 +1298,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="R8h-TZ-Ka0">
-                                                <rect key="frame" x="17" y="756.5" width="286" height="634"/>
+                                                <rect key="frame" x="17" y="628.5" width="286" height="634"/>
                                                 <subviews>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YvK-7l-VBF" userLabel="CatgoryView">
                                                         <rect key="frame" x="0.0" y="0.0" width="286" height="198"/>
@@ -1444,7 +1445,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="aV1-fF-Cdv">
-                                                <rect key="frame" x="17" y="1400.5" width="286" height="200"/>
+                                                <rect key="frame" x="17" y="1272.5" width="286" height="200"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="8rJ-FC-ZXL"/>
@@ -1776,8 +1777,15 @@
                         <outlet property="requiredLabel" destination="dde-2B-zaH" id="Tay-Ty-e46"/>
                         <outlet property="stepperView" destination="wSQ-3g-JT1" id="uMS-fC-f0e"/>
                         <outlet property="stuffLabel" destination="TRB-rZ-9A7" id="T05-i2-OUl"/>
+                        <outlet property="stuffLebelBottom" destination="2zP-jS-bAn" id="pGb-sk-10s"/>
+                        <outlet property="stuffLebelTop" destination="bDP-ho-ELy" id="YaN-Vz-pXx"/>
+                        <outlet property="stuffSeperatorHeight" destination="msT-Qd-ANq" id="muO-Va-mlh"/>
+                        <outlet property="stuffTblBottom" destination="daW-Py-nZl" id="S6I-LL-fxQ"/>
                         <outlet property="stuffTblHeight" destination="6P1-3C-3zX" id="lmi-Sz-ijJ"/>
+                        <outlet property="stuffTblTop" destination="z4I-bl-lmc" id="Vag-Fu-Zy3"/>
                         <outlet property="stuffTblView" destination="rlD-f1-YjH" id="azM-xa-oMO"/>
+                        <outlet property="stuffView" destination="drR-A2-1zz" id="4RH-Ts-IEV"/>
+                        <outlet property="stuffViewHeight" destination="UjM-w7-rWB" id="Cew-79-lrN"/>
                         <outlet property="txtViewHeight" destination="LO5-bl-GHZ" id="JKD-wV-8hF"/>
                         <outlet property="typeOfMealBottom" destination="oOB-4z-y01" id="yeG-yX-YgN"/>
                         <outlet property="typeOfMealHeight" destination="Iin-tr-X5m" id="one-MJ-H2F"/>
@@ -2062,7 +2070,7 @@
         <image name="plate-utensils_black" width="15" height="15"/>
         <image name="unchecked" width="64" height="64"/>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

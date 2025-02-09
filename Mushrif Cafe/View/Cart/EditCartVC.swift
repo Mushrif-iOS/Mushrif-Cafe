@@ -55,6 +55,11 @@ class EditCartVC: UIViewController, Instantiatable {
     @IBOutlet weak var mealTypeTblView: UITableView!
     @IBOutlet var mealTypeTblHeight: NSLayoutConstraint!
     
+    @IBOutlet weak var stuffView: UIView!
+    @IBOutlet var stuffViewHeight: NSLayoutConstraint!
+    @IBOutlet var stuffSeperatorHeight: NSLayoutConstraint!
+    @IBOutlet var stuffLebelTop: NSLayoutConstraint!
+    @IBOutlet var stuffLebelBottom: NSLayoutConstraint!
     @IBOutlet var stuffLabel: UILabel! {
         didSet {
             stuffLabel.font = UIFont.poppinsMediumFontWith(size: 17)
@@ -63,6 +68,8 @@ class EditCartVC: UIViewController, Instantiatable {
     }
     
     @IBOutlet weak var stuffTblView: UITableView!
+    @IBOutlet var stuffTblTop: NSLayoutConstraint!
+    @IBOutlet var stuffTblBottom: NSLayoutConstraint!
     @IBOutlet var stuffTblHeight: NSLayoutConstraint!
     
     @IBOutlet var categoryStack: UIStackView!
@@ -356,7 +363,18 @@ class EditCartVC: UIViewController, Instantiatable {
             self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
             self.stuffTblView.reloadData()
         } else {
-            self.stuffTblHeight.constant = 52
+            self.typeOfMealTop.constant = 0
+            self.typeOfMealBottom.constant = 0
+       
+            self.stuffLebelTop.constant = 0
+            self.stuffLabel.text = ""
+            self.stuffLebelBottom.constant = 0
+            self.stuffViewHeight.constant = 0
+            self.stuffSeperatorHeight.constant = 0
+            self.stuffTblTop.constant = 0
+            self.stuffTblHeight.constant = 0
+            self.stuffTblBottom.constant = 0
+            self.stuffView.isHidden = true
         }
         
         if data?.comboId == nil {
