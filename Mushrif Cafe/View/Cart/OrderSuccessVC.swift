@@ -17,7 +17,7 @@ class OrderSuccessVC: UIViewController, Instantiatable {
         didSet {
             titleLabel.font = UIFont.poppinsMediumFontWith(size: 22)
 //            titleLabel.text = "order_confirm".localized()
-            self.titleLabel.text = successMsg
+            self.titleLabel.text = successMsg != "" ? successMsg : "order_confirm".localized()
         }
     }
     

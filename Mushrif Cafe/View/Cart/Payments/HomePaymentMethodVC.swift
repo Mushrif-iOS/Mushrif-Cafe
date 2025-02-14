@@ -80,7 +80,7 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
     
     @IBAction func appleAction(_ sender: Any) {
         
-        let aParams = ["cart_id": self.cardID, "payment_type": "apple_pay"]
+        /*let aParams = ["cart_id": self.cardID, "payment_type": "apple_pay"]
         print(aParams)
         
         var successOrderDetails: SuccessOrderResponse?
@@ -101,12 +101,19 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
             }
         } failure: { error in
             print("Error \(error.localizedDescription)")
+        }*/
+        self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
+                    
+        let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+        if controller != nil {
+            controller!.delegate = self
+            self.present(controller!, animated: true, completion: nil)
         }
     }
     
     @IBAction func onlineKnetAction(_ sender: Any) {
         
-        let aParams = ["cart_id": self.cardID, "payment_type": "knet"]
+        /*let aParams = ["cart_id": self.cardID, "payment_type": "knet"]
         print(aParams)
         
         var successOrderDetails: SuccessOrderResponse?
@@ -121,16 +128,17 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
             self.executePayment(paymentMethodId: 1)
         } failure: { error in
             print("Error \(error.localizedDescription)")
-        }
+        }*/
+        self.executePayment(paymentMethodId: 1)
     }
     
     @IBAction func swipeKnetAction(_ sender: Any) {
-        self.delegate?.onSelect(type: "knet_swipe", paymentId: "", orderId: "", amount: "")
+        self.delegate?.onKnetSelect(type: "knet_swipe", paymentId: "", orderId: "", amount: "", status: "")
         self.dismiss(animated: true)
     }
     
     @IBAction func keepAction(_ sender: Any) {
-        self.delegate?.onSelect(type: "open", paymentId: "", orderId: "", amount: "")
+        self.delegate?.onKnetSelect(type: "open", paymentId: "", orderId: "", amount: "", status: "")
         self.dismiss(animated: true)
     }
 }
@@ -138,18 +146,38 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
 extension HomePaymentMethodVC : PKPaymentAuthorizationViewControllerDelegate {
     
     func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
+        // Handle successful payment authorization
         let transactionID = payment.token.transactionIdentifier
         print("Transaction ID: \(transactionID)")
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
         
         controller.dismiss(animated: true) {
-            self.delegate?.onSelect(type: "apple_pay", paymentId: "\(transactionID)", orderId: self.orderID, amount: self.totalCost)
+            self.delegate?.onKnetSelect(type: "apple_pay", paymentId: "\(transactionID)", orderId: self.orderID, amount: self.totalCost, status: "")
             self.dismiss(animated: true)
         }
     }
     
     func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
+        // Handle the event when the payment authorization view controller is dismissed
         controller.dismiss(animated: true) {
+            self.dismiss(animated: true)
+        }
+    }
+    
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didFailWithError error: Error) {
+        // Handle payment failure
+        print("Payment failed with error: \(error.localizedDescription)")
+        controller.dismiss(animated: true) {
+            self.delegate?.onKnetSelect(type: "apple_pay", paymentId: "", orderId: self.orderID, amount: self.totalCost, status: "")
+            self.dismiss(animated: true)
+        }
+    }
+    
+    func paymentAuthorizationViewControllerDidCancel(_ controller: PKPaymentAuthorizationViewController) {
+        // Handle the event when the user cancels the payment
+        print("User canceled the payment.")
+        controller.dismiss(animated: true) {
+            self.delegate?.onKnetSelect(type: "apple_pay", paymentId: "", orderId: self.orderID, amount: self.totalCost, status: "")
             self.dismiss(animated: true)
         }
     }
@@ -189,14 +217,24 @@ extension HomePaymentMethodVC: MFPaymentDelegate {
             case .success(let executePaymentResponse):
                 if let invoiceStatus = executePaymentResponse.invoiceStatus {
                     ProgressHUD.success(invoiceStatus)
-                }
-                if let invoiceId = invoiceId {
-                    print("Success with invoiceId \(invoiceId)")
-                    self.delegate?.onSelect(type: "knet", paymentId: "\(invoiceId)", orderId: self.orderID, amount: self.totalCost)
-                    self.dismiss(animated: true)
+                    
+                    if let invoiceId = invoiceId {
+                        print("Success with invoiceId \(invoiceId)")
+                        self.delegate?.onKnetSelect(type: "knet", paymentId: "\(invoiceId)", orderId: self.orderID, amount: self.totalCost, status: invoiceStatus)
+                        self.dismiss(animated: true)
+                    }
+                } else {
+                    if let invoiceId = invoiceId {
+                        self.delegate?.onKnetSelect(type: "knet", paymentId: "\(invoiceId)", orderId: self.orderID, amount: self.totalCost, status: "")
+                        self.dismiss(animated: true)
+                    }
                 }
             case .failure(let failError):
                 ProgressHUD.error(failError)
+                if let invoiceId = invoiceId {
+                    self.delegate?.onKnetSelect(type: "knet", paymentId: "\(invoiceId)", orderId: self.orderID, amount: self.totalCost, status: "")
+                    self.dismiss(animated: true)
+                }
             }
         }
     }

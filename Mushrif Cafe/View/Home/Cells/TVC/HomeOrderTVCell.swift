@@ -98,7 +98,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         }
     }
     
-    func onSelect(type: String, paymentId: String, orderId: String, amount: String) {
+    func onKnetSelect(type: String, paymentId: String, orderId: String, amount: String, status: String) {
         print(type)
         print(paymentId)
         
@@ -126,9 +126,61 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 print("Error \(error.localizedDescription)")
             }
         } else if type == "apple_pay" {
-            self.paymentOrder(orderId: orderId, type: type, payId: paymentId, paymentStatus: "Paid", amt: amount)
+            
+            let aParams = ["cart_id": self.cartId, "payment_type": type]
+            print(aParams)
+            
+            var successOrderDetails: SuccessOrderResponse?
+            
+            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                if paymentId != "" {
+                    self.paymentOrder(orderId: "\(successOrderDetails?.id ?? 0)", type: type, payId: paymentId, paymentStatus: "Paid", amt: amount)
+                } else {
+                    let msg = responseJSON["message"].stringValue
+                    print(msg)
+                    DispatchQueue.main.async {
+                        let orderVC = OrderSuccessVC.instantiate()
+                        orderVC.successOrderDetails = successOrderDetails
+                        orderVC.successMsg = msg
+                        orderVC.title = "Dashboard"
+                        self.navController?.pushViewController(orderVC, animated: true)
+                    }
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         } else if type == "knet" {
-            self.paymentOrder(orderId: orderId, type: type, payId: paymentId, paymentStatus: "Paid", amt: amount)
+            
+            let aParams = ["cart_id": self.cartId, "payment_type": type]
+            print(aParams)
+            
+            var successOrderDetails: SuccessOrderResponse?
+            
+            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                if status != "" {
+                    self.paymentOrder(orderId: "\(successOrderDetails?.id ?? 0)", type: type, payId: paymentId, paymentStatus: status, amt: amount)
+                } else {
+                    let msg = responseJSON["message"].stringValue
+                    print(msg)
+                    DispatchQueue.main.async {
+                        let orderVC = OrderSuccessVC.instantiate()
+                        orderVC.successOrderDetails = successOrderDetails
+                        orderVC.successMsg = msg
+                        orderVC.title = "Dashboard"
+                        self.navController?.pushViewController(orderVC, animated: true)
+                    }
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         }
     }
     

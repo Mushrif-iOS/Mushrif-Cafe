@@ -9,13 +9,16 @@
 /* Begin PBXBuildFile section */
 		C6337B572CAB1A4E00ACDD86 /* MyOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B562CAB1A4E00ACDD86 /* MyOrderViewController.swift */; };
 		C6337B5A2CAB21E000ACDD86 /* MyOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */; };
-		C6337B5B2CAB21E000ACDD86 /* MyOrderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6337B592CAB21E000ACDD86 /* MyOrderTableViewCell.xib */; };
 		C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B5C2CAB34FC00ACDD86 /* HomeOrderTVCell.swift */; };
 		C6337B5F2CAB34FC00ACDD86 /* HomeOrderTVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6337B5D2CAB34FC00ACDD86 /* HomeOrderTVCell.xib */; };
 		C6337B612CAC6C5200ACDD86 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */; };
 		C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B622CAC764500ACDD86 /* CategoryTableViewCell.swift */; };
 		C6337B652CAC764500ACDD86 /* CategoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6337B632CAC764500ACDD86 /* CategoryTableViewCell.xib */; };
 		C640CB9D2D53B20000A09F5D /* QRPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C640CB9C2D53B20000A09F5D /* QRPopUpVC.swift */; };
+		C6431C832D5E48D0002991F4 /* MyOrderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6431C822D5E48D0002991F4 /* MyOrderTableViewCell.xib */; };
+		C6431C852D5E64A2002991F4 /* Zain-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6431C842D5E64A2002991F4 /* Zain-Bold.ttf */; };
+		C6431C872D5E64B1002991F4 /* Zain-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6431C862D5E64B1002991F4 /* Zain-Light.ttf */; };
+		C6431C892D5E64DA002991F4 /* Zain-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6431C882D5E64DA002991F4 /* Zain-Regular.ttf */; };
 		C64D43382D36FA390060A318 /* HomePaymentMethodVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C64D43372D36FA390060A318 /* HomePaymentMethodVC.swift */; };
 		C65010162CAD5940003BCA53 /* TagsCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65010152CAD5940003BCA53 /* TagsCVCell.swift */; };
 		C65010202CADC18D003BCA53 /* MealDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */; };
@@ -129,13 +132,16 @@
 		83201CD94B3BCD11A3F41519 /* Pods-Mushrif Cafe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mushrif Cafe.debug.xcconfig"; path = "Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe.debug.xcconfig"; sourceTree = "<group>"; };
 		C6337B562CAB1A4E00ACDD86 /* MyOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderViewController.swift; sourceTree = "<group>"; };
 		C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderTableViewCell.swift; sourceTree = "<group>"; };
-		C6337B592CAB21E000ACDD86 /* MyOrderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyOrderTableViewCell.xib; sourceTree = "<group>"; };
 		C6337B5C2CAB34FC00ACDD86 /* HomeOrderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeOrderTVCell.swift; sourceTree = "<group>"; };
 		C6337B5D2CAB34FC00ACDD86 /* HomeOrderTVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeOrderTVCell.xib; sourceTree = "<group>"; };
 		C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		C6337B622CAC764500ACDD86 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		C6337B632CAC764500ACDD86 /* CategoryTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryTableViewCell.xib; sourceTree = "<group>"; };
 		C640CB9C2D53B20000A09F5D /* QRPopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRPopUpVC.swift; sourceTree = "<group>"; };
+		C6431C822D5E48D0002991F4 /* MyOrderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyOrderTableViewCell.xib; sourceTree = "<group>"; };
+		C6431C842D5E64A2002991F4 /* Zain-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Zain-Bold.ttf"; sourceTree = "<group>"; };
+		C6431C862D5E64B1002991F4 /* Zain-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Zain-Light.ttf"; sourceTree = "<group>"; };
+		C6431C882D5E64DA002991F4 /* Zain-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Zain-Regular.ttf"; sourceTree = "<group>"; };
 		C64D43372D36FA390060A318 /* HomePaymentMethodVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePaymentMethodVC.swift; sourceTree = "<group>"; };
 		C65010152CAD5940003BCA53 /* TagsCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsCVCell.swift; sourceTree = "<group>"; };
 		C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailsViewController.swift; sourceTree = "<group>"; };
@@ -325,7 +331,7 @@
 			isa = PBXGroup;
 			children = (
 				C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */,
-				C6337B592CAB21E000ACDD86 /* MyOrderTableViewCell.xib */,
+				C6431C822D5E48D0002991F4 /* MyOrderTableViewCell.xib */,
 				C68A61422CCD097F0037094D /* OrderDetailsTableViewCell.swift */,
 				C68A61432CCD097F0037094D /* OrderDetailsTableViewCell.xib */,
 			);
@@ -483,6 +489,9 @@
 				C68E726F2CA30F4300F223A8 /* Poppins-Medium.ttf */,
 				C68E72702CA30F4300F223A8 /* Poppins-Regular.ttf */,
 				C68E72712CA30F4300F223A8 /* Poppins-SemiBold.ttf */,
+				C6431C842D5E64A2002991F4 /* Zain-Bold.ttf */,
+				C6431C862D5E64B1002991F4 /* Zain-Light.ttf */,
+				C6431C882D5E64DA002991F4 /* Zain-Regular.ttf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -655,10 +664,12 @@
 				C68A61452CCD09800037094D /* OrderDetailsTableViewCell.xib in Resources */,
 				C6C089D22CA875B60050F034 /* Home.storyboard in Resources */,
 				C6C089F62CA9DF8F0050F034 /* BannersCVCell.xib in Resources */,
+				C6431C832D5E48D0002991F4 /* MyOrderTableViewCell.xib in Resources */,
 				C68A613F2CCCF46B0037094D /* MyUsualHeaderCell.xib in Resources */,
 				C6C089E82CA992B90050F034 /* MyUsualCVCell.xib in Resources */,
 				C68E72742CA30F4300F223A8 /* Poppins-Light.ttf in Resources */,
 				C6C089FA2CA9DFA70050F034 /* BannersTVCell.xib in Resources */,
+				C6431C872D5E64B1002991F4 /* Zain-Light.ttf in Resources */,
 				C6C818B22CB1B72000905A39 /* ManageUsualTableViewCell.xib in Resources */,
 				C6C8189C2CB06CEC00905A39 /* ProfileTVC.xib in Resources */,
 				C68A614D2CD35B7F0037094D /* SearchCollectionViewCell.xib in Resources */,
@@ -672,13 +683,14 @@
 				C6C089FE2CAADE9C0050F034 /* MealTVCell.xib in Resources */,
 				C68A611F2CB58A700037094D /* CellSelectionTVC.xib in Resources */,
 				C6C818BA2CB2675100905A39 /* Cart.storyboard in Resources */,
+				C6431C852D5E64A2002991F4 /* Zain-Bold.ttf in Resources */,
 				C68E72752CA30F4300F223A8 /* Poppins-Medium.ttf in Resources */,
 				C6C818A62CB11C1500905A39 /* WalletTableViewCell.xib in Resources */,
 				C6C089E42CA9927F0050F034 /* MyUsualTVCell.xib in Resources */,
-				C6337B5B2CAB21E000ACDD86 /* MyOrderTableViewCell.xib in Resources */,
 				C6337B652CAC764500ACDD86 /* CategoryTableViewCell.xib in Resources */,
 				C6E42D4C2D15E379006E00E3 /* HomeOrderCVCell.xib in Resources */,
 				C65010292CAF224D003BCA53 /* Profile.storyboard in Resources */,
+				C6431C892D5E64DA002991F4 /* Zain-Regular.ttf in Resources */,
 				C6337B5F2CAB34FC00ACDD86 /* HomeOrderTVCell.xib in Resources */,
 				C6C089EE2CA9C1C40050F034 /* CategoryTVCell.xib in Resources */,
 				C68E72772CA30F4300F223A8 /* Poppins-SemiBold.ttf in Resources */,
@@ -1010,7 +1022,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1049,7 +1061,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

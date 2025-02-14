@@ -99,7 +99,7 @@ class ScanTableVC: UIViewController, Instantiatable {
         UserDefaultHelper.tableName = ""
         
         DispatchQueue.main.async {
-            //UserDefaultHelper.orderType = "takeaway"
+            UserDefaultHelper.orderType = "takeaway"
             let dashboardVC = DashboardVC.instantiate()
             self.navigationController?.push(viewController: dashboardVC)
         }

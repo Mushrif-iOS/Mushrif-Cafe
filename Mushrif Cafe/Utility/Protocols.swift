@@ -41,5 +41,6 @@ protocol SetLocationDelegate {
 }
 
 protocol PayNowDelegate {
-    func onSelect(type: String, paymentId: String, orderId: String, amount: String)
+    //func onSelect(type: String, paymentId: String, orderId: String, amount: String)
+    func onKnetSelect(type: String, paymentId: String, orderId: String, amount: String, status: String)
 }

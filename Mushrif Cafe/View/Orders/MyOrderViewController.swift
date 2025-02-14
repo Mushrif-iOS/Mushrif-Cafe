@@ -107,6 +107,8 @@ extension MyOrderViewController: UITableViewDelegate, UITableViewDataSource {
             cell.payTypeLabel.text = "Open Order"
         } else if "\(dict.paymentMethod)" == "wallet" {
             cell.payTypeLabel.text = "Wallet"
+        } else {
+            cell.payTypeLabel.text = "-"
         }
         let amt = Double("\(dict.grandTotal)")
         cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"

@@ -537,25 +537,54 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     
     private func paymentOrder(orderId: String, type: String, payId: String, paymentStatus: String) {
         
-        let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost]
-        print(aParams)
-        
-        APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
-            print("Response JSON \(responseJSON)")
-            let dataDict = responseJSON["response"]
-            self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+        if type == "apple_pay" && payId != "" {
+            let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost]
+            print(aParams)
             
-            let msg = responseJSON["message"].stringValue
-            print(msg)
+            APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    let orderVC = OrderSuccessVC.instantiate()
+                    orderVC.successOrderDetails = self.successOrderDetails
+                    orderVC.successMsg = msg
+                    self.navigationController?.pushViewController(orderVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else if type == "knet" && paymentStatus != "" {
+            let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    let orderVC = OrderSuccessVC.instantiate()
+                    orderVC.successOrderDetails = self.successOrderDetails
+                    orderVC.successMsg = msg
+                    self.navigationController?.pushViewController(orderVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else {
             DispatchQueue.main.async {
-                self.showBanner(message: msg, status: .success)
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = self.successOrderDetails
-                orderVC.successMsg = msg
                 self.navigationController?.pushViewController(orderVC, animated: true)
             }
-        } failure: { error in
-            print("Error \(error.localizedDescription)")
         }
     }
 }
@@ -700,6 +729,22 @@ extension CartVC : PKPaymentAuthorizationViewControllerDelegate {
             self.dismiss(animated: true)
         }
     }
+    
+    func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController, didFailWithError error: Error) {
+        // Handle payment failure
+        print("Payment failed with error: \(error.localizedDescription)")
+        controller.dismiss(animated: true) {
+            self.paymentOrder(orderId: self.orderID, type: "apple_pay", payId: "", paymentStatus: "")
+        }
+    }
+    
+    func paymentAuthorizationViewControllerDidCancel(_ controller: PKPaymentAuthorizationViewController) {
+        // Handle the event when the user cancels the payment
+        print("User canceled the payment.")
+        controller.dismiss(animated: true) {
+            self.paymentOrder(orderId: self.orderID, type: "apple_pay", payId: "", paymentStatus: "")
+        }
+    }
 }
 
 extension CartVC: MFPaymentDelegate {
@@ -735,14 +780,24 @@ extension CartVC: MFPaymentDelegate {
             case .success(let executePaymentResponse):
                 if let invoiceStatus = executePaymentResponse.invoiceStatus {
                     ProgressHUD.success(invoiceStatus)
-                }
-                if let invoiceId = invoiceId {
-                    print("Success with invoiceId \(invoiceId)")
-                    self.paymentOrder(orderId: self.orderID, type: "knet", payId: "\(invoiceId)", paymentStatus: "Paid")
-                    self.dismiss(animated: true)
+                    
+                    if let invoiceId = invoiceId {
+                        print("Success with invoiceId \(invoiceId)")
+                        self.paymentOrder(orderId: self.orderID, type: "knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                        self.dismiss(animated: true)
+                    }
+                } else {
+                    if let invoiceId = invoiceId {
+                        self.paymentOrder(orderId: self.orderID, type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                        self.dismiss(animated: true)
+                    }
                 }
             case .failure(let failError):
                 ProgressHUD.error(failError)
+                if let invoiceId = invoiceId {
+                    self.paymentOrder(orderId: self.orderID, type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                    self.dismiss(animated: true)
+                }
             }
         }
     }
