@@ -398,7 +398,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
 
             self.dateTimeLabel.text = "\(data?.orderDate ?? "")" != "" ? "\(data?.orderDate ?? "")" : "-"
             
-            UserDefaultHelper.totalItems! = self.cartData?.items ?? 0
+            UserDefaultHelper.totalItems! = data?.items ?? 0
             UserDefaultHelper.totalPrice! = Double("\(data?.subTotal != "" ? data?.subTotal ?? "" : "")") ?? 0.0
             self.setPriceAttritubte(price: UserDefaultHelper.totalPrice ?? 0.0)
             

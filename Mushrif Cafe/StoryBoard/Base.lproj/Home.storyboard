@@ -322,6 +322,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cartButton" destination="Bhg-Bf-edk" id="bYI-rf-UWX"/>
                         <outlet property="mainTableView" destination="SiP-sv-kpJ" id="xh2-lX-2sx"/>
                         <outlet property="profileButton" destination="Anf-dZ-6oL" id="lQc-vd-Idf"/>
                         <outlet property="searchLabel" destination="q4A-8G-QDe" id="aJk-Di-Dtb"/>

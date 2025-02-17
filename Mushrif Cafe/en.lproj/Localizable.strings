@@ -43,7 +43,7 @@
 "search_product" = "Search any products";
 "add_cart" = "Add to cart";
 "my_usual" = "My Usuals";
-"categories" = "Categories";
+"categories" = "Start Ordering";
 "try_out_best" = "Try our Best";
 "my_order" = "My Orders";
 "no_of_items" = "Number of items";
@@ -54,6 +54,7 @@
 "pay_now" = "Pay Now";
 "add" = "Add";
 "add_usual" = "Add to my Usuals";
+"back_home" = "Back to Home";
 "Customizable" = "Customizable";
 "edit" = "Edit";
 "my_orders" = "My Orders";

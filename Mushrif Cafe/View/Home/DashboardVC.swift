@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftyJSON
+import EasyNotificationBadge
 
 class DashboardVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -43,6 +44,8 @@ class DashboardVC: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
+    @IBOutlet weak var cartButton: UIButton!
+    
     var categoryData: [Category] = [Category]()
     var ourBestData: [TryOurBest] = [TryOurBest]()
     
@@ -78,6 +81,7 @@ class DashboardVC: UIViewController, Instantiatable {
         self.myUsualData.removeAll()
         self.bannerData.removeAll()
         self.getDashboardData()
+        self.setupBadge()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,10 +89,30 @@ class DashboardVC: UIViewController, Instantiatable {
         
         if UserDefaultHelper.authToken != "" {
             profileButton.setTitle(UserDefaultHelper.userName?.getAcronym(), for: .normal)
+            self.setupBadge()
         } else {
             profileButton.setTitle("Guest User".getAcronym(), for: .normal)
         }
     }
+    
+    private func setupBadge() {
+        var badgeAppearance = BadgeAppearance()
+        badgeAppearance.backgroundColor = UIColor.primaryBrown
+        badgeAppearance.textColor = UIColor.white
+        badgeAppearance.textAlignment = .center
+        badgeAppearance.font = UIFont.poppinsLightFontWith(size: 12)
+        badgeAppearance.distanceFromCenterX = 13
+        badgeAppearance.distanceFromCenterY = -13
+        badgeAppearance.allowShadow = true
+        badgeAppearance.borderColor = UIColor.white
+        badgeAppearance.borderWidth = 0.5
+        if "\(UserDefaultHelper.totalItems ?? 0)" == "0" {
+            self.cartButton.badge(text: nil)
+        } else {
+            self.cartButton.badge(text: "\(UserDefaultHelper.totalItems ?? 0)", appearance: badgeAppearance)
+        }
+    }
+    
     @IBAction func selectTableAction(_ sender: UIButton) {
         
         let scanVC = ScanTableVC.instantiate()

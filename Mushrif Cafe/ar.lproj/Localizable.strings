@@ -43,7 +43,7 @@
 "search_product" = "ابحث عن أي منتجات";
 "add_cart" = "أضف إلى السلة";
 "my_usual" = "عادتي";
-"categories" = "فئات";
+"categories" = "ابدأ الطلب";
 "try_out_best" = "نبذل قصارى جهدنا";
 "my_order" = "طلباتي";
 "no_of_items" = "عدد العناصر";
@@ -54,6 +54,7 @@
 "pay_now" = "ادفع الآن";
 "add" = "يضيف";
 "add_usual" = "أضف إلى عادتي";
+"back_home" = "العودة إلى المنزل";
 "Customizable" = "قابلة للتخصيص";
 "edit" = "يحرر";
 "my_orders" = "طلباتي";

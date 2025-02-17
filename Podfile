@@ -6,8 +6,8 @@ target 'Mushrif Cafe' do
   use_frameworks!
 
   # Pods for Mushrif Cafe
-	pod 'Alamofire', '5.0.0'
-  pod 'SwiftyJSON', '~> 4.0'
+	pod 'Alamofire', '5.9.0'
+  pod 'SwiftyJSON', '~> 5.0.2'
   pod 'ReachabilitySwift'
   pod 'SDWebImage'
 	pod 'IQKeyboardManagerSwift'
@@ -15,6 +15,7 @@ target 'Mushrif Cafe' do
   pod 'SYBanner'
   pod 'Siren'
   pod 'MyFatoorah'
+  pod 'EasyNotificationBadge'
 
 end
 

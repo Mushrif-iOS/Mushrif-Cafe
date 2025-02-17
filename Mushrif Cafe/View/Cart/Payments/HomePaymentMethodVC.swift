@@ -43,7 +43,7 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
     @IBOutlet weak var keepLabel: UILabel! {
         didSet {
             keepLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            keepLabel.text = "keep_order_open".localized()
+            keepLabel.text = "wallet".localized()
         }
     }
     
@@ -53,6 +53,7 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
     var totalCost: String = ""
     
     var orderID: String = ""
+    var itemsCount: Int = 0
     
     private var payment : PKPaymentRequest = PKPaymentRequest()
     
@@ -138,7 +139,7 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
     }
     
     @IBAction func keepAction(_ sender: Any) {
-        self.delegate?.onKnetSelect(type: "open", paymentId: "", orderId: "", amount: "", status: "")
+        self.delegate?.onKnetSelect(type: "wallet", paymentId: "", orderId: "", amount: self.totalCost, status: "\(self.itemsCount)")
         self.dismiss(animated: true)
     }
 }

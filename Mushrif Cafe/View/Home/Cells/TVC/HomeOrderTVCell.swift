@@ -92,6 +92,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             addVC.delegate = self
             addVC.cardID = "\(dict.cart.id)"
             addVC.totalCost = dict.grandTotal
+            addVC.itemsCount = dict.cart.items
             self.navController?.present(addVC, animated: true, completion: nil)
         } else {
             self.navController?.showBanner(message: "no_cart_item".localized(), status: .error)
@@ -102,7 +103,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         print(type)
         print(paymentId)
         
-        if type == "knet_swipe" || type == "open" {
+        if type == "knet_swipe" {
             let aParams = ["cart_id": self.cartId, "payment_type": type]
             print(aParams)
             
@@ -125,6 +126,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }
+        } else if type == "wallet" {
+            self.walletPay(paymentType: type, cost: amount, count: status)
         } else if type == "apple_pay" {
             
             let aParams = ["cart_id": self.cartId, "payment_type": type]
@@ -198,6 +201,42 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             
             let msg = responseJSON["message"].stringValue
             print(msg)
+            DispatchQueue.main.async {
+                let orderVC = OrderSuccessVC.instantiate()
+                orderVC.successOrderDetails = successOrderDetails
+                orderVC.successMsg = msg
+                orderVC.title = "Dashboard"
+                self.navController?.pushViewController(orderVC, animated: true)
+            }
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    
+    private func walletPay(paymentType: String, cost: String, count: String) {
+        
+        let aParams = ["cart_id": self.cartId, "payment_type": paymentType]
+        print(aParams)
+        
+        var successOrderDetails: SuccessOrderResponse?
+        APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            let dataDict = responseJSON["response"]
+            successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+            
+            let msg = responseJSON["message"].stringValue
+            print(msg)
+            
+            let bal = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+            if bal > 0 {
+                let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(cost) ?? 0.0)
+                UserDefaultHelper.walletBalance = "\(doubleValue)"
+            }
+            let count = Int(UserDefaultHelper.totalItems ?? 0)
+            if count > 0 {
+                let countValue = (Int(UserDefaultHelper.totalItems ?? 0)) - (Int(count))
+                UserDefaultHelper.totalItems = countValue
+            }
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = successOrderDetails

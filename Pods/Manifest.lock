@@ -1,5 +1,6 @@
 PODS:
-  - Alamofire (5.0.0)
+  - Alamofire (5.9.0)
+  - EasyNotificationBadge (1.2.5)
   - IQKeyboardManagerSwift (7.1.1)
   - MyFatoorah (2.0.154)
   - ProgressHUD (14.1.1)
@@ -8,23 +9,25 @@ PODS:
     - SDWebImage/Core (= 5.19.7)
   - SDWebImage/Core (5.19.7)
   - Siren (6.1.3)
-  - SwiftyJSON (4.3.0)
+  - SwiftyJSON (5.0.2)
   - SYBanner (0.0.5)
 
 DEPENDENCIES:
-  - Alamofire (= 5.0.0)
+  - Alamofire (= 5.9.0)
+  - EasyNotificationBadge
   - IQKeyboardManagerSwift
   - MyFatoorah
   - ProgressHUD
   - ReachabilitySwift
   - SDWebImage
   - Siren
-  - SwiftyJSON (~> 4.0)
+  - SwiftyJSON (~> 5.0.2)
   - SYBanner
 
 SPEC REPOS:
   trunk:
     - Alamofire
+    - EasyNotificationBadge
     - IQKeyboardManagerSwift
     - MyFatoorah
     - ProgressHUD
@@ -35,16 +38,17 @@ SPEC REPOS:
     - SYBanner
 
 SPEC CHECKSUMS:
-  Alamofire: 58ff2bfb8daaacaa233d5c36e37b10a5248f59b1
+  Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
+  EasyNotificationBadge: a3ebbcb1de0c0558e102e954380c75801f352702
   IQKeyboardManagerSwift: d7f3d3a562c237a0e7335e657cd598c452f57f1b
   MyFatoorah: ed7d58908212ebbfca2fc6841fbaa66cd4ff72c8
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
   ReachabilitySwift: 7f151ff156cea1481a8411701195ac6a984f4979
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   Siren: c0f6012f61196b73455202db07730f6454a4beb0
-  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
   SYBanner: 3dfbf763489b6089a8fa835eb0fe43c3bdc6492c
 
-PODFILE CHECKSUM: 2b21bbf34eda3932340b923587d9300c3bf58805
+PODFILE CHECKSUM: a0fa74e8bb36834494bd1476c2bf813fae642675
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

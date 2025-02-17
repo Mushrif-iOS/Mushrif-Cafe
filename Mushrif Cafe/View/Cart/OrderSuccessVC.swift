@@ -94,13 +94,21 @@ class OrderSuccessVC: UIViewController, Instantiatable {
             addLabel.text = "add_usual".localized()
         }
     }
+    
+    @IBOutlet weak var backLabel: UILabel! {
+        didSet {
+            backLabel.font = UIFont.poppinsBoldFontWith(size: 18)
+            backLabel.textColor = UIColor.primaryBrown
+            backLabel.text = "back_home".localized()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        /*DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             if self.title == "Dashboard" {
                 NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
                 self.navigationController?.popViewController(animated: true)
@@ -110,23 +118,29 @@ class OrderSuccessVC: UIViewController, Instantiatable {
             }
             //NotificationCenter.default.post(name: Notification.Name("OrderView"), object: nil)
             //NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
-        }
+        }*/
     }
     
     @IBAction func addUsualAction(_ sender: Any) {
-        AlertView.show(message: "usual_add_error".localized(), preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
-            if button == "ok".localized() {
+        let addVC = AddUsualsVC.instantiate()
+        if #available(iOS 15.0, *) {
+            if let sheet = addVC.sheetPresentationController {
+                sheet.detents = [.medium()]
+                sheet.preferredCornerRadius = 15
             }
         }
-//        let addVC = AddUsualsVC.instantiate()
-//        if #available(iOS 15.0, *) {
-//            if let sheet = addVC.sheetPresentationController {
-//                sheet.detents = [.medium()]
-//                sheet.preferredCornerRadius = 15
-//            }
-//        }
-//        addVC.productId = "\(successOrderDetails?.id ?? 0)"
-//        addVC.itemType = "ordered"
-//        self.present(addVC, animated: true, completion: nil)
+        addVC.productId = "\(successOrderDetails?.id ?? 0)"
+        addVC.itemType = "ordered"
+        self.present(addVC, animated: true, completion: nil)
+    }
+    
+    @IBAction func backAction(_ sender: Any) {
+        if self.title == "Dashboard" {
+            NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            let dashboardVC = DashboardVC.instantiate()
+            self.navigationController?.push(viewController: dashboardVC)
+        }
     }
 }
