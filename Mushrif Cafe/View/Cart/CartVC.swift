@@ -64,10 +64,10 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     
     @IBOutlet weak var priceLabel: UILabel!
     
-    @IBOutlet weak var placeOrderLabel: UILabel! {
+    @IBOutlet weak var placeOrderButton: UIButton! {
         didSet {
-            placeOrderLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            placeOrderLabel.text =  "place_order".localized()
+            placeOrderButton.titleLabel?.font = UIFont.poppinsMediumFontWith(size: 18)
+            placeOrderButton.setTitle("\("place_order".localized())", for: .normal)
         }
     }
     
@@ -204,6 +204,8 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
         }
     }
     
+    @IBOutlet weak var changePaymentOptionBtn: UIButton!
+    
     var cartData: CartResponse?
     var cartArray : [CartItem] = [CartItem]()
     var activeCartArray : [CartItem] = [CartItem]()
@@ -284,6 +286,12 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
         checkBoxBtn.isSelected = !checkBoxBtn.isSelected
         paymentType = checkBoxBtn.isSelected == true ? "wallet" : "open"
         print(paymentType)
+        
+        if checkBoxBtn.isSelected == true {
+            self.changePaymentOptionBtn.isUserInteractionEnabled = false
+        } else {
+            self.changePaymentOptionBtn.isUserInteractionEnabled = true
+        }
     }
     
     @IBAction func addFundAction(_ sender: Any) {
@@ -403,7 +411,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
             self.setPriceAttritubte(price: UserDefaultHelper.totalPrice ?? 0.0)
             
             if self.cartData?.orderType == "takeaway" {
-                self.tableLabel.text =  ""
+                self.tableLabel.text =  "takeaway".capitalized
             } else {
                 self.tableLabel.text =  UserDefaultHelper.tableName
             }
@@ -433,7 +441,7 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
     
     private func setPriceAttritubte(price: Double) {
         
-        let attrString = NSMutableAttributedString(string: "\(price.toRoundedString(toPlaces: 3))",
+        let attrString = NSMutableAttributedString(string: "\(price.toRoundedString(toPlaces: 2))",
                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 18)])
         attrString.append(NSMutableAttributedString(string: " KWD",
                                                     attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 13)]))
@@ -521,6 +529,9 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
                     UserDefaultHelper.walletBalance = "\(doubleValue)"
                     self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
                 }
+                
+                UserDefaultHelper.totalItems! = 0
+                UserDefaultHelper.tableName = ""
             }
             
             DispatchQueue.main.async {
@@ -548,6 +559,8 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
+                UserDefaultHelper.totalItems! = 0
+                UserDefaultHelper.tableName = ""
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
                     let orderVC = OrderSuccessVC.instantiate()
@@ -569,6 +582,8 @@ class CartVC: UIViewController, Instantiatable, AddMoneyDelegate, InputBoxDelega
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
+                UserDefaultHelper.totalItems! = 0
+                UserDefaultHelper.tableName = ""
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
                     let orderVC = OrderSuccessVC.instantiate()

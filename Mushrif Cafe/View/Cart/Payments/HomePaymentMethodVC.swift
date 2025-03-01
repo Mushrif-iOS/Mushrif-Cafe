@@ -43,7 +43,6 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
     @IBOutlet weak var keepLabel: UILabel! {
         didSet {
             keepLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-            keepLabel.text = "wallet".localized()
         }
     }
     
@@ -77,6 +76,9 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
         }
         
         self.initiatePayment()
+        
+        let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+        self.keepLabel.text =  "\("wallet".localized()) \("balance".localized()): (\(doubleValue.rounded(toPlaces: 2)) KWD)"
     }
     
     @IBAction func appleAction(_ sender: Any) {

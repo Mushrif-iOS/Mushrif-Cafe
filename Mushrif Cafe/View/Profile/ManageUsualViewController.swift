@@ -204,6 +204,9 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         
         headerView.editButton.tag = section
         headerView.editButton.addTarget(self, action: #selector(updateAction(sender: )), for: .touchUpInside)
+        
+        headerView.addButton.tag = section
+        headerView.addButton.addTarget(self, action: #selector(addAction(sender: )), for: .touchUpInside)
         return headerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -225,6 +228,44 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         addVC.myUsual = dict
         addVC.delegate = self
         self.present(addVC, animated: true, completion: nil)
+    }
+    
+    
+    @objc func addAction(sender: UIButton) {
+        
+        let dict = self.usualData[sender.tag]
+        
+        let hallId = UserDefaultHelper.hallId ?? ""
+        let tableId = UserDefaultHelper.tableId ?? ""
+        let groupId = UserDefaultHelper.groupId ?? ""
+        
+        if tableId != "" {
+            
+            let aParams = ["usual_id": "\(dict.id)",
+                           "hall_id": hallId,
+                           "table_id": tableId,
+                           "group_id": groupId]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.usuals_move_to_cart, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let msg = responseJSON["message"].stringValue
+                self.showBanner(message: msg, status: .success)
+                
+                let cartVC = CartVC.instantiate()
+                self.navigationController?.pushViewController(cartVC, animated: true)
+                
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else {
+            self.showBanner(message: "please_scan".localized(), status: .success)
+            let scanVC = ScanTableVC.instantiate()
+            scanVC.title = "LanguageSelection"
+            self.navigationController?.push(viewController: scanVC)
+        }
+        
     }
 }
 

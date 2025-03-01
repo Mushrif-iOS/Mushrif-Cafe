@@ -77,6 +77,11 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
         return CGSize(width: 202, height: 145)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let manageVC = ManageUsualViewController.instantiate()
+        self.navController?.push(viewController: manageVC)
+    }
+    
     @objc func addAction(sender: UIButton) {
         
         let dict = usualObj[sender.tag]
@@ -86,7 +91,7 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
             let tableId = UserDefaultHelper.tableId ?? ""
             let groupId = UserDefaultHelper.groupId ?? ""
             
-            if hallId != "" {
+            if tableId != "" {
                 
                 let aParams = ["usual_id": "\(dict.id)",
                                "hall_id": hallId,

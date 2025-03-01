@@ -17,6 +17,13 @@ class MyUsualHeaderCell: UITableViewCell {
     }
     
     @IBOutlet var editButton: UIButton!
+    
+    @IBOutlet weak var addButton: UIButton! {
+        didSet {
+            addButton.titleLabel?.font = UIFont.poppinsMediumFontWith(size: 14)
+            addButton.setTitle("add".localized(), for: .normal)
+        }
+    }
         
     static let identifier = "MyUsualHeaderCell"
     

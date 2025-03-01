@@ -317,7 +317,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                 print(msg)
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
-                    UserDefaultHelper.totalItems! += 1
+                    //UserDefaultHelper.totalItems! += 1
                     UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
                     self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
                     let cartVC = CartVC.instantiate()

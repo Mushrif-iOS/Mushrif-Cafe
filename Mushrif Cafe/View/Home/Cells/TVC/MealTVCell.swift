@@ -131,7 +131,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                 print(msg)
                 DispatchQueue.main.async {
                     self.navController?.showBanner(message: msg, status: .success)
-                    UserDefaultHelper.totalItems! += 1
+                    //UserDefaultHelper.totalItems! += 1
                     UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
                     let cartVC = CartVC.instantiate()
                     self.navController?.pushViewController(cartVC, animated: true)

@@ -189,7 +189,7 @@
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" image="Icon ionic-ios-arrow-dropdown-circle"/>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uwR-Cd-mKa">
+                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uwR-Cd-mKa">
                                         <rect key="frame" x="0.0" y="0.0" width="135" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -325,6 +325,7 @@
                         <outlet property="cartButton" destination="Bhg-Bf-edk" id="bYI-rf-UWX"/>
                         <outlet property="mainTableView" destination="SiP-sv-kpJ" id="xh2-lX-2sx"/>
                         <outlet property="profileButton" destination="Anf-dZ-6oL" id="lQc-vd-Idf"/>
+                        <outlet property="scanTableButton" destination="Pni-yc-AMK" id="oD7-Tf-DC4"/>
                         <outlet property="searchLabel" destination="q4A-8G-QDe" id="aJk-Di-Dtb"/>
                         <outlet property="selectTableLabel" destination="8qz-1f-l5U" id="f7d-Bf-1OJ"/>
                         <outlet property="selectTableTxt" destination="uwR-Cd-mKa" id="fZ5-nH-5Md"/>

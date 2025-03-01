@@ -246,7 +246,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 print(msg)
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
-                    UserDefaultHelper.totalItems! += 1
+                    //UserDefaultHelper.totalItems! += 1
                     UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
                     let cartVC = CartVC.instantiate()
                     self.navigationController?.pushViewController(cartVC, animated: true)

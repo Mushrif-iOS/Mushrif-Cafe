@@ -89,6 +89,8 @@
 "select_combo_req" = "Please select at least 1 from";
 "select_atleast" = "Please select at least";
 "choice_for" = "choices for";
+"food_instructions" = "Food Instructions";
+"enter_instructions" = "Enter your instructions here...";
 
 "cart" = "Cart";
 "balance" = "Balance";

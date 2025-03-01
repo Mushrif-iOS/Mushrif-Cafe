@@ -158,6 +158,8 @@ class EditCartVC: UIViewController, Instantiatable {
     
     var mealTypeIndex: IndexPath?
     
+    var noteText: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -186,6 +188,52 @@ class EditCartVC: UIViewController, Instantiatable {
         DispatchQueue.main.async {
             self.setupUI()
         }
+        
+        self.setupFloatingButton()
+    }
+    
+    func setupFloatingButton() {
+        let floatingButton = UIButton(type: .system)
+        
+        // Set button properties
+        floatingButton.setImage(UIImage(systemName: "pencil.and.scribble")?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal), for: .normal)
+        floatingButton.backgroundColor = UIColor.primaryBrown
+        floatingButton.layer.cornerRadius = 25
+        floatingButton.layer.shadowColor = UIColor.black.cgColor
+        floatingButton.layer.shadowOpacity = 0.3
+        floatingButton.layer.shadowOffset = CGSize(width: 0, height: 5)
+        floatingButton.layer.shadowRadius = 5
+        
+        // Set button size
+        floatingButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        
+        // Add target action
+        floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
+        
+        // Add to view and position it
+        view.addSubview(floatingButton)
+        floatingButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            floatingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            floatingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130),
+            floatingButton.widthAnchor.constraint(equalToConstant: 50),
+            floatingButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+    }
+    
+    @objc func floatingButtonTapped() {
+        let instructionAlert = FoodInstructionAlertController()
+        instructionAlert.onSave = { enteredText in
+            print("User entered: \(enteredText)")
+            self.noteText = "\(enteredText)"
+        }
+        if self.noteText != "" {
+            instructionAlert.instructionValue = self.noteText
+        }
+        instructionAlert.title = "Edit"
+        instructionAlert.modalPresentationStyle = .overFullScreen
+        present(instructionAlert, animated: true, completion: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -248,6 +296,7 @@ class EditCartVC: UIViewController, Instantiatable {
         self.nameLabel.text = data?.product.name
         self.descLabel.text = data?.product.productDesc
         
+        self.noteText =  data?.instruction ?? ""
         self.comboDetails = data?.product.comboDetails
         self.qtyValue = data?.quantity ?? 1
         self.qty.text = "\(self.qtyValue)"
@@ -1064,6 +1113,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                        "ingredients_id": "\(ingredientsjsonString)",
                        "combo_product_id": "\(combojsonString)",
                        "choice_group_id": "\(choicejsonString)",
+                       "instruction": self.noteText,
                        "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         
         print(aParams)

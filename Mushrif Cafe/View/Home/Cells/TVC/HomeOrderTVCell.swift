@@ -77,6 +77,16 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         return CGSize(width: collectionView.frame.size.width, height: 236)
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if UserDefaultHelper.authToken != "" {
+            let cartVC = CartVC.instantiate()
+            self.navController?.pushViewController(cartVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navController?.pushViewController(profileVC, animated: true)
+        }
+    }
+    
     @objc func payNowAction(sender: UIButton) {
         
         let dict = usualObj[sender.tag]
@@ -116,6 +126,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
+                UserDefaultHelper.totalItems! = 0
+                UserDefaultHelper.tableName = ""
                 DispatchQueue.main.async {
                     let orderVC = OrderSuccessVC.instantiate()
                     orderVC.successOrderDetails = successOrderDetails
@@ -145,6 +157,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 } else {
                     let msg = responseJSON["message"].stringValue
                     print(msg)
+                    UserDefaultHelper.totalItems! = 0
+                    UserDefaultHelper.tableName = ""
                     DispatchQueue.main.async {
                         let orderVC = OrderSuccessVC.instantiate()
                         orderVC.successOrderDetails = successOrderDetails
@@ -173,6 +187,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 } else {
                     let msg = responseJSON["message"].stringValue
                     print(msg)
+                    UserDefaultHelper.totalItems! = 0
+                    UserDefaultHelper.tableName = ""
                     DispatchQueue.main.async {
                         let orderVC = OrderSuccessVC.instantiate()
                         orderVC.successOrderDetails = successOrderDetails
@@ -201,6 +217,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             
             let msg = responseJSON["message"].stringValue
             print(msg)
+            UserDefaultHelper.totalItems! = 0
+            UserDefaultHelper.tableName = ""
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = successOrderDetails
@@ -237,6 +255,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 let countValue = (Int(UserDefaultHelper.totalItems ?? 0)) - (Int(count))
                 UserDefaultHelper.totalItems = countValue
             }
+            UserDefaultHelper.totalItems! = 0
+            UserDefaultHelper.tableName = ""
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = successOrderDetails

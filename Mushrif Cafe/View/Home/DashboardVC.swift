@@ -44,6 +44,7 @@ class DashboardVC: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
+    @IBOutlet weak var scanTableButton: UIButton!
     @IBOutlet weak var cartButton: UIButton!
     
     var categoryData: [Category] = [Category]()
@@ -56,10 +57,6 @@ class DashboardVC: UIViewController, Instantiatable {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if UserDefaultHelper.tableName != "" {
-            selectTableLabel.text = UserDefaultHelper.tableName
-        }
                 
         mainTableView.register(HomeOrderTVCell.nib(), forCellReuseIdentifier: HomeOrderTVCell.identifier)
         mainTableView.register(MyUsualTVCell.nib(), forCellReuseIdentifier: MyUsualTVCell.identifier)
@@ -92,6 +89,14 @@ class DashboardVC: UIViewController, Instantiatable {
             self.setupBadge()
         } else {
             profileButton.setTitle("Guest User".getAcronym(), for: .normal)
+        }
+        
+        if UserDefaultHelper.tableName != "" {
+            scanTableButton.isUserInteractionEnabled = false
+            selectTableLabel.text = UserDefaultHelper.tableName
+        } else {
+            scanTableButton.isUserInteractionEnabled = true
+            selectTableLabel.text = "select_table".localized()
         }
     }
     

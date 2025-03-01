@@ -71,7 +71,6 @@
 		C68E72742CA30F4300F223A8 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68E726E2CA30F4300F223A8 /* Poppins-Light.ttf */; };
 		C68E72752CA30F4300F223A8 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68E726F2CA30F4300F223A8 /* Poppins-Medium.ttf */; };
 		C68E72762CA30F4300F223A8 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68E72702CA30F4300F223A8 /* Poppins-Regular.ttf */; };
-		C68E72772CA30F4300F223A8 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68E72712CA30F4300F223A8 /* Poppins-SemiBold.ttf */; };
 		C68E72792CA3105700F223A8 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68E72782CA3105700F223A8 /* UIFont+Extension.swift */; };
 		C6C089AC2CA677810050F034 /* LanguageSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C089AB2CA677810050F034 /* LanguageSelectionVC.swift */; };
 		C6C089AE2CA680C80050F034 /* UserDefault+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6C089AD2CA680C80050F034 /* UserDefault+Helper.swift */; };
@@ -121,6 +120,8 @@
 		C6EDC6E72CA5A1A0003C40B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */; };
 		C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E82CA5A208003C40B0 /* OTPViewController.swift */; };
 		C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6EA2CA5B3A5003C40B0 /* CompleteProfileVC.swift */; };
+		C6F024C62D738212007081A9 /* FoodInstructionAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F024C52D738212007081A9 /* FoodInstructionAlertController.swift */; };
+		C6F024C72D738CC4007081A9 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C68E72712CA30F4300F223A8 /* Poppins-SemiBold.ttf */; };
 		C6FE3FD72CF799E80049FFB1 /* ChoiceHeaderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE3FD62CF799E80049FFB1 /* ChoiceHeaderTVCell.swift */; };
 		C6FE3FD92CF79AFB0049FFB1 /* ChoiceRowTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE3FD82CF79AFB0049FFB1 /* ChoiceRowTVCell.swift */; };
 		C6FE3FDB2CFF45B60049FFB1 /* CartItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */; };
@@ -251,6 +252,7 @@
 		C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C6EDC6E82CA5A208003C40B0 /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
 		C6EDC6EA2CA5B3A5003C40B0 /* CompleteProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteProfileVC.swift; sourceTree = "<group>"; };
+		C6F024C52D738212007081A9 /* FoodInstructionAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodInstructionAlertController.swift; sourceTree = "<group>"; };
 		C6FE3FD62CF799E80049FFB1 /* ChoiceHeaderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceHeaderTVCell.swift; sourceTree = "<group>"; };
 		C6FE3FD82CF79AFB0049FFB1 /* ChoiceRowTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceRowTVCell.swift; sourceTree = "<group>"; };
 		C6FE3FDA2CFF45B60049FFB1 /* CartItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartItemModel.swift; sourceTree = "<group>"; };
@@ -503,6 +505,7 @@
 				C6C089D72CA8EC500050F034 /* DashboardVC.swift */,
 				C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */,
 				C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */,
+				C6F024C52D738212007081A9 /* FoodInstructionAlertController.swift */,
 				C6600C252CB31938009B0445 /* AddUsualsVC.swift */,
 				C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */,
 				C68A61462CD2ADED0037094D /* SearchViewController.swift */,
@@ -660,6 +663,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6F024C72D738CC4007081A9 /* Poppins-SemiBold.ttf in Resources */,
 				C68E72612CA3000300F223A8 /* Assets.xcassets in Resources */,
 				C68A61452CCD09800037094D /* OrderDetailsTableViewCell.xib in Resources */,
 				C6C089D22CA875B60050F034 /* Home.storyboard in Resources */,
@@ -693,7 +697,6 @@
 				C6431C892D5E64DA002991F4 /* Zain-Regular.ttf in Resources */,
 				C6337B5F2CAB34FC00ACDD86 /* HomeOrderTVCell.xib in Resources */,
 				C6C089EE2CA9C1C40050F034 /* CategoryTVCell.xib in Resources */,
-				C68E72772CA30F4300F223A8 /* Poppins-SemiBold.ttf in Resources */,
 				C650102E2CB06573003BCA53 /* ProfileHeaderTVC.xib in Resources */,
 				C68E725F2CA3000200F223A8 /* Base in Resources */,
 				C68E72732CA30F4300F223A8 /* Poppins-Bold.ttf in Resources */,
@@ -803,6 +806,7 @@
 				C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */,
 				C6FE3FDB2CFF45B60049FFB1 /* CartItemModel.swift in Sources */,
 				C6C818A12CB105B100905A39 /* ContacUsVC.swift in Sources */,
+				C6F024C62D738212007081A9 /* FoodInstructionAlertController.swift in Sources */,
 				C68A61342CBC3EAE0037094D /* LoginModel.swift in Sources */,
 				C6C089AC2CA677810050F034 /* LanguageSelectionVC.swift in Sources */,
 				C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */,
@@ -1022,7 +1026,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1061,7 +1065,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
