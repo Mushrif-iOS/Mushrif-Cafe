@@ -41,7 +41,7 @@ class StatusBanner: UIView {
         
         // Configure message label
         messageLabel.text = message
-        messageLabel.font = UIFont.interMediumFontWith(size: 14)
+        messageLabel.font = UIFont.poppinsMediumFontWith(size: 14)
         messageLabel.textColor = .white
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0

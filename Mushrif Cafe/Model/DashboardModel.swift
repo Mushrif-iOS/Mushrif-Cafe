@@ -34,7 +34,7 @@ class DashboardResponse {
     var myActiveOrders : [MyActiveOrder]!
     var myUsuals : [DashboardMyUsual]!
     var tryOurBest : [TryOurBest]!
-
+    var cartQuantity : Int = 0
 
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -69,6 +69,7 @@ class DashboardResponse {
             let value = TryOurBest(fromJson: tryOurBestJson)
             tryOurBest.append(value)
         }
+        cartQuantity = json["cart_quantity"].intValue
     }
 }
 
@@ -110,9 +111,10 @@ class MyActiveOrder {
     var subTotal : String = ""
     var table : String = ""
     var tableId : Int = 0
-    var tableNo : AnyObject!
+    var tableNo : Int = 0
     var updatedUserId : Int = 0
     var userId : Int = 0
+    var items : [CountItems]!
 
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -157,9 +159,15 @@ class MyActiveOrder {
         subTotal = json["sub_total"].stringValue
         table = json["table"].stringValue
         tableId = json["table_id"].intValue
-        tableNo = json["table_no"].stringValue as AnyObject
+        tableNo = json["table_no"].intValue
         updatedUserId = json["updated_user_id"].intValue
         userId = json["user_id"].intValue
+        items = [CountItems]()
+        let itemsArray = json["items"].arrayValue
+        for itemsJson in itemsArray{
+            let value = CountItems(fromJson: itemsJson)
+            items.append(value)
+        }
     }
 }
 
@@ -280,6 +288,45 @@ class Category {
         name = json["name"].stringValue
         position = json["position"].intValue
         status = json["status"].intValue
+        userId = json["user_id"].intValue
+    }
+}
+
+class CountItems {
+
+    var businessId : Int = 0
+    var cartId : String = ""
+    var descriptionField :String = ""
+    var id : Int = 0
+    var itemKdsPreview : Int = 0
+    var itemType : String = ""
+    var orderId : Int = 0
+    var orderType : String = ""
+    var productId : Int = 0
+    var productName : String = ""
+    var quantity : String = ""
+    var subTotal : String = ""
+    var unitCost : String = ""
+    var userId : Int = 0
+
+
+    init(fromJson json: JSON!){
+        if json.isEmpty{
+            return
+        }
+        businessId = json["business_id"].intValue
+        cartId = json["cart_id"].stringValue
+        descriptionField = json["description"].stringValue
+        id = json["id"].intValue
+        itemKdsPreview = json["item_kds_preview"].intValue
+        itemType = json["item_type"].stringValue
+        orderId = json["order_id"].intValue
+        orderType = json["order_type"].stringValue
+        productId = json["product_id"].intValue
+        productName = json["product_name"].stringValue
+        quantity = json["quantity"].stringValue
+        subTotal = json["sub_total"].stringValue
+        unitCost = json["unit_cost"].stringValue
         userId = json["user_id"].intValue
     }
 }

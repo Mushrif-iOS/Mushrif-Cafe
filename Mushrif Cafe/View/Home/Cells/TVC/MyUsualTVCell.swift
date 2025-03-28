@@ -91,12 +91,14 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
             let tableId = UserDefaultHelper.tableId ?? ""
             let groupId = UserDefaultHelper.groupId ?? ""
             
-            if tableId != "" {
+            if UserDefaultHelper.tableName != "" {
                 
                 let aParams = ["usual_id": "\(dict.id)",
                                "hall_id": hallId,
                                "table_id": tableId,
-                               "group_id": groupId]
+                               "group_id": groupId,
+                               "order_type": "dinein",
+                ]
                 print(aParams)
                 
                 APIManager.shared.postCall(APPURL.usuals_move_to_cart, params: aParams, withHeader: true) { responseJSON in
@@ -112,7 +114,7 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
                     print("Error \(error.localizedDescription)")
                 }
             } else {
-                self.navController?.showBanner(message: "please_scan".localized(), status: .success)
+                self.navController?.showBanner(message: "please_scan".localized(), status: .warning)
                 let scanVC = ScanTableVC.instantiate()
                 scanVC.title = "LanguageSelection"
                 self.navController?.push(viewController: scanVC)

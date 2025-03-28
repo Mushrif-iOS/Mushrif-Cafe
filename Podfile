@@ -12,7 +12,7 @@ target 'Mushrif Cafe' do
   pod 'SDWebImage'
 	pod 'IQKeyboardManagerSwift'
   pod 'ProgressHUD'
-  pod 'SYBanner'
+  #pod 'SYBanner'
   pod 'Siren'
   pod 'MyFatoorah'
   pod 'EasyNotificationBadge'

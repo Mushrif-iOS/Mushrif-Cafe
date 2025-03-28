@@ -64,7 +64,7 @@ extension CreateNewUsualVC: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if txtUsual.text!.isEmpty {
-            self.showBanner(message: "usuals_error".localized(), status: .error)
+            self.showBanner(message: "usuals_error".localized(), status: .failed)
         } else {
             
             if self.title == "Update" {

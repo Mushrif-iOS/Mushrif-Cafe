@@ -65,7 +65,7 @@ class DashboardVC: UIViewController, Instantiatable {
         
         mainTableView.register(MealTVCell.nib(), forCellReuseIdentifier: MealTVCell.identifier)
         
-        self.getDashboardData()
+        //self.getDashboardData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("ShowOrders"), object: nil)
     }
@@ -78,7 +78,7 @@ class DashboardVC: UIViewController, Instantiatable {
         self.myUsualData.removeAll()
         self.bannerData.removeAll()
         self.getDashboardData()
-        self.setupBadge()
+        //self.setupBadge()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,14 +90,14 @@ class DashboardVC: UIViewController, Instantiatable {
         } else {
             profileButton.setTitle("Guest User".getAcronym(), for: .normal)
         }
-        
-        if UserDefaultHelper.tableName != "" {
-            scanTableButton.isUserInteractionEnabled = false
-            selectTableLabel.text = UserDefaultHelper.tableName
-        } else {
-            scanTableButton.isUserInteractionEnabled = true
-            selectTableLabel.text = "select_table".localized()
-        }
+                
+        self.categoryData.removeAll()
+        self.ourBestData.removeAll()
+        self.finalActiveData.removeAll()
+        self.activeData.removeAll()
+        self.myUsualData.removeAll()
+        self.bannerData.removeAll()
+        self.getDashboardData()
     }
     
     private func setupBadge() {
@@ -149,6 +149,12 @@ class DashboardVC: UIViewController, Instantiatable {
     @IBAction func searchAction(_ sender: Any) {
         let dashboardVC = SearchViewController.instantiate()
         self.navigationController?.push(viewController: dashboardVC)
+        
+//        let detailVC = CheckoutVC.instantiate()
+//        detailVC.modalPresentationStyle = .formSheet
+//        //detailVC.itemId = "\(dict.id ?? 0)"
+//        //detailVC.delegate = self
+//        self.navigationController?.present(detailVC, animated: true)
     }
     
     private func getDashboardData() {
@@ -160,7 +166,7 @@ class DashboardVC: UIViewController, Instantiatable {
         
         APIManager.shared.getCallWithParams(dUrl, params: aParams) { responseJSON in
             print("Response JSON \(responseJSON)")
-                                    
+            UserDefaultHelper.totalItems = responseJSON["response"]["cart_quantity"].intValue
             let catDataDict = responseJSON["response"]["categories"].arrayValue
             
             for obj in catDataDict {
@@ -177,14 +183,21 @@ class DashboardVC: UIViewController, Instantiatable {
             for obj in activeDataDict {
                 self.activeData.append(MyActiveOrder(fromJson: obj))
             }
+            self.finalActiveData = self.activeData
             
             if self.activeData.count > 0 {
-                for obj in 0..<self.activeData.count {
-                    if self.activeData[obj].status == 1 || self.activeData[obj].status == 2 || self.activeData[obj].status == 3 || self.activeData[obj].status == 4 {
-                        self.finalActiveData.append(self.activeData[obj])
-                    }
+                if "\(self.activeData.first?.tableNo ?? 0)" != UserDefaultHelper.tableName {
+                    UserDefaultHelper.tableName = "\(self.activeData.first?.tableNo ?? 0)"
+                    self.selectTableLabel.text = UserDefaultHelper.tableName
                 }
             }
+//            if self.activeData.count > 0 {
+//                for obj in 0..<self.activeData.count {
+//                    if self.activeData[obj].status == 1 || self.activeData[obj].status == 2 || self.activeData[obj].status == 3 || self.activeData[obj].status == 4 {
+//                        self.finalActiveData.append(self.activeData[obj])
+//                    }
+//                }
+//            }
             
             let myUsualDict = responseJSON["response"]["my_usuals"].arrayValue
             for obj in myUsualDict {
@@ -200,6 +213,29 @@ class DashboardVC: UIViewController, Instantiatable {
                 self.mainTableView.delegate = self
                 self.mainTableView.dataSource = self
                 self.mainTableView.reloadData()
+                self.setupBadge()
+                
+                if UserDefaultHelper.tableName != "" {
+                    self.selectTableLabel.text = UserDefaultHelper.tableName
+                    
+                    if UserDefaultHelper.totalItems! != 0 {
+                        self.scanTableButton.isUserInteractionEnabled = false
+                    } else if self.activeData.count != 0 {
+                        self.scanTableButton.isUserInteractionEnabled = false
+                    } else {
+                        self.scanTableButton.isUserInteractionEnabled = true
+                    }
+                } else {
+                    self.selectTableLabel.text = "select_table".localized()
+                    
+                    if UserDefaultHelper.totalItems! != 0 {
+                        self.scanTableButton.isUserInteractionEnabled = false
+                    } else if self.activeData.count != 0 {
+                        self.scanTableButton.isUserInteractionEnabled = false
+                    } else {
+                        self.scanTableButton.isUserInteractionEnabled = true
+                    }
+                }
             }
             
         } failure: { error in

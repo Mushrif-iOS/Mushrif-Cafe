@@ -10,7 +10,6 @@ PODS:
   - SDWebImage/Core (5.19.7)
   - Siren (6.1.3)
   - SwiftyJSON (5.0.2)
-  - SYBanner (0.0.5)
 
 DEPENDENCIES:
   - Alamofire (= 5.9.0)
@@ -22,7 +21,6 @@ DEPENDENCIES:
   - SDWebImage
   - Siren
   - SwiftyJSON (~> 5.0.2)
-  - SYBanner
 
 SPEC REPOS:
   trunk:
@@ -35,7 +33,6 @@ SPEC REPOS:
     - SDWebImage
     - Siren
     - SwiftyJSON
-    - SYBanner
 
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
@@ -47,8 +44,7 @@ SPEC CHECKSUMS:
   SDWebImage: 8a6b7b160b4d710e2a22b6900e25301075c34cb3
   Siren: c0f6012f61196b73455202db07730f6454a4beb0
   SwiftyJSON: f5b1bf1cd8dd53cd25887ac0eabcfd92301c6a5a
-  SYBanner: 3dfbf763489b6089a8fa835eb0fe43c3bdc6492c
 
-PODFILE CHECKSUM: a0fa74e8bb36834494bd1476c2bf813fae642675
+PODFILE CHECKSUM: 2045e4397ab18c6c4597c89984500cb573aed2aa
 
 COCOAPODS: 1.16.2

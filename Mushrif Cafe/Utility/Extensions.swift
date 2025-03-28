@@ -8,7 +8,6 @@
 import UIKit
 import SafariServices
 import SDWebImage
-import SYBanner
 import ProgressHUD
 
 enum AppStoryboard: String {
@@ -243,40 +242,17 @@ extension UIViewController {
         }
     }
 
-    func showBanner(message: String, status: LoadingStatus) {
-        
+    func showBanner(message: String, status: BannerType) {
         switch status {
         case .success:
-            let styleBanner = SYDefaultBanner(message, direction: .top, style: .success)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.messageColor = .white
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
-        case .error:
-            let styleBanner = SYDefaultBanner(message, direction: .top, style: .warning)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.messageColor = .white
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
+            let successBanner = StatusBanner(type: .success, message: message)
+            successBanner.show(in: self.view, duration: 2.0)
+        case .failed:
+            let successBanner = StatusBanner(type: .failed, message: message)
+            successBanner.show(in: self.view, duration: 2.0)
         case .warning:
-            let styleBanner = SYDefaultBanner(message, direction: .top, style: .info)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
-        case .normal:
-            let styleBanner = SYSimpleBanner(message, backgroundColor: .white, direction: .top)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.messageColor = UIColor.primaryBrown
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
+            let successBanner = StatusBanner(type: .warning, message: message)
+            successBanner.show(in: self.view, duration: 2.0)
         }
     }
 }

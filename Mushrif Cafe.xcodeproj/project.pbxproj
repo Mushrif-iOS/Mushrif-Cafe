@@ -36,6 +36,7 @@
 		C66FE8C52D11C54F00DB24EF /* OrderListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66FE8C42D11C54F00DB24EF /* OrderListModel.swift */; };
 		C678318F2CEBCDB400E643A9 /* SingleSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */; };
 		C67831902CEBCDB400E643A9 /* SingleSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */; };
+		C67E69452D9725130096876C /* StatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E69442D9725130096876C /* StatusBanner.swift */; };
 		C68A611F2CB58A700037094D /* CellSelectionTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C68A611E2CB58A700037094D /* CellSelectionTVC.xib */; };
 		C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A611D2CB58A700037094D /* CellSelectionTVC.swift */; };
 		C68A61232CB6C3650037094D /* WebUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68A61222CB6C3650037094D /* WebUrls.swift */; };
@@ -116,6 +117,10 @@
 		C6E42D512D19B85D006E00E3 /* OrderDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E42D502D19B85D006E00E3 /* OrderDetailsModel.swift */; };
 		C6E661B52CA3544700AFF47F /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E661B42CA3544700AFF47F /* Color+Extension.swift */; };
 		C6E661B72CA358EB00AFF47F /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E661B62CA358EB00AFF47F /* UIView+Extension.swift */; };
+		C6E962692D92FF1D0038E831 /* CheckoutVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E962682D92FF1D0038E831 /* CheckoutVC.swift */; };
+		C6E9626B2D932E0A0038E831 /* SpecialProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9626A2D932E0A0038E831 /* SpecialProductVC.swift */; };
+		C6E9626E2D9332290038E831 /* SpecialMealTVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6E9626D2D9332290038E831 /* SpecialMealTVC.xib */; };
+		C6E9626F2D9332290038E831 /* SpecialMealTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6E9626C2D9332290038E831 /* SpecialMealTVC.swift */; };
 		C6EDC6E52CA586C3003C40B0 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E42CA586C3003C40B0 /* LoginVC.swift */; };
 		C6EDC6E72CA5A1A0003C40B0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */; };
 		C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6EDC6E82CA5A208003C40B0 /* OTPViewController.swift */; };
@@ -160,6 +165,7 @@
 		C66FE8C42D11C54F00DB24EF /* OrderListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListModel.swift; sourceTree = "<group>"; };
 		C678318D2CEBCDB400E643A9 /* SingleSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionCell.swift; sourceTree = "<group>"; };
 		C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SingleSelectionCell.xib; sourceTree = "<group>"; };
+		C67E69442D9725130096876C /* StatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBanner.swift; sourceTree = "<group>"; };
 		C68A611D2CB58A700037094D /* CellSelectionTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSelectionTVC.swift; sourceTree = "<group>"; };
 		C68A611E2CB58A700037094D /* CellSelectionTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CellSelectionTVC.xib; sourceTree = "<group>"; };
 		C68A61222CB6C3650037094D /* WebUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUrls.swift; sourceTree = "<group>"; };
@@ -248,6 +254,10 @@
 		C6E42D502D19B85D006E00E3 /* OrderDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsModel.swift; sourceTree = "<group>"; };
 		C6E661B42CA3544700AFF47F /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		C6E661B62CA358EB00AFF47F /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		C6E962682D92FF1D0038E831 /* CheckoutVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutVC.swift; sourceTree = "<group>"; };
+		C6E9626A2D932E0A0038E831 /* SpecialProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialProductVC.swift; sourceTree = "<group>"; };
+		C6E9626C2D9332290038E831 /* SpecialMealTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialMealTVC.swift; sourceTree = "<group>"; };
+		C6E9626D2D9332290038E831 /* SpecialMealTVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpecialMealTVC.xib; sourceTree = "<group>"; };
 		C6EDC6E42CA586C3003C40B0 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		C6EDC6E62CA5A1A0003C40B0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		C6EDC6E82CA5A208003C40B0 /* OTPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +365,7 @@
 				C66906D82CA46A2400E74833 /* OTP Field View */,
 				C68A61352CBE619D0037094D /* CommonWebViewController.swift */,
 				C640CB9C2D53B20000A09F5D /* QRPopUpVC.swift */,
+				C67E69442D9725130096876C /* StatusBanner.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -505,6 +516,7 @@
 				C6C089D72CA8EC500050F034 /* DashboardVC.swift */,
 				C6337B602CAC6C5200ACDD86 /* CategoryViewController.swift */,
 				C650101F2CADC18D003BCA53 /* MealDetailsViewController.swift */,
+				C6E9626A2D932E0A0038E831 /* SpecialProductVC.swift */,
 				C6F024C52D738212007081A9 /* FoodInstructionAlertController.swift */,
 				C6600C252CB31938009B0445 /* AddUsualsVC.swift */,
 				C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */,
@@ -546,6 +558,8 @@
 				C678318E2CEBCDB400E643A9 /* SingleSelectionCell.xib */,
 				C6FE3FD62CF799E80049FFB1 /* ChoiceHeaderTVCell.swift */,
 				C6FE3FD82CF79AFB0049FFB1 /* ChoiceRowTVCell.swift */,
+				C6E9626C2D9332290038E831 /* SpecialMealTVC.swift */,
+				C6E9626D2D9332290038E831 /* SpecialMealTVC.xib */,
 			);
 			path = TVC;
 			sourceTree = "<group>";
@@ -574,6 +588,7 @@
 			isa = PBXGroup;
 			children = (
 				C6C818B72CB2664B00905A39 /* CartVC.swift */,
+				C6E962682D92FF1D0038E831 /* CheckoutVC.swift */,
 				C6F8C79D2D233205009C0128 /* Payments */,
 				C6C818BB2CB2688100905A39 /* OrderSuccessVC.swift */,
 				C66FE8C02D047FB200DB24EF /* EditCartVC.swift */,
@@ -667,6 +682,7 @@
 				C68E72612CA3000300F223A8 /* Assets.xcassets in Resources */,
 				C68A61452CCD09800037094D /* OrderDetailsTableViewCell.xib in Resources */,
 				C6C089D22CA875B60050F034 /* Home.storyboard in Resources */,
+				C6E9626E2D9332290038E831 /* SpecialMealTVC.xib in Resources */,
 				C6C089F62CA9DF8F0050F034 /* BannersCVCell.xib in Resources */,
 				C6431C832D5E48D0002991F4 /* MyOrderTableViewCell.xib in Resources */,
 				C68A613F2CCCF46B0037094D /* MyUsualHeaderCell.xib in Resources */,
@@ -773,6 +789,7 @@
 				C6600C262CB31938009B0445 /* AddUsualsVC.swift in Sources */,
 				C6600C2C2CB32249009B0445 /* CreateNewUsualVC.swift in Sources */,
 				C6C089EF2CA9C1C40050F034 /* CategoryTVCell.swift in Sources */,
+				C6E962692D92FF1D0038E831 /* CheckoutVC.swift in Sources */,
 				C6E42D4F2D161BF1006E00E3 /* SuccesOrderModel.swift in Sources */,
 				C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */,
 				C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */,
@@ -796,6 +813,7 @@
 				C64D43382D36FA390060A318 /* HomePaymentMethodVC.swift in Sources */,
 				C6C818B32CB1B72000905A39 /* ManageUsualTableViewCell.swift in Sources */,
 				C6E42D512D19B85D006E00E3 /* OrderDetailsModel.swift in Sources */,
+				C6E9626F2D9332290038E831 /* SpecialMealTVC.swift in Sources */,
 				C6337B5A2CAB21E000ACDD86 /* MyOrderTableViewCell.swift in Sources */,
 				C68A613A2CC2684A0037094D /* DashboardModel.swift in Sources */,
 				C6C089E92CA992B90050F034 /* MyUsualCVCell.swift in Sources */,
@@ -803,6 +821,7 @@
 				C68A612E2CB948BA0037094D /* APIManager.swift in Sources */,
 				C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */,
 				C68A61572CD931650037094D /* ItemDetailsModel.swift in Sources */,
+				C6E9626B2D932E0A0038E831 /* SpecialProductVC.swift in Sources */,
 				C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */,
 				C6FE3FDB2CFF45B60049FFB1 /* CartItemModel.swift in Sources */,
 				C6C818A12CB105B100905A39 /* ContacUsVC.swift in Sources */,
@@ -814,6 +833,7 @@
 				C68A61412CCCF9B20037094D /* OrderDetailsVC.swift in Sources */,
 				C640CB9D2D53B20000A09F5D /* QRPopUpVC.swift in Sources */,
 				C6FE3FD92CF79AFB0049FFB1 /* ChoiceRowTVCell.swift in Sources */,
+				C67E69452D9725130096876C /* StatusBanner.swift in Sources */,
 				C6C089D62CA8781F0050F034 /* ScanHelperClass.swift in Sources */,
 				C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */,
 				C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */,
@@ -1026,7 +1046,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 24;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1065,7 +1085,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 24;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = Z79PM5DY8M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

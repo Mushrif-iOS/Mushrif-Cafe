@@ -1,6 +1,0 @@
-framework module SYBanner {
-  umbrella header "SYBanner-umbrella.h"
-
-  export *
-  module * { export * }
-}

@@ -76,13 +76,13 @@ class ContacUsVC: UIViewController, Instantiatable {
 //            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
 //            ProgressHUD.colorBanner = UIColor.red
 //            ProgressHUD.banner("error".localized(), "name_error".localized())
-            self.showBanner(message: "name_error".localized(), status: .error)
+            self.showBanner(message: "name_error".localized(), status: .failed)
         } else if descLabel.text!.isEmpty {
 //            ProgressHUD.fontBannerTitle = UIFont.poppinsMediumFontWith(size: 18)
 //            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
 //            ProgressHUD.colorBanner = UIColor.red
 //            ProgressHUD.banner("error".localized(), "message_error".localized())
-            self.showBanner(message: "message_error".localized(), status: .error)
+            self.showBanner(message: "message_error".localized(), status: .failed)
         } else {
             
             let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "message": "\(self.descLabel.text!)"]

@@ -101,7 +101,7 @@ class OTPViewController: UIViewController, Instantiatable {
                 self.otpValueText.text = "\(data.otp)"
                 
                 guard self.remainingTime == 0 else {
-                    self.showBanner(message: "Please wait \(self.remainingTime) seconds before retrying.", status: .error)
+                    self.showBanner(message: "Please wait \(self.remainingTime) seconds before retrying.", status: .failed)
                     return
                 }
                 
@@ -123,9 +123,9 @@ class OTPViewController: UIViewController, Instantiatable {
     private func postOTPCall() {
         
         if !hasEnterd {
-            self.showBanner(message: "otp_error".localized(), status: .error)
+            self.showBanner(message: "otp_error".localized(), status: .failed)
         } else if self.enteredOtp != self.otpValueText.text {
-            self.showBanner(message: "otp_not_valid".localized(), status: .error)
+            self.showBanner(message: "otp_not_valid".localized(), status: .failed)
             return
         } else {
             

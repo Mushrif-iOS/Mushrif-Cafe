@@ -77,6 +77,7 @@ class FoodItemData {
     var subCategoryId : Int = 0
     var combo : [Combo]!
     var haveCombo : Int = 0
+    var productType : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -104,8 +105,8 @@ class FoodItemData {
             combo.append(value)
         }
         haveCombo = json["have_combo"].intValue
+        productType = json["product_type"].intValue
     }
-    
 }
 
 class FoodItemIngredient {

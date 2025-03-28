@@ -89,7 +89,11 @@ class ScanTableVC: UIViewController, Instantiatable {
     }
     
     @IBAction func backAction(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
+        if self.title == "Details" {
+            self.dismiss(animated: true)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func skipAction(_ sender: UIButton) {
@@ -99,9 +103,13 @@ class ScanTableVC: UIViewController, Instantiatable {
         UserDefaultHelper.tableName = ""
         
         DispatchQueue.main.async {
-            UserDefaultHelper.orderType = "takeaway"
-            let dashboardVC = DashboardVC.instantiate()
-            self.navigationController?.push(viewController: dashboardVC)
+            //UserDefaultHelper.orderType = "takeaway"
+            if self.title == "Details" {
+                self.dismiss(animated: true)
+            } else {
+                let dashboardVC = DashboardVC.instantiate()
+                self.navigationController?.push(viewController: dashboardVC)
+            }
         }
     }
     
@@ -113,7 +121,7 @@ class ScanTableVC: UIViewController, Instantiatable {
         UserDefaultHelper.tableName = ""
         
         DispatchQueue.main.async {
-            UserDefaultHelper.orderType = "takeaway"
+            //UserDefaultHelper.orderType = "takeaway"
             let dashboardVC = DashboardVC.instantiate()
             self.navigationController?.push(viewController: dashboardVC)
         }
@@ -139,7 +147,13 @@ class ScanTableVC: UIViewController, Instantiatable {
                                           .upce,
                                           .code39,
                                           .code128,
-                                          .pdf417]
+                                          .pdf417,
+                                          .code39Mod43,
+                                          .code93,
+                                          .aztec,
+                                          .itf14,
+                                          .dataMatrix,
+                                          .interleaved2of5]
             
             let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             previewLayer.videoGravity = .resizeAspectFill
@@ -147,7 +161,9 @@ class ScanTableVC: UIViewController, Instantiatable {
             
             scanView.layer.addSublayer(previewLayer)
             
-            captureSession.startRunning()
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.captureSession.startRunning()
+            }
             
         } catch {
             showAlert()
@@ -247,8 +263,12 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 
                 DispatchQueue.main.async {
                     UserDefaultHelper.orderType = "dinein"
-                    let dashboardVC = DashboardVC.instantiate()
-                    self.navigationController?.push(viewController: dashboardVC)
+                    if self.title == "Details" {
+                        self.dismiss(animated: true)
+                    } else {
+                        let dashboardVC = DashboardVC.instantiate()
+                        self.navigationController?.push(viewController: dashboardVC)
+                    }
                 }
  
             } failure: { error in

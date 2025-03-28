@@ -107,18 +107,6 @@ class OrderSuccessVC: UIViewController, Instantiatable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
-        /*DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            if self.title == "Dashboard" {
-                NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
-                self.navigationController?.popViewController(animated: true)
-            } else {
-                let dashboardVC = DashboardVC.instantiate()
-                self.navigationController?.push(viewController: dashboardVC)
-            }
-            //NotificationCenter.default.post(name: Notification.Name("OrderView"), object: nil)
-            //NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
-        }*/
     }
     
     @IBAction func addUsualAction(_ sender: Any) {
@@ -136,7 +124,7 @@ class OrderSuccessVC: UIViewController, Instantiatable {
     
     @IBAction func backAction(_ sender: Any) {
         if self.title == "Dashboard" {
-            NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
+            //NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
             self.navigationController?.popViewController(animated: true)
         } else {
             let dashboardVC = DashboardVC.instantiate()

@@ -25,6 +25,7 @@ class ManageUsualTableViewCell: UITableViewCell {
     @IBOutlet weak var descLabel: UILabel! {
         didSet {
             descLabel.font = UIFont.poppinsRegularFontWith(size: 14)
+            descLabel.text = ""
         }
     }
     

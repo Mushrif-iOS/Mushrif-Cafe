@@ -86,7 +86,7 @@ class LoginVC: UIViewController, Instantiatable {
 //            ProgressHUD.fontBannerMessage = UIFont.poppinsLightFontWith(size: 14)
 //            ProgressHUD.colorBanner = UIColor.red
 //            ProgressHUD.banner("error".localized(), "mobile_error".localized())
-            self.showBanner(message: "mobile_error".localized(), status: .error)
+            self.showBanner(message: "mobile_error".localized(), status: .failed)
         } else {
             
             let aParams: [String: String] = ["phone": "\(self.mobileNumberText.text!)"]

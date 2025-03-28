@@ -58,7 +58,9 @@ class AddUsualsVC: UIViewController, Instantiatable {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
+        if title == "Dashboard" {
+            NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
+        }
     }
     
     private func getMyUsual(page: Int) {
@@ -121,8 +123,12 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         let dict = self.usualData[indexPath.row]
         cell.img.loadURL(urlString: dict.items.first != nil ? dict.items.first?.product.imageUrl : "", placeholderImage: UIImage(named: "appLogo"))
         cell.nameLabel.text = dict.title
-        cell.descLabel.text = dict.items.first != nil ? dict.items.first?.product.descriptionField : ""
         
+        let addedTitles = dict.items?.map { group in
+            return UserDefaultHelper.language == "ar" ? "\(group.product.nameAr)" :  "\(group.product.name)"
+        }.joined(separator: "\n")
+        cell.descLabel.text = addedTitles
+                
         cell.addButton.tag = indexPath.row
         cell.addButton.addTarget(self, action: #selector(addAction(sender: )), for: .touchUpInside)
         

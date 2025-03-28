@@ -135,7 +135,7 @@ class CategoryViewController: UIViewController, Instantiatable {
                     self.mainCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .centeredHorizontally)
                     self.getProductList(subCatId: "\(self.subCategoriesArr.first?.id ?? 0)", page: self.pageNo)
                 } else {
-                    self.showBanner(message: "no_subcategory".localized(), status: .error)
+                    self.showBanner(message: "no_subcategory".localized(), status: .failed)
                 }
             }
             
@@ -155,7 +155,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         }
         print(aParams!)
         
-        APIManager.shared.postCall(APPURL.food_item_list + "?page=\(page)", params: aParams, withHeader: false) { responseJSON in
+        APIManager.shared.postCall(APPURL.food_item_list + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
             
             let lPage = responseJSON["response"]["last_page"].intValue
@@ -276,55 +276,68 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dict = self.foodItemArr[indexPath.row]
-        let detailVC = MealDetailsViewController.instantiate()
-        self.navigationController?.modalPresentationStyle = .formSheet
-        detailVC.itemId = "\(dict.id)"
-        detailVC.delegate = self
-        self.navigationController?.present(detailVC, animated: true)
+        if dict.productType == 5 {
+            let detailVC = SpecialProductVC.instantiate()
+            self.navigationController?.modalPresentationStyle = .formSheet
+            detailVC.itemId = "\(dict.id)"
+            detailVC.delegate = self
+            self.navigationController?.present(detailVC, animated: true)
+        } else {
+            let detailVC = MealDetailsViewController.instantiate()
+            self.navigationController?.modalPresentationStyle = .formSheet
+            detailVC.itemId = "\(dict.id)"
+            detailVC.delegate = self
+            self.navigationController?.present(detailVC, animated: true)
+        }
     }
     
     @objc func addAction(sender: UIButton) {
+        let dict = self.foodItemArr[sender.tag]
         
         if UserDefaultHelper.authToken != "" {
-            let dict = self.foodItemArr[sender.tag]
-            
             let orderType = UserDefaultHelper.orderType ?? ""
             let hallId = UserDefaultHelper.hallId ?? ""
             let tableId = UserDefaultHelper.tableId ?? ""
             let groupId = UserDefaultHelper.groupId ?? ""
-            
-            let aParams = ["hall_id": hallId,
-                           "table_id": tableId,
-                           "group_id": groupId,
-                           "order_type": orderType,
-                           "item_id": "\(dict.id)",
-                           "combo_id": "",
-                           "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
-                           "quantity": "1",
-                           "is_customized": "N",
-                           "is_plain": "N",
-                           "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-            
-            print(aParams)
-            
-            APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
-                print("Response JSON \(responseJSON)")
                 
-                let dataDict = responseJSON["response"]["data"].arrayValue
-                print(dataDict)
+            if UserDefaultHelper.tableName != "" {
+                let aParams = ["hall_id": hallId,
+                               "table_id": tableId,
+                               "group_id": groupId,
+                               "order_type": orderType,
+                               "item_id": "\(dict.id)",
+                               "combo_id": "",
+                               "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
+                               "quantity": "1",
+                               "is_customized": "N",
+                               "is_plain": "N",
+                               "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
                 
-                let msg = responseJSON["message"].stringValue
-                print(msg)
-                DispatchQueue.main.async {
-                    self.showBanner(message: msg, status: .success)
-                    //UserDefaultHelper.totalItems! += 1
-                    UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                    self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
-                    let cartVC = CartVC.instantiate()
-                    self.navigationController?.pushViewController(cartVC, animated: true)
+                print(aParams)
+                
+                APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+                    print("Response JSON \(responseJSON)")
+                    
+                    let dataDict = responseJSON["response"]["data"].arrayValue
+                    print(dataDict)
+                    
+                    let msg = responseJSON["message"].stringValue
+                    print(msg)
+                    DispatchQueue.main.async {
+                        self.showBanner(message: msg, status: .success)
+                        UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
+                        self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
+                        let cartVC = CartVC.instantiate()
+                        self.navigationController?.pushViewController(cartVC, animated: true)
+                    }
+                } failure: { error in
+                    print("Error \(error.localizedDescription)")
                 }
-            } failure: { error in
-                print("Error \(error.localizedDescription)")
+            } else {
+                self.showBanner(message: "please_scan".localized(), status: .warning)
+                let scanVC = ScanTableVC.instantiate()
+                scanVC.title = "LanguageSelection"
+                self.navigationController?.push(viewController: scanVC)
             }
         } else {
             let profileVC = LoginVC.instantiate()
@@ -334,9 +347,9 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
     
     @objc func addUsualAction(sender: UIButton) {
         if UserDefaultHelper.authToken != "" {
-            if let cell = self.mainTableView.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as? CategoryTableViewCell {
-                //cell.saveButton.isSelected.toggle()
-            }
+//            if let cell = self.mainTableView.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as? CategoryTableViewCell {
+//                //cell.saveButton.isSelected.toggle()
+//            }
             let dict = self.foodItemArr[sender.tag]
             let addVC = AddUsualsVC.instantiate()
             if #available(iOS 15.0, *) {

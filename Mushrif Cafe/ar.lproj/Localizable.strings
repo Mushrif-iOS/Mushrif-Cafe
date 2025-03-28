@@ -53,6 +53,7 @@
 "type" = "النوع";
 "pay_now" = "ادفع الآن";
 "add" = "ضف";
+"remove" = "احذف";
 "add_usual" = "ضف لطلباتي المعتادة";
 "back_home" = "ارجع للرئيسية";
 "Customizable" = "قابل للتعديل";
@@ -91,6 +92,8 @@
 "choice_for" = "خيارات لـ";
 "food_instructions" = "تعليمات الطعام";
 "enter_instructions" = "أدخل تعليماتك هنا...";
+"orderId_not_valid" = "رقم الطلب غير صالح";
+"please_select_table" = "يرجى اختيار طاولة أولاً";
 
 "cart" = "السلة";
 "balance" = "الرصيد";
@@ -103,12 +106,16 @@
 "select" = "اختار";
 "summary" = "ملخص";
 "discount_apl" = "تم تطبيق الخصم";
+"wallet_amt" = "رصيد المحفظة";
 "total" = "الإجمالي";
 "paid_by" = "تم الدفع بواسطة";
 "order_on" = "تم الطلب في";
 "completed" = "مكتمل";
 "paid_order" = "طلب مدفوع";
 "usual_add_error" = "تقدر تضيفه لطلباتك المعتادة من قسم طلباتي";
+"want_takeaway" = "أريد الأصناف المذكورة أعلاه للتوصيل الخارجي";
+"checkout" = "تشيك أوت";
+"paymentOption" = "خيارات الدفع";
 
 "my_usual" = "طلباتي المعتادة";
 "create_new" = "أنشئ جديد";
@@ -133,3 +140,7 @@
 "option" = "خيار";
 "no_orders" = "ما في طلبات";
 "please_scan" = "سكان الطاولة أولاً";
+"apple_pay" = "أبل بِي";
+"online_knet" = "KNET أونلاين";
+"insf_waller_amt" = "للأسف الرصيد مو كافي";
+"checkout_no_method" = "الرجاء اختيار طريقة دفع";

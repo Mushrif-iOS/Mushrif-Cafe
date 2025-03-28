@@ -239,7 +239,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         let tableId = UserDefaultHelper.tableId ?? ""
         let groupId = UserDefaultHelper.groupId ?? ""
         
-        if tableId != "" {
+        if UserDefaultHelper.tableName != "" {
             
             let aParams = ["usual_id": "\(dict.id)",
                            "hall_id": hallId,
@@ -260,7 +260,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
                 print("Error \(error.localizedDescription)")
             }
         } else {
-            self.showBanner(message: "please_scan".localized(), status: .success)
+            self.showBanner(message: "please_scan".localized(), status: .warning)
             let scanVC = ScanTableVC.instantiate()
             scanVC.title = "LanguageSelection"
             self.navigationController?.push(viewController: scanVC)

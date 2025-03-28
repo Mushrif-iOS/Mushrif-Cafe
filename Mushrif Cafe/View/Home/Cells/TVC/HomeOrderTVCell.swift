@@ -54,7 +54,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         let dict = usualObj[indexPath.item]
         cell.orderLabel.text = "\("order_id".localized()) #\(dict.orderNumber)"
         
-        cell.noOfItemLabel.text = dict.cart != nil ? "\(dict.cart.items)" : ""
+        cell.noOfItemLabel.text = dict.items.count > 0 ? "\(dict.items.count)" : ""
         
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
@@ -92,20 +92,22 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         let dict = usualObj[sender.tag]
         if dict.cart != nil {
             self.cartId = "\(dict.cart.id)"
-            let addVC = HomePaymentMethodVC.instantiate()
-            if #available(iOS 15.0, *) {
-                if let sheet = addVC.sheetPresentationController {
-                    sheet.detents = [.medium()]
-                    sheet.preferredCornerRadius = 15
-                }
-            }
-            addVC.delegate = self
-            addVC.cardID = "\(dict.cart.id)"
-            addVC.totalCost = dict.grandTotal
-            addVC.itemsCount = dict.cart.items
-            self.navController?.present(addVC, animated: true, completion: nil)
+//            let addVC = HomePaymentMethodVC.instantiate()
+//            if #available(iOS 15.0, *) {
+//                if let sheet = addVC.sheetPresentationController {
+//                    sheet.detents = [.medium()]
+//                    sheet.preferredCornerRadius = 15
+//                }
+//            }
+//            addVC.delegate = self
+//            addVC.cardID = "\(dict.cart.id)"
+//            addVC.totalCost = dict.grandTotal
+//            addVC.itemsCount = dict.cart.items
+//            self.navController?.present(addVC, animated: true, completion: nil)
+            let dashboardVC = CheckoutVC.instantiate()
+            self.navController?.push(viewController: dashboardVC)
         } else {
-            self.navController?.showBanner(message: "no_cart_item".localized(), status: .error)
+            self.navController?.showBanner(message: "no_cart_item".localized(), status: .failed)
         }
     }
     
@@ -126,7 +128,6 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
-                UserDefaultHelper.totalItems! = 0
                 UserDefaultHelper.tableName = ""
                 DispatchQueue.main.async {
                     let orderVC = OrderSuccessVC.instantiate()
@@ -154,18 +155,6 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 
                 if paymentId != "" {
                     self.paymentOrder(orderId: "\(successOrderDetails?.id ?? 0)", type: type, payId: paymentId, paymentStatus: "Paid", amt: amount)
-                } else {
-                    let msg = responseJSON["message"].stringValue
-                    print(msg)
-                    UserDefaultHelper.totalItems! = 0
-                    UserDefaultHelper.tableName = ""
-                    DispatchQueue.main.async {
-                        let orderVC = OrderSuccessVC.instantiate()
-                        orderVC.successOrderDetails = successOrderDetails
-                        orderVC.successMsg = msg
-                        orderVC.title = "Dashboard"
-                        self.navController?.pushViewController(orderVC, animated: true)
-                    }
                 }
             } failure: { error in
                 print("Error \(error.localizedDescription)")
@@ -184,18 +173,6 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 
                 if status != "" {
                     self.paymentOrder(orderId: "\(successOrderDetails?.id ?? 0)", type: type, payId: paymentId, paymentStatus: status, amt: amount)
-                } else {
-                    let msg = responseJSON["message"].stringValue
-                    print(msg)
-                    UserDefaultHelper.totalItems! = 0
-                    UserDefaultHelper.tableName = ""
-                    DispatchQueue.main.async {
-                        let orderVC = OrderSuccessVC.instantiate()
-                        orderVC.successOrderDetails = successOrderDetails
-                        orderVC.successMsg = msg
-                        orderVC.title = "Dashboard"
-                        self.navController?.pushViewController(orderVC, animated: true)
-                    }
                 }
             } failure: { error in
                 print("Error \(error.localizedDescription)")
@@ -217,7 +194,6 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             
             let msg = responseJSON["message"].stringValue
             print(msg)
-            UserDefaultHelper.totalItems! = 0
             UserDefaultHelper.tableName = ""
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
@@ -250,12 +226,12 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(cost) ?? 0.0)
                 UserDefaultHelper.walletBalance = "\(doubleValue)"
             }
-            let count = Int(UserDefaultHelper.totalItems ?? 0)
-            if count > 0 {
-                let countValue = (Int(UserDefaultHelper.totalItems ?? 0)) - (Int(count))
-                UserDefaultHelper.totalItems = countValue
-            }
-            UserDefaultHelper.totalItems! = 0
+//            let count = Int(UserDefaultHelper.totalItems ?? 0)
+//            if count > 0 {
+//                let countValue = (Int(UserDefaultHelper.totalItems ?? 0)) - (Int(count))
+//                UserDefaultHelper.totalItems = countValue
+//            }
+//            UserDefaultHelper.totalItems! = 0
             UserDefaultHelper.tableName = ""
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()

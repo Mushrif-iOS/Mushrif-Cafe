@@ -8,7 +8,6 @@
 import UIKit
 import IQKeyboardManagerSwift
 import Siren
-import SYBanner
 import ProgressHUD
 import MFSDK
 

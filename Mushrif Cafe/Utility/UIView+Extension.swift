@@ -165,10 +165,3 @@ extension UIView {
         }
     }
 }
-
-enum LoadingStatus {
-    case success
-    case error
-    case warning
-    case normal
-}

@@ -82,9 +82,9 @@ class EditProfileVC: UIViewController, Instantiatable {
     @IBAction func submitAction(_ sender: Any) {
         
         if txtFullName.text!.isEmpty {
-            self.showBanner(message: "name_error".localized(), status: .error)
+            self.showBanner(message: "name_error".localized(), status: .failed)
         } else if !(self.txtEmail.text?.count == 0) && txtEmail.text?.isValidEmail == false {
-            self.showBanner(message: "email_error".localized(), status: .error)
+            self.showBanner(message: "email_error".localized(), status: .failed)
         } else {
             
             let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "email": "\(self.txtEmail.text!)"]

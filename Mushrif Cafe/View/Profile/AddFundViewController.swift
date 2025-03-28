@@ -86,7 +86,7 @@ class AddFundViewController: UIViewController, Instantiatable {
     @IBAction func appleAction(_ sender: Any) {
         
         if txtAmt.text!.isEmpty {
-            self.showBanner(message: "amount_error".localized(), status: .error)
+            self.showBanner(message: "amount_error".localized(), status: .failed)
         } else {
             
             self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "add_to_wallet".localized(), amount: NSDecimalNumber(string: self.txtAmt.text!))]
@@ -102,7 +102,7 @@ class AddFundViewController: UIViewController, Instantiatable {
     @IBAction func knetAction(_ sender: Any) {
 
         if txtAmt.text!.isEmpty {
-            self.showBanner(message: "amount_error".localized(), status: .error)
+            self.showBanner(message: "amount_error".localized(), status: .failed)
         } else {
             self.executePayment(paymentMethodId: 1)
         }

@@ -53,6 +53,7 @@
 "type" = "Type";
 "pay_now" = "Pay Now";
 "add" = "Add";
+"remove" = "Remove";
 "add_usual" = "Add to my Usuals";
 "back_home" = "Back to Home";
 "Customizable" = "Customizable";
@@ -91,6 +92,8 @@
 "choice_for" = "choices for";
 "food_instructions" = "Food Instructions";
 "enter_instructions" = "Enter your instructions here...";
+"orderId_not_valid" = "Order ID Not Valid";
+"please_select_table" = "Please select a table first";
 
 "cart" = "Cart";
 "balance" = "Balance";
@@ -103,12 +106,16 @@
 "select" = "Select";
 "summary" = "Summary";
 "discount_apl" = "Discount applied";
+"wallet_amt" = "Wallet Amount";
 "total" = "Total";
 "paid_by" = "Paid by";
 "order_on" = "Ordered on";
 "completed" = "Completed";
 "paid_order" = "Paid Order";
 "usual_add_error" = "You can add it into Usual list from My Order section";
+"want_takeaway" = "I want above items for Take away";
+"checkout" = "CheckOut";
+"paymentOption" = "Payment Options";
 
 "my_usual" = "My Usuals";
 "create_new" = "Create New";
@@ -133,3 +140,7 @@
 "option" = "option";
 "no_orders" = "No Orders Yet";
 "please_scan" = "Please scan the table first";
+"apple_pay" = "Apple Pay";
+"online_knet" = "Online KNET";
+"insf_waller_amt" = "Insufficient wallet balance";
+"checkout_no_method" = "Please select a payment option";

@@ -134,4 +134,16 @@ extension WalletVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let dict = self.transactionData[indexPath.row]
+        if "\(dict.recordId)" != "0"  {
+            let detailVC = OrderDetailsVC.instantiate()
+            detailVC.orderId = "\(dict.recordId)"
+            self.navigationController?.pushViewController(detailVC, animated: true)
+        } else {
+            self.showBanner(message: "orderId_not_valid".localized(), status: .failed)
+        }
+    }
 }

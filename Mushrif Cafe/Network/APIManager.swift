@@ -8,7 +8,6 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-import SYBanner
 import ProgressHUD
 
 typealias SuccessHandler = (JSON) -> Void
@@ -28,41 +27,15 @@ class APIManager: NSObject {
         ProgressHUD.animate(interaction: false)
     }
     
-    private func showBanner(message: String, status: LoadingStatus) {
-        
-        switch status {
-        case .success:
-            let styleBanner = SYDefaultBanner(message, direction: .top, style: .success)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.messageColor = .white
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
-        case .error:
-            let styleBanner = SYDefaultBanner(message, direction: .top, style: .warning)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.messageColor = .white
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
-        case .warning:
-            let styleBanner = SYDefaultBanner(message, direction: .top, style: .info)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.show()
-        case .normal:
-            let styleBanner = SYDefaultBanner(message, icon: nil, backgroundColor: .white, direction: .top)
-            styleBanner.show(queuePosition: .front)
-            styleBanner.messageFont = UIFont.poppinsLightFontWith(size: 14)
-            styleBanner.dismissOnSwipe = true
-            styleBanner.autoDismiss = true
-            styleBanner.messageColor = UIColor.primaryBrown
-            styleBanner.show()
+    private func showBanner(message: String, status: BannerType) {
+        let banner = StatusBanner(type: status, message: message)
+        guard let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }),
+              let windowScene = scene as? UIWindowScene,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow }) else {
+            print("No key window found!")
+            return
         }
+        banner.show(in: window, duration: 2.0)
     }
     
     // MARK: - Get Methods
@@ -92,7 +65,7 @@ class APIManager: NSObject {
                 
                 if let error = responseObj.error {
                     failure(error)
-                    self.showBanner(message: error.localizedDescription, status: .error)
+                    self.showBanner(message: error.localizedDescription, status: .failed)
                     ProgressHUD.dismiss()
                 } else {
                     if let responseData = responseObj.data {
@@ -103,14 +76,14 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
                     }
                 }
             }
         } else {
-            self.showBanner(message: "no_internet".localized(), status: .error)
+            self.showBanner(message: "no_internet".localized(), status: .failed)
         }
     }
     
@@ -139,7 +112,7 @@ class APIManager: NSObject {
                 
                 if let error = responseObj.error {
                     failure(error)
-                    self.showBanner(message: error.localizedDescription, status: .error)
+                    self.showBanner(message: error.localizedDescription, status: .failed)
                     ProgressHUD.dismiss()
                 } else {
                     if let responseData = responseObj.data {
@@ -150,14 +123,14 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
                     }
                 }
             }
         } else {
-            self.showBanner(message: "no_internet".localized(), status: .error)
+            self.showBanner(message: "no_internet".localized(), status: .failed)
         }
     }
     
@@ -190,7 +163,7 @@ class APIManager: NSObject {
                 if let error = responseObj.error {
                     failure(error)
                     ProgressHUD.dismiss()
-                    self.showBanner(message: error.localizedDescription, status: .error)
+                    self.showBanner(message: error.localizedDescription, status: .failed)
                 } else {
                     if let responseData = responseObj.data {
                         
@@ -200,14 +173,14 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
                     }
                 }
             }
         } else {
-            self.showBanner(message: "no_internet".localized(), status: .error)
+            self.showBanner(message: "no_internet".localized(), status: .failed)
         }
     }
     
@@ -240,7 +213,7 @@ class APIManager: NSObject {
                 if let error = responseObj.error {
                     failure(error)
                     ProgressHUD.dismiss()
-                    self.showBanner(message: error.localizedDescription, status: .error)
+                    self.showBanner(message: error.localizedDescription, status: .failed)
                 } else {
                     if let responseData = responseObj.data {
                         
@@ -250,14 +223,14 @@ class APIManager: NSObject {
                             success(data)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .error)
+                            self.showBanner(message: data["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
                     }
                 }
             }
         } else {
-            self.showBanner(message: "no_internet".localized(), status: .error)
+            self.showBanner(message: "no_internet".localized(), status: .failed)
         }
     }
     
@@ -319,12 +292,12 @@ class APIManager: NSObject {
                                     ProgressHUD.dismiss()
                                 }
                                 completion(.failure(error))
-                                self.showBanner(message: error.localizedDescription, status: .error)
+                                self.showBanner(message: error.localizedDescription, status: .failed)
                             }
                         }
                     }
             } else {
-                self.showBanner(message: "no_internet".localized(), status: .error)
+                self.showBanner(message: "no_internet".localized(), status: .failed)
             }
         }
     

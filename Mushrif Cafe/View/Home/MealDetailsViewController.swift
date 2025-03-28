@@ -200,14 +200,14 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         // Set button properties
         floatingButton.setImage(UIImage(systemName: "pencil.and.scribble")?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal), for: .normal)
         floatingButton.backgroundColor = UIColor.primaryBrown
-        floatingButton.layer.cornerRadius = 25
+        floatingButton.layer.cornerRadius = 22
         floatingButton.layer.shadowColor = UIColor.black.cgColor
         floatingButton.layer.shadowOpacity = 0.3
         floatingButton.layer.shadowOffset = CGSize(width: 0, height: 5)
         floatingButton.layer.shadowRadius = 5
         
         // Set button size
-        floatingButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        floatingButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         
         // Add target action
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
@@ -218,10 +218,12 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         
         NSLayoutConstraint.activate([
             floatingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            floatingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -130),
-            floatingButton.widthAnchor.constraint(equalToConstant: 50),
-            floatingButton.heightAnchor.constraint(equalToConstant: 50)
+            floatingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -110),
+            floatingButton.widthAnchor.constraint(equalToConstant: 44),
+            floatingButton.heightAnchor.constraint(equalToConstant: 44)
         ])
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        floatingButton.addGestureRecognizer(panGesture)
     }
     
     @objc func floatingButtonTapped() {
@@ -232,6 +234,24 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         }
         instructionAlert.modalPresentationStyle = .overFullScreen
         present(instructionAlert, animated: true, completion: nil)
+    }
+    
+    @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        guard let floatingButton = gesture.view else { return }
+        
+        let translation = gesture.translation(in: self.view)
+        
+        // Update the button's position based on the drag
+        var newCenter = CGPoint(x: floatingButton.center.x + translation.x, y: floatingButton.center.y + translation.y)
+        
+        // Check if the new position would push the button off the screen
+        newCenter.x = max(min(newCenter.x, self.view.bounds.width - floatingButton.bounds.width / 2), floatingButton.bounds.width / 2)
+        newCenter.y = max(min(newCenter.y, self.view.bounds.height - floatingButton.bounds.height / 2), floatingButton.bounds.height / 2)
+        
+        floatingButton.center = newCenter
+        
+        // Reset the gesture's translation to zero so that we get incremental changes
+        gesture.setTranslation(.zero, in: self.view)
     }
     
     override func viewDidLayoutSubviews() {
@@ -1071,43 +1091,49 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         
         print("\(self.basePrice)")
         
-        let aParams = ["hall_id": hallId,
-                       "table_id": tableId,
-                       "group_id": groupId,
-                       "order_type": orderType,
-                       "item_id": "\(self.detailsData?.id ?? 0)",
-                       "combo_id": "\(self.selectedComboId ?? 0)",
-                       "unit_price": "\(self.basePrice)",
-                       "quantity": "\(self.qtyValue)",
-                       "is_customized": isCustomized == true ? "Y" : "N",
-                       "is_plain": self.isPlainSelected ? "Y" : "N",
-                       "ingredients_id": "\(ingredientsjsonString)",
-                       "combo_product_id": "\(combojsonString)",
-                       "choice_group_id": "\(choicejsonString)",
-                       "instruction": self.noteText,
-                       "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-        
-        print(aParams)
-        
-        APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
-            print("Response JSON \(responseJSON)")
+        if UserDefaultHelper.tableName != "" {
+            let aParams = ["hall_id": hallId,
+                           "table_id": tableId,
+                           "group_id": groupId,
+                           "order_type": orderType,
+                           "item_id": "\(self.detailsData?.id ?? 0)",
+                           "combo_id": "\(self.selectedComboId ?? 0)",
+                           "unit_price": "\(self.basePrice)",
+                           "quantity": "\(self.qtyValue)",
+                           "is_customized": isCustomized == true ? "Y" : "N",
+                           "is_plain": self.isPlainSelected ? "Y" : "N",
+                           "ingredients_id": "\(ingredientsjsonString)",
+                           "combo_product_id": "\(combojsonString)",
+                           "choice_group_id": "\(choicejsonString)",
+                           "instruction": self.noteText,
+                           "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             
-            let dataDict = responseJSON["response"]["data"].arrayValue
-            print(dataDict)
-            let msg = responseJSON["message"].stringValue
-            print(msg)
-            DispatchQueue.main.async {
-                self.showBanner(message: msg, status: .success)
-                //                UserDefaultHelper.totalItems! += self.qtyValue
-                //                UserDefaultHelper.totalPrice! += Double("\(self.basePrice)") ?? 0.0
-                //UserDefaultHelper.totalItems! = self.qtyValue
-                UserDefaultHelper.totalPrice! = Double("\(self.basePrice)") ?? 0.0
-                self.dismiss(animated: true) {
-                    self.delegate?.dismissed()
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                
+                let dataDict = responseJSON["response"]["data"].arrayValue
+                print(dataDict)
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    //                UserDefaultHelper.totalPrice! += Double("\(self.basePrice)") ?? 0.0
+                    UserDefaultHelper.totalPrice! = Double("\(self.basePrice)") ?? 0.0
+                    self.dismiss(animated: true) {
+                        self.delegate?.dismissed()
+                    }
                 }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
             }
-        } failure: { error in
-            print("Error \(error.localizedDescription)")
+        } else {
+            self.showBanner(message: "please_scan".localized(), status: .warning)
+            let scanVC = ScanTableVC.instantiate()
+            scanVC.title = "Details"
+            scanVC.modalPresentationStyle = .formSheet
+            self.present(scanVC, animated: true)
         }
     }
 }

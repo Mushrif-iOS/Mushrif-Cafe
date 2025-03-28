@@ -99,6 +99,8 @@ class CartItem {
     var quantity : Int = 0
     var unitPrice : String = ""
     var variationId : Int = 0
+    var ingredientsList : [FoodIngredientsList]?
+    var productType : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -120,6 +122,13 @@ class CartItem {
         quantity = json["quantity"].intValue
         unitPrice = json["unit_price"].stringValue
         variationId = json["variation_id"].intValue
+        ingredientsList = [FoodIngredientsList]()
+        let ingredientsListArray = json["ingredients_list"].arrayValue
+        for ingredientsListJson in ingredientsListArray {
+            let value = FoodIngredientsList(fromJson: ingredientsListJson)
+            ingredientsList?.append(value)
+        }
+        productType = json["product_type"].intValue
     }
 }
 
@@ -261,5 +270,23 @@ class CartComboItem {
         id = json["id"].intValue
         name = json["name"].stringValue
         selectionStatus = json["selection_status"].intValue
+    }
+}
+
+class FoodIngredientsList {
+
+    var category : String = ""
+    var isAdded : Int = 0
+    var title : String = ""
+    var type : String = ""
+
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        category = json["category"].stringValue
+        isAdded = json["is_added"].intValue
+        title = json["title"].stringValue
+        type = json["type"].stringValue
     }
 }
