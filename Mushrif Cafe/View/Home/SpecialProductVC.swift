@@ -80,6 +80,7 @@ class SpecialProductVC: UIViewController, Instantiatable {
     var delegate: ToastDelegate?
     
     var noteText: String = ""
+    private var lastEnteredText: String = ""
     
     var cartDetails : CartItem?
     
@@ -149,12 +150,25 @@ class SpecialProductVC: UIViewController, Instantiatable {
     
     @objc func floatingButtonTapped() {
         let instructionAlert = FoodInstructionAlertController()
-        instructionAlert.onSave = { enteredText in
-            print("User entered: \(enteredText)")
-            self.noteText = "\(enteredText)"
-        }
         instructionAlert.modalPresentationStyle = .overFullScreen
-        present(instructionAlert, animated: true, completion: nil)
+        instructionAlert.instructionValue = title == "Edit" ? noteText : lastEnteredText
+        
+        if title == "Edit" {
+            instructionAlert.title = "Edit"
+        }
+        
+        instructionAlert.onSave = { [weak self] enteredText in
+            guard let self = self else { return }
+            let trimmedText = enteredText.trimmingCharacters(in: .whitespacesAndNewlines)
+            print("User entered: \(trimmedText)")
+            
+            // Store in both places
+            self.lastEnteredText = trimmedText
+            self.noteText = trimmedText
+            
+            // Update UI or perform other actions as needed
+        }
+        present(instructionAlert, animated: true)
     }
     
     @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
@@ -318,11 +332,20 @@ class SpecialProductVC: UIViewController, Instantiatable {
             if self.choiceArr.count > 0 {
                 self.typeOfMealLabel.text = self.choiceArr.first?.title
                 self.requiredLabel.text = "\("required".localized()): \("selectAny".localized()) \(self.choiceArr.first?.minSelection ?? 0) \("option".localized())"
-                self.maximumLabel.text = "0"
+                //self.maximumLabel.text = "0"
                 self.specialMaxTotal = self.choiceArr.first?.maxSelection ?? 0
                 
-                self.specialQuantities = self.choiceArr.first?.choices.map { $0.selectionStatus == 1 ? 1 : 0 } ?? []
+//                self.specialQuantities = self.choiceArr.first?.choices.map { $0.selectionStatus == 1 ? 1 : 0 } ?? []
+//                self.totalQuantity = self.specialQuantities.reduce(0, +)
+                
+                self.specialQuantities = self.choiceArr.first?.choices.map { $0.quantity } ?? []
                 self.totalQuantity = self.specialQuantities.reduce(0, +)
+                
+                for choice in self.choiceArr.first?.choices ?? [] {
+                    if choice.selectionStatus == 1 {
+                        self.selectedSpecialItems[choice.id] = choice.quantity
+                    }
+                }
                 
                 self.mealTypeTblView.reloadData()
                 self.updateSelectedItemsString()
@@ -357,16 +380,32 @@ extension SpecialProductVC: UITableViewDelegate, UITableViewDataSource {
         cell.nameLabel.text = "\(dict?.choice ?? "")"
         
         cell.qty.text = "\(self.specialQuantities[indexPath.row])"
-        cell.onQuantityChanged = { [weak self] change in
-            guard let self = self else { return }
-            let newTotal = self.totalQuantity + change
-            if newTotal <= self.specialMaxTotal && newTotal >= 0 {
+        
+        if title == "Edit" {
+            cell.quantity = self.specialQuantities[indexPath.row]
+            cell.onQuantityChanged = { [weak self] change in
+                guard let self = self else { return }
+                let newTotal = self.totalQuantity + change
                 let newQuantity = self.specialQuantities[indexPath.row] + change
-                if newQuantity >= 0 {
+                if (change > 0 && newTotal <= self.specialMaxTotal) || (change < 0 && newQuantity >= 0) {
                     self.totalQuantity = newTotal
                     self.specialQuantities[indexPath.row] = newQuantity
-                    cell.quantity = newQuantity
                     self.updateSelectedItemsString()
+                    self.mealTypeTblView.reloadRows(at: [indexPath], with: .none)
+                }
+            }
+        } else {
+            cell.onQuantityChanged = { [weak self] change in
+                guard let self = self else { return }
+                let newTotal = self.totalQuantity + change
+                if newTotal <= self.specialMaxTotal && newTotal >= 0 {
+                    let newQuantity = self.specialQuantities[indexPath.row] + change
+                    if newQuantity >= 0 {
+                        self.totalQuantity = newTotal
+                        self.specialQuantities[indexPath.row] = newQuantity
+                        cell.quantity = newQuantity
+                        self.updateSelectedItemsString()
+                    }
                 }
             }
         }
@@ -391,20 +430,20 @@ extension SpecialProductVC: UITableViewDelegate, UITableViewDataSource {
 //        print("Selected Quantities: \(selectedQuantitiesString)")
         
         selectedSpecialItems.removeAll() // Clear previous selections
-
-                for (index, quantity) in self.specialQuantities.enumerated() {
-                    if quantity > 0 {
-                        if let choiceId = self.choiceArr.first?.choices[index].id {
-                            selectedSpecialItems[choiceId] = quantity
-                        }
-                    }
+        
+        for (index, quantity) in self.specialQuantities.enumerated() {
+            if quantity > 0 {
+                if let choiceId = self.choiceArr.first?.choices[index].id {
+                    selectedSpecialItems[choiceId] = quantity
                 }
+            }
+        }
                 
         let selectedIDsString = selectedSpecialItems.keys.map { String($0) }.joined(separator: ",")
         let selectedQuantitiesString = selectedSpecialItems.values.map { String($0) }.joined(separator: ",")
-                
-                print("Selected IDs: \(selectedIDsString)")
-                print("Selected Quantities: \(selectedQuantitiesString)")
+        
+        print("Selected IDs: \(selectedIDsString)")
+        print("Selected Quantities: \(selectedQuantitiesString)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -455,7 +494,7 @@ extension SpecialProductVC: UITableViewDelegate, UITableViewDataSource {
                                    "combo_id": "",
                                    "unit_price": "\(self.basePrice)",
                                    "quantity": "\(self.qtyValue)",
-                                   "is_customized": isCustomized == true ? "Y" : "N",
+                                   "is_customized": "Y",
                                    "is_plain": "N",
                                    "ingredients_id": "",
                                    "combo_product_id": "",
@@ -476,9 +515,8 @@ extension SpecialProductVC: UITableViewDelegate, UITableViewDataSource {
                         DispatchQueue.main.async {
                             self.showBanner(message: msg, status: .success)
                             UserDefaultHelper.totalPrice! = Double("\(self.basePrice)") ?? 0.0
-                            self.dismiss(animated: true) {
-                                self.delegate?.dismissed()
-                            }
+                            self.delegate?.dismissed()
+                            self.navigationController?.popViewController(animated: true)
                         }
                     } failure: { error in
                         print("Error \(error.localizedDescription)")

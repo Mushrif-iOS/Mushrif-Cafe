@@ -1620,7 +1620,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Tu8-5f-v9j">
-                                                        <rect key="frame" x="50" y="40.5" width="226" height="128"/>
+                                                        <rect key="frame" x="60" y="40.5" width="216" height="128"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="128" id="cEQ-R1-I8G"/>
@@ -1646,7 +1646,7 @@
                                                     <constraint firstItem="Vhy-Mw-Ff9" firstAttribute="top" secondItem="qLY-Pe-Zzs" secondAttribute="bottom" constant="1" id="hwo-Ry-whi"/>
                                                     <constraint firstItem="Tu8-5f-v9j" firstAttribute="top" secondItem="URM-b1-4tr" secondAttribute="bottom" constant="12" id="jw5-LL-30R"/>
                                                     <constraint firstItem="Y16-JV-zAl" firstAttribute="centerY" secondItem="Tu8-5f-v9j" secondAttribute="centerY" id="lvH-vw-sXn"/>
-                                                    <constraint firstItem="Tu8-5f-v9j" firstAttribute="leading" secondItem="Y16-JV-zAl" secondAttribute="trailing" constant="10" id="rKW-dw-AVG"/>
+                                                    <constraint firstItem="Tu8-5f-v9j" firstAttribute="leading" secondItem="Y16-JV-zAl" secondAttribute="trailing" constant="20" id="rKW-dw-AVG"/>
                                                     <constraint firstAttribute="trailing" secondItem="qLY-Pe-Zzs" secondAttribute="trailing" constant="16" id="tLx-sy-riM"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>

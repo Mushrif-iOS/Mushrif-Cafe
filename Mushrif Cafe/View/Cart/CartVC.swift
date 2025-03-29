@@ -384,7 +384,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
         
         let dict = self.cartArray[sender.tag]
         
-        if dict.productType != 5 {
+        if dict.productType == 5 {
             let editVC = SpecialProductVC.instantiate()
             editVC.cartDetails = dict
             editVC.title = "Edit"

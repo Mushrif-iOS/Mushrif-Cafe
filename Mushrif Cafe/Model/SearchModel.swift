@@ -75,6 +75,7 @@ class SearchData {
     var price : String = ""
     var specialPrice : String = ""
     var subCategoryId : Int = 0
+    var productType : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -94,6 +95,7 @@ class SearchData {
         price = json["price"].stringValue
         specialPrice = json["special_price"].stringValue
         subCategoryId = json["sub_category_id"].intValue
+        productType = json["product_type"].intValue
     }
 }
 

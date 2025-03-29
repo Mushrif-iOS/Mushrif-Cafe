@@ -184,12 +184,19 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dict = self.searchData[indexPath.item]
-        let detailVC = MealDetailsViewController.instantiate()
-        self.navigationController?.modalPresentationStyle = .formSheet
-        detailVC.itemId = "\(dict.id)"
-        //detailVC.descString = dict.name
-        detailVC.delegate = self
-        self.navigationController?.present(detailVC, animated: true)
+        if dict.productType == 5 {
+            let detailVC = SpecialProductVC.instantiate()
+            self.navigationController?.modalPresentationStyle = .formSheet
+            detailVC.itemId = "\(dict.id)"
+            detailVC.delegate = self
+            self.navigationController?.present(detailVC, animated: true)
+        } else {
+            let detailVC = MealDetailsViewController.instantiate()
+            self.navigationController?.modalPresentationStyle = .formSheet
+            detailVC.itemId = "\(dict.id)"
+            detailVC.delegate = self
+            self.navigationController?.present(detailVC, animated: true)
+        }
     }
     
     @objc func addUsualAction(sender: UIButton) {
@@ -216,53 +223,62 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         
         let dict = self.searchData[sender.tag]
         
-        if UserDefaultHelper.authToken != "" {
-            let orderType = UserDefaultHelper.orderType ?? ""
-            let hallId = UserDefaultHelper.hallId ?? ""
-            let tableId = UserDefaultHelper.tableId ?? ""
-            let groupId = UserDefaultHelper.groupId ?? ""
+        if dict.productType == 5 {
+            let detailVC = SpecialProductVC.instantiate()
+            self.navigationController?.modalPresentationStyle = .formSheet
+            detailVC.itemId = "\(dict.id)"
+            detailVC.delegate = self
+            self.navigationController?.present(detailVC, animated: true)
+        } else {
             
-            if UserDefaultHelper.tableName != "" {
-                let aParams = ["hall_id": hallId,
-                               "table_id": tableId,
-                               "group_id": groupId,
-                               "order_type": orderType,
-                               "item_id": "\(dict.id)",
-                               "combo_id": "",
-                               "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
-                               "quantity": "1",
-                               "is_customized": "N",
-                               "is_plain": "N",
-                               "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+            if UserDefaultHelper.authToken != "" {
+                let orderType = UserDefaultHelper.orderType ?? ""
+                let hallId = UserDefaultHelper.hallId ?? ""
+                let tableId = UserDefaultHelper.tableId ?? ""
+                let groupId = UserDefaultHelper.groupId ?? ""
                 
-                print(aParams)
-                
-                APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
-                    print("Response JSON \(responseJSON)")
+                if UserDefaultHelper.tableName != "" {
+                    let aParams = ["hall_id": hallId,
+                                   "table_id": tableId,
+                                   "group_id": groupId,
+                                   "order_type": orderType,
+                                   "item_id": "\(dict.id)",
+                                   "combo_id": "",
+                                   "unit_price": dict.specialPrice != "" ? "\(dict.specialPrice)" : "\(dict.price)",
+                                   "quantity": "1",
+                                   "is_customized": "N",
+                                   "is_plain": "N",
+                                   "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
                     
-                    let dataDict = responseJSON["response"]["data"].arrayValue
-                    print(dataDict)
+                    print(aParams)
                     
-                    let msg = responseJSON["message"].stringValue
-                    print(msg)
-                    DispatchQueue.main.async {
-                        self.showBanner(message: msg, status: .success)
-                        UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                        let cartVC = CartVC.instantiate()
-                        self.navigationController?.pushViewController(cartVC, animated: true)
+                    APIManager.shared.postCall(APPURL.add_item_cart, params: aParams, withHeader: true) { responseJSON in
+                        print("Response JSON \(responseJSON)")
+                        
+                        let dataDict = responseJSON["response"]["data"].arrayValue
+                        print(dataDict)
+                        
+                        let msg = responseJSON["message"].stringValue
+                        print(msg)
+                        DispatchQueue.main.async {
+                            self.showBanner(message: msg, status: .success)
+                            UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
+                            let cartVC = CartVC.instantiate()
+                            self.navigationController?.pushViewController(cartVC, animated: true)
+                        }
+                    } failure: { error in
+                        print("Error \(error.localizedDescription)")
                     }
-                } failure: { error in
-                    print("Error \(error.localizedDescription)")
+                } else {
+                    self.showBanner(message: "please_scan".localized(), status: .warning)
+                    let scanVC = ScanTableVC.instantiate()
+                    scanVC.title = "LanguageSelection"
+                    self.navigationController?.push(viewController: scanVC)
                 }
             } else {
-                self.showBanner(message: "please_scan".localized(), status: .warning)
-                let scanVC = ScanTableVC.instantiate()
-                scanVC.title = "LanguageSelection"
-                self.navigationController?.push(viewController: scanVC)
+                let profileVC = LoginVC.instantiate()
+                self.navigationController?.pushViewController(profileVC, animated: true)
             }
-        } else {
-            let profileVC = LoginVC.instantiate()
-            self.navigationController?.pushViewController(profileVC, animated: true)
         }
     }
     

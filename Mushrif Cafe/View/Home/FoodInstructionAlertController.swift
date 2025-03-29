@@ -52,7 +52,15 @@ class FoodInstructionAlertController: UIViewController, UITextViewDelegate {
                 placeholderLabel.isHidden = true
             }
         } else {
-            textView.text = ""
+            if instructionValue != "" {
+                textView.text = instructionValue
+                
+                if !textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    placeholderLabel.isHidden = true
+                }
+            } else {
+                textView.text = ""
+            }
         }
     }
     

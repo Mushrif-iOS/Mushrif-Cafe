@@ -158,6 +158,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     var delegate: ToastDelegate?
     
     var noteText: String = ""
+    private var lastEnteredText: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -228,12 +229,17 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     
     @objc func floatingButtonTapped() {
         let instructionAlert = FoodInstructionAlertController()
-        instructionAlert.onSave = { enteredText in
-            print("User entered: \(enteredText)")
-            self.noteText = "\(enteredText)"
-        }
         instructionAlert.modalPresentationStyle = .overFullScreen
-        present(instructionAlert, animated: true, completion: nil)
+        instructionAlert.instructionValue = lastEnteredText
+        
+        instructionAlert.onSave = { [weak self] enteredText in
+            guard let self = self else { return }
+            let trimmedText = enteredText.trimmingCharacters(in: .whitespacesAndNewlines)
+            print("User entered: \(trimmedText)")
+            self.lastEnteredText = trimmedText
+            self.noteText = trimmedText
+        }
+        present(instructionAlert, animated: true)
     }
     
     @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
