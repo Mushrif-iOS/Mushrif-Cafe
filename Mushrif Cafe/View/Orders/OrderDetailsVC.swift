@@ -232,7 +232,10 @@ extension OrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
         let doubleValue = Double(dict.subTotal) ?? 0.0
         cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"
         
-        cell.descLabel.text = dict.descriptionField
+        let addedTitles = dict.cartItem.ingredientsList?.map { group in
+            return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
+        }.joined(separator: "\n")
+        cell.descLabel.text = addedTitles
         cell.qtyLabel.text = "x\(dict.quantity)"
         
         let prc = Double((Double(dict.unitCost) ?? 0.0)*(Double(dict.quantity) ?? 0.0))

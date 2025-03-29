@@ -456,7 +456,10 @@ extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
         cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
         cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         
-        cell.descLabel.text = dict.instruction
+        let addedTitles = dict.ingredientsList?.map { group in
+            return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
+        }.joined(separator: "\n")
+        cell.descLabel.text = addedTitles
         cell.descLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.qty.text = "\(dict.quantity)"
         cell.qty.textColor = UIColor.black.withAlphaComponent(0.5)
