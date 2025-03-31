@@ -221,10 +221,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bhg-Bf-edk">
-                                <rect key="frame" x="218" y="58" width="30" height="30"/>
+                                <rect key="frame" x="208" y="53" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="aGj-1E-DtZ"/>
-                                    <constraint firstAttribute="height" constant="30" id="eRq-G4-Mcv"/>
+                                    <constraint firstAttribute="width" constant="40" id="aGj-1E-DtZ"/>
+                                    <constraint firstAttribute="height" constant="40" id="eRq-G4-Mcv"/>
                                 </constraints>
                                 <color key="tintColor" red="0.59215686270000001" green="0.40784313729999999" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -1272,7 +1272,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AUj-rs-fsY" userLabel="BottomView">
-                                <rect key="frame" x="0.0" y="301" width="320" height="267"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oSK-9M-RrD">
                                         <rect key="frame" x="25" y="30" width="158" height="0.0"/>
@@ -1292,11 +1292,8 @@
                                         </state>
                                     </button>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="lFe-Tw-HHi">
-                                        <rect key="frame" x="0.0" y="57" width="320" height="200"/>
+                                        <rect key="frame" x="0.0" y="57" width="320" height="481"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="200" id="9d4-pl-UmH"/>
-                                        </constraints>
                                         <connections>
                                             <outlet property="dataSource" destination="M94-sR-nay" id="ni5-q5-xc5"/>
                                             <outlet property="delegate" destination="M94-sR-nay" id="Pfm-dY-JgU"/>
@@ -1320,6 +1317,7 @@
                         <viewLayoutGuide key="safeArea" id="J7E-Nd-xZv"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="AUj-rs-fsY" firstAttribute="top" secondItem="J7E-Nd-xZv" secondAttribute="top" id="61u-3P-tPL"/>
                             <constraint firstItem="AUj-rs-fsY" firstAttribute="leading" secondItem="J7E-Nd-xZv" secondAttribute="leading" id="jCm-Nx-dI9"/>
                             <constraint firstAttribute="trailing" secondItem="AUj-rs-fsY" secondAttribute="trailing" id="rMN-3E-8Zm"/>
                             <constraint firstItem="J7E-Nd-xZv" firstAttribute="bottom" secondItem="AUj-rs-fsY" secondAttribute="bottom" id="tvE-LO-dMF"/>
@@ -1329,7 +1327,6 @@
                         <outlet property="bottomView" destination="AUj-rs-fsY" id="9Gi-Ph-hBf"/>
                         <outlet property="createBtn" destination="apu-tp-tMe" id="hwa-Nj-K29"/>
                         <outlet property="mainTableView" destination="lFe-Tw-HHi" id="rcu-29-qaK"/>
-                        <outlet property="tblHeight" destination="9d4-pl-UmH" id="eNi-5x-ZLF"/>
                         <outlet property="titleLabel" destination="oSK-9M-RrD" id="yMc-8Q-kPW"/>
                     </connections>
                 </viewController>

@@ -122,7 +122,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                 detailVC.delegate = self
                 self.navController?.present(detailVC, animated: true)
             } else {
-                if UserDefaultHelper.tableName != "" {
+                if tableId != "" {
                     let aParams = ["hall_id": hallId,
                                    "table_id": tableId,
                                    "group_id": groupId,
@@ -175,12 +175,12 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
 //            }
             let dict = mealObj[sender.tag]
             let addVC = AddUsualsVC.instantiate()
-            if #available(iOS 15.0, *) {
-                if let sheet = addVC.sheetPresentationController {
-                    sheet.detents = [.medium()]
-                    sheet.preferredCornerRadius = 15
-                }
-            }
+//            if #available(iOS 15.0, *) {
+//                if let sheet = addVC.sheetPresentationController {
+//                    sheet.detents = [.large()]
+//                    sheet.preferredCornerRadius = 15
+//                }
+//            }
             addVC.productId = "\(dict.id ?? 0)"
             addVC.itemType = "listed"
             addVC.title = "Dashboard"

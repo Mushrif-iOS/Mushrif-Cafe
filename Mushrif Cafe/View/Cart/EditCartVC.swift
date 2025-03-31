@@ -196,16 +196,17 @@ class EditCartVC: UIViewController, Instantiatable {
         let floatingButton = UIButton(type: .system)
         
         // Set button properties
-        floatingButton.setImage(UIImage(systemName: "pencil.and.scribble")?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal), for: .normal)
+        floatingButton.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis.rtl"), for: .normal)
+        floatingButton.tintColor = UIColor.white
         floatingButton.backgroundColor = UIColor.primaryBrown
-        floatingButton.layer.cornerRadius = 22
+        floatingButton.layer.cornerRadius = 25
         floatingButton.layer.shadowColor = UIColor.black.cgColor
         floatingButton.layer.shadowOpacity = 0.3
         floatingButton.layer.shadowOffset = CGSize(width: 0, height: 5)
         floatingButton.layer.shadowRadius = 5
         
         // Set button size
-        floatingButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        floatingButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         
         // Add target action
         floatingButton.addTarget(self, action: #selector(floatingButtonTapped), for: .touchUpInside)
@@ -217,8 +218,8 @@ class EditCartVC: UIViewController, Instantiatable {
         NSLayoutConstraint.activate([
             floatingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             floatingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -110),
-            floatingButton.widthAnchor.constraint(equalToConstant: 44),
-            floatingButton.heightAnchor.constraint(equalToConstant: 44)
+            floatingButton.widthAnchor.constraint(equalToConstant: 50),
+            floatingButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
         floatingButton.addGestureRecognizer(panGesture)

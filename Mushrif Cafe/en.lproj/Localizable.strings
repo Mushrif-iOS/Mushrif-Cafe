@@ -106,7 +106,7 @@
 "select" = "Select";
 "summary" = "Summary";
 "discount_apl" = "Discount applied";
-"wallet_amt" = "Wallet Amount";
+"wallet_amt" = "Wallet Discount";
 "total" = "Total";
 "paid_by" = "Paid by";
 "order_on" = "Ordered on";
@@ -124,7 +124,7 @@
 "something_wrong" = "Something went wrong";
 
 "item_details" = "Item Details";
-"no_product" = "No Products Found";
+"no_product" = "No Item Found";
 "no_cost_product" = "You can't place an order with a zero price";
 "no_cart_item" = "No Cart Item Found";
 "no_usuals" = "No Usuals Yet";

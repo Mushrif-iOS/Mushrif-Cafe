@@ -308,7 +308,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                 let tableId = UserDefaultHelper.tableId ?? ""
                 let groupId = UserDefaultHelper.groupId ?? ""
                 
-                if UserDefaultHelper.tableName != "" {
+                if tableId != "" {
                     let aParams = ["hall_id": hallId,
                                    "table_id": tableId,
                                    "group_id": groupId,
@@ -361,12 +361,12 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
 //            }
             let dict = self.foodItemArr[sender.tag]
             let addVC = AddUsualsVC.instantiate()
-            if #available(iOS 15.0, *) {
-                if let sheet = addVC.sheetPresentationController {
-                    sheet.detents = [.medium()]
-                    sheet.preferredCornerRadius = 15
-                }
-            }
+//            if #available(iOS 15.0, *) {
+//                if let sheet = addVC.sheetPresentationController {
+//                    sheet.detents = [.medium()]
+//                    sheet.preferredCornerRadius = 15
+//                }
+//            }
             addVC.productId = "\(dict.id)"
             addVC.itemType = "listed"
             self.present(addVC, animated: true, completion: nil)

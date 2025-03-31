@@ -25,21 +25,7 @@ class ManageUsualViewController: UIViewController, Instantiatable {
             addNewBtn.setTitle("add_new".localized(), for: .normal)
         }
     }
-    
-    /*lazy var footerButton: UIButton! = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.primaryBrown
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.borderColor = UIColor.borderPink
-        button.borderWidth = 1
-        button.cornerRadius = 30
-        button.addTarget(self, action: #selector(didAddTaped), for: .touchUpInside)
-        button.setTitle("add_new".localized(), for: .normal)
-        button.titleLabel?.font = UIFont.poppinsBoldFontWith(size: 18)
-        return button
-    }()*/
-    
+
     var usualData: [UsualData] = [UsualData]()
     var pageNo: Int = 1
     var lastPage: Int = Int()
@@ -49,8 +35,8 @@ class ManageUsualViewController: UIViewController, Instantiatable {
 
         // Do any additional setup after loading the view.
         
-        mainTableView.register(MyUsualHeaderCell.nib(), forCellReuseIdentifier: MyUsualHeaderCell.identifier)
-        mainTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
+        mainTableView.register(ManageListTableViewCell.nib(), forCellReuseIdentifier: ManageListTableViewCell.identifier)
+       // mainTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
         
         if #available(iOS 15.0, *) {
             mainTableView.sectionHeaderTopPadding = 0
@@ -107,7 +93,7 @@ class ManageUsualViewController: UIViewController, Instantiatable {
 
 extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.usualData.count == 0 {
             tableView.setEmptyMessage("no_usuals".localized())
         } else {
@@ -116,50 +102,26 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         return self.usualData.count
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usualData[section].items.count
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ManageUsualTableViewCell") as! ManageUsualTableViewCell
-        cell.isCart = "N"
-        cell.didRemoveBlock = {
-            self.pageNo = 1
-            self.usualData.removeAll()
-            self.getMyUsual(page: self.pageNo)
-        }
-        let dict = self.usualData[indexPath.section].items[indexPath.row]
-        cell.itemId = "\(dict.id)"
-        cell.qtyValue = dict.quantity
-        cell.nameLabel.text = dict.product.name
-        cell.editButton.isHidden = true
-        if dict.product.specialPrice != "" {
-            let doubleValue = Double(dict.product.specialPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-        } else {
-            let doubleValue = Double(dict.product.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-        }
-        cell.descLabel.text = dict.product.descriptionField
-        cell.qty.text = "\(dict.quantity)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ManageListTableViewCell") as! ManageListTableViewCell
+        let dict = self.usualData[indexPath.row]
+        cell.headerTitle.text = dict.title
         
-        if self.usualData[indexPath.section].items.count == 1 {
-            cell.backView.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 18)
-        } else {
-            if indexPath.row == 0 {
-                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == self.usualData[indexPath.section].items.count - 1 {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
-            }
-        }
+        cell.editButton.tag = indexPath.row
+        cell.editButton.addTarget(self, action: #selector(updateAction(sender: )), for: .touchUpInside)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dict = self.usualData[indexPath.row]
+        let manageVC = MyUsualDetailVC.instantiate()
+        manageVC.usualDetail = dict
+        self.navigationController?.pushViewController(manageVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -195,23 +157,6 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
             tableView.tableFooterView?.isHidden = true
         }
     }
-        
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let dict = self.usualData[section]
-        let headerView = tableView.dequeueReusableCell(withIdentifier: MyUsualHeaderCell.identifier) as! MyUsualHeaderCell
-        headerView.headerTitle.text = "\(dict.title)"
-        
-        headerView.editButton.tag = section
-        headerView.editButton.addTarget(self, action: #selector(updateAction(sender: )), for: .touchUpInside)
-        
-        headerView.addButton.tag = section
-        headerView.addButton.addTarget(self, action: #selector(addAction(sender: )), for: .touchUpInside)
-        return headerView
-    }
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
-    }
 
     @objc func updateAction(sender: UIButton) {
         
@@ -239,7 +184,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         let tableId = UserDefaultHelper.tableId ?? ""
         let groupId = UserDefaultHelper.groupId ?? ""
         
-        if UserDefaultHelper.tableName != "" {
+        if tableId != "" {
             
             let aParams = ["usual_id": "\(dict.id)",
                            "hall_id": hallId,

@@ -28,6 +28,14 @@ class ManageUsualTableViewCell: UITableViewCell {
             descLabel.text = ""
         }
     }
+    @IBOutlet weak var instructionLabel: UILabel! {
+        didSet {
+            instructionLabel.font = UIFont.poppinsMediumFontWith(size: 12)
+            instructionLabel.textColor = UIColor.black
+            instructionLabel.numberOfLines = 3
+            instructionLabel.lineBreakMode = .byTruncatingTail
+        }
+    }
     
     @IBOutlet weak var editButton: UIButton! {
         didSet {

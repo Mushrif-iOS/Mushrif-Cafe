@@ -181,12 +181,12 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     @IBAction func addUsualAction(_ sender: Any) {
         
         let addVC = AddUsualsVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = addVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.preferredCornerRadius = 15
-            }
-        }
+//        if #available(iOS 15.0, *) {
+//            if let sheet = addVC.sheetPresentationController {
+//                sheet.detents = [.medium()]
+//                sheet.preferredCornerRadius = 15
+//            }
+//        }
         addVC.productId = "\(orderId)"
         addVC.itemType = "ordered"
         self.present(addVC, animated: true, completion: nil)
@@ -236,6 +236,7 @@ extension OrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
             return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
         }.joined(separator: "\n")
         cell.descLabel.text = addedTitles
+        cell.instructionLabel.text = "\n\(dict.cartItem.instruction)"
         cell.qtyLabel.text = "x\(dict.quantity)"
         
         let prc = Double((Double(dict.unitCost) ?? 0.0)*(Double(dict.quantity) ?? 0.0))

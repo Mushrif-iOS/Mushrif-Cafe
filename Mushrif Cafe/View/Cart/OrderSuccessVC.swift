@@ -111,12 +111,12 @@ class OrderSuccessVC: UIViewController, Instantiatable {
     
     @IBAction func addUsualAction(_ sender: Any) {
         let addVC = AddUsualsVC.instantiate()
-        if #available(iOS 15.0, *) {
-            if let sheet = addVC.sheetPresentationController {
-                sheet.detents = [.medium()]
-                sheet.preferredCornerRadius = 15
-            }
-        }
+//        if #available(iOS 15.0, *) {
+//            if let sheet = addVC.sheetPresentationController {
+//                sheet.detents = [.medium()]
+//                sheet.preferredCornerRadius = 15
+//            }
+//        }
         addVC.productId = "\(successOrderDetails?.id ?? 0)"
         addVC.itemType = "ordered"
         self.present(addVC, animated: true, completion: nil)

@@ -21,7 +21,7 @@ class MyUsualHeaderCell: UITableViewCell {
     @IBOutlet weak var addButton: UIButton! {
         didSet {
             addButton.titleLabel?.font = UIFont.poppinsMediumFontWith(size: 14)
-            addButton.setTitle("add".localized(), for: .normal)
+            addButton.setTitle("add_cart".localized(), for: .normal)
         }
     }
         

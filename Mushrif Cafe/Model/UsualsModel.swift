@@ -96,6 +96,7 @@ class UsualItem {
     var product : UsualProduct!
     var productId : Int = 0
     var quantity : Int = 0
+    var ingredientsList : [FoodIngredientsList]?
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -111,6 +112,12 @@ class UsualItem {
         }
         productId = json["product_id"].intValue
         quantity = json["quantity"].intValue
+        ingredientsList = [FoodIngredientsList]()
+        let ingredientsListArray = json["ingredients_list"].arrayValue
+        for ingredientsListJson in ingredientsListArray {
+            let value = FoodIngredientsList(fromJson: ingredientsListJson)
+            ingredientsList?.append(value)
+        }
     }
 }
 

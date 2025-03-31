@@ -363,7 +363,8 @@ class CheckoutVC: UIViewController, Instantiatable {
                         //self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
                     }
                     
-                    UserDefaultHelper.tableName = ""
+                    //UserDefaultHelper.tableName = ""
+                    UserDefaultHelper.deleteTableId()
                     
                     DispatchQueue.main.async {
                         self.showBanner(message: msg, status: .success)
@@ -394,7 +395,8 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
-                UserDefaultHelper.tableName = ""
+                //UserDefaultHelper.tableName = ""
+                UserDefaultHelper.deleteTableId()
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
                     let orderVC = OrderSuccessVC.instantiate()
@@ -416,7 +418,8 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
-                UserDefaultHelper.tableName = ""
+                //UserDefaultHelper.tableName = ""
+                UserDefaultHelper.deleteTableId()
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
                     let orderVC = OrderSuccessVC.instantiate()
@@ -461,6 +464,8 @@ extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
         }.joined(separator: "\n")
         cell.descLabel.text = addedTitles
         cell.descLabel.textColor = UIColor.black.withAlphaComponent(0.5)
+        cell.instructionLabel.text = "\n\(dict.instruction)"
+        cell.instructionLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.qty.text = "\(dict.quantity)"
         cell.qty.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.qtyValue = dict.quantity

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,11 +14,11 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="UsualListTableViewCell" rowHeight="122" id="KGk-i7-Jjw" customClass="UsualListTableViewCell" customModule="Mushrif_Cafe" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="122"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pizza" translatesAutoresizingMaskIntoConstraints="NO" id="8d2-y4-jYI">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8d2-y4-jYI">
                         <rect key="frame" x="17" y="10" width="94" height="100"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="94" id="GV1-rf-Okf"/>
@@ -36,9 +36,12 @@
                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" text="Pizza Maargita, Pepsi and 2 more" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnw-9u-wlx">
-                        <rect key="frame" x="126" y="39" width="137" height="71"/>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" editable="NO" text="Pizza Maargita, Pepsi and 2 more" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnw-9u-wlx">
+                        <rect key="frame" x="126" y="39" width="137" height="73"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="73" id="7v2-QR-BK7"/>
+                        </constraints>
                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -61,13 +64,12 @@
                 <constraints>
                     <constraint firstItem="8d2-y4-jYI" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="17" id="2eb-Xj-aLG"/>
                     <constraint firstItem="Fnw-9u-wlx" firstAttribute="top" secondItem="2Og-hu-jWn" secondAttribute="bottom" id="6b4-qT-zJh"/>
-                    <constraint firstItem="Fnw-9u-wlx" firstAttribute="bottom" secondItem="8d2-y4-jYI" secondAttribute="bottom" id="9kf-w6-xJN"/>
                     <constraint firstItem="Fnw-9u-wlx" firstAttribute="leading" secondItem="2Og-hu-jWn" secondAttribute="leading" id="SGh-TA-jFe"/>
-                    <constraint firstAttribute="bottom" secondItem="8d2-y4-jYI" secondAttribute="bottom" constant="10" id="b6t-rn-7ti"/>
                     <constraint firstItem="JRJ-4o-vvy" firstAttribute="top" secondItem="2Og-hu-jWn" secondAttribute="top" id="fAt-9b-l75"/>
                     <constraint firstAttribute="trailing" secondItem="JRJ-4o-vvy" secondAttribute="trailing" constant="16" id="glz-GU-q58"/>
                     <constraint firstItem="8d2-y4-jYI" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="iEd-2S-byH"/>
                     <constraint firstItem="2Og-hu-jWn" firstAttribute="top" secondItem="8d2-y4-jYI" secondAttribute="top" constant="8" id="til-8J-Jgd"/>
+                    <constraint firstAttribute="bottom" secondItem="Fnw-9u-wlx" secondAttribute="bottom" constant="10" id="uDx-Qp-MCe"/>
                     <constraint firstItem="2Og-hu-jWn" firstAttribute="leading" secondItem="8d2-y4-jYI" secondAttribute="trailing" constant="15" id="xYB-Sg-gIa"/>
                     <constraint firstItem="Fnw-9u-wlx" firstAttribute="trailing" secondItem="2Og-hu-jWn" secondAttribute="trailing" id="yKI-W3-UVl"/>
                     <constraint firstItem="JRJ-4o-vvy" firstAttribute="leading" secondItem="2Og-hu-jWn" secondAttribute="trailing" constant="5" id="ywQ-Dh-VCu"/>
@@ -80,12 +82,12 @@
                 <outlet property="descLabel" destination="Fnw-9u-wlx" id="Q3H-Qo-6jt"/>
                 <outlet property="img" destination="8d2-y4-jYI" id="EBj-vx-pMM"/>
                 <outlet property="nameLabel" destination="2Og-hu-jWn" id="dRP-OR-4SC"/>
+                <outlet property="txtViewHeight" destination="7v2-QR-BK7" id="ZCa-wk-e5W"/>
             </connections>
             <point key="canvasLocation" x="-24.427480916030532" y="47.183098591549296"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="pizza" width="546" height="492"/>
         <image name="plus.circle" catalog="system" width="128" height="123"/>
     </resources>
 </document>

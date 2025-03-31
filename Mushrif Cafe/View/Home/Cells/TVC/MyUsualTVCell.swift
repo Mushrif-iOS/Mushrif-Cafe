@@ -91,7 +91,7 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
             let tableId = UserDefaultHelper.tableId ?? ""
             let groupId = UserDefaultHelper.groupId ?? ""
             
-            if UserDefaultHelper.tableName != "" {
+            if tableId != "" {
                 
                 let aParams = ["usual_id": "\(dict.id)",
                                "hall_id": hallId,

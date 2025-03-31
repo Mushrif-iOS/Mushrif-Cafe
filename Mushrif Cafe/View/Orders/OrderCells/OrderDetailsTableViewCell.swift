@@ -27,6 +27,14 @@ class OrderDetailsTableViewCell: UITableViewCell {
             descLabel.font = UIFont.poppinsRegularFontWith(size: 14)
         }
     }
+    @IBOutlet weak var instructionLabel: UILabel! {
+        didSet {
+            instructionLabel.font = UIFont.poppinsMediumFontWith(size: 12)
+            instructionLabel.textColor = UIColor.black
+            instructionLabel.numberOfLines = 3
+            instructionLabel.lineBreakMode = .byTruncatingTail
+        }
+    }
     
     @IBOutlet weak var qtyLabel: UILabel! {
         didSet {

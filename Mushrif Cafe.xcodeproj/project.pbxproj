@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C613D1DB2D9B1309000FEDD8 /* MyUsualDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613D1DA2D9B1309000FEDD8 /* MyUsualDetailVC.swift */; };
+		C613D1DE2D9B18D8000FEDD8 /* ManageListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C613D1DD2D9B18D8000FEDD8 /* ManageListTableViewCell.xib */; };
+		C613D1DF2D9B18D8000FEDD8 /* ManageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613D1DC2D9B18D8000FEDD8 /* ManageListTableViewCell.swift */; };
 		C6337B572CAB1A4E00ACDD86 /* MyOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B562CAB1A4E00ACDD86 /* MyOrderViewController.swift */; };
 		C6337B5A2CAB21E000ACDD86 /* MyOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */; };
 		C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6337B5C2CAB34FC00ACDD86 /* HomeOrderTVCell.swift */; };
@@ -136,6 +139,9 @@
 /* Begin PBXFileReference section */
 		2E6F4D0B4EF17FB6B41AFBA9 /* Pods_Mushrif_Cafe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mushrif_Cafe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83201CD94B3BCD11A3F41519 /* Pods-Mushrif Cafe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mushrif Cafe.debug.xcconfig"; path = "Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe.debug.xcconfig"; sourceTree = "<group>"; };
+		C613D1DA2D9B1309000FEDD8 /* MyUsualDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUsualDetailVC.swift; sourceTree = "<group>"; };
+		C613D1DC2D9B18D8000FEDD8 /* ManageListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageListTableViewCell.swift; sourceTree = "<group>"; };
+		C613D1DD2D9B18D8000FEDD8 /* ManageListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ManageListTableViewCell.xib; sourceTree = "<group>"; };
 		C6337B562CAB1A4E00ACDD86 /* MyOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderViewController.swift; sourceTree = "<group>"; };
 		C6337B582CAB21E000ACDD86 /* MyOrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderTableViewCell.swift; sourceTree = "<group>"; };
 		C6337B5C2CAB34FC00ACDD86 /* HomeOrderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeOrderTVCell.swift; sourceTree = "<group>"; };
@@ -317,6 +323,7 @@
 				C6C818A22CB112BB00905A39 /* WalletVC.swift */,
 				C6C818A82CB1220F00905A39 /* AddFundViewController.swift */,
 				C6C818AA2CB1454F00905A39 /* ManageUsualViewController.swift */,
+				C613D1DA2D9B1309000FEDD8 /* MyUsualDetailVC.swift */,
 				C650102A2CB06542003BCA53 /* CellClass */,
 			);
 			path = Profile;
@@ -335,6 +342,8 @@
 				C6C818B12CB1B72000905A39 /* ManageUsualTableViewCell.xib */,
 				C68A613C2CCCF46B0037094D /* MyUsualHeaderCell.swift */,
 				C68A613D2CCCF46B0037094D /* MyUsualHeaderCell.xib */,
+				C613D1DC2D9B18D8000FEDD8 /* ManageListTableViewCell.swift */,
+				C613D1DD2D9B18D8000FEDD8 /* ManageListTableViewCell.xib */,
 			);
 			path = CellClass;
 			sourceTree = "<group>";
@@ -704,6 +713,7 @@
 				C68A611F2CB58A700037094D /* CellSelectionTVC.xib in Resources */,
 				C6C818BA2CB2675100905A39 /* Cart.storyboard in Resources */,
 				C6431C852D5E64A2002991F4 /* Zain-Bold.ttf in Resources */,
+				C613D1DE2D9B18D8000FEDD8 /* ManageListTableViewCell.xib in Resources */,
 				C68E72752CA30F4300F223A8 /* Poppins-Medium.ttf in Resources */,
 				C6C818A62CB11C1500905A39 /* WalletTableViewCell.xib in Resources */,
 				C6C089E42CA9927F0050F034 /* MyUsualTVCell.xib in Resources */,
@@ -791,6 +801,7 @@
 				C6C089EF2CA9C1C40050F034 /* CategoryTVCell.swift in Sources */,
 				C6E962692D92FF1D0038E831 /* CheckoutVC.swift in Sources */,
 				C6E42D4F2D161BF1006E00E3 /* SuccesOrderModel.swift in Sources */,
+				C613D1DF2D9B18D8000FEDD8 /* ManageListTableViewCell.swift in Sources */,
 				C68A61532CD4D5B60037094D /* FoodItemModel.swift in Sources */,
 				C68A61202CB58A700037094D /* CellSelectionTVC.swift in Sources */,
 				C6EDC6E92CA5A208003C40B0 /* OTPViewController.swift in Sources */,
@@ -837,6 +848,7 @@
 				C6C089D62CA8781F0050F034 /* ScanHelperClass.swift in Sources */,
 				C68A612B2CB6DB6E0037094D /* SingleTon.swift in Sources */,
 				C6EDC6EB2CA5B3A5003C40B0 /* CompleteProfileVC.swift in Sources */,
+				C613D1DB2D9B1309000FEDD8 /* MyUsualDetailVC.swift in Sources */,
 				C68A61492CD2B2780037094D /* SearchBar+Extension.swift in Sources */,
 				C650102D2CB06573003BCA53 /* ProfileHeaderTVC.swift in Sources */,
 				C6C818A72CB11C1500905A39 /* WalletTableViewCell.swift in Sources */,
@@ -1047,7 +1059,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 28;
-				DEVELOPMENT_TEAM = Z79PM5DY8M;
+				DEVELOPMENT_TEAM = 25YAZ5QP5M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -1062,7 +1074,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mushifa.cafe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.viatris.genericapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1086,7 +1098,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 28;
-				DEVELOPMENT_TEAM = Z79PM5DY8M;
+				DEVELOPMENT_TEAM = 25YAZ5QP5M;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
@@ -1101,7 +1113,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mushifa.cafe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.viatris.genericapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

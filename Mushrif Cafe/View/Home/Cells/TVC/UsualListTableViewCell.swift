@@ -24,6 +24,7 @@ class UsualListTableViewCell: UITableViewCell {
             descLabel.textAlignment =  userLanguage == "ar" ? .right :  .left
         }
     }
+    @IBOutlet var txtViewHeight: NSLayoutConstraint!
     
     @IBOutlet var addButton: UIButton!
     

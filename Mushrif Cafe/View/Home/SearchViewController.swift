@@ -204,12 +204,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if UserDefaultHelper.authToken != "" {
             let dict = self.searchData[sender.tag]
             let addVC = AddUsualsVC.instantiate()
-            if #available(iOS 15.0, *) {
-                if let sheet = addVC.sheetPresentationController {
-                    sheet.detents = [.medium()]
-                    sheet.preferredCornerRadius = 15
-                }
-            }
+//            if #available(iOS 15.0, *) {
+//                if let sheet = addVC.sheetPresentationController {
+//                    sheet.detents = [.medium()]
+//                    sheet.preferredCornerRadius = 15
+//                }
+//            }
             addVC.productId = "\(dict.id)"
             addVC.itemType = "listed"
             self.navigationController?.present(addVC, animated: true, completion: nil)
@@ -237,7 +237,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 let tableId = UserDefaultHelper.tableId ?? ""
                 let groupId = UserDefaultHelper.groupId ?? ""
                 
-                if UserDefaultHelper.tableName != "" {
+                if tableId != "" {
                     let aParams = ["hall_id": hallId,
                                    "table_id": tableId,
                                    "group_id": groupId,

@@ -34,7 +34,6 @@ class AddUsualsVC: UIViewController, Instantiatable {
     }
     
     @IBOutlet weak var mainTableView: UITableView!
-    @IBOutlet weak var tblHeight: NSLayoutConstraint!
     
     var usualData: [UsualData] = [UsualData]()
     var pageNo: Int = 1
@@ -126,8 +125,9 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         
         let addedTitles = dict.items?.map { group in
             return UserDefaultHelper.language == "ar" ? "\(group.product.nameAr)" :  "\(group.product.name)"
-        }.joined(separator: "\n")
+        }.joined(separator: ", ")
         cell.descLabel.text = addedTitles
+        cell.txtViewHeight.constant = cell.descLabel.contentSize.height
                 
         cell.addButton.tag = indexPath.row
         cell.addButton.addTarget(self, action: #selector(addAction(sender: )), for: .touchUpInside)

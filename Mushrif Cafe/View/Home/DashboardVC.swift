@@ -186,10 +186,14 @@ class DashboardVC: UIViewController, Instantiatable {
             self.finalActiveData = self.activeData
             
             if self.activeData.count > 0 {
-                if "\(self.activeData.first?.tableNo ?? 0)" != UserDefaultHelper.tableName {
+                if "\(self.activeData.first?.tableId ?? 0)" != UserDefaultHelper.tableId {
                     UserDefaultHelper.tableName = "\(self.activeData.first?.tableNo ?? 0)"
                     self.selectTableLabel.text = UserDefaultHelper.tableName
                 }
+                
+                UserDefaultHelper.hallId = "\(self.activeData.first?.hallId ?? 0)"
+                UserDefaultHelper.tableId = "\(self.activeData.first?.tableId ?? 0)"
+                UserDefaultHelper.groupId = "\(self.activeData.first?.groupId ?? 0)"
             }
 //            if self.activeData.count > 0 {
 //                for obj in 0..<self.activeData.count {
@@ -215,7 +219,7 @@ class DashboardVC: UIViewController, Instantiatable {
                 self.mainTableView.reloadData()
                 self.setupBadge()
                 
-                if UserDefaultHelper.tableName != "" {
+                if UserDefaultHelper.tableId != "" {
                     self.selectTableLabel.text = UserDefaultHelper.tableName
                     
                     if UserDefaultHelper.totalItems! != 0 {

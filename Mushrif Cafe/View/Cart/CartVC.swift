@@ -288,8 +288,9 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
                 return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
             }.joined(separator: "\n")
             cell.descLabel.text = addedTitles
-                        
             cell.descLabel.textColor = UIColor.black.withAlphaComponent(0.5)
+            cell.instructionLabel.text = "\n\(dict.instruction)"
+            cell.instructionLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.qty.text = "\(dict.quantity)"
             cell.qty.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.qtyValue = dict.quantity
@@ -346,6 +347,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
                 return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
             }.joined(separator: "\n")
             cell.descLabel.text = addedTitles
+            cell.instructionLabel.text = "\n\(dict.instruction)"
             cell.qty.text = "\(dict.quantity)"
             cell.qtyValue = dict.quantity
             

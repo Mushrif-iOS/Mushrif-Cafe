@@ -128,7 +128,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
-                UserDefaultHelper.tableName = ""
+                //UserDefaultHelper.tableName = ""
+                UserDefaultHelper.deleteTableId()
                 DispatchQueue.main.async {
                     let orderVC = OrderSuccessVC.instantiate()
                     orderVC.successOrderDetails = successOrderDetails
@@ -194,7 +195,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             
             let msg = responseJSON["message"].stringValue
             print(msg)
-            UserDefaultHelper.tableName = ""
+            //UserDefaultHelper.tableName = ""
+            UserDefaultHelper.deleteTableId()
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = successOrderDetails
@@ -232,7 +234,8 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
 //                UserDefaultHelper.totalItems = countValue
 //            }
 //            UserDefaultHelper.totalItems! = 0
-            UserDefaultHelper.tableName = ""
+            //UserDefaultHelper.tableName = ""
+            UserDefaultHelper.deleteTableId()
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = successOrderDetails

@@ -106,7 +106,7 @@
 "select" = "اختار";
 "summary" = "ملخص";
 "discount_apl" = "تم تطبيق الخصم";
-"wallet_amt" = "رصيد المحفظة";
+"wallet_amt" = "خصم المحفظة";
 "total" = "الإجمالي";
 "paid_by" = "تم الدفع بواسطة";
 "order_on" = "تم الطلب في";
@@ -124,7 +124,7 @@
 "something_wrong" = "صارت مشكلة";
 
 "item_details" = "تفاصيل المنتج";
-"no_product" = "ما في منتجات";
+"no_product" = "ما في شي موجود";
 "no_cost_product" = "ما تقدر تطلب منتج سعره صفر";
 "no_cart_item" = "ما في منتجات في السلة";
 "no_usuals" = "ما في طلبات معتادة";

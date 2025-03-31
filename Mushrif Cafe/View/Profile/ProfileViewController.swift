@@ -209,6 +209,11 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
                         UserDefaultHelper.deletePaymentKey()
                         UserDefaultHelper.deletePaymentEnv()
                         
+                        UserDefaultHelper.deleteHallId()
+                        UserDefaultHelper.deleteTableId()
+                        UserDefaultHelper.deleteGroupId()
+                        UserDefaultHelper.deleteTableName()
+                        
                         AlertView.show(message: msg, preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
                             if button == "ok".localized() {
                                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
