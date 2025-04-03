@@ -78,8 +78,10 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let manageVC = ManageUsualViewController.instantiate()
-        self.navController?.push(viewController: manageVC)
+        let dict = self.usualObj[indexPath.item]
+        let manageVC = MyUsualDetailVC.instantiate()
+        manageVC.usualId = dict.id
+        self.navController?.pushViewController(manageVC, animated: true)
     }
     
     @objc func addAction(sender: UIButton) {

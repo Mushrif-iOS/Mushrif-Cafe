@@ -89,6 +89,12 @@ struct APPURL {
     static var my_usuals: String {
         return BaseURL  + "my-usuals"
     }
+    static var my_usuals_details: String {
+        return BaseURL  + "my-usuals/details/"
+    }
+    static var my_usuals_edit: String {
+        return BaseURL  + "my-usuals/customize"
+    }
     static var create_usuals_group: String {
         return BaseURL  + "my-usuals/create"
     }

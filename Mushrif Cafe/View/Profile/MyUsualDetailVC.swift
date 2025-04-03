@@ -27,8 +27,8 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
         }
     }
     
-   // var usualData: [UsualData] = [UsualData]()
-    var usualDetail: UsualData?
+    var usualId = Int()
+    var usualData: UsualDetailsRootClass?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,36 +41,39 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
         if #available(iOS 15.0, *) {
             mainTableView.sectionHeaderTopPadding = 0
         }
-        //self.getMyUsual(page: self.pageNo)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.getMyUsualDetail()
     }
     
     @IBAction func backAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
-    private func getMyUsual(page: Int) {
+    private func getMyUsualDetail() {
         
         let aParams: [String: Any] = [:]
         
         let userLanguage = UserDefaultHelper.language
-        let dUrl = APPURL.my_usuals + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")" + "&page=\(page)"
+        let dUrl = APPURL.my_usuals_details + "\(self.usualId)" + "?locale=\(userLanguage == "ar" ? "Arabic---ae" :  "English---us")"
         
         APIManager.shared.getCallWithParams(dUrl, params: aParams) { responseJSON in
             print("Response JSON \(responseJSON)")
             
-//            let lPage = responseJSON["response"]["last_page"].intValue
-//            self.lastPage = lPage
+            let dataDict = responseJSON["response"]
             
-            //let searchDataDict = responseJSON["response"]["data"].arrayValue
-            
-//            for obj in searchDataDict {
-//                self.usualData.append(UsualData(fromJson: obj))
-//            }
-            
+            self.usualData = UsualDetailsRootClass(fromJson: dataDict)
+                        
             DispatchQueue.main.async {
                 self.mainTableView.delegate = self
                 self.mainTableView.dataSource = self
                 self.mainTableView.reloadData()
+                
+                if self.usualData?.items.count ?? 0 == 0 {
+                    self.showBanner(message: "no_product".localized(), status: .warning)
+                }
             }
         } failure: {error in
             print("Error \(error.localizedDescription)")
@@ -78,16 +81,6 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
     }
     
     @IBAction func addNewAction(_ sender: Any) {
-//        let addVC = CreateNewUsualVC.instantiate()
-//        if #available(iOS 15.0, *) {
-//            if let sheet = addVC.sheetPresentationController {
-//                sheet.detents = [.medium()]
-//                sheet.preferredCornerRadius = 15
-//            }
-//        }
-//        addVC.delegate = self
-//        addVC.title = ""
-//        self.present(addVC, animated: true, completion: nil)
     }
 }
 
@@ -98,22 +91,20 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usualDetail?.items.count ?? 0
+        return self.usualData?.items.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ManageUsualTableViewCell") as! ManageUsualTableViewCell
         cell.isCart = "N"
-//        cell.didRemoveBlock = {
-//            self.pageNo = 1
-//            self.usualData.removeAll()
-//            self.getMyUsual(page: self.pageNo)
-//        }
-        let dict = self.usualDetail?.items[indexPath.row]
+        cell.didRemoveBlock = {
+            self.getMyUsualDetail()
+        }
+        let dict = self.usualData?.items[indexPath.row]
         cell.itemId = "\(dict?.id ?? 0)"
         cell.qtyValue = dict?.quantity ?? 0
-        cell.nameLabel.text = UserDefaultHelper.language == "ar" ? dict?.product.nameAr : dict?.product.name
+        cell.nameLabel.text = dict?.product.name
         cell.editButton.isHidden = true
         if dict?.product.specialPrice != "" {
             let doubleValue = Double(dict?.product.specialPrice ?? "") ?? 0.0
@@ -130,19 +121,39 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
             }.joined(separator: "\n")
             cell.descLabel.text = addedTitles
         } else {
-            cell.descLabel.text = dict?.product.descriptionField
+            cell.descLabel.text = dict?.product.productDesc
         }
         cell.qty.text = "\(dict?.quantity ?? 0)"
         
-        if self.usualDetail?.items.count == 1 {
-            cell.backView.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 18)
-        } else {
-            if indexPath.row == 0 {
-                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
-            } else if indexPath.row == (self.usualDetail?.items.count ?? 0) - 1 {
-                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
+//        if self.usualData?.items.count == 1 {
+//            cell.backView.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 18)
+//        } else {
+//            if indexPath.row == 0 {
+//                cell.backView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
+//            } else if indexPath.row == (self.usualData?.items.count ?? 0) - 1 {
+//                cell.backView.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 18)
+//            }
+//        }
+        
+        DispatchQueue.main.async {
+            if self.usualData?.items.count == 1 {
+                cell.backView.roundCorners(corners: .allCorners, radius: 18)
+            } else {
+                if indexPath.row == 0 {
+                    cell.backView.layer.cornerRadius = 18
+                    cell.backView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+                } else if indexPath.row == (self.usualData?.items.count ?? 0) - 1 {
+                    cell.backView.layer.cornerRadius = 18
+                    cell.backView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+                } else {
+                    cell.backView.roundCorners(corners: .allCorners, radius: 0)
+                }
             }
         }
+        
+        cell.editButton.isHidden = false
+        cell.editButton.tag = indexPath.row
+        cell.editButton.addTarget(self, action: #selector(editButtonAction(sender: )), for: .touchUpInside)
         return cell
     }
     
@@ -150,43 +161,9 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
         return UITableView.automaticDimension
     }
     
-    /*func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        if self.pageNo < self.lastPage && indexPath.item == (self.usualData.count) - 1 {
-            
-            if(pageNo < self.lastPage) {
-                
-                print("Last Page: ", self.lastPage)
-                
-                let spinner = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
-                spinner.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(30))
-                spinner.startAnimating()
-                tableView.tableFooterView = spinner
-                tableView.tableFooterView?.isHidden = false
-                
-                self.pageNo += 1
-                print("Last ID: ", self.pageNo)
-                
-                self.getMyUsual(page: self.pageNo)
-            } else {
-                tableView.tableFooterView?.removeFromSuperview()
-                let view = UIView()
-                view.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(5))
-                tableView.tableFooterView = view
-                tableView.tableFooterView?.isHidden = true
-            }
-        } else {
-            tableView.tableFooterView?.removeFromSuperview()
-            let view = UIView()
-            view.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: tableView.bounds.width, height: CGFloat(5))
-            tableView.tableFooterView = view
-            tableView.tableFooterView?.isHidden = true
-        }
-    }*/
-        
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let dict = self.usualDetail
+        let dict = self.usualData
         let headerView = tableView.dequeueReusableCell(withIdentifier: MyUsualHeaderCell.identifier) as! MyUsualHeaderCell
         headerView.headerTitle.text = "\(dict?.title ?? "")"
         
@@ -195,32 +172,14 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
         headerView.editButton.isHidden = true
         
         headerView.addButton.tag = section
-        headerView.addButton.addTarget(self, action: #selector(addAction(sender: )), for: .touchUpInside)
+        headerView.addButton.addTarget(self, action: #selector(addCartAction(sender: )), for: .touchUpInside)
         return headerView
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
     }
-
-//    @objc func updateAction(sender: UIButton) {
-//        
-//        let dict = self.usualData[sender.tag]
-//        
-//        let addVC = CreateNewUsualVC.instantiate()
-//        if #available(iOS 15.0, *) {
-//            if let sheet = addVC.sheetPresentationController {
-//                sheet.detents = [.medium()]
-//                sheet.preferredCornerRadius = 15
-//            }
-//        }
-//        addVC.title = "Update"
-//        addVC.myUsual = dict
-//        addVC.delegate = self
-//        self.present(addVC, animated: true, completion: nil)
-//    }
     
-    
-    @objc func addAction(sender: UIButton) {
+    @objc func addCartAction(sender: UIButton) {
                 
         let hallId = UserDefaultHelper.hallId ?? ""
         let tableId = UserDefaultHelper.tableId ?? ""
@@ -228,7 +187,7 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
         
         if tableId != "" {
             
-            let aParams = ["usual_id": "\(self.usualDetail?.id ?? 0)",
+            let aParams = ["usual_id": "\(self.usualData?.id ?? 0)",
                            "hall_id": hallId,
                            "table_id": tableId,
                            "group_id": groupId]
@@ -251,6 +210,21 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
             let scanVC = ScanTableVC.instantiate()
             scanVC.title = "LanguageSelection"
             self.navigationController?.push(viewController: scanVC)
+        }
+    }
+    
+    @objc func editButtonAction(sender: UIButton) {
+        
+        let dict = self.usualData?.items[sender.tag]
+        
+        if dict?.productType == 5 {
+            let editVC = EditSpecialMyUsualVC.instantiate()
+            editVC.usualCartDetails = dict
+            self.navigationController?.pushViewController(editVC, animated: true)
+        } else {
+            let editVC = EditMyUsualVC.instantiate()
+            editVC.cartDetails = dict
+            self.navigationController?.pushViewController(editVC, animated: true)
         }
     }
 }

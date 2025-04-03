@@ -1104,7 +1104,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                            "group_id": groupId,
                            "order_type": orderType,
                            "item_id": "\(self.detailsData?.id ?? 0)",
-                           "combo_id": "\(self.selectedComboId ?? 0)",
+                           "combo_id": "\(self.selectedComboId ?? 0)" != "0" ? "\(self.selectedComboId ?? 0)" : "",
                            "unit_price": "\(self.basePrice)",
                            "quantity": "\(self.qtyValue)",
                            "is_customized": isCustomized == true ? "Y" : "N",

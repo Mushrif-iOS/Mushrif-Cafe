@@ -136,9 +136,7 @@ class EditCartVC: UIViewController, Instantiatable {
     var categorySelecteIndex3: IndexPath?
     var choiceSelectedRows: [IndexPath] = []
     var isPlainSelected: Bool = false
-    
-    var itemId: String = ""
-    
+        
     //var detailsData: ItemDetailsResponse?
     var ingredientsArr : [FoodItemIngredient] = [FoodItemIngredient]()
     var comboDetails: CartComboDetail?
@@ -1120,14 +1118,14 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
         let choicejsonString = self.selectedChoiceIDs.map{String($0)}.joined(separator: ",")
         print(choicejsonString)
         
-        if UserDefaultHelper.orderType != "" {
+        if tableId != "" {
             let aParams = ["hall_id": hallId,
                            "table_id": tableId,
                            "group_id": groupId,
                            "order_type": orderType,
                            "item_id": "\(self.cartDetails?.id ?? 0)",
                            "cart_item_id": "\(self.cartDetails?.id ?? 0)",
-                           "combo_id": "\(self.selectedComboId ?? 0)",
+                           "combo_id": "\(self.selectedComboId ?? 0)" != "0" ? "\(self.selectedComboId ?? 0)" : "",
                            "unit_price": "\(self.basePrice)",
                            "quantity": "\(self.qtyValue)",
                            "is_customized": "Y",

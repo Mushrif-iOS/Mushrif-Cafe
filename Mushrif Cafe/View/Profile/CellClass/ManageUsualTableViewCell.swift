@@ -102,9 +102,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                 
                 APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
                     print("Response JSON \(responseJSON)")
-                    if self.qtyValue == 0 {
-                        self.didRemoveBlock?()
-                    }
+                    self.didRemoveBlock?()
                 } failure: { error in
                     print("Error \(error.localizedDescription)")
                 }
@@ -145,6 +143,7 @@ class ManageUsualTableViewCell: UITableViewCell {
             
             APIManager.shared.postCall(APPURL.update_usuals_Qty, params: aParams, withHeader: true) { responseJSON in
                 print("Response JSON \(responseJSON)")
+                self.didRemoveBlock?()
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }

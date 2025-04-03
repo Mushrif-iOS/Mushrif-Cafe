@@ -120,7 +120,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let dict = self.usualData[indexPath.row]
         let manageVC = MyUsualDetailVC.instantiate()
-        manageVC.usualDetail = dict
+        manageVC.usualId = dict.id
         self.navigationController?.pushViewController(manageVC, animated: true)
     }
     

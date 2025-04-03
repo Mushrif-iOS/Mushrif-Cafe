@@ -83,6 +83,7 @@ class SpecialProductVC: UIViewController, Instantiatable {
     private var lastEnteredText: String = ""
     
     var cartDetails : CartItem?
+    var usualCartDetails : UsualDetailsItem?
     
     var specialMaxTotal = Int()
     var totalQuantity = 0 {
