@@ -68,8 +68,9 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             cell.statusLabel.text = "open_order".localized()
         }
         
-        cell.payNowButton.tag = indexPath.item
-        cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+//        cell.payNowButton.tag = indexPath.item
+//        cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
+        cell.payNowButton.isUserInteractionEnabled = false
         return cell
     }
     
@@ -78,19 +79,27 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if UserDefaultHelper.authToken != "" {
-            let cartVC = CartVC.instantiate()
-            self.navController?.pushViewController(cartVC, animated: true)
+//        if UserDefaultHelper.authToken != "" {
+//            let cartVC = CartVC.instantiate()
+//            self.navController?.pushViewController(cartVC, animated: true)
+//        } else {
+//            let profileVC = LoginVC.instantiate()
+//            self.navController?.pushViewController(profileVC, animated: true)
+//        }
+        let dict = usualObj[indexPath.item]
+        if dict.items.count > 0 {
+            self.cartId = "\(dict.cart.id)"
+            let dashboardVC = CheckoutVC.instantiate()
+            self.navController?.push(viewController: dashboardVC)
         } else {
-            let profileVC = LoginVC.instantiate()
-            self.navController?.pushViewController(profileVC, animated: true)
+            self.navController?.showBanner(message: "no_cart_item".localized(), status: .failed)
         }
     }
     
     @objc func payNowAction(sender: UIButton) {
         
         let dict = usualObj[sender.tag]
-        if dict.cart != nil {
+        if dict.items.count > 0 {
             self.cartId = "\(dict.cart.id)"
 //            let addVC = HomePaymentMethodVC.instantiate()
 //            if #available(iOS 15.0, *) {
@@ -130,6 +139,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
                 print(msg)
                 //UserDefaultHelper.tableName = ""
                 UserDefaultHelper.deleteTableId()
+                UserDefaultHelper.deleteTableName()
                 DispatchQueue.main.async {
                     let orderVC = OrderSuccessVC.instantiate()
                     orderVC.successOrderDetails = successOrderDetails
@@ -197,6 +207,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             print(msg)
             //UserDefaultHelper.tableName = ""
             UserDefaultHelper.deleteTableId()
+            UserDefaultHelper.deleteTableName()
             DispatchQueue.main.async {
                 let orderVC = OrderSuccessVC.instantiate()
                 orderVC.successOrderDetails = successOrderDetails

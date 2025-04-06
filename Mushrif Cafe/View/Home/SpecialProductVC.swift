@@ -83,7 +83,6 @@ class SpecialProductVC: UIViewController, Instantiatable {
     private var lastEnteredText: String = ""
     
     var cartDetails : CartItem?
-    var usualCartDetails : UsualDetailsItem?
     
     var specialMaxTotal = Int()
     var totalQuantity = 0 {
@@ -334,11 +333,7 @@ class SpecialProductVC: UIViewController, Instantiatable {
             if self.choiceArr.count > 0 {
                 self.typeOfMealLabel.text = self.choiceArr.first?.title
                 self.requiredLabel.text = "\("required".localized()): \("selectAny".localized()) \(self.choiceArr.first?.minSelection ?? 0) \("option".localized())"
-                //self.maximumLabel.text = "0"
                 self.specialMaxTotal = self.choiceArr.first?.maxSelection ?? 0
-                
-//                self.specialQuantities = self.choiceArr.first?.choices.map { $0.selectionStatus == 1 ? 1 : 0 } ?? []
-//                self.totalQuantity = self.specialQuantities.reduce(0, +)
                 
                 self.specialQuantities = self.choiceArr.first?.choices.map { $0.quantity } ?? []
                 self.totalQuantity = self.specialQuantities.reduce(0, +)

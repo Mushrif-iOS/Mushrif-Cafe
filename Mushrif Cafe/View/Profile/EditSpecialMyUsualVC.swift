@@ -74,7 +74,6 @@ class EditSpecialMyUsualVC: UIViewController, Instantiatable {
     
     var itemId: String = ""
     
-    var detailsData: ItemDetailsResponse?
     var choiceArr : [ChoiceGroup] = [ChoiceGroup]()
             
     var usualCartDetails : UsualDetailsItem?
@@ -174,7 +173,6 @@ class EditSpecialMyUsualVC: UIViewController, Instantiatable {
             if self.choiceArr.count > 0 {
                 self.typeOfMealLabel.text = self.choiceArr.first?.title
                 self.requiredLabel.text = "\("required".localized()): \("selectAny".localized()) \(self.choiceArr.first?.minSelection ?? 0) \("option".localized())"
-                //self.maximumLabel.text = "0"
                 self.specialMaxTotal = self.choiceArr.first?.maxSelection ?? 0
                 
                 self.specialQuantities = self.choiceArr.first?.choices.map { $0.quantity } ?? []
@@ -220,32 +218,16 @@ extension EditSpecialMyUsualVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.qty.text = "\(self.specialQuantities[indexPath.row])"
         
-        if title == "Edit" {
-            cell.quantity = self.specialQuantities[indexPath.row]
-            cell.onQuantityChanged = { [weak self] change in
-                guard let self = self else { return }
-                let newTotal = self.totalQuantity + change
-                let newQuantity = self.specialQuantities[indexPath.row] + change
-                if (change > 0 && newTotal <= self.specialMaxTotal) || (change < 0 && newQuantity >= 0) {
-                    self.totalQuantity = newTotal
-                    self.specialQuantities[indexPath.row] = newQuantity
-                    self.updateSelectedItemsString()
-                    self.mealTypeTblView.reloadRows(at: [indexPath], with: .none)
-                }
-            }
-        } else {
-            cell.onQuantityChanged = { [weak self] change in
-                guard let self = self else { return }
-                let newTotal = self.totalQuantity + change
-                if newTotal <= self.specialMaxTotal && newTotal >= 0 {
-                    let newQuantity = self.specialQuantities[indexPath.row] + change
-                    if newQuantity >= 0 {
-                        self.totalQuantity = newTotal
-                        self.specialQuantities[indexPath.row] = newQuantity
-                        cell.quantity = newQuantity
-                        self.updateSelectedItemsString()
-                    }
-                }
+        cell.quantity = self.specialQuantities[indexPath.row]
+        cell.onQuantityChanged = { [weak self] change in
+            guard let self = self else { return }
+            let newTotal = self.totalQuantity + change
+            let newQuantity = self.specialQuantities[indexPath.row] + change
+            if (change > 0 && newTotal <= self.specialMaxTotal) || (change < 0 && newQuantity >= 0) {
+                self.totalQuantity = newTotal
+                self.specialQuantities[indexPath.row] = newQuantity
+                self.updateSelectedItemsString()
+                self.mealTypeTblView.reloadRows(at: [indexPath], with: .none)
             }
         }
         

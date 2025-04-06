@@ -198,8 +198,8 @@ class CartVC: UIViewController, Instantiatable {
         
         DispatchQueue.main.async {
             
-            self.amtLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KWD"
-            self.totalLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KWD"
+            self.amtLabel.text = "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") KWD" : "")"
+            self.totalLabel.text = "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") KWD" : "")"
             self.totalCost = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "")"
 
 //            UserDefaultHelper.totalItems! = data?.items ?? 0
@@ -216,10 +216,12 @@ class CartVC: UIViewController, Instantiatable {
             }
             if self.cartArray.count > 0 {
                 UserDefaultHelper.totalItems! = self.cartArray.count
-                
+                self.placeOrderButton.isUserInteractionEnabled = true
                 self.activeTableView.isHidden = false
                 self.activeTableView.reloadData()
             } else {
+                self.placeOrderButton.isUserInteractionEnabled = false
+                self.placeOrderButton.alpha = 0.5
                 self.activeTableView.isHidden = true
                 self.activeTblHeight.constant = 0
                 //self.inactiveTableView.reloadData()
@@ -229,9 +231,10 @@ class CartVC: UIViewController, Instantiatable {
     
     @IBAction func placeOrderAction(_ sender: Any) {
         
-        if self.cartArray.count == 0 {
-            self.showBanner(message: "no_cart_item".localized(), status: .failed)
-        } else if UserDefaultHelper.totalPrice ?? 0.0 <= 0.0 {
+//        if self.cartArray.count == 0 {
+//            self.showBanner(message: "no_cart_item".localized(), status: .failed)
+//        } else
+        if UserDefaultHelper.totalPrice ?? 0.0 <= 0.0 {
             self.showBanner(message: "no_cost_product".localized(), status: .failed)
         } else {
             

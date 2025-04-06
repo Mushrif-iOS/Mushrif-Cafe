@@ -365,6 +365,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                     
                     //UserDefaultHelper.tableName = ""
                     UserDefaultHelper.deleteTableId()
+                    UserDefaultHelper.deleteTableName()
                     
                     DispatchQueue.main.async {
                         self.showBanner(message: msg, status: .success)
@@ -397,6 +398,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print(msg)
                 //UserDefaultHelper.tableName = ""
                 UserDefaultHelper.deleteTableId()
+                UserDefaultHelper.deleteTableName()
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
                     let orderVC = OrderSuccessVC.instantiate()
@@ -420,6 +422,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print(msg)
                 //UserDefaultHelper.tableName = ""
                 UserDefaultHelper.deleteTableId()
+                UserDefaultHelper.deleteTableName()
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
                     let orderVC = OrderSuccessVC.instantiate()
