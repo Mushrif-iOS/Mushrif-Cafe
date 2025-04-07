@@ -136,6 +136,7 @@ class EditMyUsualVC: UIViewController, Instantiatable {
     var categorySelecteIndex3: IndexPath?
     var choiceSelectedRows: [IndexPath] = []
     var isPlainSelected: Bool = false
+    var isPlainHide: Bool = false
     
     var itemId: String = ""
     
@@ -359,8 +360,15 @@ class EditMyUsualVC: UIViewController, Instantiatable {
         self.footerView?.isChecked = self.isPlainSelected
         self.stuffTblView.reloadData()
         
+        self.isPlainHide = self.cartDetails?.product?.ingredients?.allSatisfy { $0.ingredientDetails?.selectionStatus == 1 } ?? false
+        print("isHidePlain", self.isPlainHide)
+        
         if self.ingredientsArr.count > 0 {
-            self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
+            if self.isPlainHide {
+                self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52)
+            } else {
+                self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
+            }
             self.stuffTblView.reloadData()
         } else {
             self.typeOfMealTop.constant = 0
@@ -757,7 +765,11 @@ extension EditMyUsualVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if tableView == self.stuffTblView {
-            return 52
+            if self.isPlainHide {
+                return 0
+            } else {
+                return 52
+            }
         } else {
             return 0
         }
@@ -1050,6 +1062,13 @@ extension EditMyUsualVC: UITableViewDelegate, UITableViewDataSource {
         let choicejsonString = self.selectedChoiceIDs.map{String($0)}.joined(separator: ",")
         print(choicejsonString)
         
+        var isPlain: String = ""
+        if self.isPlainSelected && !self.isPlainHide {
+            isPlain = "Y"
+        } else {
+            isPlain = "N"
+        }
+        
         if tableId != "" {
             let aParams = ["hall_id": hallId,
                            "table_id": tableId,
@@ -1058,7 +1077,7 @@ extension EditMyUsualVC: UITableViewDelegate, UITableViewDataSource {
                            "item_id": "\(self.cartDetails?.id ?? 0)",
                            "quantity": "\(self.qtyValue)",
                            "is_customized": "Y",
-                           "is_plain": self.isPlainSelected ? "Y" : "N",
+                           "is_plain": isPlain,
                            "ingredients_id": "\(ingredientsjsonString)",
                            "combo_product_id": "\(combojsonString)",
                            "choice_group_id": "\(choicejsonString)",
