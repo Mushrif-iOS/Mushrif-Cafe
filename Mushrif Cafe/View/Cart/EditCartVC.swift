@@ -428,7 +428,7 @@ class EditCartVC: UIViewController, Instantiatable {
         self.footerView?.isChecked = self.isPlainSelected
         self.stuffTblView.reloadData()
         
-        self.isPlainHide = self.cartDetails?.product?.ingredients?.allSatisfy { $0.ingredientDetails?.selectionStatus == 1 } ?? false
+        self.isPlainHide = self.cartDetails?.product?.ingredients?.allSatisfy { $0.requirementStatus == 1 } ?? false
         print("isHidePlain", self.isPlainHide)
         
         if self.ingredientsArr.count > 0 {

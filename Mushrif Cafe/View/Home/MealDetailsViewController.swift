@@ -136,6 +136,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     var categorySelecteIndex3: IndexPath?
     var choiceSelectedRows: [IndexPath] = []
     var isPlainSelected: Bool = false
+    var isPlainHide: Bool = false
     
     var itemId: String = ""
     
@@ -492,8 +493,19 @@ class MealDetailsViewController: UIViewController, Instantiatable {
                 self.categoryTblView3.reloadData()
             }
         }
+        
+        self.isPlainHide = data?.ingredients?.allSatisfy { $0.requirementStatus == 1 } ?? false
+        print("isHidePlain", self.isPlainHide)
+        
         if self.ingredientsArr.count > 0 {
-            self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
+//            self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
+//            self.stuffTblView.reloadData()
+            
+            if self.isPlainHide {
+                self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52)
+            } else {
+                self.stuffTblHeight.constant = CGFloat(self.ingredientsArr.count * 52) + 52
+            }
             self.stuffTblView.reloadData()
         } else {
             self.typeOfMealTop.constant = 0
@@ -801,7 +813,11 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if tableView == self.stuffTblView {
-            return 52
+            if self.isPlainHide {
+                return 0
+            } else {
+                return 52
+            }
         } else {
             return 0
         }
@@ -1098,7 +1114,14 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         
         print("\(self.basePrice)")
         
-        if tableId != "" {
+        var isPlain: String = ""
+        if self.isPlainSelected && !self.isPlainHide {
+            isPlain = "Y"
+        } else {
+            isPlain = "N"
+        }
+        
+        if tableId == "" {
             let aParams = ["hall_id": hallId,
                            "table_id": tableId,
                            "group_id": groupId,
@@ -1108,7 +1131,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                            "unit_price": "\(self.basePrice)",
                            "quantity": "\(self.qtyValue)",
                            "is_customized": isCustomized == true ? "Y" : "N",
-                           "is_plain": self.isPlainSelected ? "Y" : "N",
+                           "is_plain": isPlain,
                            "ingredients_id": "\(ingredientsjsonString)",
                            "combo_product_id": "\(combojsonString)",
                            "choice_group_id": "\(choicejsonString)",
