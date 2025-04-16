@@ -49,7 +49,7 @@ class MealCVCell: UICollectionViewCell {
     @IBOutlet weak var customizeLabel: UILabel! {
         didSet {
             customizeLabel.font = UIFont.poppinsRegularFontWith(size: 15)
-            customizeLabel.text = "Customizable"
+            customizeLabel.text = "customizable".localized()
         }
     }
     

@@ -122,7 +122,7 @@ class SpecialProductVC: UIViewController, Instantiatable {
         // Set button properties
         floatingButton.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis.rtl"), for: .normal)
         floatingButton.tintColor = UIColor.white
-        floatingButton.backgroundColor = UIColor.primaryBrown
+        floatingButton.backgroundColor = UIColor.floatingColor
         floatingButton.layer.cornerRadius = 25
         floatingButton.layer.shadowColor = UIColor.black.cgColor
         floatingButton.layer.shadowOpacity = 0.3
@@ -282,7 +282,7 @@ class SpecialProductVC: UIViewController, Instantiatable {
                 self.descLabel.text = self.detailsData?.prodDetails
                 
                 if self.choiceArr.count > 0 {
-                    self.typeOfMealLabel.text = self.choiceArr.first?.title
+                    self.typeOfMealLabel.text = UserDefaultHelper.language == "ar" ? self.choiceArr.first?.titleAr : self.choiceArr.first?.title
                     self.requiredLabel.text = "\("required".localized()): \("selectAny".localized()) \(self.choiceArr.first?.minSelection ?? 0) \("option".localized())"
                     self.maximumLabel.text = "0"
                     self.specialMaxTotal = self.choiceArr.first?.maxSelection ?? 0
@@ -331,7 +331,7 @@ class SpecialProductVC: UIViewController, Instantiatable {
             
             self.choiceArr = data?.product.choiceGroups ?? []
             if self.choiceArr.count > 0 {
-                self.typeOfMealLabel.text = self.choiceArr.first?.title
+                self.typeOfMealLabel.text = UserDefaultHelper.language == "ar" ? self.choiceArr.first?.titleAr : self.choiceArr.first?.title
                 self.requiredLabel.text = "\("required".localized()): \("selectAny".localized()) \(self.choiceArr.first?.minSelection ?? 0) \("option".localized())"
                 self.specialMaxTotal = self.choiceArr.first?.maxSelection ?? 0
                 
@@ -374,7 +374,7 @@ extension SpecialProductVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: SpecialMealTVC.identifier) as! SpecialMealTVC
         
         let dict = self.choiceArr.first?.choices[indexPath.row]
-        cell.nameLabel.text = "\(dict?.choice ?? "")"
+        cell.nameLabel.text = UserDefaultHelper.language == "ar" ? "\(dict?.choiceAr ?? "")" : "\(dict?.choice ?? "")"
         
         cell.qty.text = "\(self.specialQuantities[indexPath.row])"
         

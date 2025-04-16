@@ -73,7 +73,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
             cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         }
         
-        cell.descLabel.text = dict.descriptionField
+        cell.descLabel.text = UserDefaultHelper.language == "ar" ? dict.descriptionAr :  dict.descriptionField
         cell.addButton.tag = indexPath.item
         cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
         
@@ -169,11 +169,28 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
     
     @objc func addUsualAction(sender: UIButton) {
         
+        let dict = mealObj[sender.tag]
+        
+        var diubleValue = Double()
+        if dict.specialPrice != "" {
+            diubleValue = Double(dict.specialPrice) ?? 0.0
+        } else {
+            diubleValue = Double(dict.price) ?? 0.0
+        }
+        if diubleValue <= 0.0 {
+            self.navController?.showBanner(message: "no_cost_Usual".localized(), status: .failed)
+            return
+        }
+        
+        if dict.productType == 4 {
+            self.navController?.showBanner(message: "cant_add_usual".localized(), status: .failed)
+            return
+        }
+        
         if UserDefaultHelper.authToken != "" {
 //            if let cell = self.dataCollection.cellForItem(at: IndexPath(row: sender.tag, section: 0)) as? MealCVCell {
 //                cell.saveButton.isSelected.toggle()
 //            }
-            let dict = mealObj[sender.tag]
             let addVC = AddUsualsVC.instantiate()
 //            if #available(iOS 15.0, *) {
 //                if let sheet = addVC.sheetPresentationController {

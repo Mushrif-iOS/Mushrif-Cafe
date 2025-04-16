@@ -231,6 +231,7 @@ class TryOurBest {
     var businessId : Int?
     var categoryId : Int?
     var descriptionField : String = ""
+    var descriptionAr : String = ""
     var haveCombo : Int?
     var howToCook : String = ""
     var id : Int?
@@ -251,6 +252,7 @@ class TryOurBest {
         businessId = json["business_id"].intValue
         categoryId = json["category_id"].intValue
         descriptionField = json["description"].stringValue
+        descriptionAr = json["description_ar"].stringValue
         haveCombo = json["have_combo"].intValue
         howToCook = json["how_to_cook"].stringValue
         id = json["id"].intValue

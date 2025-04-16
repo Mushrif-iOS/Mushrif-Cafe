@@ -355,11 +355,28 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
     }
     
     @objc func addUsualAction(sender: UIButton) {
+        
+        let dict = self.foodItemArr[sender.tag]
+        var diubleValue = Double()
+        if dict.specialPrice != "" {
+            diubleValue = Double(dict.specialPrice) ?? 0.0
+        } else {
+            diubleValue = Double(dict.price) ?? 0.0
+        }
+        if diubleValue <= 0.0 {
+            self.showBanner(message: "no_cost_Usual".localized(), status: .failed)
+            return
+        }
+        
+        if dict.productType == 4 {
+            self.showBanner(message: "cant_add_usual".localized(), status: .failed)
+            return
+        }
+        
         if UserDefaultHelper.authToken != "" {
 //            if let cell = self.mainTableView.cellForRow(at: IndexPath(row: sender.tag, section: 0)) as? CategoryTableViewCell {
 //                //cell.saveButton.isSelected.toggle()
 //            }
-            let dict = self.foodItemArr[sender.tag]
             let addVC = AddUsualsVC.instantiate()
 //            if #available(iOS 15.0, *) {
 //                if let sheet = addVC.sheetPresentationController {

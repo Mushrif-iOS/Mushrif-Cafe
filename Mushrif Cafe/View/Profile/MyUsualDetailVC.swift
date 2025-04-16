@@ -30,6 +30,8 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
     var usualId = Int()
     var usualData: UsualDetailsRootClass?
     
+    var delegate: AddMoneyDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -168,8 +170,8 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
         headerView.headerTitle.text = "\(dict?.title ?? "")"
         
         headerView.editButton.tag = section
-        //headerView.editButton.addTarget(self, action: #selector(updateAction(sender: )), for: .touchUpInside)
-        headerView.editButton.isHidden = true
+        headerView.editButton.addTarget(self, action: #selector(deleteAction(sender: )), for: .touchUpInside)
+        //headerView.editButton.isHidden = true
         
         headerView.addButton.tag = section
         headerView.addButton.addTarget(self, action: #selector(addCartAction(sender: )), for: .touchUpInside)
@@ -177,6 +179,24 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 50
+    }
+    
+    @objc func deleteAction(sender: UIButton) {
+        let aParams = ["group_id": "\(self.usualData?.id ?? 0)"]
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.usuals_delete, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let msg = responseJSON["message"].stringValue
+            self.showBanner(message: msg, status: .success)
+            
+            self.delegate?.completed()
+            self.navigationController?.popViewController(animated: true)
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
     
     @objc func addCartAction(sender: UIButton) {

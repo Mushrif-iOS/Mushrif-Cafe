@@ -205,7 +205,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
                         UserDefaultHelper.deleteMobile()
                         UserDefaultHelper.deleteAuthToken()
                         UserDefaultHelper.deleteTotalItems()
-                        UserDefaultHelper.deleteTotalPrice()
+                        //UserDefaultHelper.deleteTotalPrice()
                         UserDefaultHelper.deletePaymentKey()
                         UserDefaultHelper.deletePaymentEnv()
                         

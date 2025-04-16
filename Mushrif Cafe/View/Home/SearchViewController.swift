@@ -201,8 +201,24 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     @objc func addUsualAction(sender: UIButton) {
         
+        let dict = self.searchData[sender.tag]
+        var diubleValue = Double()
+        if dict.specialPrice != "" {
+            diubleValue = Double(dict.specialPrice) ?? 0.0
+        } else {
+            diubleValue = Double(dict.price) ?? 0.0
+        }
+        if diubleValue <= 0.0 {
+            self.showBanner(message: "no_cost_Usual".localized(), status: .failed)
+            return
+        }
+        
+        if dict.productType == 4 {
+            self.showBanner(message: "cant_add_usual".localized(), status: .failed)
+            return
+        }
+        
         if UserDefaultHelper.authToken != "" {
-            let dict = self.searchData[sender.tag]
             let addVC = AddUsualsVC.instantiate()
 //            if #available(iOS 15.0, *) {
 //                if let sheet = addVC.sheetPresentationController {

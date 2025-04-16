@@ -156,6 +156,7 @@ class ChoiceGroup {
     var minSelection : Int = 0
     var productId : Int = 0
     var title : String = ""
+    var titleAr : String = ""
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -171,12 +172,14 @@ class ChoiceGroup {
         maxSelection = json["max_selection"].intValue
         minSelection = json["min_selection"].intValue
         productId = json["product_id"].intValue
-        title = json["title"].stringValue
+        title = json["title_en"].stringValue
+        titleAr = json["title_ar"].stringValue
     }
 }
 
 class Choice {
     var choice : String = ""
+    var choiceAr : String = ""
     var choicePrice : String = ""
     var groupId : Int = 0
     var id : Int = 0
@@ -188,7 +191,8 @@ class Choice {
         if json.isEmpty {
             return
         }
-        choice = json["choice"].stringValue
+        choice = json["choice_en"].stringValue
+        choiceAr = json["choice_ar"].stringValue
         choicePrice = json["choice_price"].stringValue
         groupId = json["group_id"].intValue
         id = json["id"].intValue

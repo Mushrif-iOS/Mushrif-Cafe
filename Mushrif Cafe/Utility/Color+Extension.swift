@@ -21,6 +21,7 @@ extension UIColor {
     static let borderPink = UIColor(hex: 0xED968F)
     static let appRed = UIColor(hex: 0xFF0000)
     static let gradiantPink = UIColor(hex: 0xF07B72)
+    static let floatingColor = UIColor(hex: 0xED968F)
     
     // Create a UIColor from RGB
     convenience init(red: Int, green: Int, blue: Int, a: CGFloat = 1.0) {

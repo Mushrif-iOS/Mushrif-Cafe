@@ -126,6 +126,7 @@ class CheckoutVC: UIViewController, Instantiatable {
     
     private var payment : PKPaymentRequest = PKPaymentRequest()
     var totalCost: String = ""
+    var remainingAmountAfterWallet: String = ""
     
     //var orderID: String = ""
     
@@ -190,58 +191,190 @@ class CheckoutVC: UIViewController, Instantiatable {
     }
     
     @IBAction func walletCheckBoxAction(_ sender: Any) {
+        /*walletCheckBoxBtn.isSelected = !walletCheckBoxBtn.isSelected
+         if walletCheckBoxBtn.isSelected {
+         appleCheckBoxBtn.isSelected = false
+         knetCheckBoxBtn.isSelected = false
+         self.walletDiscountStack.isHidden = false
+         self.walletTotalStack.isHidden = false
+         
+         if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) > (Double(self.totalCost) ?? 0) {
+         self.discountLabel.text = "-\(self.totalCost) KWD"
+         self.totalLabel.text = "0.0 KWD"
+         //self.totalCost = "0.0"
+         print(self.totalCost)
+         } else {
+         let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+         self.discountLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+         
+         let totalValue = abs((Double(self.totalCost) ?? 0) - (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0))
+         self.totalLabel.text = "\(totalValue.rounded(toPlaces: 2)) KWD"
+         //self.totalCost = "\(totalValue)"
+         print(self.totalCost)
+         }
+         } else {
+         self.walletDiscountStack.isHidden = true
+         self.walletTotalStack.isHidden = true
+         self.setupUI()
+         }
+         
+         paymentType = "wallet"
+         print(paymentType)*/
+        
         walletCheckBoxBtn.isSelected = !walletCheckBoxBtn.isSelected
+        let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
+        let totalCostValue = Double(self.totalCost) ?? 0
+        
         if walletCheckBoxBtn.isSelected {
-            appleCheckBoxBtn.isSelected = false
-            knetCheckBoxBtn.isSelected = false
-            self.walletDiscountStack.isHidden = false
-            self.walletTotalStack.isHidden = false
-            
-            if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) > (Double(self.totalCost) ?? 0) {
+            if walletBalance >= totalCostValue {
+                // Wallet amount is sufficient, ONLY allow Wallet selection
+                appleCheckBoxBtn.isSelected = false
+                knetCheckBoxBtn.isSelected = false
+                self.walletDiscountStack.isHidden = false
+                self.walletTotalStack.isHidden = false
+                
                 self.discountLabel.text = "-\(self.totalCost) KWD"
                 self.totalLabel.text = "0.0 KWD"
-                //self.totalCost = "0.0"
-                print(self.totalCost)
+                print("Remaining amount: 0.0 KWD")
+                self.remainingAmountAfterWallet = ""
+                paymentType = "wallet"
             } else {
-                let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                self.discountLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                // Wallet amount is insufficient, allow partial payment with either Apple Pay or Knet
+                self.walletDiscountStack.isHidden = false
+                self.walletTotalStack.isHidden = false
                 
-                let totalValue = abs((Double(self.totalCost) ?? 0) - (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0))
-                self.totalLabel.text = "\(totalValue.rounded(toPlaces: 2)) KWD"
-                //self.totalCost = "\(totalValue)"
-                print(self.totalCost)
+                let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+                self.discountLabel.text = "-\(doubleValue.rounded(toPlaces: 2)) KWD"
+                
+                let remainingAmount = abs(totalCostValue - walletBalance)
+                self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) KWD")
+                self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
+                
+                // Dynamically set paymentType based on other selections
+                if appleCheckBoxBtn.isSelected {
+                    paymentType = "wallet_and_apple_pay"
+                } else if knetCheckBoxBtn.isSelected {
+                    paymentType = "wallet_and_knet"
+                } else {
+                    paymentType = "wallet"
+                }
             }
         } else {
+            // Wallet deselected
             self.walletDiscountStack.isHidden = true
             self.walletTotalStack.isHidden = true
-            self.setupUI()
+            self.totalLabel.text = "\(totalCostValue) KWD"
+            paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : knetCheckBoxBtn.isSelected ? "knet" : ""
         }
         
-        paymentType = "wallet"
-        print(paymentType)
+        print("Selected paymentType: \(paymentType)")
+        self.setupUI()
     }
     @IBAction func appleCheckBoxAction(_ sender: Any) {
+        /*appleCheckBoxBtn.isSelected = !appleCheckBoxBtn.isSelected
+         if appleCheckBoxBtn.isSelected {
+         walletCheckBoxBtn.isSelected = false
+         knetCheckBoxBtn.isSelected = false
+         self.walletDiscountStack.isHidden = true
+         self.walletTotalStack.isHidden = true
+         }
+         self.paymentType = "apple_pay"
+         print(paymentType)
+         self.setupUI()*/
         appleCheckBoxBtn.isSelected = !appleCheckBoxBtn.isSelected
+        let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
+        let totalCostValue = Double(self.totalCost) ?? 0
+        
         if appleCheckBoxBtn.isSelected {
-            walletCheckBoxBtn.isSelected = false
-            knetCheckBoxBtn.isSelected = false
-            self.walletDiscountStack.isHidden = true
-            self.walletTotalStack.isHidden = true
+            if walletBalance >= totalCostValue {
+                // Wallet balance is sufficient, ONLY allow one method selection
+                walletCheckBoxBtn.isSelected = false
+                knetCheckBoxBtn.isSelected = false
+                self.walletDiscountStack.isHidden = true
+                self.walletTotalStack.isHidden = true
+                paymentType = "apple_pay"
+            } else {
+                // Allow partial payment with Wallet if Wallet is insufficient
+                knetCheckBoxBtn.isSelected = false  // Ensure Knet is deselected
+                
+                if walletCheckBoxBtn.isSelected {
+                    let remainingAmount = abs(totalCostValue - walletBalance)
+                    self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                    paymentType = "wallet_and_apple_pay"
+                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) KWD")
+                    self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
+                } else {
+                    self.totalLabel.text = "\(totalCostValue) KWD"
+                    paymentType = "apple_pay"
+                }
+            }
+        } else {
+            // Apple Pay deselected
+            if walletCheckBoxBtn.isSelected && walletBalance < totalCostValue {
+                let remainingAmount = abs(totalCostValue - walletBalance)
+                self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                paymentType = "wallet"
+            } else {
+                self.totalLabel.text = "\(totalCostValue) KWD"
+                paymentType = knetCheckBoxBtn.isSelected ? "knet" : ""
+            }
         }
-        self.paymentType = "apple_pay"
-        print(paymentType)
+        
+        print("Selected paymentType: \(paymentType)")
         self.setupUI()
     }
     @IBAction func knetCheckBoxAction(_ sender: Any) {
+        /*knetCheckBoxBtn.isSelected = !knetCheckBoxBtn.isSelected
+         if knetCheckBoxBtn.isSelected {
+         walletCheckBoxBtn.isSelected = false
+         appleCheckBoxBtn.isSelected = false
+         self.walletDiscountStack.isHidden = true
+         self.walletTotalStack.isHidden = true
+         }
+         self.paymentType = "knet"
+         print(paymentType)
+         self.setupUI()*/
         knetCheckBoxBtn.isSelected = !knetCheckBoxBtn.isSelected
+        let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
+        let totalCostValue = Double(self.totalCost) ?? 0
+        
         if knetCheckBoxBtn.isSelected {
-            walletCheckBoxBtn.isSelected = false
-            appleCheckBoxBtn.isSelected = false
-            self.walletDiscountStack.isHidden = true
-            self.walletTotalStack.isHidden = true
+            if walletBalance >= totalCostValue {
+                // Wallet balance is sufficient, ONLY allow one method selection
+                walletCheckBoxBtn.isSelected = false
+                appleCheckBoxBtn.isSelected = false
+                self.walletDiscountStack.isHidden = true
+                self.walletTotalStack.isHidden = true
+                paymentType = "knet"
+            } else {
+                // Allow partial payment with Wallet if Wallet is insufficient
+                appleCheckBoxBtn.isSelected = false  // Ensure Apple Pay is deselected
+                
+                if walletCheckBoxBtn.isSelected {
+                    let remainingAmount = abs(totalCostValue - walletBalance)
+                    self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                    paymentType = "wallet_and_knet"
+                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) KWD")
+                    self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
+                } else {
+                    self.totalLabel.text = "\(totalCostValue) KWD"
+                    paymentType = "knet"
+                }
+            }
+        } else {
+            // Knet deselected
+            if walletCheckBoxBtn.isSelected && walletBalance < totalCostValue {
+                let remainingAmount = abs(totalCostValue - walletBalance)
+                self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                paymentType = "wallet"
+            } else {
+                self.totalLabel.text = "\(totalCostValue) KWD"
+                paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : ""
+            }
         }
-        self.paymentType = "knet"
-        print(paymentType)
+        
+        print("Selected paymentType: \(paymentType)")
         self.setupUI()
     }
     
@@ -281,10 +414,11 @@ class CheckoutVC: UIViewController, Instantiatable {
                     return (unitPrice) * Double(quantity)
                 }.reduce(0.0, +)
                 
-                print("Total Price: \(totalPrice)")
-                self.amtLabel.text = "\(totalPrice) KWD"
-                self.totalCost = "\(totalPrice)"
-                print(self.totalCost)
+                print("Total Price: \(totalPrice.rounded(toPlaces: 2))")
+                
+                self.amtLabel.text = "\(totalPrice.rounded(toPlaces: 2)) KWD"
+                self.totalCost = "\(totalPrice.rounded(toPlaces: 2))"
+                print("Total Cost: \(self.totalCost)")
                 self.inactiveTableView.isHidden = false
                 self.inactiveTableView.reloadData()
             } else {
@@ -298,27 +432,6 @@ class CheckoutVC: UIViewController, Instantiatable {
     @IBAction func placeOrderAction(_ sender: Any) {
         
         if self.paymentType == "apple_pay" {
-            
-            /*let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "apple_pay", "order_type": UserDefaultHelper.tableName == "" ? "takeaway" : "dinein"]
-            print(aParams)
-            
-            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
-                print("Response JSON \(responseJSON)")
-                let dataDict = responseJSON["response"]
-                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
-                
-                self.orderID = "\(self.successOrderDetails?.id ?? 0)"
-                
-                self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
-                
-                let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
-                if controller != nil {
-                    controller!.delegate = self
-                    self.present(controller!, animated: true, completion: nil)
-                }
-            } failure: { error in
-                print("Error \(error.localizedDescription)")
-            }*/
             self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
             
             let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
@@ -327,26 +440,12 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.present(controller!, animated: true, completion: nil)
             }
         } else if self.paymentType == "knet" {
-            
-            /*let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "knet", "order_type": UserDefaultHelper.tableName == "" ? "takeaway" : "dinein"]
-            print(aParams)
-            
-            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
-                print("Response JSON \(responseJSON)")
-                let dataDict = responseJSON["response"]
-                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
-                
-                //self.orderID = "\(self.successOrderDetails?.id ?? 0)"
-                self.executePayment(paymentMethodId: 1)
-            } failure: { error in
-                print("Error \(error.localizedDescription)")
-            }*/
             self.executePayment(paymentMethodId: 1)
         } else if self.paymentType == "wallet" {
             if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) < (Double(self.totalCost) ?? 0) {
                 self.showBanner(message: "insf_waller_amt".localized(), status: .failed)
             } else {
-                let aParams = ["order_id": "\(self.cartData?.orderId ?? 0)", "payment_type": "wallet", "payment_id": "", "payment_status": "Paid", "amount": self.totalCost]
+                let aParams: [String : Any] = ["order_id": "\(self.cartData?.orderId ?? 0)", "payment_type": "wallet", "payment_id": "", "payment_status": "Paid", "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0"]
                 print(aParams)
                 
                 APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -378,6 +477,16 @@ class CheckoutVC: UIViewController, Instantiatable {
                     print("Error \(error.localizedDescription)")
                 }
             }
+        } else if self.paymentType == "wallet_and_apple_pay" {
+            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.remainingAmountAfterWallet))]
+            
+            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+            if controller != nil {
+                controller!.delegate = self
+                self.present(controller!, animated: true, completion: nil)
+            }
+        } else if self.paymentType == "wallet_and_knet" {
+            self.executePayment(paymentMethodId: 1)
         } else {
             self.showBanner(message: "checkout_no_method".localized(), status: .failed)
         }
@@ -386,7 +495,7 @@ class CheckoutVC: UIViewController, Instantiatable {
     private func paymentOrder(orderId: String, type: String, payId: String, paymentStatus: String) {
         
         if type == "apple_pay" && payId != "" {
-            let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost]
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -396,7 +505,6 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
-                //UserDefaultHelper.tableName = ""
                 UserDefaultHelper.deleteTableId()
                 UserDefaultHelper.deleteTableName()
                 DispatchQueue.main.async {
@@ -410,7 +518,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print("Error \(error.localizedDescription)")
             }
         } else if type == "knet" && paymentStatus != "" {
-            let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost]
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -420,7 +528,58 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
-                //UserDefaultHelper.tableName = ""
+                UserDefaultHelper.deleteTableId()
+                UserDefaultHelper.deleteTableName()
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    let orderVC = OrderSuccessVC.instantiate()
+                    orderVC.successOrderDetails = self.successOrderDetails
+                    orderVC.successMsg = msg
+                    self.navigationController?.pushViewController(orderVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else if type == "wallet_and_apple_pay" && payId != "" {
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": "apple_pay", "payment_id": payId, "payment_status": paymentStatus, "amount": self.remainingAmountAfterWallet, "with_wallet": 1, "wallet_amount": "\(Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0)"]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                
+                UserDefaultHelper.walletBalance = ""
+                
+                UserDefaultHelper.deleteTableId()
+                UserDefaultHelper.deleteTableName()
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    let orderVC = OrderSuccessVC.instantiate()
+                    orderVC.successOrderDetails = self.successOrderDetails
+                    orderVC.successMsg = msg
+                    self.navigationController?.pushViewController(orderVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else if type == "wallet_and_knet" && paymentStatus != "" {
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": "knet", "payment_id": payId, "payment_status": paymentStatus, "amount": self.remainingAmountAfterWallet, "with_wallet": 1, "wallet_amount": "\(Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0)"]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                
+                UserDefaultHelper.walletBalance = ""
+                
                 UserDefaultHelper.deleteTableId()
                 UserDefaultHelper.deleteTableName()
                 DispatchQueue.main.async {
@@ -434,13 +593,6 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print("Error \(error.localizedDescription)")
             }
         }
-//        else {
-//            DispatchQueue.main.async {
-//                let orderVC = OrderSuccessVC.instantiate()
-//                orderVC.successOrderDetails = self.successOrderDetails
-//                self.navigationController?.pushViewController(orderVC, animated: true)
-//            }
-//        }
     }
 }
 
@@ -578,19 +730,31 @@ extension CheckoutVC: MFPaymentDelegate {
                     
                     if let invoiceId = invoiceId {
                         print("Success with invoiceId \(invoiceId)")
-                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                        if self.paymentType == "wallet_and_knet" {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                        } else {
+                            
+                        }
                         self.dismiss(animated: true)
                     }
                 } else {
                     if let invoiceId = invoiceId {
-                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                        if self.paymentType == "wallet_and_knet" {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
+                        } else {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                        }
                         self.dismiss(animated: true)
                     }
                 }
             case .failure(let failError):
                 ProgressHUD.error(failError)
                 if let invoiceId = invoiceId {
-                    self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                    if self.paymentType == "wallet_and_knet" {
+                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
+                    } else {
+                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                    }
                     self.dismiss(animated: true)
                 }
             }
@@ -598,7 +762,7 @@ extension CheckoutVC: MFPaymentDelegate {
     }
     
     private func getExecutePaymentRequest(paymentMethodId: Int) -> MFExecutePaymentRequest {
-        let invoiceValue = Decimal(string: self.totalCost) ?? 0
+        let invoiceValue = self.paymentType == "wallet_and_knet" ? Decimal(string: self.remainingAmountAfterWallet) ?? 0 : Decimal(string: self.totalCost) ?? 0
         let request = MFExecutePaymentRequest(invoiceValue: invoiceValue , paymentMethod: paymentMethodId)
         request.customerEmail = UserDefaultHelper.userEmail ?? ""
         request.customerMobile = UserDefaultHelper.mobile ?? ""

@@ -47,7 +47,12 @@ class CategoryTableViewCell: UITableViewCell {
         }
     }
     
-    @IBOutlet weak var customizeLabel: UILabel!
+    @IBOutlet weak var customizeLabel: UILabel! {
+        didSet {
+            customizeLabel.font = UIFont.poppinsRegularFontWith(size: 15)
+            customizeLabel.text = "customizable".localized()
+        }
+    }
     
     @IBOutlet weak var saveButton: UIButton!
     

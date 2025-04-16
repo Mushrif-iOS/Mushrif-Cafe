@@ -106,7 +106,7 @@
 "select" = "Select";
 "summary" = "Summary";
 "discount_apl" = "Discount applied";
-"wallet_amt" = "Wallet Discount";
+"wallet_amt" = "Wallet Amount";
 "total" = "Total";
 "paid_by" = "Paid by";
 "order_on" = "Ordered on";
@@ -126,6 +126,8 @@
 "item_details" = "Item Details";
 "no_product" = "No Item Found";
 "no_cost_product" = "You can't place an order with a zero price";
+"no_cost_Usual" = "You can't add item into MyUsual with a zero price";
+"cant_add_usual" = "You can't add this item into MyUsual";
 "no_cart_item" = "No Cart Item Found";
 "no_usuals" = "No Usuals Yet";
 "usuals_error" = "Please enter usual group name";
@@ -142,5 +144,6 @@
 "please_scan" = "Please scan the table first";
 "apple_pay" = "Apple Pay";
 "online_knet" = "Online KNET";
-"insf_waller_amt" = "Insufficient wallet balance";
+"insf_waller_amt" = "Insufficient wallet balance, Please select an additional payment method";
 "checkout_no_method" = "Please select a payment option";
+"customizable" = "Customizable";

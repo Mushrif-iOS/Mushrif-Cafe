@@ -110,6 +110,9 @@ struct APPURL {
     static var usuals_move_to_cart: String {
         return BaseURL  + "my-usuals/move-to-cart"
     }
+    static var usuals_delete: String {
+        return BaseURL  + "my-usuals/delete"
+    }
     
     //Cart
     static var add_item_cart: String {

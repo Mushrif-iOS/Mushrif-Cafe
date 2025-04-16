@@ -121,6 +121,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
         let dict = self.usualData[indexPath.row]
         let manageVC = MyUsualDetailVC.instantiate()
         manageVC.usualId = dict.id
+        manageVC.delegate = self
         self.navigationController?.pushViewController(manageVC, animated: true)
     }
     

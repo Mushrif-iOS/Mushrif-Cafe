@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.toolbarConfiguration.previousNextDisplayMode = .alwaysShow
         
         Siren.shared.wail()
-        Siren.shared.presentationManager = PresentationManager(forceLanguageLocalization: .arabic)
+        Siren.shared.presentationManager = PresentationManager(forceLanguageLocalization: UserDefaultHelper.language == "ar" ? .arabic : .english)
         
         UITableView.appearance().showsVerticalScrollIndicator = false
         

@@ -171,7 +171,7 @@ class EditSpecialMyUsualVC: UIViewController, Instantiatable {
             
             self.choiceArr = data?.product.choiceGroups ?? []
             if self.choiceArr.count > 0 {
-                self.typeOfMealLabel.text = self.choiceArr.first?.title
+                self.typeOfMealLabel.text = UserDefaultHelper.language == "ar" ? self.choiceArr.first?.titleAr : self.choiceArr.first?.title
                 self.requiredLabel.text = "\("required".localized()): \("selectAny".localized()) \(self.choiceArr.first?.minSelection ?? 0) \("option".localized())"
                 self.specialMaxTotal = self.choiceArr.first?.maxSelection ?? 0
                 
@@ -214,7 +214,7 @@ extension EditSpecialMyUsualVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: SpecialMealTVC.identifier) as! SpecialMealTVC
         
         let dict = self.choiceArr.first?.choices[indexPath.row]
-        cell.nameLabel.text = "\(dict?.choice ?? "")"
+        cell.nameLabel.text = UserDefaultHelper.language == "ar" ? "\(dict?.choiceAr ?? "")" : "\(dict?.choice ?? "")"
         
         cell.qty.text = "\(self.specialQuantities[indexPath.row])"
         

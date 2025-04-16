@@ -145,6 +145,7 @@ class CartProduct {
     var kitchenId : Int = 0
     var name : String = ""
     var productDesc : String = ""
+    var productDescAr : String = ""
     var price : String = ""
     var specialPrice : String = ""
     var subCategory : CartSubCategory!

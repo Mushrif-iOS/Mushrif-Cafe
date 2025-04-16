@@ -202,7 +202,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
         // Set button properties
         floatingButton.setImage(UIImage(systemName: "rectangle.and.pencil.and.ellipsis.rtl"), for: .normal)
         floatingButton.tintColor = UIColor.white
-        floatingButton.backgroundColor = UIColor.primaryBrown
+        floatingButton.backgroundColor = UIColor.floatingColor
         floatingButton.layer.cornerRadius = 25
         floatingButton.layer.shadowColor = UIColor.black.cgColor
         floatingButton.layer.shadowOpacity = 0.3
@@ -1121,7 +1121,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             isPlain = "N"
         }
         
-        if tableId == "" {
+        if tableId != "" {
             let aParams = ["hall_id": hallId,
                            "table_id": tableId,
                            "group_id": groupId,
