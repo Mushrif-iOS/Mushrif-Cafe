@@ -131,7 +131,7 @@ class ManageUsualTableViewCell: UITableViewCell {
     }
     
     @IBAction func plusAction(_ sender: Any) {
-        if qtyValue < 20 {
+        if qtyValue < 200 {
             qtyValue += 1
         }
         qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))

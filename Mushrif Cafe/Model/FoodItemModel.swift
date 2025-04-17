@@ -139,6 +139,7 @@ class FoodItemIngredientDetail {
     
     var id : Int = 0
     var name : String = ""
+    var nameAr : String = ""
     var selectionStatus : Int = 0
     
     init(fromJson json: JSON!) {
@@ -147,6 +148,7 @@ class FoodItemIngredientDetail {
         }
         id = json["id"].intValue
         name = json["name"].stringValue
+        nameAr = json["name_ar"].stringValue
         selectionStatus = json["selection_status"].intValue
     }
 }

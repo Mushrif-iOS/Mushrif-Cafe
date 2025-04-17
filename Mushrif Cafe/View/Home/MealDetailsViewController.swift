@@ -294,7 +294,7 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     }
     
     @IBAction func plusAction(_ sender: Any) {
-        if qtyValue < 10 {
+        if qtyValue < 200 {
             qtyValue += 1
             
             self.qtyChangeValue = (self.itemPrice*Double(qtyValue))
@@ -688,7 +688,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellSelectionTVC") as! CellSelectionTVC
             
             let ingredient = self.ingredientsArr[indexPath.row]
-            cell.nameLabel.text = ingredient.ingredientDetails.name
+            cell.nameLabel.text = UserDefaultHelper.language == "ar" ? ingredient.ingredientDetails.nameAr : ingredient.ingredientDetails.name
             cell.priceLabel.text = ""
             cell.isChecked = ingredient.isChecked
             
@@ -768,7 +768,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             let dict = self.choiceArr[section]
             let headerView = tableView.dequeueReusableCell(withIdentifier: "ChoiceHeaderTVCell") as! ChoiceHeaderTVCell
             
-            headerView.typeOfMealLabel.text = dict.title
+            headerView.typeOfMealLabel.text = UserDefaultHelper.language == "ar" ? dict.titleAr : dict.title
             
             if dict.minSelection > 0 {
                 headerView.requiredLabel.text = "\("required".localized()) • \("selectAny".localized()) \(dict.minSelection) \("option".localized())"

@@ -136,7 +136,7 @@ class EditSpecialMyUsualVC: UIViewController, Instantiatable {
     }
     
     @IBAction func plusAction(_ sender: Any) {
-        if qtyValue < 10 {
+        if qtyValue < 200 {
             qtyValue += 1
             
             self.qtyChangeValue = (self.itemPrice*Double(qtyValue))

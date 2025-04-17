@@ -133,6 +133,7 @@ class CategoryViewController: UIViewController, Instantiatable {
                     self.subTitleLabel.text = self.subCategoriesArr.first?.name
                     self.mainCollectionView.reloadData()
                     self.mainCollectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .centeredHorizontally)
+                    self.subCategoryId = "\(self.subCategoriesArr.first?.id ?? 0)"
                     self.getProductList(subCatId: "\(self.subCategoriesArr.first?.id ?? 0)", page: self.pageNo)
                 } else {
                     self.showBanner(message: "no_subcategory".localized(), status: .failed)

@@ -667,7 +667,11 @@ extension CheckoutVC : PKPaymentAuthorizationViewControllerDelegate {
         completion(PKPaymentAuthorizationResult(status: .success, errors: nil))
         
         controller.dismiss(animated: true) {
-            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
+            if self.paymentType == "wallet_and_apple_pay" {
+                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
+            } else {
+                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
+            }
         }
     }
     
@@ -681,7 +685,11 @@ extension CheckoutVC : PKPaymentAuthorizationViewControllerDelegate {
         // Handle payment failure
         print("Payment failed with error: \(error.localizedDescription)")
         controller.dismiss(animated: true) {
-            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
+            if self.paymentType == "wallet_and_apple_pay" {
+                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "", paymentStatus: "")
+            } else {
+                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
+            }
         }
     }
     
@@ -689,7 +697,11 @@ extension CheckoutVC : PKPaymentAuthorizationViewControllerDelegate {
         // Handle the event when the user cancels the payment
         print("User canceled the payment.")
         controller.dismiss(animated: true) {
-            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
+            if self.paymentType == "wallet_and_apple_pay" {
+                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "", paymentStatus: "")
+            } else {
+                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
+            }
         }
     }
 }
@@ -733,7 +745,7 @@ extension CheckoutVC: MFPaymentDelegate {
                         if self.paymentType == "wallet_and_knet" {
                             self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
                         } else {
-                            
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
                         }
                         self.dismiss(animated: true)
                     }
@@ -762,6 +774,8 @@ extension CheckoutVC: MFPaymentDelegate {
     }
     
     private func getExecutePaymentRequest(paymentMethodId: Int) -> MFExecutePaymentRequest {
+        let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
+        MFSettings.shared.setTheme(theme: them)
         let invoiceValue = self.paymentType == "wallet_and_knet" ? Decimal(string: self.remainingAmountAfterWallet) ?? 0 : Decimal(string: self.totalCost) ?? 0
         let request = MFExecutePaymentRequest(invoiceValue: invoiceValue , paymentMethod: paymentMethodId)
         request.customerEmail = UserDefaultHelper.userEmail ?? ""

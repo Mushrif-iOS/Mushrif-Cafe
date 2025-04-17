@@ -52,7 +52,7 @@ class ChoiceRowTVCell: UITableViewCell {
     }
 
     func configure(with choice: Choice, isSelected: Bool) {
-        nameLabel.text = "\(choice.choice)"
+        nameLabel.text = UserDefaultHelper.language == "ar" ? "\(choice.choiceAr)" : "\(choice.choice)"
         let doubleValue = Double(choice.choicePrice) ?? 0.0
         priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
         tickButton.isSelected = isSelected

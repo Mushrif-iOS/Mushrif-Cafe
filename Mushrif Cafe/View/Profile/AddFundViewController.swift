@@ -198,6 +198,8 @@ extension AddFundViewController: MFPaymentDelegate {
     }
 
     func executePayment(paymentMethodId: Int) {
+        let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
+        MFSettings.shared.setTheme(theme: them)
         let request = getExecutePaymentRequest(paymentMethodId: paymentMethodId)
         ProgressHUD.animate()
         ProgressHUD.colorAnimation = UIColor.primaryBrown
