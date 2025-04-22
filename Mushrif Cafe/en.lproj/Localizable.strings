@@ -95,6 +95,7 @@
 "orderId_not_valid" = "Order ID Not Valid";
 "please_select_table" = "Please select a table first";
 
+"table" = "Table";
 "cart" = "Cart";
 "balance" = "Balance";
 "pay_with" = "Pay with";
@@ -147,3 +148,5 @@
 "insf_waller_amt" = "Insufficient wallet balance, Please select an additional payment method";
 "checkout_no_method" = "Please select a payment option";
 "customizable" = "Customizable";
+"kwd" = "KWD";
+"id" = "ID";

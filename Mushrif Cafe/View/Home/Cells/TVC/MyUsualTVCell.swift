@@ -100,6 +100,7 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
                                "table_id": tableId,
                                "group_id": groupId,
                                "order_type": "dinein",
+                               "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"
                 ]
                 print(aParams)
                 

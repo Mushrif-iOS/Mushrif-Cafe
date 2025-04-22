@@ -110,12 +110,12 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
         cell.editButton.isHidden = true
         if dict?.product.specialPrice != "" {
             let doubleValue = Double(dict?.product.specialPrice ?? "") ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
         } else {
             let doubleValue = Double(dict?.product.price ?? "") ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-            cell.otherPriceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
         }
         if dict?.ingredientsList?.count ?? 0 > 0 {
             let addedTitles = dict?.ingredientsList?.map { group in
@@ -182,7 +182,7 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc func deleteAction(sender: UIButton) {
-        let aParams = ["group_id": "\(self.usualData?.id ?? 0)"]
+        let aParams = ["group_id": "\(self.usualData?.id ?? 0)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         print(aParams)
         
         APIManager.shared.postCall(APPURL.usuals_delete, params: aParams, withHeader: true) { responseJSON in
@@ -210,7 +210,8 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
             let aParams = ["usual_id": "\(self.usualData?.id ?? 0)",
                            "hall_id": hallId,
                            "table_id": tableId,
-                           "group_id": groupId]
+                           "group_id": groupId,
+                           "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.usuals_move_to_cart, params: aParams, withHeader: true) { responseJSON in

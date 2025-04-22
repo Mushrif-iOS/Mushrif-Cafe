@@ -58,7 +58,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
-        cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
+        cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 2) ?? 0.0)"
         
         if dict.paymentStatus == "Paid" {
             cell.payNowButton.isHidden = true
@@ -125,7 +125,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         print(paymentId)
         
         if type == "knet_swipe" {
-            let aParams = ["cart_id": self.cartId, "payment_type": type]
+            let aParams = ["cart_id": self.cartId, "payment_type": type, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             var successOrderDetails: SuccessOrderResponse?
@@ -154,7 +154,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             self.walletPay(paymentType: type, cost: amount, count: status)
         } else if type == "apple_pay" {
             
-            let aParams = ["cart_id": self.cartId, "payment_type": type]
+            let aParams = ["cart_id": self.cartId, "payment_type": type, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             var successOrderDetails: SuccessOrderResponse?
@@ -172,7 +172,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
             }
         } else if type == "knet" {
             
-            let aParams = ["cart_id": self.cartId, "payment_type": type]
+            let aParams = ["cart_id": self.cartId, "payment_type": type, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             var successOrderDetails: SuccessOrderResponse?
@@ -193,7 +193,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
     
     private func paymentOrder(orderId: String, type: String, payId: String, paymentStatus: String, amt: String) {
         
-        let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": amt]
+        let aParams = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": amt, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         print(aParams)
         
         var successOrderDetails: SuccessOrderResponse?
@@ -222,7 +222,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
     
     private func walletPay(paymentType: String, cost: String, count: String) {
         
-        let aParams = ["cart_id": self.cartId, "payment_type": paymentType]
+        let aParams = ["cart_id": self.cartId, "payment_type": paymentType, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         print(aParams)
         
         var successOrderDetails: SuccessOrderResponse?

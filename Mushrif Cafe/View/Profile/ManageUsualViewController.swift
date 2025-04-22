@@ -190,7 +190,7 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
             let aParams = ["usual_id": "\(dict.id)",
                            "hall_id": hallId,
                            "table_id": tableId,
-                           "group_id": groupId]
+                           "group_id": groupId, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.usuals_move_to_cart, params: aParams, withHeader: true) { responseJSON in

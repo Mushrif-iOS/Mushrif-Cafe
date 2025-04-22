@@ -93,7 +93,7 @@ class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
                 
                 let balance = responseJSON["response"]["balance"].stringValue
                 let doubleValue = Double(balance) ?? 0.0
-                self.balanceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                self.balanceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
                 UserDefaultHelper.walletBalance = "\(doubleValue)"
             }
             
@@ -120,12 +120,12 @@ extension WalletVC: UITableViewDelegate, UITableViewDataSource {
             cell.amtLabel.textColor = UIColor.primaryBrown
             
             let doubleValue = Double(dict.amount) ?? 0.0
-            cell.amtLabel.text = "+ \(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.amtLabel.text = UserDefaultHelper.language == "en" ? "+ \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2)) +"
         } else {
             cell.amtLabel.textColor = UIColor.red
             
             let doubleValue = Double(dict.amount) ?? 0.0
-            cell.amtLabel.text = "- \(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.amtLabel.text = UserDefaultHelper.language == "en" ? "- \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2)) -"
         }
         
         return cell

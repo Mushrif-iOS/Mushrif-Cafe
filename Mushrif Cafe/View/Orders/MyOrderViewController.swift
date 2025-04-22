@@ -104,14 +104,14 @@ extension MyOrderViewController: UITableViewDelegate, UITableViewDataSource {
         } else if "\(dict.paymentMethod)" == "knet_swipe" {
             cell.payTypeLabel.text = "KNET - Swipe Machine"
         } else if "\(dict.paymentMethod)" == "open" {
-            cell.payTypeLabel.text = "Open Order"
+            cell.payTypeLabel.text = "open_order".localized()
         } else if "\(dict.paymentMethod)" == "wallet" {
-            cell.payTypeLabel.text = "Wallet"
+            cell.payTypeLabel.text = "wallet".localized()
         } else {
             cell.payTypeLabel.text = "-"
         }
         let amt = Double("\(dict.grandTotal)")
-        cell.amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
+        cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 2) ?? 0.0)"
         cell.typeLabel.text = "\(dict.orderType)".capitalized
         return cell
     }

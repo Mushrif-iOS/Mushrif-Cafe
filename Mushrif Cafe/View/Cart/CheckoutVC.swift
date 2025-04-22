@@ -233,9 +233,9 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletDiscountStack.isHidden = false
                 self.walletTotalStack.isHidden = false
                 
-                self.discountLabel.text = "-\(self.totalCost) KWD"
-                self.totalLabel.text = "0.0 KWD"
-                print("Remaining amount: 0.0 KWD")
+                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(self.totalCost) \("kwd".localized())" : "\("kwd".localized()) \(self.totalCost)-"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "0.0 \("kwd".localized())" : "\("kwd".localized()) 0.0"
+                print("Remaining amount: 0.0 \("kwd".localized())")
                 self.remainingAmountAfterWallet = ""
                 paymentType = "wallet"
             } else {
@@ -244,11 +244,11 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletTotalStack.isHidden = false
                 
                 let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                self.discountLabel.text = "-\(doubleValue.rounded(toPlaces: 2)) KWD"
+                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))-"
                 
                 let remainingAmount = abs(totalCostValue - walletBalance)
-                self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
-                print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) KWD")
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
+                print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())")
                 self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
                 
                 // Dynamically set paymentType based on other selections
@@ -264,7 +264,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             // Wallet deselected
             self.walletDiscountStack.isHidden = true
             self.walletTotalStack.isHidden = true
-            self.totalLabel.text = "\(totalCostValue) KWD"
+            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
             paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : knetCheckBoxBtn.isSelected ? "knet" : ""
         }
         
@@ -300,12 +300,12 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 if walletCheckBoxBtn.isSelected {
                     let remainingAmount = abs(totalCostValue - walletBalance)
-                    self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
                     paymentType = "wallet_and_apple_pay"
-                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) KWD")
+                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())")
                     self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
                 } else {
-                    self.totalLabel.text = "\(totalCostValue) KWD"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
                     paymentType = "apple_pay"
                 }
             }
@@ -313,10 +313,11 @@ class CheckoutVC: UIViewController, Instantiatable {
             // Apple Pay deselected
             if walletCheckBoxBtn.isSelected && walletBalance < totalCostValue {
                 let remainingAmount = abs(totalCostValue - walletBalance)
-                self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
                 paymentType = "wallet"
             } else {
-                self.totalLabel.text = "\(totalCostValue) KWD"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
+                
                 paymentType = knetCheckBoxBtn.isSelected ? "knet" : ""
             }
         }
@@ -353,12 +354,12 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 if walletCheckBoxBtn.isSelected {
                     let remainingAmount = abs(totalCostValue - walletBalance)
-                    self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
                     paymentType = "wallet_and_knet"
-                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) KWD")
+                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())")
                     self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
                 } else {
-                    self.totalLabel.text = "\(totalCostValue) KWD"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
                     paymentType = "knet"
                 }
             }
@@ -366,10 +367,10 @@ class CheckoutVC: UIViewController, Instantiatable {
             // Knet deselected
             if walletCheckBoxBtn.isSelected && walletBalance < totalCostValue {
                 let remainingAmount = abs(totalCostValue - walletBalance)
-                self.totalLabel.text = "\(remainingAmount.rounded(toPlaces: 2)) KWD"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
                 paymentType = "wallet"
             } else {
-                self.totalLabel.text = "\(totalCostValue) KWD"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
                 paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : ""
             }
         }
@@ -404,7 +405,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             //self.totalLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KWD"
             
             let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-            self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
+            self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
             
             if self.inActiveCartArray.count > 0 {
                 
@@ -416,7 +417,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 print("Total Price: \(totalPrice.rounded(toPlaces: 2))")
                 
-                self.amtLabel.text = "\(totalPrice.rounded(toPlaces: 2)) KWD"
+                self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(totalPrice.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(totalPrice.rounded(toPlaces: 2))"
                 self.totalCost = "\(totalPrice.rounded(toPlaces: 2))"
                 print("Total Cost: \(self.totalCost)")
                 self.inactiveTableView.isHidden = false
@@ -445,7 +446,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) < (Double(self.totalCost) ?? 0) {
                 self.showBanner(message: "insf_waller_amt".localized(), status: .failed)
             } else {
-                let aParams: [String : Any] = ["order_id": "\(self.cartData?.orderId ?? 0)", "payment_type": "wallet", "payment_id": "", "payment_status": "Paid", "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0"]
+                let aParams: [String : Any] = ["order_id": "\(self.cartData?.orderId ?? 0)", "payment_type": "wallet", "payment_id": "", "payment_status": "Paid", "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
                 print(aParams)
                 
                 APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -495,7 +496,7 @@ class CheckoutVC: UIViewController, Instantiatable {
     private func paymentOrder(orderId: String, type: String, payId: String, paymentStatus: String) {
         
         if type == "apple_pay" && payId != "" {
-            let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0"]
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -518,7 +519,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print("Error \(error.localizedDescription)")
             }
         } else if type == "knet" && paymentStatus != "" {
-            let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0"]
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -541,7 +542,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print("Error \(error.localizedDescription)")
             }
         } else if type == "wallet_and_apple_pay" && payId != "" {
-            let aParams: [String : Any] = ["order_id": orderId, "payment_type": "apple_pay", "payment_id": payId, "payment_status": paymentStatus, "amount": self.remainingAmountAfterWallet, "with_wallet": 1, "wallet_amount": "\(Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0)"]
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": "apple_pay", "payment_id": payId, "payment_status": paymentStatus, "amount": self.remainingAmountAfterWallet, "with_wallet": 1, "wallet_amount": "\(Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -567,7 +568,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print("Error \(error.localizedDescription)")
             }
         } else if type == "wallet_and_knet" && paymentStatus != "" {
-            let aParams: [String : Any] = ["order_id": orderId, "payment_type": "knet", "payment_id": payId, "payment_status": paymentStatus, "amount": self.remainingAmountAfterWallet, "with_wallet": 1, "wallet_amount": "\(Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0)"]
+            let aParams: [String : Any] = ["order_id": orderId, "payment_type": "knet", "payment_id": payId, "payment_status": paymentStatus, "amount": self.remainingAmountAfterWallet, "with_wallet": 1, "wallet_amount": "\(Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
@@ -611,7 +612,7 @@ extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
         cell.nameLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.itemId = "\(dict.id)"
         let doubleValue = Double(dict.unitPrice) ?? 0.0
-        cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
+        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
         cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         
         let addedTitles = dict.ingredientsList?.map { group in
@@ -626,7 +627,7 @@ extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
         cell.qtyValue = dict.quantity
         
         let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-        cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
+        cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
         cell.otherPriceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.itemValue = "\(dict.unitPrice)"
         cell.contentView.isUserInteractionEnabled = false

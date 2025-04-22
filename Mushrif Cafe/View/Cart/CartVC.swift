@@ -73,7 +73,7 @@ class CartVC: UIViewController, Instantiatable {
         didSet {
             discountLabel.font = UIFont.poppinsMediumFontWith(size: 16)
             discountLabel.textColor = UIColor.red
-            discountLabel.text = "-9.000 KWD"
+            discountLabel.text = UserDefaultHelper.language == "en" ? "-9.000 \("kwd".localized())" : "\("kwd".localized()) -9.000 -"
         }
     }
     
@@ -198,8 +198,8 @@ class CartVC: UIViewController, Instantiatable {
         
         DispatchQueue.main.async {
             
-            self.amtLabel.text = "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") KWD" : "")"
-            self.totalLabel.text = "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") KWD" : "")"
+            self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized()) \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
+            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized())  \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
             self.totalCost = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "")"
 
 //            UserDefaultHelper.totalItems! = data?.items ?? 0
@@ -238,7 +238,7 @@ class CartVC: UIViewController, Instantiatable {
             self.showBanner(message: "no_cost_product".localized(), status: .failed)
         } else {
             
-            let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "open", "order_type": self.orderType]
+            let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "open", "order_type": self.orderType, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
             
             APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
@@ -284,7 +284,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.itemId = "\(dict.id)"
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
             cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             
             let addedTitles = dict.ingredientsList?.map { group in
@@ -299,7 +299,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qtyValue = dict.quantity
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-            cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
+            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
             cell.otherPriceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.itemValue = "\(dict.unitPrice)"
             cell.contentView.isUserInteractionEnabled = false
@@ -335,8 +335,8 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.didChangePriceBlock = {
                 DispatchQueue.main.async {
                     let doubleValue = Double(UserDefaultHelper.totalPrice ?? 0.0)
-                    self.amtLabel.text =  "\(doubleValue.rounded(toPlaces: 2)) KWD"
-                    self.totalLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                    self.amtLabel.text =  UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
                 }
             }
             
@@ -344,7 +344,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = dict.product.name
             cell.itemId = "\(dict.id)"
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.toRoundedString(toPlaces: 2)) KWD"//"\(doubleValue) KD"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
             
             let addedTitles = dict.ingredientsList?.map { group in
                 return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
@@ -355,7 +355,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qtyValue = dict.quantity
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-            cell.otherPriceLabel.text = "\(prc.toRoundedString(toPlaces: 2)) KWD"
+            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
             cell.itemValue = "\(dict.unitPrice)"
             
             cell.editButton.tag = indexPath.row

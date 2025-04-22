@@ -51,9 +51,9 @@ class OrderSuccessVC: UIViewController, Instantiatable {
             } else if "\(successOrderDetails?.paymentMethod ?? "")" == "knet_swipe" {
                 paymentLabel.text = "KNET - Swipe Machine"
             } else if "\(successOrderDetails?.paymentMethod ?? "")" == "open" {
-                paymentLabel.text = "Open Order"
+                paymentLabel.text = "open_order".localized()
             } else if "\(successOrderDetails?.paymentMethod ?? "")" == "wallet" {
-                paymentLabel.text = "Wallet"
+                paymentLabel.text = "wallet".localized()
             } else {
                 paymentLabel.text = "-"
             }
@@ -84,7 +84,7 @@ class OrderSuccessVC: UIViewController, Instantiatable {
         didSet {
             amtLabel.font = UIFont.poppinsRegularFontWith(size: 16)
             let amt = Double("\(successOrderDetails?.grandTotal ?? "")")
-            amtLabel.text = "\(amt?.rounded(toPlaces: 2) ?? 0.0) KWD"
+            amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 2) ?? 0.0)"
         }
     }
     

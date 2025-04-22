@@ -142,7 +142,7 @@ extension AddFundViewController : PKPaymentAuthorizationViewControllerDelegate {
         
         controller.dismiss(animated: true) {
                         
-            let aParams: [String: Any] = ["amount": "\(self.txtAmt.text!)", "payment_type": "apple_pay", "payment_id": "\(transactionID)"]
+            let aParams: [String: Any] = ["amount": "\(self.txtAmt.text!)", "payment_type": "apple_pay", "payment_id": "\(transactionID)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             
             print(aParams)
             
@@ -213,7 +213,7 @@ extension AddFundViewController: MFPaymentDelegate {
                 if let invoiceId = invoiceId {
                     print("Success with invoiceId \(invoiceId)")
                     
-                    let aParams: [String: Any] = ["amount": "\(self.txtAmt.text!)", "payment_type": "knet", "payment_id": "\(invoiceId)"]
+                    let aParams: [String: Any] = ["amount": "\(self.txtAmt.text!)", "payment_type": "knet", "payment_id": "\(invoiceId)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
                     
                     print(aParams)
                     

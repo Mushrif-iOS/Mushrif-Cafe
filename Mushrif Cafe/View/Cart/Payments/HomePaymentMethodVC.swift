@@ -78,7 +78,7 @@ class HomePaymentMethodVC: UIViewController, Instantiatable {
         self.initiatePayment()
         
         let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-        self.keepLabel.text =  "\("wallet".localized()) \("balance".localized()): (\(doubleValue.rounded(toPlaces: 2)) KWD)"
+        self.keepLabel.text = UserDefaultHelper.language == "en" ? "\("wallet".localized()) \("balance".localized()): (\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized()))" : "\("wallet".localized()) \("balance".localized()): (\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2)))"
     }
     
     @IBAction func appleAction(_ sender: Any) {

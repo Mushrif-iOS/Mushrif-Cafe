@@ -85,7 +85,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         } else {
             self.heightBottom.constant = 90
             self.bottomView.isHidden = false
-            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
+            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0)"
         }
     }
     
@@ -221,10 +221,10 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
         
         if dict.specialPrice != "" {
             let doubleValue = Double(dict.specialPrice) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
         } else {
             let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
         }
         
         cell.descLabel.text = dict.name
@@ -335,7 +335,8 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                         DispatchQueue.main.async {
                             self.showBanner(message: msg, status: .success)
                             UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                            self.totalLabel.text = "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) KWD"
+                            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0)"
+                            
                             let cartVC = CartVC.instantiate()
                             self.navigationController?.pushViewController(cartVC, animated: true)
                         }

@@ -39,6 +39,7 @@ class OrderDetailsTableViewCell: UITableViewCell {
     @IBOutlet weak var qtyLabel: UILabel! {
         didSet {
             qtyLabel.font = UIFont.poppinsMediumFontWith(size: 18)
+            qtyLabel.textAlignment = UserDefaultHelper.language == "en" ? .right : .left
             //qtyLabel.text = "x1"
         }
     }

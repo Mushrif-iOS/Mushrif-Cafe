@@ -667,19 +667,19 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.nameLabel.text = self.detailsData?.name
                 if self.detailsData?.specialPrice != "" {
                     let doubleValue = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
-                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
                 } else {
                     let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
-                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
                 }
             } else {
                 cell.nameLabel.text = self.detailsData?.comboDetails.comboTitle
                 if self.detailsData?.comboDetails.offerPrice != "" {
                     let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
-                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
                 } else {
                     let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
-                    cell.priceLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
+                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
                 }
             }
             return cell
@@ -1033,11 +1033,16 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             self.basePrice = self.itemPrice//self.itemPrice + self.mealTypePrice + self.variationPrice
         }
         self.basePrice = self.basePrice + self.variationPrice
-        let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2))",
-                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
-        attrString.append(NSMutableAttributedString(string: " KWD",
-                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
-        self.addButton.setAttributedTitle(attrString, for: .normal)
+        
+        if UserDefaultHelper.language == "en" {
+            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2)) \("kwd".localized())", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+            //        attrString.append(NSMutableAttributedString(string: " \("kwd".localized())",
+            //                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
+            self.addButton.setAttributedTitle(attrString, for: .normal)
+        } else {
+            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \("kwd".localized()) \(self.basePrice.toRoundedString(toPlaces: 2))", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+            self.addButton.setAttributedTitle(attrString, for: .normal)
+        }
     }
     
     func addToCartApi() {

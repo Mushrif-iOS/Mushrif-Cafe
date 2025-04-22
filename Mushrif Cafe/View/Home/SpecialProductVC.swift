@@ -453,11 +453,15 @@ extension SpecialProductVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             self.basePrice = self.itemPrice
         }
-        let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2))",
-                                                   attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
-        attrString.append(NSMutableAttributedString(string: " KWD",
-                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
-        self.addButton.setAttributedTitle(attrString, for: .normal)
+        
+        if UserDefaultHelper.language == "en" {
+            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2)) \("kwd".localized())", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+            //attrString.append(NSMutableAttributedString(string: " \("kwd".localized())", attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
+            self.addButton.setAttributedTitle(attrString, for: .normal)
+        } else {
+            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \("kwd".localized()) \(self.basePrice.toRoundedString(toPlaces: 2))", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+            self.addButton.setAttributedTitle(attrString, for: .normal)
+        }
     }
     
     func addToCartApi() {
