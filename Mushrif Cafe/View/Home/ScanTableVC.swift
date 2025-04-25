@@ -254,12 +254,16 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 UserDefaultHelper.hallId = dataDict["hall_id"]?.stringValue
                 UserDefaultHelper.tableId = dataDict["table_id"]?.stringValue
                 UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
+                UserDefaultHelper.groupNumber = dataDict["group_number"]?.stringValue
                 
                 let msg = responseJSON["message"].stringValue
                 print(msg)
                 
                 let tabName = dataDict["table_name"]?.stringValue
                 UserDefaultHelper.tableName = tabName
+                
+                let tabNameFull = dataDict["table_name_full"]?.stringValue
+                UserDefaultHelper.tableNameFull = tabNameFull
                 
                 DispatchQueue.main.async {
                     UserDefaultHelper.orderType = "dinein"
@@ -270,7 +274,6 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                         self.navigationController?.push(viewController: dashboardVC)
                     }
                 }
- 
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }
@@ -307,16 +310,5 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
         overlayView.clipsToBounds = true
         
         return overlayView
-    }
-}
-
-struct QRCodeModel: Decodable {
-    
-    let hallId: Int
-    let tableId: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case hallId = "hall_id"
-        case tableId = "table_id"
     }
 }

@@ -300,7 +300,7 @@ extension UIImageView {
             return // or break, continue, throw
         }
         
-        print("String From URL :>> \(lobjUrlString)")
+        //print("String From URL :>> \(lobjUrlString)")
         
         self.sd_setImage(with: URL(string: lobjUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") , placeholderImage: placeholderImage, options: [.refreshCached], completed: { (image, error, type, utlType)  in
             

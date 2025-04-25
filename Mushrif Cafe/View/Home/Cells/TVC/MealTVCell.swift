@@ -28,6 +28,8 @@ class MealTVCell: UITableViewCell {
         return UINib(nibName: "MealTVCell", bundle: nil)
     }
     
+    var didChangeItemsBlock : (() -> Void)? = nil
+    
     var mealObj: [TryOurBest] = [TryOurBest]()
 
     override func awakeFromNib() {
@@ -147,9 +149,8 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                         print(msg)
                         DispatchQueue.main.async {
                             self.navController?.showBanner(message: msg, status: .success)
-                            UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                            let cartVC = CartVC.instantiate()
-                            self.navController?.pushViewController(cartVC, animated: true)
+                            UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+                            self.didChangeItemsBlock?()
                         }
                     } failure: { error in
                         print("Error \(error.localizedDescription)")
@@ -171,16 +172,16 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         
         let dict = mealObj[sender.tag]
         
-        var diubleValue = Double()
-        if dict.specialPrice != "" {
-            diubleValue = Double(dict.specialPrice) ?? 0.0
-        } else {
-            diubleValue = Double(dict.price) ?? 0.0
-        }
-        if diubleValue <= 0.0 {
-            self.navController?.showBanner(message: "no_cost_Usual".localized(), status: .failed)
-            return
-        }
+//        var diubleValue = Double()
+//        if dict.specialPrice != "" {
+//            diubleValue = Double(dict.specialPrice) ?? 0.0
+//        } else {
+//            diubleValue = Double(dict.price) ?? 0.0
+//        }
+//        if diubleValue <= 0.0 {
+//            self.navController?.showBanner(message: "no_cost_Usual".localized(), status: .failed)
+//            return
+//        }
         
         if dict.productType == 4 {
             self.navController?.showBanner(message: "cant_add_usual".localized(), status: .failed)
@@ -209,13 +210,15 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
     }
     
     func dismissed() {
-        if UserDefaultHelper.authToken != "" {
-            let cartVC = CartVC.instantiate()
-            self.navController?.pushViewController(cartVC, animated: true)
-        } else {
-            let profileVC = LoginVC.instantiate()
-            self.navController?.pushViewController(profileVC, animated: true)
-        }
+//        if UserDefaultHelper.authToken != "" {
+//            let cartVC = CartVC.instantiate()
+//            self.navController?.pushViewController(cartVC, animated: true)
+//        } else {
+//            let profileVC = LoginVC.instantiate()
+//            self.navController?.pushViewController(profileVC, animated: true)
+//        }
+        UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+        self.didChangeItemsBlock?()
     }
 }
 

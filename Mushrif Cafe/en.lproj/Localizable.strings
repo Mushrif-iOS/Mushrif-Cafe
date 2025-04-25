@@ -150,3 +150,5 @@
 "customizable" = "Customizable";
 "kwd" = "KWD";
 "id" = "ID";
+"pending_custimization" = "Customization Pending for this Item";
+"pending_custimization_addtoCart" = "Customization Pending for items in cart, please complete customization in order to continue";

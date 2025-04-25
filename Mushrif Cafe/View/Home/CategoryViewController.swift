@@ -33,6 +33,7 @@ class CategoryViewController: UIViewController, Instantiatable {
     @IBOutlet weak var totalLabel: UILabel! {
         didSet {
             totalLabel.font = UIFont.poppinsMediumFontWith(size: 18)
+            totalLabel.text = ""
         }
     }
     
@@ -85,7 +86,29 @@ class CategoryViewController: UIViewController, Instantiatable {
         } else {
             self.heightBottom.constant = 90
             self.bottomView.isHidden = false
-            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0)"
+            self.getCartItem()
+        }
+    }
+    
+    private func getCartItem() {
+        
+        var cartData: CartResponse?
+        
+        let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+        print(aParams)
+        
+        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            let dataDict = responseJSON["response"]
+            cartData = CartResponse(fromJson: dataDict)
+            
+            let totalCost = "\(cartData?.subTotal != "" ? cartData?.subTotal ?? "" : "")"
+            let amt = Double("\(totalCost)") ?? 0.0
+            
+            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(amt) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(amt)"
+            
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
         }
     }
     
@@ -119,7 +142,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         }
         print(aParams!)
         
-        APIManager.shared.postCall(APPURL.sub_category, params: aParams, withHeader: false) { responseJSON in
+        APIManager.shared.postCall(APPURL.sub_category, params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
             
             let dataDict = responseJSON["response"]["sub_categories"].arrayValue
@@ -156,7 +179,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         }
         print(aParams!)
         
-        APIManager.shared.postCall(APPURL.food_item_list + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
+        APIManager.shared.postCall(APPURL.categories_item_list + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
             print("Response JSON \(responseJSON)")
             
             let lPage = responseJSON["response"]["last_page"].intValue
@@ -197,8 +220,20 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
         self.subTitleLabel.text = dict.name
         
         self.subCategoryId = "\(dict.id)"
-        self.foodItemArr.removeAll()
-        self.getProductList(subCatId: "\(dict.id)", page: self.pageNo)
+        //        self.foodItemArr.removeAll()
+        //        self.pageNo = 1
+        //        self.getProductList(subCatId: "\(dict.id)", page: self.pageNo)
+        if let matchingIndex = self.foodItemArr.firstIndex(where: { $0.subCategory.id == dict.id }) {
+            // Scroll the mainTableView to the first corresponding item
+            DispatchQueue.main.async {
+                self.mainTableView.scrollToRow(at: IndexPath(row: matchingIndex, section: 0), at: .top, animated: true)
+            }
+        } else {
+            // Reset the food items and load new products if no matching items are found
+            self.foodItemArr.removeAll()
+            self.pageNo = 1
+            self.getProductList(subCatId: "\(dict.id)", page: self.pageNo)
+        }
     }
 }
 
@@ -227,7 +262,7 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
             cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
         }
         
-        cell.descLabel.text = dict.name
+        cell.descLabel.text = dict.descriptionString
         cell.addButton.tag = indexPath.item
         cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
         
@@ -334,11 +369,8 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                         print(msg)
                         DispatchQueue.main.async {
                             self.showBanner(message: msg, status: .success)
-                            UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(UserDefaultHelper.totalPrice ?? 0.0)"
-                            
-                            let cartVC = CartVC.instantiate()
-                            self.navigationController?.pushViewController(cartVC, animated: true)
+                            UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+                            self.viewWillAppear(true)
                         }
                     } failure: { error in
                         print("Error \(error.localizedDescription)")
@@ -359,16 +391,16 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
     @objc func addUsualAction(sender: UIButton) {
         
         let dict = self.foodItemArr[sender.tag]
-        var diubleValue = Double()
-        if dict.specialPrice != "" {
-            diubleValue = Double(dict.specialPrice) ?? 0.0
-        } else {
-            diubleValue = Double(dict.price) ?? 0.0
-        }
-        if diubleValue <= 0.0 {
-            self.showBanner(message: "no_cost_Usual".localized(), status: .failed)
-            return
-        }
+//        var diubleValue = Double()
+//        if dict.specialPrice != "" {
+//            diubleValue = Double(dict.specialPrice) ?? 0.0
+//        } else {
+//            diubleValue = Double(dict.price) ?? 0.0
+//        }
+//        if diubleValue <= 0.0 {
+//            self.showBanner(message: "no_cost_Usual".localized(), status: .failed)
+//            return
+//        }
         
         if dict.productType == 4 {
             self.showBanner(message: "cant_add_usual".localized(), status: .failed)
@@ -396,12 +428,47 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
     }
     
     func dismissed() {
-        if UserDefaultHelper.authToken != "" {
-            let cartVC = CartVC.instantiate()
-            self.navigationController?.pushViewController(cartVC, animated: true)
-        } else {
-            let profileVC = LoginVC.instantiate()
-            self.navigationController?.pushViewController(profileVC, animated: true)
+//        if UserDefaultHelper.authToken != "" {
+//            let cartVC = CartVC.instantiate()
+//            self.navigationController?.pushViewController(cartVC, animated: true)
+//        } else {
+//            let profileVC = LoginVC.instantiate()
+//            self.navigationController?.pushViewController(profileVC, animated: true)
+//        }
+        UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+        self.viewWillAppear(true)
+    }
+}
+
+extension CategoryViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Ensure we are only tracking the mainTableView
+        guard scrollView == mainTableView else { return }
+        
+        // Get the visible rows in the mainTableView
+        guard let visibleRows = mainTableView.indexPathsForVisibleRows, !visibleRows.isEmpty else { return }
+        
+        // Get the first visible row in the table
+        let firstVisibleIndexPath = visibleRows[0]
+        
+        // Get the sub-category ID of the first visible row's food item
+        let firstVisibleItem = foodItemArr[firstVisibleIndexPath.row]
+        let visibleSubCategoryId = firstVisibleItem.subCategory.id
+
+        // Find the matching subcategory in the collection view
+        if let matchIndex = subCategoriesArr.firstIndex(where: { $0.id == visibleSubCategoryId }) {
+            // Update UI on the main thread to highlight the subcategory in the collection view
+            DispatchQueue.main.async {
+                // Scroll to the matching sub-category in the collection view
+                self.mainCollectionView.scrollToItem(at: IndexPath(item: matchIndex, section: 0), at: .centeredHorizontally, animated: true)
+                
+                // Highlight the matching sub-category
+                self.mainCollectionView.selectItem(at: IndexPath(item: matchIndex, section: 0), animated: true, scrollPosition: .centeredHorizontally)
+                
+                // Update the subtitle label to reflect the selected sub-category
+                self.subTitleLabel.text = self.subCategoriesArr[matchIndex].name
+            }
         }
     }
 }

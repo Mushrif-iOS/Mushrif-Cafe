@@ -220,9 +220,6 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
                 let msg = responseJSON["message"].stringValue
                 self.showBanner(message: msg, status: .success)
                 
-                let cartVC = CartVC.instantiate()
-                self.navigationController?.pushViewController(cartVC, animated: true)
-                
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }

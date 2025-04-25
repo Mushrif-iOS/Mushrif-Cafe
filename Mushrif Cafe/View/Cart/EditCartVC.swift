@@ -1170,7 +1170,6 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                 print(msg)
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
-                    //let cartVC = CartVC.instantiate()
                     self.navigationController?.popViewController(animated: true)
                 }
             } failure: { error in

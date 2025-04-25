@@ -195,10 +195,31 @@ class DashboardVC: UIViewController, Instantiatable {
                 UserDefaultHelper.tableId = "\(self.activeData.first?.tableId ?? 0)"
                 UserDefaultHelper.groupId = "\(self.activeData.first?.groupId ?? 0)"
             }
+            
+            guard let responseDict = responseJSON["response"].dictionary else {
+                print("Invalid response format")
+                return
+            }
+            
 //            if self.activeData.count > 0 {
-//                for obj in 0..<self.activeData.count {
-//                    if self.activeData[obj].status == 1 || self.activeData[obj].status == 2 || self.activeData[obj].status == 3 || self.activeData[obj].status == 4 {
-//                        self.finalActiveData.append(self.activeData[obj])
+//                if "\(self.activeData.first?.tableId ?? 0)" != UserDefaultHelper.tableId {
+//                    //self.selectTableLabel.text = UserDefaultHelper.tableName
+//                    
+//                    if let tableDict = responseDict["table"]?.dictionary {
+//                        let tableInfo = TableInfo(fromJson: JSON(tableDict))
+//                        if tableInfo.tableName != "" {
+//                            self.selectTableLabel.text = tableInfo.tableName
+//                            UserDefaultHelper.tableName = tableInfo.tableName
+//                            UserDefaultHelper.hallId = tableInfo.hallId
+//                            UserDefaultHelper.tableId = tableInfo.tableId
+//                            UserDefaultHelper.groupId = tableInfo.tableId
+//                        } else {
+//                            UserDefaultHelper.tableName = "\(self.activeData.first?.tableNo ?? 0)"
+//                            self.selectTableLabel.text = UserDefaultHelper.tableName
+//                            UserDefaultHelper.hallId = "\(self.activeData.first?.hallId ?? 0)"
+//                            UserDefaultHelper.tableId = "\(self.activeData.first?.tableId ?? 0)"
+//                            UserDefaultHelper.groupId = "\(self.activeData.first?.groupId ?? 0)"
+//                        }
 //                    }
 //                }
 //            }
@@ -220,7 +241,15 @@ class DashboardVC: UIViewController, Instantiatable {
                 self.setupBadge()
                 
                 if UserDefaultHelper.tableId != "" {
-                    self.selectTableLabel.text = UserDefaultHelper.tableName
+                    //self.selectTableLabel.text = UserDefaultHelper.tableName
+                    if let tableDict = responseDict["table"]?.dictionary {
+                        let tableInfo = TableInfo(fromJson: JSON(tableDict))
+                        if tableInfo.tableName != "" {
+                            self.selectTableLabel.text = tableInfo.tableName
+                        } else {
+                            self.selectTableLabel.text = UserDefaultHelper.tableName
+                        }
+                    }
                     
                     if UserDefaultHelper.totalItems! != 0 {
                         self.scanTableButton.isUserInteractionEnabled = false
@@ -284,6 +313,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -303,6 +335,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -311,6 +346,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -323,6 +361,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -344,6 +385,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -353,6 +397,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 1 {
@@ -370,6 +417,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -396,6 +446,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -411,6 +464,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 2 {
@@ -423,6 +479,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -438,6 +497,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MyUsualTVCell") as! MyUsualTVCell
                 cell.usualObj = self.myUsualData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 2 {
@@ -455,6 +517,9 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "MealTVCell") as! MealTVCell
                 cell.mealObj = self.ourBestData
                 cell.reloadCollection()
+                cell.didChangeItemsBlock = {
+                    self.setupBadge()
+                }
                 cell.navController = self.navigationController
                 return cell
             }

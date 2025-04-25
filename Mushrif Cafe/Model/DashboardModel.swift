@@ -35,6 +35,7 @@ class DashboardResponse {
     var myUsuals : [DashboardMyUsual]!
     var tryOurBest : [TryOurBest]!
     var cartQuantity : Int = 0
+    var table : TableInfo!
 
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -70,6 +71,10 @@ class DashboardResponse {
             tryOurBest.append(value)
         }
         cartQuantity = json["cart_quantity"].intValue
+        let tableJson = json["table"]
+        if !tableJson.isEmpty {
+            table = TableInfo(fromJson: tableJson)
+        }
     }
 }
 

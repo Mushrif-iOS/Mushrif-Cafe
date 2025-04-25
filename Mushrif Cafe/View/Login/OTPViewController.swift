@@ -124,10 +124,12 @@ class OTPViewController: UIViewController, Instantiatable {
         
         if !hasEnterd {
             self.showBanner(message: "otp_error".localized(), status: .failed)
-        } else if self.enteredOtp != self.otpValueText.text {
-            self.showBanner(message: "otp_not_valid".localized(), status: .failed)
-            return
-        } else {
+        }
+//        else if self.enteredOtp != self.otpValueText.text {
+//            self.showBanner(message: "otp_not_valid".localized(), status: .failed)
+//            return
+//        }
+        else {
             
             let aParams: [String: Any] = ["phone": "\(self.enteredNumber)", "otp": "\(self.enteredOtp)"]
             

@@ -186,6 +186,14 @@ class CartVC: UIViewController, Instantiatable {
             for obj in inActiveCartItemDict {
                 self.inActiveCartArray.append(CartItem(fromJson: obj))
             }
+            
+            if self.cartData?.table != nil {
+                UserDefaultHelper.hallId = "\(self.cartData?.hallId ?? 0)"
+                UserDefaultHelper.tableId = "\(self.cartData?.tableId ?? 0)"
+                UserDefaultHelper.groupId = "\(self.cartData?.groupId ?? 0)"
+                UserDefaultHelper.tableName = "\(self.cartData?.table.tableName ?? "")"
+                UserDefaultHelper.tableNameFull = "\(self.cartData?.table.tableName ?? "")"
+            }
             self.setupUI()
         } failure: { error in
             print("Error \(error.localizedDescription)")
@@ -233,7 +241,12 @@ class CartVC: UIViewController, Instantiatable {
         
 //        if self.cartArray.count == 0 {
 //            self.showBanner(message: "no_cart_item".localized(), status: .failed)
-//        } else
+//        } else self.cartArray
+        
+        if cartArray.contains(where: { $0.isCustomizePending == 1 }) {
+            showBanner(message: "pending_custimization_addtoCart".localized(), status: .failed)
+            return
+        }
         if UserDefaultHelper.totalPrice ?? 0.0 <= 0.0 {
             self.showBanner(message: "no_cost_product".localized(), status: .failed)
         } else {
@@ -349,7 +362,13 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             let addedTitles = dict.ingredientsList?.map { group in
                 return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
             }.joined(separator: "\n")
-            cell.descLabel.text = addedTitles
+            
+            if dict.isCustomizePending == 1 {
+                cell.descLabel.text = "pending_custimization".localized()
+                cell.descLabel.textColor = UIColor.systemYellow
+            } else {
+                cell.descLabel.text = addedTitles
+            }
             cell.instructionLabel.text = "\n\(dict.instruction)"
             cell.qty.text = "\(dict.quantity)"
             cell.qtyValue = dict.quantity

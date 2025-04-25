@@ -82,6 +82,9 @@ struct APPURL {
     static var food_item_list: String {
         return BaseURL  + "food-items"
     }
+    static var categories_item_list: String {
+        return BaseURL  + "product-list"
+    }
     static var food_item_details: String {
         return BaseURL  + "details"
     }

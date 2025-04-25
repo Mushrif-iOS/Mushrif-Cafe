@@ -79,13 +79,6 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if UserDefaultHelper.authToken != "" {
-//            let cartVC = CartVC.instantiate()
-//            self.navController?.pushViewController(cartVC, animated: true)
-//        } else {
-//            let profileVC = LoginVC.instantiate()
-//            self.navController?.pushViewController(profileVC, animated: true)
-//        }
         let dict = usualObj[indexPath.item]
         if dict.items.count > 0 {
             self.cartId = "\(dict.cart.id)"

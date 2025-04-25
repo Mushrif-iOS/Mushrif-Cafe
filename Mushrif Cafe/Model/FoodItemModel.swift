@@ -72,8 +72,10 @@ class FoodItemData {
     var ingredients : [FoodItemIngredient]!
     var kitchenId : Int = 0
     var name : String = ""
+    var descriptionString : String = ""
     var price : String = ""
     var specialPrice : String = ""
+    var subCategory : NewSubCategory!
     var subCategoryId : Int = 0
     var combo : [Combo]!
     var haveCombo : Int = 0
@@ -94,8 +96,13 @@ class FoodItemData {
         }
         kitchenId = json["kitchen_id"].intValue
         name = json["name"].stringValue
+        descriptionString = json["description"].stringValue
         price = json["price"].stringValue
         specialPrice = json["special_price"].stringValue
+        let subCategoryJson = json["sub_category"]
+        if !subCategoryJson.isEmpty {
+            subCategory = NewSubCategory(fromJson: subCategoryJson)
+        }
         subCategoryId = json["sub_category_id"].intValue
         
         combo = [Combo]()
@@ -106,6 +113,22 @@ class FoodItemData {
         }
         haveCombo = json["have_combo"].intValue
         productType = json["product_type"].intValue
+    }
+}
+
+class NewSubCategory {
+
+    var id : Int = 0
+    var name : String = ""
+    var nameAr : String = ""
+
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        id = json["id"].intValue
+        name = json["name"].stringValue
+        nameAr = json["name_ar"].stringValue
     }
 }
 

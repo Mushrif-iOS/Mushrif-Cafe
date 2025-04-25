@@ -27,6 +27,8 @@ class MyUsualTVCell: UITableViewCell {
     static func nib() -> UINib {
         return UINib(nibName: "MyUsualTVCell", bundle: nil)
     }
+    
+    var didChangeItemsBlock : (() -> Void)? = nil
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -109,9 +111,8 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
                     
                     let msg = responseJSON["message"].stringValue
                     self.navController?.showBanner(message: msg, status: .success)
-                    
-                    let cartVC = CartVC.instantiate()
-                    self.navController?.pushViewController(cartVC, animated: true)
+                    UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+                    self.didChangeItemsBlock?()
                     
                 } failure: { error in
                     print("Error \(error.localizedDescription)")

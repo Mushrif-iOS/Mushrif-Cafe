@@ -27,7 +27,17 @@ class TagsCVCell: UICollectionViewCell {
     
     override var isSelected: Bool {
         didSet {
-            self.backView.backgroundColor = isSelected ? UIColor.selectedPink : UIColor.white
+            //self.backView.backgroundColor = isSelected ? UIColor.selectedPink : UIColor.white
+            updateBackgroundColor()
         }
+    }
+    
+    func configureCell(isSelected: Bool) {
+        self.isSelected = isSelected
+        updateBackgroundColor()
+    }
+    
+    private func updateBackgroundColor() {
+        self.backView.backgroundColor = isSelected ? UIColor.selectedPink : UIColor.white
     }
 }

@@ -171,6 +171,17 @@ class CheckoutVC: UIViewController, Instantiatable {
         self.cartArray.removeAll()
         
         self.getCartItem()
+        
+        let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
+        
+        if walletBalance <= 0.0 {
+            walletCheckBoxBtn.isUserInteractionEnabled = false
+        } else {
+            walletCheckBoxBtn.isUserInteractionEnabled = true
+        }
+        
+        let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+        self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -191,36 +202,6 @@ class CheckoutVC: UIViewController, Instantiatable {
     }
     
     @IBAction func walletCheckBoxAction(_ sender: Any) {
-        /*walletCheckBoxBtn.isSelected = !walletCheckBoxBtn.isSelected
-         if walletCheckBoxBtn.isSelected {
-         appleCheckBoxBtn.isSelected = false
-         knetCheckBoxBtn.isSelected = false
-         self.walletDiscountStack.isHidden = false
-         self.walletTotalStack.isHidden = false
-         
-         if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) > (Double(self.totalCost) ?? 0) {
-         self.discountLabel.text = "-\(self.totalCost) KWD"
-         self.totalLabel.text = "0.0 KWD"
-         //self.totalCost = "0.0"
-         print(self.totalCost)
-         } else {
-         let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-         self.discountLabel.text = "\(doubleValue.rounded(toPlaces: 2)) KWD"
-         
-         let totalValue = abs((Double(self.totalCost) ?? 0) - (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0))
-         self.totalLabel.text = "\(totalValue.rounded(toPlaces: 2)) KWD"
-         //self.totalCost = "\(totalValue)"
-         print(self.totalCost)
-         }
-         } else {
-         self.walletDiscountStack.isHidden = true
-         self.walletTotalStack.isHidden = true
-         self.setupUI()
-         }
-         
-         paymentType = "wallet"
-         print(paymentType)*/
-        
         walletCheckBoxBtn.isSelected = !walletCheckBoxBtn.isSelected
         let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
         let totalCostValue = Double(self.totalCost) ?? 0
@@ -238,6 +219,10 @@ class CheckoutVC: UIViewController, Instantiatable {
                 print("Remaining amount: 0.0 \("kwd".localized())")
                 self.remainingAmountAfterWallet = ""
                 paymentType = "wallet"
+                
+                let doubleValue = Double((Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - totalCostValue)
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
+                
             } else {
                 // Wallet amount is insufficient, allow partial payment with either Apple Pay or Knet
                 self.walletDiscountStack.isHidden = false
@@ -259,6 +244,8 @@ class CheckoutVC: UIViewController, Instantiatable {
                 } else {
                     paymentType = "wallet"
                 }
+                
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): 0.0 \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): 0.0"
             }
         } else {
             // Wallet deselected
@@ -266,22 +253,15 @@ class CheckoutVC: UIViewController, Instantiatable {
             self.walletTotalStack.isHidden = true
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
             paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : knetCheckBoxBtn.isSelected ? "knet" : ""
+            
+            let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+            self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
         }
         
         print("Selected paymentType: \(paymentType)")
         self.setupUI()
     }
     @IBAction func appleCheckBoxAction(_ sender: Any) {
-        /*appleCheckBoxBtn.isSelected = !appleCheckBoxBtn.isSelected
-         if appleCheckBoxBtn.isSelected {
-         walletCheckBoxBtn.isSelected = false
-         knetCheckBoxBtn.isSelected = false
-         self.walletDiscountStack.isHidden = true
-         self.walletTotalStack.isHidden = true
-         }
-         self.paymentType = "apple_pay"
-         print(paymentType)
-         self.setupUI()*/
         appleCheckBoxBtn.isSelected = !appleCheckBoxBtn.isSelected
         let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
         let totalCostValue = Double(self.totalCost) ?? 0
@@ -294,6 +274,9 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletDiscountStack.isHidden = true
                 self.walletTotalStack.isHidden = true
                 paymentType = "apple_pay"
+                
+                let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
             } else {
                 // Allow partial payment with Wallet if Wallet is insufficient
                 knetCheckBoxBtn.isSelected = false  // Ensure Knet is deselected
@@ -326,16 +309,6 @@ class CheckoutVC: UIViewController, Instantiatable {
         self.setupUI()
     }
     @IBAction func knetCheckBoxAction(_ sender: Any) {
-        /*knetCheckBoxBtn.isSelected = !knetCheckBoxBtn.isSelected
-         if knetCheckBoxBtn.isSelected {
-         walletCheckBoxBtn.isSelected = false
-         appleCheckBoxBtn.isSelected = false
-         self.walletDiscountStack.isHidden = true
-         self.walletTotalStack.isHidden = true
-         }
-         self.paymentType = "knet"
-         print(paymentType)
-         self.setupUI()*/
         knetCheckBoxBtn.isSelected = !knetCheckBoxBtn.isSelected
         let walletBalance = Double(UserDefaultHelper.walletBalance ?? "0") ?? 0
         let totalCostValue = Double(self.totalCost) ?? 0
@@ -348,6 +321,9 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletDiscountStack.isHidden = true
                 self.walletTotalStack.isHidden = true
                 paymentType = "knet"
+                
+                let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
             } else {
                 // Allow partial payment with Wallet if Wallet is insufficient
                 appleCheckBoxBtn.isSelected = false  // Ensure Apple Pay is deselected
@@ -401,12 +377,7 @@ class CheckoutVC: UIViewController, Instantiatable {
     private func setupUI() {
                 
         DispatchQueue.main.async {
-            
-            //self.totalLabel.text = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "") KWD"
-            
-            let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-            self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
-            
+                        
             if self.inActiveCartArray.count > 0 {
                 
                 let totalPrice = self.inActiveCartArray.compactMap { item in

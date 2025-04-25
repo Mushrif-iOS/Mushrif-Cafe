@@ -202,16 +202,16 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     @objc func addUsualAction(sender: UIButton) {
         
         let dict = self.searchData[sender.tag]
-        var diubleValue = Double()
-        if dict.specialPrice != "" {
-            diubleValue = Double(dict.specialPrice) ?? 0.0
-        } else {
-            diubleValue = Double(dict.price) ?? 0.0
-        }
-        if diubleValue <= 0.0 {
-            self.showBanner(message: "no_cost_Usual".localized(), status: .failed)
-            return
-        }
+//        var diubleValue = Double()
+//        if dict.specialPrice != "" {
+//            diubleValue = Double(dict.specialPrice) ?? 0.0
+//        } else {
+//            diubleValue = Double(dict.price) ?? 0.0
+//        }
+//        if diubleValue <= 0.0 {
+//            self.showBanner(message: "no_cost_Usual".localized(), status: .failed)
+//            return
+//        }
         
         if dict.productType == 4 {
             self.showBanner(message: "cant_add_usual".localized(), status: .failed)
@@ -278,9 +278,6 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
                         print(msg)
                         DispatchQueue.main.async {
                             self.showBanner(message: msg, status: .success)
-                            UserDefaultHelper.totalPrice! += (dict.specialPrice != "" ? Double("\(dict.specialPrice)") : Double("\(dict.price)")) ?? 0.0
-                            let cartVC = CartVC.instantiate()
-                            self.navigationController?.pushViewController(cartVC, animated: true)
                         }
                     } failure: { error in
                         print("Error \(error.localizedDescription)")
@@ -299,12 +296,12 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func dismissed() {
-        if UserDefaultHelper.authToken != "" {
-            let cartVC = CartVC.instantiate()
-            self.navigationController?.pushViewController(cartVC, animated: true)
-        } else {
-            let profileVC = LoginVC.instantiate()
-            self.navigationController?.pushViewController(profileVC, animated: true)
-        }
+//        if UserDefaultHelper.authToken != "" {
+//            let cartVC = CartVC.instantiate()
+//            self.navigationController?.pushViewController(cartVC, animated: true)
+//        } else {
+//            let profileVC = LoginVC.instantiate()
+//            self.navigationController?.pushViewController(profileVC, animated: true)
+//        }
     }
 }

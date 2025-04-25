@@ -1154,7 +1154,6 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 print(msg)
                 DispatchQueue.main.async {
                     self.showBanner(message: msg, status: .success)
-                    //                UserDefaultHelper.totalPrice! += Double("\(self.basePrice)") ?? 0.0
                     UserDefaultHelper.totalPrice! = Double("\(self.basePrice)") ?? 0.0
                     self.dismiss(animated: true) {
                         self.delegate?.dismissed()

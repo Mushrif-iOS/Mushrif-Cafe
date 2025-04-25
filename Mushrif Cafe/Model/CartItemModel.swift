@@ -45,6 +45,7 @@ class CartResponse {
     var orderType : String = ""
     var subTotal : String = ""
     var tableId : Int = 0
+    var table : TableInfo!
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -81,6 +82,39 @@ class CartResponse {
         orderType = json["order_type"].stringValue
         subTotal = json["sub_total"].stringValue
         tableId = json["table_id"].intValue
+        let tableJson = json["table"]
+        if !tableJson.isEmpty {
+            table = TableInfo(fromJson: tableJson)
+        }
+    }
+}
+
+struct TableInfo {
+    let hallId: String
+    let tableName: String
+    let groupNumber: String
+    let tableId: String
+    let groupId: String
+
+    init(fromJson json: JSON) {
+        self.hallId = TableInfo.normalize(json["hall_id"])
+        self.tableName = TableInfo.normalize(json["table_name"])
+        self.groupNumber = TableInfo.normalize(json["group_number"])
+        self.tableId = TableInfo.normalize(json["table_id"])
+        self.groupId = TableInfo.normalize(json["group_id"])
+    }
+
+    /// Normalize value: accepts both Int and String, returns "" if it's 0, "0", or blank.
+    private static func normalize(_ value: JSON) -> String {
+        if let intVal = value.int, intVal != 0 {
+            return "\(intVal)"
+        }
+        if let strVal = value.string,
+           !strVal.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+           strVal != "0" {
+            return strVal
+        }
+        return ""
     }
 }
 
@@ -101,6 +135,7 @@ class CartItem {
     var variationId : Int = 0
     var ingredientsList : [FoodIngredientsList]?
     var productType : Int = 0
+    var isCustomizePending : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -129,6 +164,7 @@ class CartItem {
             ingredientsList?.append(value)
         }
         productType = json["product_type"].intValue
+        isCustomizePending = json["is_customize_pending"].intValue
     }
 }
 
