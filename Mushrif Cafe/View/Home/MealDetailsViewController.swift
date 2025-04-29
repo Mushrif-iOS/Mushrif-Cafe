@@ -667,19 +667,43 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.nameLabel.text = self.detailsData?.name
                 if self.detailsData?.specialPrice != "" {
                     let doubleValue = Double(self.detailsData?.specialPrice ?? "") ?? 0.0
-                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    if doubleValue == 0.0 {
+                        cell.priceLabel.isHidden = true
+                        cell.priceLabel.text = ""
+                    } else {
+                        cell.priceLabel.isHidden = false
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    }
                 } else {
                     let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
-                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    if doubleValue == 0.0 {
+                        cell.priceLabel.isHidden = true
+                        cell.priceLabel.text = ""
+                    } else {
+                        cell.priceLabel.isHidden = false
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    }
                 }
             } else {
                 cell.nameLabel.text = self.detailsData?.comboDetails.comboTitle
                 if self.detailsData?.comboDetails.offerPrice != "" {
                     let doubleValue = Double(self.detailsData?.comboDetails.offerPrice ?? "") ?? 0.0
-                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    if doubleValue == 0.0 {
+                        cell.priceLabel.isHidden = true
+                        cell.priceLabel.text = ""
+                    } else {
+                        cell.priceLabel.isHidden = false
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    }
                 } else {
                     let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
-                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    if doubleValue == 0.0 {
+                        cell.priceLabel.isHidden = true
+                        cell.priceLabel.text = ""
+                    } else {
+                        cell.priceLabel.isHidden = false
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    }
                 }
             }
             return cell
@@ -939,7 +963,80 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             }
             
             tableView.reloadRows(at: [indexPath], with: .automatic)
-        } else if tableView == self.stuffTblView {
+        }
+        /*else if tableView == self.choiceTblView {
+            tableView.deselectRow(at: indexPath, animated: true)
+            
+            let group = self.choiceArr[indexPath.section]
+            let selectedForSection = selectedChoices.filter { $0.key.section == indexPath.section }
+            
+            if group.maxSelection == 1 && group.minSelection > 0 {
+                // Radio button behavior: Allow only one selection if minSelection > 0
+                var cellsToReload: [IndexPath] = []
+                
+                if let previouslySelectedIndex = selectedForSection.keys.first {
+                    // Deselect the previously selected cell
+                    if let price = Double(group.choices[previouslySelectedIndex.row].choicePrice) {
+                        self.variationPrice -= price
+                    }
+                    selectedChoices.removeValue(forKey: previouslySelectedIndex)
+                    if let index = selectedChoiceIDs.firstIndex(of: group.choices[previouslySelectedIndex.row].id) {
+                        selectedChoiceIDs.remove(at: index)
+                    }
+                    cellsToReload.append(previouslySelectedIndex)
+                }
+                
+                // Select the new cell
+                if let price = Double(group.choices[indexPath.row].choicePrice) {
+                    self.variationPrice += price
+                }
+                selectedChoices[indexPath] = group.choices[indexPath.row]
+                selectedChoiceIDs.append(group.choices[indexPath.row].id)
+                cellsToReload.append(indexPath)
+                
+                // Reload only the affected cells
+                tableView.reloadRows(at: cellsToReload, with: .automatic)
+            } else {
+                // Original behavior for maxSelection > 1 or when minSelection == 0
+                if selectedChoices[indexPath] != nil {
+                    if let price = Double(group.choices[indexPath.row].choicePrice) {
+                        self.variationPrice -= price
+                    }
+                    selectedChoices.removeValue(forKey: indexPath)
+                    if let index = selectedChoiceIDs.firstIndex(of: group.choices[indexPath.row].id) {
+                        selectedChoiceIDs.remove(at: index)
+                    }
+                } else if selectedForSection.count < group.maxSelection {
+                    if let price = Double(group.choices[indexPath.row].choicePrice) {
+                        self.variationPrice += price
+                    }
+                    selectedChoices[indexPath] = group.choices[indexPath.row]
+                    selectedChoiceIDs.append(group.choices[indexPath.row].id)
+                } else {
+                    // Show alert for exceeding maxSelection limit
+                    print("Maximum selection reached")
+                    ProgressHUD.error("\("only".localized()) \(group.maxSelection) \("allowed".localized())")
+                    return
+                }
+            }
+            
+            // Respect existing logic for minSelection == 0
+            let selectedCount = selectedChoices.filter { $0.key.section == indexPath.section }.count
+            if selectedCount >= group.minSelection, selectedCount <= group.maxSelection {
+                print("Total selected price: \(self.variationPrice)")
+                print("Selected choice IDs: \(self.selectedChoiceIDs)")
+                self.setPriceAttritubte()
+            } else {
+                print("Selection out of bounds")
+                self.setPriceAttritubte()
+            }
+            
+            // Reload only the tapped cell for `maxSelection > 1` and `minSelection == 0`
+            if !(group.maxSelection == 1 && group.minSelection > 0) {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }*/
+        else if tableView == self.stuffTblView {
             tableView.deselectRow(at: indexPath, animated: true)
             let ingredient = self.ingredientsArr[indexPath.row]
             

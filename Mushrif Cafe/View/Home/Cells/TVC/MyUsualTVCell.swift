@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class MyUsualTVCell: UITableViewCell {
     
@@ -21,6 +22,7 @@ class MyUsualTVCell: UITableViewCell {
     var navController: UINavigationController?
     
     var usualObj = [DashboardMyUsual]()
+    var didUpdateTableInfo: ((TableInfo) -> Void)?
     
     static let identifier = "MyUsualTVCell"
     
@@ -110,10 +112,21 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
                     print("Response JSON \(responseJSON)")
                     
                     let msg = responseJSON["message"].stringValue
-                    self.navController?.showBanner(message: msg, status: .success)
-                    UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
-                    self.didChangeItemsBlock?()
-                    
+                    print(msg)
+                    DispatchQueue.main.async {
+                        self.navController?.showBanner(message: msg, status: .success)
+                        UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+                        self.didChangeItemsBlock?()
+                        
+                        guard let responseDict = responseJSON["response"].dictionary else {
+                            print("Invalid response format")
+                            return
+                        }
+                        if let tableDict = responseDict["table"]?.dictionary {
+                            let tableInfo = TableInfo(fromJson: JSON(tableDict))
+                            self.didUpdateTableInfo?(tableInfo)
+                        }
+                    }
                 } failure: { error in
                     print("Error \(error.localizedDescription)")
                 }

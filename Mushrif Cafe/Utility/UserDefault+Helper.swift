@@ -24,6 +24,7 @@ private enum Defaults: String {
     case groupId = "groupId"
     case walletBalance = "walletBalance"
     case tableName = "tableName"
+    case initialTableName = "initialTableName"
     case tableNameFull = "tableNameFull"
     case groupNumber = "groupNumber"
     case paymentKey = "paymentKey"
@@ -152,6 +153,13 @@ final class UserDefaultHelper {
         }
     }
     
+    static var initialTableName: String? {
+        set {
+            _set(value: newValue, key: .initialTableName)
+        } get {
+            return _get(valueForKay: .initialTableName) as? String ?? ""
+        }
+    }
     static var tableName: String? {
         set {
             _set(value: newValue, key: .tableName)
@@ -259,6 +267,10 @@ final class UserDefaultHelper {
     
     static func deleteTableName() {
         UserDefaults.standard.removeObject(forKey: Defaults.tableName.rawValue)
+    }
+    
+    static func deleteInitialTableName() {
+        UserDefaults.standard.removeObject(forKey: Defaults.initialTableName.rawValue)
     }
     
     static func deleteTableNameFull() {

@@ -619,20 +619,44 @@ extension EditMyUsualVC: UITableViewDelegate, UITableViewDataSource {
                 cell.nameLabel.text = self.cartDetails?.product?.name
                 if self.cartDetails?.product?.specialPrice != "" {
                     let doubleValue = Double(self.cartDetails?.product?.specialPrice ?? "") ?? 0.0
-                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    if doubleValue == 0.0 {
+                        cell.priceLabel.isHidden = true
+                        cell.priceLabel.text = ""
+                    } else {
+                        cell.priceLabel.isHidden = false
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                    }
                 } else {
                     let doubleValue = Double(self.cartDetails?.product?.price ?? "") ?? 0.0
-                    cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized())  \(doubleValue.rounded(toPlaces: 2))"
+                    if doubleValue == 0.0 {
+                        cell.priceLabel.isHidden = true
+                        cell.priceLabel.text = ""
+                    } else {
+                        cell.priceLabel.isHidden = false
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized())  \(doubleValue.rounded(toPlaces: 2))"
+                    }
                 }
             } else {
                 if self.cartDetails?.product?.comboDetails != nil {
                     cell.nameLabel.text = self.cartDetails?.product?.comboDetails.comboTitle
                     if self.cartDetails?.product?.comboDetails.offerPrice != "" {
                         let doubleValue = Double(self.cartDetails?.product?.comboDetails.offerPrice ?? "") ?? 0.0
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        if doubleValue == 0.0 {
+                            cell.priceLabel.isHidden = true
+                            cell.priceLabel.text = ""
+                        } else {
+                            cell.priceLabel.isHidden = false
+                            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        }
                     } else {
                         let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        if doubleValue == 0.0 {
+                            cell.priceLabel.isHidden = true
+                            cell.priceLabel.text = ""
+                        } else {
+                            cell.priceLabel.isHidden = false
+                            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        }
                     }
                 }
             }

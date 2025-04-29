@@ -215,6 +215,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource {
                         UserDefaultHelper.deleteTableName()
                         UserDefaultHelper.deleteTableNameFull()
                         UserDefaultHelper.deleteGroupNumber()
+                        UserDefaultHelper.deleteInitialTableName()
                         
                         AlertView.show(message: msg, preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
                             if button == "ok".localized() {

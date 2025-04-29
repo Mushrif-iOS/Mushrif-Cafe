@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class MealTVCell: UITableViewCell {
 
@@ -29,6 +30,7 @@ class MealTVCell: UITableViewCell {
     }
     
     var didChangeItemsBlock : (() -> Void)? = nil
+    var didUpdateTableInfo: ((TableInfo) -> Void)?
     
     var mealObj: [TryOurBest] = [TryOurBest]()
 
@@ -151,6 +153,15 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                             self.navController?.showBanner(message: msg, status: .success)
                             UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
                             self.didChangeItemsBlock?()
+                            
+                            guard let responseDict = responseJSON["response"].dictionary else {
+                                print("Invalid response format")
+                                return
+                            }
+                            if let tableDict = responseDict["table"]?.dictionary {
+                                let tableInfo = TableInfo(fromJson: JSON(tableDict))
+                                self.didUpdateTableInfo?(tableInfo)
+                            }
                         }
                     } failure: { error in
                         print("Error \(error.localizedDescription)")
@@ -219,6 +230,7 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
 //        }
         UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
         self.didChangeItemsBlock?()
+        NotificationCenter.default.post(name: Notification.Name("RefreshTableInfo"), object: nil)
     }
 }
 

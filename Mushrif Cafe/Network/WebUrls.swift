@@ -11,7 +11,7 @@ struct APPURL {
     
     private struct Domains {
         static let Dev = "https://mushrif-cafe.myclientdemo.us"
-        static let Live = "testAddress.qa.com"
+        static let Live = "http://cafe.muchokw.com"
     }
     
     private  struct Routes {

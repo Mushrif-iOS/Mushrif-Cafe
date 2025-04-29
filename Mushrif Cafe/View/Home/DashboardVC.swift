@@ -68,6 +68,7 @@ class DashboardVC: UIViewController, Instantiatable {
         //self.getDashboardData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("ShowOrders"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodRefreshTable(notification:)), name: Notification.Name("RefreshTableInfo"), object: nil)
     }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
@@ -79,6 +80,10 @@ class DashboardVC: UIViewController, Instantiatable {
         self.bannerData.removeAll()
         self.getDashboardData()
         //self.setupBadge()
+    }
+    
+    @objc func methodRefreshTable(notification: Notification) {
+        self.viewWillAppear(true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -200,30 +205,7 @@ class DashboardVC: UIViewController, Instantiatable {
                 print("Invalid response format")
                 return
             }
-            
-//            if self.activeData.count > 0 {
-//                if "\(self.activeData.first?.tableId ?? 0)" != UserDefaultHelper.tableId {
-//                    //self.selectTableLabel.text = UserDefaultHelper.tableName
-//                    
-//                    if let tableDict = responseDict["table"]?.dictionary {
-//                        let tableInfo = TableInfo(fromJson: JSON(tableDict))
-//                        if tableInfo.tableName != "" {
-//                            self.selectTableLabel.text = tableInfo.tableName
-//                            UserDefaultHelper.tableName = tableInfo.tableName
-//                            UserDefaultHelper.hallId = tableInfo.hallId
-//                            UserDefaultHelper.tableId = tableInfo.tableId
-//                            UserDefaultHelper.groupId = tableInfo.tableId
-//                        } else {
-//                            UserDefaultHelper.tableName = "\(self.activeData.first?.tableNo ?? 0)"
-//                            self.selectTableLabel.text = UserDefaultHelper.tableName
-//                            UserDefaultHelper.hallId = "\(self.activeData.first?.hallId ?? 0)"
-//                            UserDefaultHelper.tableId = "\(self.activeData.first?.tableId ?? 0)"
-//                            UserDefaultHelper.groupId = "\(self.activeData.first?.groupId ?? 0)"
-//                        }
-//                    }
-//                }
-//            }
-            
+
             let myUsualDict = responseJSON["response"]["my_usuals"].arrayValue
             for obj in myUsualDict {
                 self.myUsualData.append(DashboardMyUsual(fromJson: obj))
@@ -247,7 +229,7 @@ class DashboardVC: UIViewController, Instantiatable {
                         if tableInfo.tableName != "" {
                             self.selectTableLabel.text = tableInfo.tableName
                         } else {
-                            self.selectTableLabel.text = UserDefaultHelper.tableName
+                            self.selectTableLabel.text = UserDefaultHelper.initialTableName
                         }
                     }
                     
@@ -316,6 +298,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
                 }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -338,6 +333,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
                 }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -348,6 +356,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell
@@ -363,6 +384,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell
@@ -388,6 +422,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
                 }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -399,6 +446,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell
@@ -419,6 +479,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell
@@ -449,6 +522,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
                 }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
+                }
                 cell.navController = self.navigationController
                 return cell
             }
@@ -467,6 +553,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
                 }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
+                }
                 cell.navController = self.navigationController
                 return cell
             } else if indexPath.row == 2 {
@@ -481,6 +580,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell
@@ -499,6 +611,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell
@@ -519,6 +644,19 @@ extension DashboardVC : UITableViewDelegate, UITableViewDataSource {
                 cell.reloadCollection()
                 cell.didChangeItemsBlock = {
                     self.setupBadge()
+                }
+                cell.didUpdateTableInfo = { [weak self] updatedInfo in
+                    guard let self = self else { return }
+                    
+                    if updatedInfo.tableName != "" {
+                        UserDefaultHelper.hallId = "\(updatedInfo.hallId)"
+                        UserDefaultHelper.tableId = "\(updatedInfo.tableId)"
+                        UserDefaultHelper.groupId = "\(updatedInfo.groupId)"
+                        UserDefaultHelper.tableName = "\(updatedInfo.tableName)"
+                        self.selectTableLabel.text = updatedInfo.tableName
+                    } else {
+                        self.selectTableLabel.text = UserDefaultHelper.initialTableName
+                    }
                 }
                 cell.navController = self.navigationController
                 return cell

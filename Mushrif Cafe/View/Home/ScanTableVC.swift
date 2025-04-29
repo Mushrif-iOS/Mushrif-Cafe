@@ -256,10 +256,11 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                 UserDefaultHelper.groupId = dataDict["group_id"]?.stringValue
                 UserDefaultHelper.groupNumber = dataDict["group_number"]?.stringValue
                 
-                let msg = responseJSON["message"].stringValue
-                print(msg)
+//                let msg = responseJSON["message"].stringValue
+//                print(msg)
                 
                 let tabName = dataDict["table_name"]?.stringValue
+                UserDefaultHelper.initialTableName = tabName
                 UserDefaultHelper.tableName = tabName
                 
                 let tabNameFull = dataDict["table_name_full"]?.stringValue

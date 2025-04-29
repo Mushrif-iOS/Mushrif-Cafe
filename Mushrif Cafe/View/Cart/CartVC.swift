@@ -188,11 +188,11 @@ class CartVC: UIViewController, Instantiatable {
             }
             
             if self.cartData?.table != nil {
-                UserDefaultHelper.hallId = "\(self.cartData?.hallId ?? 0)"
-                UserDefaultHelper.tableId = "\(self.cartData?.tableId ?? 0)"
-                UserDefaultHelper.groupId = "\(self.cartData?.groupId ?? 0)"
+                UserDefaultHelper.hallId = "\(self.cartData?.table.hallId ?? "")"
+                UserDefaultHelper.tableId = "\(self.cartData?.table.tableId ?? "")"
+                UserDefaultHelper.groupId = "\(self.cartData?.table.groupId ?? "")"
                 UserDefaultHelper.tableName = "\(self.cartData?.table.tableName ?? "")"
-                UserDefaultHelper.tableNameFull = "\(self.cartData?.table.tableName ?? "")"
+                //UserDefaultHelper.tableNameFull = "\(self.cartData?.table.tableName ?? "")"
             }
             self.setupUI()
         } failure: { error in

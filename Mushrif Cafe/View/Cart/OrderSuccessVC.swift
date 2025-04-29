@@ -124,7 +124,6 @@ class OrderSuccessVC: UIViewController, Instantiatable {
     
     @IBAction func backAction(_ sender: Any) {
         if self.title == "Dashboard" {
-            //NotificationCenter.default.post(name: Notification.Name("ShowOrders"), object: nil)
             self.navigationController?.popViewController(animated: true)
         } else {
             let dashboardVC = DashboardVC.instantiate()
