@@ -926,7 +926,8 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 self.categorySelecteIndex3 = indexPath
             }
             tableView.reloadData()
-        } else if tableView == self.choiceTblView {
+        }
+        /*else if tableView == self.choiceTblView {
             tableView.deselectRow(at: indexPath, animated: true)
             
             let group = self.choiceArr[indexPath.section]
@@ -963,15 +964,38 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             }
             
             tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
-        /*else if tableView == self.choiceTblView {
+        }*/
+        else if tableView == self.choiceTblView {
             tableView.deselectRow(at: indexPath, animated: true)
             
             let group = self.choiceArr[indexPath.section]
             let selectedForSection = selectedChoices.filter { $0.key.section == indexPath.section }
             
-            if group.maxSelection == 1 && group.minSelection > 0 {
-                // Radio button behavior: Allow only one selection if minSelection > 0
+            if group.maxSelection == 1 {
+                // Special Case: Handle single-element groups (select/deselect behavior)
+                if group.choices.count == 1 {
+                    if selectedChoices[indexPath] != nil {
+                        // Deselect the single option
+                        if let price = Double(group.choices[indexPath.row].choicePrice) {
+                            self.variationPrice -= price
+                        }
+                        selectedChoices.removeValue(forKey: indexPath)
+                        if let index = selectedChoiceIDs.firstIndex(of: group.choices[indexPath.row].id) {
+                            selectedChoiceIDs.remove(at: index)
+                        }
+                    } else {
+                        // Select the single option
+                        if let price = Double(group.choices[indexPath.row].choicePrice) {
+                            self.variationPrice += price
+                        }
+                        selectedChoices[indexPath] = group.choices[indexPath.row]
+                        selectedChoiceIDs.append(group.choices[indexPath.row].id)
+                    }
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                    return
+                }
+                
+                // Radio button behavior: Only one selection allowed
                 var cellsToReload: [IndexPath] = []
                 
                 if let previouslySelectedIndex = selectedForSection.keys.first {
@@ -997,8 +1021,9 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 // Reload only the affected cells
                 tableView.reloadRows(at: cellsToReload, with: .automatic)
             } else {
-                // Original behavior for maxSelection > 1 or when minSelection == 0
+                // Original multi-selection logic
                 if selectedChoices[indexPath] != nil {
+                    // Deselect the tapped cell
                     if let price = Double(group.choices[indexPath.row].choicePrice) {
                         self.variationPrice -= price
                     }
@@ -1007,6 +1032,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                         selectedChoiceIDs.remove(at: index)
                     }
                 } else if selectedForSection.count < group.maxSelection {
+                    // Select the tapped cell
                     if let price = Double(group.choices[indexPath.row].choicePrice) {
                         self.variationPrice += price
                     }
@@ -1020,7 +1046,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 }
             }
             
-            // Respect existing logic for minSelection == 0
+            // Validate selection count for required groups
             let selectedCount = selectedChoices.filter { $0.key.section == indexPath.section }.count
             if selectedCount >= group.minSelection, selectedCount <= group.maxSelection {
                 print("Total selected price: \(self.variationPrice)")
@@ -1031,11 +1057,11 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 self.setPriceAttritubte()
             }
             
-            // Reload only the tapped cell for `maxSelection > 1` and `minSelection == 0`
-            if !(group.maxSelection == 1 && group.minSelection > 0) {
+            // Reload the tapped cell for multi-selection or optional behavior
+            if group.maxSelection != 1 {
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-        }*/
+        }
         else if tableView == self.stuffTblView {
             tableView.deselectRow(at: indexPath, animated: true)
             let ingredient = self.ingredientsArr[indexPath.row]
