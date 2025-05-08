@@ -29,6 +29,9 @@ private enum Defaults: String {
     case groupNumber = "groupNumber"
     case paymentKey = "paymentKey"
     case paymentEnv = "paymentEnv"
+    case minimumWalletAmt = "minimumWalletAmt"
+    case minimumAppleAmt = "minimumAppleAmt"
+    case minimumKNETAmt = "minimumKNETAmt"
 }
 
 final class UserDefaultHelper {
@@ -197,6 +200,28 @@ final class UserDefaultHelper {
         }
     }
     
+    static var minimumWalletAmt: String? {
+        set {
+            _set(value: newValue, key: .minimumWalletAmt)
+        } get {
+            return _get(valueForKay: .minimumWalletAmt) as? String ?? ""
+        }
+    }
+    static var minimumAppleAmt: String? {
+        set {
+            _set(value: newValue, key: .minimumAppleAmt)
+        } get {
+            return _get(valueForKay: .minimumAppleAmt) as? String ?? ""
+        }
+    }
+    static var minimumKNETAmt: String? {
+        set {
+            _set(value: newValue, key: .minimumKNETAmt)
+        } get {
+            return _get(valueForKay: .minimumKNETAmt) as? String ?? ""
+        }
+    }
+    
     private static func _set(value: Any?, key: Defaults) {
         UserDefaults.standard.set(value, forKey: key.rawValue)
     }
@@ -286,5 +311,15 @@ final class UserDefaultHelper {
     }
     static func deletePaymentEnv() {
         UserDefaults.standard.removeObject(forKey: Defaults.paymentEnv.rawValue)
+    }
+    
+    static func deleteMinimumWalletAmt() {
+        UserDefaults.standard.removeObject(forKey: Defaults.minimumWalletAmt.rawValue)
+    }
+    static func deleteMinimumAppleAmt() {
+        UserDefaults.standard.removeObject(forKey: Defaults.minimumAppleAmt.rawValue)
+    }
+    static func deleteMinimumKNETAmt() {
+        UserDefaults.standard.removeObject(forKey: Defaults.minimumKNETAmt.rawValue)
     }
 }

@@ -42,7 +42,7 @@ class SearchCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var customizeLabel: UILabel! {
         didSet {
             customizeLabel.font = UIFont.poppinsRegularFontWith(size: 8)
-            customizeLabel.text = "customizable".localized()
+            //customizeLabel.text = "customizable".localized()
         }
     }
     

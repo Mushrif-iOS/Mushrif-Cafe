@@ -170,3 +170,19 @@ class PaymentTypeParameter {
         environment = json["environment"].stringValue
     }
 }
+
+class TransactionMethod {
+
+    var applePay : String = ""
+    var knet : String = ""
+    var walletRecharge : String = ""
+
+    init(fromJson json: JSON!) {
+        if json.isEmpty {
+            return
+        }
+        applePay = json["apple_pay"].stringValue
+        knet = json["knet"].stringValue
+        walletRecharge = json["wallet_recharge"].stringValue
+    }
+}

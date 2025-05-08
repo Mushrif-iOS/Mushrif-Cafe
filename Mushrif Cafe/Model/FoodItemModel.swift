@@ -80,6 +80,7 @@ class FoodItemData {
     var combo : [Combo]!
     var haveCombo : Int = 0
     var productType : Int = 0
+    var isCustomizePending : Int = 0
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -113,6 +114,7 @@ class FoodItemData {
         }
         haveCombo = json["have_combo"].intValue
         productType = json["product_type"].intValue
+        isCustomizePending = json["is_customize_pending"].intValue
     }
 }
 

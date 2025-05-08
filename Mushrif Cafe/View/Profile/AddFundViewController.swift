@@ -87,7 +87,19 @@ class AddFundViewController: UIViewController, Instantiatable {
         
         if txtAmt.text!.isEmpty {
             self.showBanner(message: "amount_error".localized(), status: .failed)
-        } else {
+            return
+        } else if let text = txtAmt.text,
+                  let enteredAmount = Double(text),
+                  let minAmount = Double(UserDefaultHelper.minimumWalletAmt ?? ""),
+                  enteredAmount < minAmount {
+            
+            let msg = UserDefaultHelper.language == "en" ? "The minimum recharge amount is \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()). Please add at least \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()) to your wallet." :
+            "الحد الأدنى للشحن هو ‎\("kwd".localized()) \(minAmount.rounded(toPlaces: 3)). الرجاء شحن المحفظة بمبلغ لا يقل عن ‎\(minAmount.rounded(toPlaces: 3)) \("kwd".localized())"
+            
+            self.showBanner(message: msg, status: .failed)
+            return
+        }
+        else {
             
             self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "add_to_wallet".localized(), amount: NSDecimalNumber(string: self.txtAmt.text!))]
                         
@@ -103,7 +115,19 @@ class AddFundViewController: UIViewController, Instantiatable {
 
         if txtAmt.text!.isEmpty {
             self.showBanner(message: "amount_error".localized(), status: .failed)
-        } else {
+            return
+        } else if let text = txtAmt.text,
+                  let enteredAmount = Double(text),
+                  let minAmount = Double(UserDefaultHelper.minimumWalletAmt ?? ""),
+                  enteredAmount < minAmount {
+            
+            let msg = UserDefaultHelper.language == "en" ? "The minimum recharge amount is \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()). Please add at least \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()) to your wallet." :
+            "الحد الأدنى للشحن هو ‎\("kwd".localized()) \(minAmount.rounded(toPlaces: 3)). الرجاء شحن المحفظة بمبلغ لا يقل عن ‎\(minAmount.rounded(toPlaces: 3)) \("kwd".localized())"
+            
+            self.showBanner(message: msg, status: .failed)
+            return
+        }
+        else {
             self.executePayment(paymentMethodId: 1)
         }
     }

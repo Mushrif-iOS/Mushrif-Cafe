@@ -197,13 +197,13 @@ class OrderDetailsVC: UIViewController, Instantiatable {
             
             self.titleLabel.text = UserDefaultHelper.language == "en" ? "\("id".localized()) #\(self.orderDetails?.orderNumber ?? 0)" : "\("id".localized()) \(self.orderDetails?.orderNumber ?? 0)#"
             let amt = Double("\(self.orderDetails?.subTotal ?? "")")
-            self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 2) ?? 0.0)"
+            self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? 0.0)"
             
             let disc = Double("\(self.orderDetails?.discount ?? "")")
-            self.discountLabel.text = UserDefaultHelper.language == "en" ? "- \(disc?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(disc?.rounded(toPlaces: 2) ?? 0.0) -"
+            self.discountLabel.text = UserDefaultHelper.language == "en" ? "- \(disc?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(disc?.rounded(toPlaces: 3) ?? 0.0) -"
             
             let total = Double("\(self.orderDetails?.grandTotal ?? "")")
-            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(total?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(total?.rounded(toPlaces: 2) ?? 0.0)"
+            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(total?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(total?.rounded(toPlaces: 3) ?? 0.0)"
             
             self.orderIdLabel.text = "#\(self.orderDetails?.orderNumber ?? 0)"
             self.paidByLabel.text = "\(self.orderDetails?.customerName ?? "")"

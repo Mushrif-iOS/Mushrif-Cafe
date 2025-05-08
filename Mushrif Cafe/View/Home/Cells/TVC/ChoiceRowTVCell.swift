@@ -59,7 +59,7 @@ class ChoiceRowTVCell: UITableViewCell {
             self.priceLabel.text = ""
         } else {
             self.priceLabel.isHidden = false
-            self.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+            self.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
         }
         tickButton.isSelected = isSelected
     }

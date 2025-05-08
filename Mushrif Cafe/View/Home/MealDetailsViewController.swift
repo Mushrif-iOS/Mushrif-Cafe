@@ -672,7 +672,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                         cell.priceLabel.text = ""
                     } else {
                         cell.priceLabel.isHidden = false
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     }
                 } else {
                     let doubleValue = Double(self.detailsData?.price ?? "") ?? 0.0
@@ -681,7 +681,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                         cell.priceLabel.text = ""
                     } else {
                         cell.priceLabel.isHidden = false
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     }
                 }
             } else {
@@ -693,7 +693,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                         cell.priceLabel.text = ""
                     } else {
                         cell.priceLabel.isHidden = false
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     }
                 } else {
                     let doubleValue = Double(self.detailsData?.comboDetails.price ?? "") ?? 0.0
@@ -702,7 +702,7 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                         cell.priceLabel.text = ""
                     } else {
                         cell.priceLabel.isHidden = false
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     }
                 }
             }

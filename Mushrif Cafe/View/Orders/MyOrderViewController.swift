@@ -111,7 +111,7 @@ extension MyOrderViewController: UITableViewDelegate, UITableViewDataSource {
             cell.payTypeLabel.text = "-"
         }
         let amt = Double("\(dict.grandTotal)")
-        cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 2) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 2) ?? 0.0)"
+        cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? 0.0)"
         cell.typeLabel.text = "\(dict.orderType)".capitalized
         return cell
     }

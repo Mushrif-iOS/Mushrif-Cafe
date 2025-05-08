@@ -692,7 +692,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                         cell.priceLabel.text = ""
                     } else {
                         cell.priceLabel.isHidden = false
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     }
                 } else {
                     let doubleValue = Double(self.cartDetails?.product?.price ?? "") ?? 0.0
@@ -701,7 +701,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                         cell.priceLabel.text = ""
                     } else {
                         cell.priceLabel.isHidden = false
-                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     }
                 }
             } else {
@@ -714,7 +714,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                             cell.priceLabel.text = ""
                         } else {
                             cell.priceLabel.isHidden = false
-                            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                         }
                     } else {
                         let doubleValue = Double(self.cartDetails?.product?.comboDetails.price ?? "") ?? 0.0
@@ -723,7 +723,7 @@ extension EditCartVC: UITableViewDelegate, UITableViewDataSource {
                             cell.priceLabel.text = ""
                         } else {
                             cell.priceLabel.isHidden = false
-                            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))"
+                            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                         }
                     }
                 }

@@ -249,6 +249,7 @@ class TryOurBest {
     var status : Int?
     var subCategoryId : Int?
     var userId : Int?
+    var isCustomizePending : Int = 0
 
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -270,6 +271,7 @@ class TryOurBest {
         status = json["status"].intValue
         subCategoryId = json["sub_category_id"].intValue
         userId = json["user_id"].intValue
+        isCustomizePending = json["is_customize_pending"].intValue
     }
 }
 

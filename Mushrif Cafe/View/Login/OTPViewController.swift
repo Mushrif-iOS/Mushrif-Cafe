@@ -59,6 +59,7 @@ class OTPViewController: UIViewController, Instantiatable {
     var hasEnterd: Bool = false
     
     var customerData: Customer?
+    var paymentDetail: TransactionMethod?
     
     var paymentData: [PaymentTypeResponse] = [PaymentTypeResponse]()
     
@@ -151,6 +152,14 @@ class OTPViewController: UIViewController, Instantiatable {
                 UserDefaultHelper.userEmail = "\(self.customerData?.email ?? "")"
                 UserDefaultHelper.mobile = "\(self.customerData?.phone ?? "")"
                 UserDefaultHelper.walletBalance = "\(self.customerData?.balance ?? "")"
+                
+                let paymentDetailData = dataDict["transactionMethod"]
+                self.paymentDetail = TransactionMethod(fromJson: paymentDetailData)
+                
+                UserDefaultHelper.minimumWalletAmt = "\(self.paymentDetail?.walletRecharge ?? "")"
+                UserDefaultHelper.minimumAppleAmt = "\(self.paymentDetail?.applePay ?? "")"
+                UserDefaultHelper.minimumKNETAmt = "\(self.paymentDetail?.knet ?? "")"
+                
                 self.getPaymentGateway()
                 DispatchQueue.main.async {
                     if "\(self.customerData?.name ?? "")" == "" || "\(self.customerData?.name ?? "")" == "Guest" || "\(self.customerData?.name ?? "")" == "Guest User" {

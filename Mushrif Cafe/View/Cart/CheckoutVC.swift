@@ -181,7 +181,7 @@ class CheckoutVC: UIViewController, Instantiatable {
         }
         
         let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-        self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
+        self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 3))"
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -221,7 +221,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 paymentType = "wallet"
                 
                 let doubleValue = Double((Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - totalCostValue)
-                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 3))"
                 
             } else {
                 // Wallet amount is insufficient, allow partial payment with either Apple Pay or Knet
@@ -229,12 +229,12 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletTotalStack.isHidden = false
                 
                 let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 2))-"
+                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))-"
                 
                 let remainingAmount = abs(totalCostValue - walletBalance)
-                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
-                print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())")
-                self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 3))"
+                print("Remaining amount: \(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())")
+                self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 3))"
                 
                 // Dynamically set paymentType based on other selections
                 if appleCheckBoxBtn.isSelected {
@@ -255,7 +255,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : knetCheckBoxBtn.isSelected ? "knet" : ""
             
             let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-            self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
+            self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 3))"
         }
         
         print("Selected paymentType: \(paymentType)")
@@ -276,17 +276,17 @@ class CheckoutVC: UIViewController, Instantiatable {
                 paymentType = "apple_pay"
                 
                 let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 3))"
             } else {
                 // Allow partial payment with Wallet if Wallet is insufficient
                 knetCheckBoxBtn.isSelected = false  // Ensure Knet is deselected
                 
                 if walletCheckBoxBtn.isSelected {
                     let remainingAmount = abs(totalCostValue - walletBalance)
-                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 3))"
                     paymentType = "wallet_and_apple_pay"
-                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())")
-                    self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
+                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())")
+                    self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 3))"
                 } else {
                     self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
                     paymentType = "apple_pay"
@@ -296,7 +296,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             // Apple Pay deselected
             if walletCheckBoxBtn.isSelected && walletBalance < totalCostValue {
                 let remainingAmount = abs(totalCostValue - walletBalance)
-                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 3))"
                 paymentType = "wallet"
             } else {
                 self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
@@ -323,17 +323,17 @@ class CheckoutVC: UIViewController, Instantiatable {
                 paymentType = "knet"
                 
                 let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 2))"
+                self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 3))"
             } else {
                 // Allow partial payment with Wallet if Wallet is insufficient
                 appleCheckBoxBtn.isSelected = false  // Ensure Apple Pay is deselected
                 
                 if walletCheckBoxBtn.isSelected {
                     let remainingAmount = abs(totalCostValue - walletBalance)
-                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 3))"
                     paymentType = "wallet_and_knet"
-                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())")
-                    self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 2))"
+                    print("Remaining amount: \(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())")
+                    self.remainingAmountAfterWallet = "\(remainingAmount.rounded(toPlaces: 3))"
                 } else {
                     self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
                     paymentType = "knet"
@@ -343,7 +343,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             // Knet deselected
             if walletCheckBoxBtn.isSelected && walletBalance < totalCostValue {
                 let remainingAmount = abs(totalCostValue - walletBalance)
-                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 2))"
+                self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 3))"
                 paymentType = "wallet"
             } else {
                 self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
@@ -386,10 +386,10 @@ class CheckoutVC: UIViewController, Instantiatable {
                     return (unitPrice) * Double(quantity)
                 }.reduce(0.0, +)
                 
-                print("Total Price: \(totalPrice.rounded(toPlaces: 2))")
+                print("Total Price: \(totalPrice.rounded(toPlaces: 3))")
                 
-                self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(totalPrice.rounded(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(totalPrice.rounded(toPlaces: 2))"
-                self.totalCost = "\(totalPrice.rounded(toPlaces: 2))"
+                self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(totalPrice.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(totalPrice.rounded(toPlaces: 3))"
+                self.totalCost = "\(totalPrice.rounded(toPlaces: 3))"
                 print("Total Cost: \(self.totalCost)")
                 self.inactiveTableView.isHidden = false
                 self.inactiveTableView.reloadData()
@@ -404,6 +404,15 @@ class CheckoutVC: UIViewController, Instantiatable {
     @IBAction func placeOrderAction(_ sender: Any) {
         
         if self.paymentType == "apple_pay" {
+            if let enteredAmount = Double(self.totalCost),
+               let minAmount = Double(UserDefaultHelper.minimumAppleAmt ?? ""),
+                      enteredAmount < minAmount {
+                let msg = UserDefaultHelper.language == "en" ? "The minimum order amount for online payment is \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()). You may also call a waiter to settle the payment directly." :
+                "الحد الأدنى للدفع الإلكتروني هو \("kwd".localized()) \(minAmount.rounded(toPlaces: 3)) دينار كويتي. يمكنك أيضًا طلب النادل لتسديد الدفعة مباشرة."
+                
+                self.showBanner(message: msg, status: .failed)
+                return
+            }
             self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
             
             let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
@@ -412,6 +421,15 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.present(controller!, animated: true, completion: nil)
             }
         } else if self.paymentType == "knet" {
+            if let enteredAmount = Double(self.totalCost),
+               let minAmount = Double(UserDefaultHelper.minimumKNETAmt ?? ""),
+                      enteredAmount < minAmount {
+                let msg = UserDefaultHelper.language == "en" ? "The minimum order amount for online payment is \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()). You may also call a waiter to settle the payment directly." :
+                "الحد الأدنى للدفع الإلكتروني هو \("kwd".localized()) \(minAmount.rounded(toPlaces: 3)) دينار كويتي. يمكنك أيضًا طلب النادل لتسديد الدفعة مباشرة."
+                
+                self.showBanner(message: msg, status: .failed)
+                return
+            }
             self.executePayment(paymentMethodId: 1)
         } else if self.paymentType == "wallet" {
             if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) < (Double(self.totalCost) ?? 0) {
@@ -431,7 +449,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                     if bal > 0 {
                         let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(self.totalCost) ?? 0.0)
                         UserDefaultHelper.walletBalance = "\(doubleValue)"
-                        //self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 2)) KWD"
+                        //self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) KWD"
                     }
                     
                     //UserDefaultHelper.tableName = ""
@@ -450,6 +468,15 @@ class CheckoutVC: UIViewController, Instantiatable {
                 }
             }
         } else if self.paymentType == "wallet_and_apple_pay" {
+            if let enteredAmount = Double(self.totalCost),
+               let minAmount = Double(UserDefaultHelper.minimumAppleAmt ?? ""),
+                      enteredAmount < minAmount {
+                let msg = UserDefaultHelper.language == "en" ? "The minimum order amount for online payment is \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()). You may also call a waiter to settle the payment directly." :
+                "الحد الأدنى للدفع الإلكتروني هو \("kwd".localized()) \(minAmount.rounded(toPlaces: 3)) دينار كويتي. يمكنك أيضًا طلب النادل لتسديد الدفعة مباشرة."
+                
+                self.showBanner(message: msg, status: .failed)
+                return
+            }
             self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.remainingAmountAfterWallet))]
             
             let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
@@ -458,6 +485,15 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.present(controller!, animated: true, completion: nil)
             }
         } else if self.paymentType == "wallet_and_knet" {
+            if let enteredAmount = Double(self.totalCost),
+               let minAmount = Double(UserDefaultHelper.minimumKNETAmt ?? ""),
+                      enteredAmount < minAmount {
+                let msg = UserDefaultHelper.language == "en" ? "The minimum order amount for online payment is \(minAmount.rounded(toPlaces: 3)) \("kwd".localized()). You may also call a waiter to settle the payment directly." :
+                "الحد الأدنى للدفع الإلكتروني هو \("kwd".localized()) \(minAmount.rounded(toPlaces: 3)) دينار كويتي. يمكنك أيضًا طلب النادل لتسديد الدفعة مباشرة."
+                
+                self.showBanner(message: msg, status: .failed)
+                return
+            }
             self.executePayment(paymentMethodId: 1)
         } else {
             self.showBanner(message: "checkout_no_method".localized(), status: .failed)
