@@ -122,7 +122,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                     UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
                     
                     let prc = Double((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))
-                    self.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
+                    self.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
                 } failure: { error in
                     print("Error \(error.localizedDescription)")
                 }
@@ -160,7 +160,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                 UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
                 
                 let prc = Double((Double(self.itemValue) ?? 0.0)*Double(self.qtyValue))
-                self.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
+                self.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
             } failure: { error in
                 print("Error \(error.localizedDescription)")
             }

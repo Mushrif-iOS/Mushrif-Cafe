@@ -197,13 +197,13 @@ class OrderDetailsVC: UIViewController, Instantiatable {
             
             self.titleLabel.text = UserDefaultHelper.language == "en" ? "\("id".localized()) #\(self.orderDetails?.orderNumber ?? 0)" : "\("id".localized()) \(self.orderDetails?.orderNumber ?? 0)#"
             let amt = Double("\(self.orderDetails?.subTotal ?? "")")
-            self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? 0.0)"
+            self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? "") \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? "")"
             
             let disc = Double("\(self.orderDetails?.discount ?? "")")
-            self.discountLabel.text = UserDefaultHelper.language == "en" ? "- \(disc?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(disc?.rounded(toPlaces: 3) ?? 0.0) -"
+            self.discountLabel.text = UserDefaultHelper.language == "en" ? "- \(disc?.rounded(toPlaces: 3) ?? "") \("kwd".localized())" : "\("kwd".localized()) \(disc?.rounded(toPlaces: 3) ?? "") -"
             
             let total = Double("\(self.orderDetails?.grandTotal ?? "")")
-            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(total?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(total?.rounded(toPlaces: 3) ?? 0.0)"
+            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(total?.rounded(toPlaces: 3) ?? "") \("kwd".localized())" : "\("kwd".localized()) \(total?.rounded(toPlaces: 3) ?? "")"
             
             self.orderIdLabel.text = "#\(self.orderDetails?.orderNumber ?? 0)"
             self.paidByLabel.text = "\(self.orderDetails?.customerName ?? "")"
@@ -231,7 +231,7 @@ extension OrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
         let dict = self.cartArray[indexPath.row]
         cell.nameLabel.text = dict.productName
         let doubleValue = Double(dict.subTotal) ?? 0.0
-        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
+        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
         
         let addedTitles = dict.cartItem.ingredientsList?.map { group in
             return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
@@ -241,7 +241,7 @@ extension OrderDetailsVC: UITableViewDelegate, UITableViewDataSource {
         cell.qtyLabel.text = UserDefaultHelper.language == "en" ? "x\(dict.quantity)" : "\(dict.quantity)x"
         
         let prc = Double((Double(dict.unitCost) ?? 0.0)*(Double(dict.quantity) ?? 0.0))
-        cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
+        cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
         
         cell.backView.layer.masksToBounds = true
         DispatchQueue.main.async {

@@ -297,7 +297,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.itemId = "\(dict.id)"
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
             cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             
             let addedTitles = dict.ingredientsList?.map { group in
@@ -312,7 +312,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qtyValue = dict.quantity
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
+            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
             cell.otherPriceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.itemValue = "\(dict.unitPrice)"
             cell.contentView.isUserInteractionEnabled = false
@@ -348,8 +348,8 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.didChangePriceBlock = {
                 DispatchQueue.main.async {
                     let doubleValue = Double(UserDefaultHelper.totalPrice ?? 0.0)
-                    self.amtLabel.text =  UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
-                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
+                    self.amtLabel.text =  UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
+                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                 }
             }
             
@@ -357,7 +357,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = dict.product.name
             cell.itemId = "\(dict.id)"
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
+            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
             
             let addedTitles = dict.ingredientsList?.map { group in
                 return group.isAdded == 1 ? "\("add".localized()) \(group.title)" : "\("remove".localized()) \(group.title)"
@@ -374,7 +374,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qtyValue = dict.quantity
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
+            cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
             cell.itemValue = "\(dict.unitPrice)"
             
             cell.editButton.tag = indexPath.row

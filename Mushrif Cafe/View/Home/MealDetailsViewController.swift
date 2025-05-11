@@ -1158,12 +1158,12 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         self.basePrice = self.basePrice + self.variationPrice
         
         if UserDefaultHelper.language == "en" {
-            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.toRoundedString(toPlaces: 2)) \("kwd".localized())", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \(self.basePrice.rounded(toPlaces: 3)) \("kwd".localized())", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
             //        attrString.append(NSMutableAttributedString(string: " \("kwd".localized())",
             //                                                    attributes: [NSAttributedString.Key.font: UIFont.poppinsBoldFontWith(size: 14)]))
             self.addButton.setAttributedTitle(attrString, for: .normal)
         } else {
-            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \("kwd".localized()) \(self.basePrice.toRoundedString(toPlaces: 2))", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
+            let attrString = NSMutableAttributedString(string: "\("add".localized()) - \("kwd".localized()) \(self.basePrice.rounded(toPlaces: 3))", attributes: [NSAttributedString.Key.font: UIFont.poppinsMediumFontWith(size: 22)])
             self.addButton.setAttributedTitle(attrString, for: .normal)
         }
     }

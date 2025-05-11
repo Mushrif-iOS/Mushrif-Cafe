@@ -157,11 +157,14 @@ public extension UINavigationController {
 }
 
 extension Double {
-    func rounded(toPlaces places:Int) -> Double {
-        let divisor = pow(10.0, Double(places))
-        return (self * divisor).rounded() / divisor
+//    func rounded(toPlaces places:Int) -> Double {
+//        let divisor = pow(10.0, Double(places))
+//        return (self * divisor).rounded() / divisor
+//    }
+    func rounded(toPlaces places: Int) -> String {
+        return String(format: "%.\(places)f", self)
     }
-    func toRoundedString(toPlaces places:Int) -> String {
+    /*func toRoundedString(toPlaces places:Int) -> String {
         let amount = self.rounded(toPlaces: places)
         let str_mount = String(amount)
         
@@ -189,7 +192,7 @@ extension Double {
         }
         
         return str_mount
-    }
+    }*/
 }
 
 class AlertView {

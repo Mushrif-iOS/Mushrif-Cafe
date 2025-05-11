@@ -128,6 +128,8 @@ class CheckoutVC: UIViewController, Instantiatable {
     var totalCost: String = ""
     var remainingAmountAfterWallet: String = ""
     
+    var paymentDetail: TransactionMethod?
+    
     //var orderID: String = ""
     
     override func viewDidLoad() {
@@ -368,6 +370,12 @@ class CheckoutVC: UIViewController, Instantiatable {
             for obj in inActiveCartItemDict {
                 self.inActiveCartArray.append(CartItem(fromJson: obj))
             }
+            let paymentDetailData = responseJSON["response"]["transactionMethod"]
+            self.paymentDetail = TransactionMethod(fromJson: paymentDetailData)
+            
+            UserDefaultHelper.minimumWalletAmt = "\(self.paymentDetail?.walletRecharge ?? "")"
+            UserDefaultHelper.minimumAppleAmt = "\(self.paymentDetail?.applePay ?? "")"
+            UserDefaultHelper.minimumKNETAmt = "\(self.paymentDetail?.knet ?? "")"
             self.setupUI()
         } failure: { error in
             print("Error \(error.localizedDescription)")
@@ -619,7 +627,7 @@ extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
         cell.nameLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.itemId = "\(dict.id)"
         let doubleValue = Double(dict.unitPrice) ?? 0.0
-        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.toRoundedString(toPlaces: 2))"
+        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
         cell.priceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         
         let addedTitles = dict.ingredientsList?.map { group in
@@ -634,7 +642,7 @@ extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
         cell.qtyValue = dict.quantity
         
         let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
-        cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.toRoundedString(toPlaces: 2)) \("kwd".localized())" : "\("kwd".localized()) \(prc.toRoundedString(toPlaces: 2))"
+        cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
         cell.otherPriceLabel.textColor = UIColor.black.withAlphaComponent(0.5)
         cell.itemValue = "\(dict.unitPrice)"
         cell.contentView.isUserInteractionEnabled = false

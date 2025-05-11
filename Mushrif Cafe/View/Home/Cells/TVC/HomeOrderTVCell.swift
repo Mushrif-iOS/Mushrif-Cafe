@@ -58,7 +58,7 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
-        cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? 0.0)"
+        cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? "") \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? "")"
         
         if dict.paymentStatus == "Paid" {
             cell.payNowButton.isHidden = true

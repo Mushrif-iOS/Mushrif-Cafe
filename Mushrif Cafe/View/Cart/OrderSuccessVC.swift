@@ -84,7 +84,7 @@ class OrderSuccessVC: UIViewController, Instantiatable {
         didSet {
             amtLabel.font = UIFont.poppinsRegularFontWith(size: 16)
             let amt = Double("\(successOrderDetails?.grandTotal ?? "")")
-            amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? 0.0) \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? 0.0)"
+            amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? "") \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? "")"
         }
     }
     
