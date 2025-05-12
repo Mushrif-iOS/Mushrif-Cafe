@@ -271,7 +271,7 @@ class TryOurBest {
         status = json["status"].intValue
         subCategoryId = json["sub_category_id"].intValue
         userId = json["user_id"].intValue
-        isCustomizePending = json["is_customize_pending"].intValue
+        isCustomizePending = json["is_customize_required"].intValue
     }
 }
 

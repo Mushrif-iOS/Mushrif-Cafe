@@ -18,7 +18,7 @@ struct APPURL {
         static let Api = "/api/customer/"
     }
     
-    private  static let Domain = Domains.Dev
+    private  static let Domain = Domains.Live
     private  static let Route = Routes.Api
     private  static let BaseURL = Domain + Route
     

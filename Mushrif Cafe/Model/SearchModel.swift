@@ -97,7 +97,7 @@ class SearchData {
         specialPrice = json["special_price"].stringValue
         subCategoryId = json["sub_category_id"].intValue
         productType = json["product_type"].intValue
-        isCustomizePending = json["is_customize_pending"].intValue
+        isCustomizePending = json["is_customize_required"].intValue
     }
 }
 

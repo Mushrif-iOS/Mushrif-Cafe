@@ -114,7 +114,7 @@ class FoodItemData {
         }
         haveCombo = json["have_combo"].intValue
         productType = json["product_type"].intValue
-        isCustomizePending = json["is_customize_pending"].intValue
+        isCustomizePending = json["is_customize_required"].intValue
     }
 }
 
