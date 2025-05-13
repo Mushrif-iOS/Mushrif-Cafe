@@ -145,19 +145,19 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
         MFSettings.shared.delegate = self
         
-        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
-        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
-            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
-            payment.supportedCountries = ["IN", "KW"]
-            payment.merchantCapabilities = .capability3DS
-            payment.countryCode = "KW"
-            payment.currencyCode = "KWD"
-            payment.supportedNetworks = paymentNetworks
-        } else {
-            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
-                
-            }
-        }
+//        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
+//        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
+//            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
+//            payment.supportedCountries = ["IN", "KW"]
+//            payment.merchantCapabilities = .capability3DS
+//            payment.countryCode = "KW"
+//            payment.currencyCode = "KWD"
+//            payment.supportedNetworks = paymentNetworks
+//        } else {
+//            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+//                
+//            }
+//        }
         
         self.initiatePayment()
         
@@ -421,13 +421,14 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.showBanner(message: msg, status: .failed)
                 return
             }
-            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
-            
-            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
-            if controller != nil {
-                controller!.delegate = self
-                self.present(controller!, animated: true, completion: nil)
-            }
+//            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.totalCost))]
+//            
+//            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+//            if controller != nil {
+//                controller!.delegate = self
+//                self.present(controller!, animated: true, completion: nil)
+//            }
+            self.executeApplePayment(paymentMethodId: 11)
         } else if self.paymentType == "knet" {
             if let enteredAmount = Double(self.totalCost),
                let minAmount = Double(UserDefaultHelper.minimumKNETAmt ?? ""),
@@ -485,13 +486,14 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.showBanner(message: msg, status: .failed)
                 return
             }
-            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.remainingAmountAfterWallet))]
-            
-            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
-            if controller != nil {
-                controller!.delegate = self
-                self.present(controller!, animated: true, completion: nil)
-            }
+//            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.remainingAmountAfterWallet))]
+//            
+//            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+//            if controller != nil {
+//                controller!.delegate = self
+//                self.present(controller!, animated: true, completion: nil)
+//            }
+            self.executeApplePayment(paymentMethodId: 11)
         } else if self.paymentType == "wallet_and_knet" {
             if let enteredAmount = Double(self.totalCost),
                let minAmount = Double(UserDefaultHelper.minimumKNETAmt ?? ""),
@@ -785,6 +787,44 @@ extension CheckoutVC: MFPaymentDelegate {
                     }
                     self.dismiss(animated: true)
                 }
+            }
+        }
+    }
+    
+    func executeApplePayment(paymentMethodId: Int) {
+        let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
+        MFSettings.shared.setTheme(theme: them)
+        let request = getExecutePaymentRequest(paymentMethodId: paymentMethodId)
+        ProgressHUD.animate()
+        ProgressHUD.colorAnimation = UIColor.primaryBrown
+        MFPaymentRequest.shared.executePayment(request: request, apiLanguage: .arabic) { response, invoiceId  in
+            ProgressHUD.dismiss()
+            switch response {
+            case .success(let executePaymentResponse):
+                if let invoiceStatus = executePaymentResponse.invoiceStatus {
+                    ProgressHUD.success(invoiceStatus)
+                    
+                    if let invoiceId = invoiceId {
+                        print("Success with invoiceId \(invoiceId)")
+                        if self.paymentType == "wallet_and_apple_pay" {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
+                        } else {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
+                        }
+                        self.dismiss(animated: true)
+                    }
+                } else {
+                    if let invoiceId = invoiceId {
+                        if self.paymentType == "wallet_and_apple_pay" {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                        } else {
+                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                        }
+                        self.dismiss(animated: true)
+                    }
+                }
+            case .failure(let failError):
+                ProgressHUD.error(failError)
             }
         }
     }

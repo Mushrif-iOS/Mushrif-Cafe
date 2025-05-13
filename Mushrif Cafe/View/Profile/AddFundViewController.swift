@@ -61,18 +61,18 @@ class AddFundViewController: UIViewController, Instantiatable {
         txtAmt.becomeFirstResponder()
         txtAmt.delegate = self
         
-        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
-        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
-            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
-            payment.supportedCountries = ["IN", "KW"]
-            payment.merchantCapabilities = .capability3DS
-            payment.countryCode = "KW"
-            payment.currencyCode = "KWD"
-            payment.supportedNetworks = paymentNetworks
-        } else {
-            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
-            }
-        }
+//        let paymentNetworks = [PKPaymentNetwork.amex, .discover, .masterCard, .visa, .quicPay]
+//        if PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: paymentNetworks) {
+//            payment.merchantIdentifier = "merchant.com.mushifa.cafe"
+//            payment.supportedCountries = ["IN", "KW"]
+//            payment.merchantCapabilities = .capability3DS
+//            payment.countryCode = "KW"
+//            payment.currencyCode = "KWD"
+//            payment.supportedNetworks = paymentNetworks
+//        } else {
+//            AlertView.show(message: "Unable to make Apple Pay transaction.", preferredStyle: .alert, buttons: ["ok".localized()]) { (button) in
+//            }
+//        }
         
         MFSettings.shared.delegate = self
         self.initiatePayment()
@@ -101,13 +101,14 @@ class AddFundViewController: UIViewController, Instantiatable {
         }
         else {
             
-            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "add_to_wallet".localized(), amount: NSDecimalNumber(string: self.txtAmt.text!))]
-                        
-            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
-            if controller != nil {
-                controller!.delegate = self
-                self.present(controller!, animated: true, completion: nil)
-            }
+//            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "add_to_wallet".localized(), amount: NSDecimalNumber(string: self.txtAmt.text!))]
+//                        
+//            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+//            if controller != nil {
+//                controller!.delegate = self
+//                self.present(controller!, animated: true, completion: nil)
+//            }
+            self.executeApplePayment(paymentMethodId: 11)
         }
     }
     
@@ -281,5 +282,51 @@ extension AddFundViewController: MFPaymentDelegate {
         let date = Date().addingTimeInterval(1000)
         request.expiryDate = date
         return request
+    }
+    
+    func executeApplePayment(paymentMethodId: Int) {
+        let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
+        MFSettings.shared.setTheme(theme: them)
+        let request = getExecutePaymentRequest(paymentMethodId: paymentMethodId)
+        ProgressHUD.animate()
+        ProgressHUD.colorAnimation = UIColor.primaryBrown
+        MFPaymentRequest.shared.executePayment(request: request, apiLanguage: .arabic) { response, invoiceId  in
+            ProgressHUD.dismiss()
+            switch response {
+            case .success(let executePaymentResponse):
+                if let invoiceStatus = executePaymentResponse.invoiceStatus {
+                    ProgressHUD.success(invoiceStatus)
+                }
+                if let invoiceId = invoiceId {
+                    print("Success with invoiceId \(invoiceId)")
+                    
+                    let aParams: [String: Any] = ["amount": "\(self.txtAmt.text!)", "payment_type": "apple_pay", "payment_id": "\(invoiceId)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+                    
+                    print(aParams)
+                    
+                    APIManager.shared.postCall(APPURL.add_money, params: aParams, withHeader: true) { responseJSON in
+                        print("Response JSON \(responseJSON)")
+                        
+                        let msg = responseJSON["message"].stringValue
+                        print(msg)
+
+                        self.showBanner(message: msg, status: .success)
+                        
+                        UserDefaultHelper.walletBalance = responseJSON["response"]["balance"].stringValue
+                        DispatchQueue.main.async {
+                            self.delegate?.completed()
+                            self.dismiss(animated: true)
+                        }
+                        
+                    } failure: { error in
+                        print("Error \(error.localizedDescription)")
+                    }
+
+                    self.dismiss(animated: true)
+                }
+            case .failure(let failError):
+                ProgressHUD.error(failError)
+            }
+        }
     }
 }
