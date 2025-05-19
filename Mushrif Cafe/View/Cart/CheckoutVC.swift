@@ -486,14 +486,13 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.showBanner(message: msg, status: .failed)
                 return
             }
-//            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.remainingAmountAfterWallet))]
-//            
-//            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
-//            if controller != nil {
-//                controller!.delegate = self
-//                self.present(controller!, animated: true, completion: nil)
-//            }
-            self.executeApplePayment(paymentMethodId: 11)
+            self.payment.paymentSummaryItems = [PKPaymentSummaryItem(label: "pay_now".localized(), amount: NSDecimalNumber(string: self.remainingAmountAfterWallet))]
+            
+            let controller = PKPaymentAuthorizationViewController(paymentRequest: self.payment)
+            if controller != nil {
+                controller!.delegate = self
+                self.present(controller!, animated: true, completion: nil)
+            }
         } else if self.paymentType == "wallet_and_knet" {
             if let enteredAmount = Double(self.totalCost),
                let minAmount = Double(UserDefaultHelper.minimumKNETAmt ?? ""),
@@ -825,6 +824,14 @@ extension CheckoutVC: MFPaymentDelegate {
                 }
             case .failure(let failError):
                 ProgressHUD.error(failError)
+                if let invoiceId = invoiceId {
+                    if self.paymentType == "wallet_and_apple_pay" {
+                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                    } else {
+                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                    }
+                    self.dismiss(animated: true)
+                }
             }
         }
     }

@@ -201,6 +201,7 @@ class AlertView {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         alert.view.tintColor = UIColor.primaryBrown
+        alert.overrideUserInterfaceStyle = .light
         for button in buttons {
 
             var style = UIAlertAction.Style.default

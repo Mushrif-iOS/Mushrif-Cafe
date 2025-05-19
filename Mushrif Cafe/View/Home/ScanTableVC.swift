@@ -76,7 +76,8 @@ class ScanTableVC: UIViewController, Instantiatable {
                         UIApplication.shared.open(settingsUrl)
                     }
                 })
-                
+                alert.view.tintColor = UIColor.primaryBrown
+                alert.overrideUserInterfaceStyle = .light
                 alert.addAction(UIAlertAction(title: "cancel".localized(), style: .cancel, handler: nil))
                 
                 self.present(alert, animated: true)
