@@ -82,7 +82,23 @@ extension String {
         let array = components(separatedBy: .whitespaces)
         return String(array.reduce("") { $0 + String($1.first!)}.prefix(2))
     }
+    /// Converts ISO 8601 date string to a formatted string like "dd.MM.yy, h:mma"
+        func formattedDateString(to format: String = "dd.MM.yy, h:mma") -> String? {
+            // Parse ISO8601 date string with fractional seconds
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+            guard let date = isoFormatter.date(from: self) else { return nil }
+
+            let formatter = DateFormatter()
+            formatter.dateFormat = format
+            formatter.amSymbol = "am"
+            formatter.pmSymbol = "pm"
+
+            return formatter.string(from: date)
+        }
 }
+
 
 extension String {
     private static let formatter = NumberFormatter()

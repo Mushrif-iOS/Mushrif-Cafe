@@ -36,6 +36,15 @@ class ManageUsualTableViewCell: UITableViewCell {
             instructionLabel.lineBreakMode = .byTruncatingTail
         }
     }
+    @IBOutlet weak var lblDate: UILabel! {
+        didSet {
+            lblDate.font = UIFont.poppinsMediumFontWith(size: 12)
+            lblDate.textColor = UIColor.black
+            lblDate.numberOfLines = 1
+            lblDate.lineBreakMode = .byTruncatingTail
+        }
+    }
+
     
     @IBOutlet weak var editButton: UIButton! {
         didSet {

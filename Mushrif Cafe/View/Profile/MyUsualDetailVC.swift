@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import EasyNotificationBadge
 
 class MyUsualDetailVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
 
+    @IBOutlet weak var btnCart: UIButton!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -19,13 +21,7 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
     
     @IBOutlet weak var mainTableView: UITableView!
     
-    @IBOutlet weak var addNewBtn: UIButton! {
-        didSet {
-            addNewBtn.titleLabel?.font = UIFont.poppinsMediumFontWith(size: 15)
-            addNewBtn.setTitle("add_new".localized(), for: .normal)
-            addNewBtn.isHidden = true
-        }
-    }
+    
     
     var usualId = Int()
     var usualData: UsualDetailsRootClass?
@@ -44,14 +40,42 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
             mainTableView.sectionHeaderTopPadding = 0
         }
     }
+    private func setupBadge() {
+        var badgeAppearance = BadgeAppearance()
+        badgeAppearance.backgroundColor = UIColor.appRed
+        badgeAppearance.textColor = UIColor.white
+        badgeAppearance.textAlignment = .center
+        badgeAppearance.font = UIFont.poppinsLightFontWith(size: 12)
+        badgeAppearance.distanceFromCenterX = 13
+        badgeAppearance.distanceFromCenterY = -13
+        badgeAppearance.allowShadow = true
+        badgeAppearance.borderColor = UIColor.white
+        badgeAppearance.borderWidth = 0.5
+        if "\(UserDefaultHelper.totalItems ?? 0)" == "0" {
+            self.btnCart.badge(text: nil)
+        } else {
+            self.btnCart.badge(text: "\(UserDefaultHelper.totalItems ?? 0)", appearance: badgeAppearance)
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.getMyUsualDetail()
+        setupBadge()
     }
     
     @IBAction func backAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+    @IBAction func btnCartTapped(_ sender: Any) {
+        if UserDefaultHelper.authToken != "" {
+            let cartVC = CartVC.instantiate()
+            self.navigationController?.pushViewController(cartVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+
     }
     
     private func getMyUsualDetail() {

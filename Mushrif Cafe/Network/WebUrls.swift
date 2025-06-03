@@ -11,7 +11,7 @@ struct APPURL {
     
     private struct Domains {
         static let Dev = "https://mushrif-cafe.myclientdemo.us"
-        static let Live = "http://cafe.muchokw.com"
+        static let Live = "https://cafe.muchokw.com"
     }
     
     private  struct Routes {
@@ -149,4 +149,9 @@ struct APPURL {
     static var payment_order: String {
         return BaseURL  + "payment"
     }
+    
+    static var remove_cart_item: String {
+        return BaseURL  + "remove-cart-item"
+    }
+
 }

@@ -177,15 +177,18 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         
         let dict = self.usualData[sender.tag]
         
+        addItemroUsualAPI(id: dict.id)
+    }
+    func addItemroUsualAPI(id: Int)  {
         //itemType = "ordered"
         
         var aParams = [String: Any]()
         
         if self.itemType == "listed" {
-            aParams = ["group_id": "\(dict.id)", "product_id": "\(self.productId)", "quantity": "1", "item_type": "listed", "order_id": ""]
+            aParams = ["group_id": "\(id)", "product_id": "\(self.productId)", "quantity": "1", "item_type": "listed", "order_id": ""]
             print(aParams)
         } else {
-            aParams = ["group_id": "\(dict.id)", "product_id": "", "quantity": "1", "item_type": "ordered", "order_id": "\(self.productId)"]
+            aParams = ["group_id": "\(id)", "product_id": "", "quantity": "1", "item_type": "ordered", "order_id": "\(self.productId)"]
             print(aParams)
         }
 
@@ -199,9 +202,14 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
             print("Error \(error.localizedDescription)")
         }
     }
+    
 }
 
-extension AddUsualsVC: AddMoneyDelegate {
+extension AddUsualsVC:  AddUsualDelegate {
+    func completed(object: GroupDetailsModel?) {
+        addItemroUsualAPI(id: object?.id ?? 0)
+    }
+    
     
     func completed() {
         self.pageNo = 1

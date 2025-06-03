@@ -6,6 +6,9 @@ protocol AddMoneyDelegate {
     func completed()
 }
 
+protocol AddUsualDelegate : AnyObject{
+    func completed(object: GroupDetailsModel?)
+}
 protocol SelectDelegate {
     func onSelect(index: Int)
 }

@@ -34,7 +34,7 @@ class CreateNewUsualVC: UIViewController, Instantiatable {
     
     var myUsual: UsualData?
     
-    var delegate: AddMoneyDelegate?
+    weak var delegate: AddUsualDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,12 +79,15 @@ extension CreateNewUsualVC: UITextFieldDelegate {
                 APIManager.shared.postCall(APPURL.update_usuals_group, params: aParams, withHeader: true) { responseJSON in
                     print("Response JSON \(responseJSON)")
                     
-                    let msg = responseJSON["message"].stringValue
-                    self.showBanner(message: msg, status: .success)
-                    
-                    DispatchQueue.main.async {
-                        self.delegate?.completed()
-                        self.dismiss(animated: true)
+                    if responseJSON["response"].dictionary != nil {
+                        let groupCreation = GroupCreationModel(fromJson: responseJSON)
+
+                        self.showBanner(message: groupCreation.message , status: .success)
+                        
+                        DispatchQueue.main.async {
+                            self.delegate?.completed(object: groupCreation.response)
+                            self.dismiss(animated: true)
+                        }
                     }
                     
                 } failure: { error in
@@ -97,13 +100,15 @@ extension CreateNewUsualVC: UITextFieldDelegate {
                 
                 APIManager.shared.postCall(APPURL.create_usuals_group, params: aParams, withHeader: true) { responseJSON in
                     print("Response JSON \(responseJSON)")
-                    
-                    let msg = responseJSON["message"].stringValue
-                    self.showBanner(message: msg, status: .success)
-                    
-                    DispatchQueue.main.async {
-                        self.delegate?.completed()
-                        self.dismiss(animated: true)
+                    if responseJSON["response"].dictionary != nil {
+                        let groupCreation = GroupCreationModel(fromJson: responseJSON)
+
+                        self.showBanner(message: groupCreation.message , status: .success)
+                        
+                        DispatchQueue.main.async {
+                            self.delegate?.completed(object: groupCreation.response)
+                            self.dismiss(animated: true)
+                        }
                     }
                     
                 } failure: { error in

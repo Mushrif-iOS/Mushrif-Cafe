@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -2366,8 +2366,6 @@
                                     <constraint firstAttribute="bottom" secondItem="tqf-xA-XBN" secondAttribute="bottom" id="l2W-aF-hQ3"/>
                                     <constraint firstAttribute="trailing" secondItem="tqf-xA-XBN" secondAttribute="trailing" id="xzN-Z1-hEy"/>
                                 </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="5tk-JB-qYr"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="5Lw-MI-15H"/>
                             </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Db4-d0-M1q"/>
@@ -2402,6 +2400,7 @@
                         <outlet property="topGap" destination="Uzn-Y6-oDT" id="wtd-ZJ-78L"/>
                         <outlet property="totalLabel" destination="nmG-Bq-fVM" id="RhA-0U-ice"/>
                         <outlet property="totalTitle" destination="2fn-Lc-Ril" id="RCW-Gv-WS5"/>
+                        <outlet property="viewContainer" destination="tqf-xA-XBN" id="e0h-A7-jG0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGT-Gd-77i" sceneMemberID="firstResponder"/>

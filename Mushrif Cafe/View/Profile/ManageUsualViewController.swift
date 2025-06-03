@@ -215,8 +215,12 @@ extension ManageUsualViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
-extension ManageUsualViewController: AddMoneyDelegate {
-    
+extension ManageUsualViewController: AddMoneyDelegate, AddUsualDelegate {
+    func completed(object: GroupDetailsModel?) {
+        self.pageNo = 1
+        self.usualData.removeAll()
+        self.getMyUsual(page: self.pageNo)
+    }
     func completed() {
         self.pageNo = 1
         self.usualData.removeAll()

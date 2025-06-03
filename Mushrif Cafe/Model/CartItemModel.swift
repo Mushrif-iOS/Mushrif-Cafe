@@ -136,6 +136,8 @@ class CartItem {
     var ingredientsList : [FoodIngredientsList]?
     var productType : Int = 0
     var isCustomizePending : Int = 0
+    var created_at : String = ""
+    var placed_on : String = ""
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -165,6 +167,10 @@ class CartItem {
         }
         productType = json["product_type"].intValue
         isCustomizePending = json["is_customize_pending"].intValue
+        created_at = json["created_at"].stringValue
+        placed_on = json["placed_on"].stringValue
+
+
     }
 }
 

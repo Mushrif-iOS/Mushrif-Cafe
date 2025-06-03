@@ -11,6 +11,7 @@ import ProgressHUD
 class CartVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .cart
     
+    @IBOutlet weak var viewContainer: UIView!
     @IBOutlet var mainScrollView: UIScrollView!
     
     @IBOutlet weak var titleLabel: UILabel! {
@@ -156,14 +157,20 @@ class CartVC: UIViewController, Instantiatable {
             if object as? UITableView == self.inactiveTableView {
                 let contentHeight = self.inactiveTableView.contentSize.height
                 self.inActiveTblHeight?.constant = contentHeight
+                if self.inActiveCartArray.count == 0 {
+                    self.inActiveTblHeight?.constant = 0
+                }
             } else if object as? UITableView == self.activeTableView {
                 let contentHeight = self.activeTableView.contentSize.height
                 self.activeTblHeight?.constant = contentHeight
+                if self.cartArray.count == 0 {
+                    self.activeTblHeight?.constant = 0
+                }
             }
         }
     }
     
-    private func getCartItem() {
+    private func getCartItem(isFromNavigate: Bool = true) {
         self.inActiveCartArray.removeAll()
         self.activeCartArray.removeAll()
         self.cartArray.removeAll()
@@ -194,17 +201,17 @@ class CartVC: UIViewController, Instantiatable {
                 UserDefaultHelper.tableName = "\(self.cartData?.table.tableName ?? "")"
                 //UserDefaultHelper.tableNameFull = "\(self.cartData?.table.tableName ?? "")"
             }
-            self.setupUI()
+            self.setupUI(isFromNavigate: isFromNavigate)
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }
     }
     
-    private func setupUI() {
+    private func setupUI(isFromNavigate: Bool = true) {
         
         let data = self.cartData
         
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             
             self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized()) \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized())  \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
@@ -212,21 +219,21 @@ class CartVC: UIViewController, Instantiatable {
 
 //            UserDefaultHelper.totalItems! = data?.items ?? 0
             UserDefaultHelper.totalPrice! = Double("\(data?.subTotal != "" ? data?.subTotal ?? "" : "")") ?? 0.0
-            
             if self.inActiveCartArray.count > 0 {
                 self.inactiveTableView.isHidden = false
                 self.topGap.constant = 20
                 self.inactiveTableView.reloadData()
+
             } else {
                 self.inactiveTableView.isHidden = true
                 self.inActiveTblHeight.constant = 0
                 //self.inactiveTableView.reloadData()
             }
             if self.cartArray.count > 0 {
-                UserDefaultHelper.totalItems! = self.cartArray.count
                 self.placeOrderButton.isUserInteractionEnabled = true
                 self.activeTableView.isHidden = false
                 self.activeTableView.reloadData()
+
             } else {
                 self.placeOrderButton.isUserInteractionEnabled = false
                 self.placeOrderButton.alpha = 0.5
@@ -234,6 +241,15 @@ class CartVC: UIViewController, Instantiatable {
                 self.activeTblHeight.constant = 0
                 //self.inactiveTableView.reloadData()
             }
+            UserDefaultHelper.totalItems = self.cartArray.count
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if isFromNavigate {
+                    self.scrollToLastRow()
+                }
+            }
+
+
         }
     }
     
@@ -246,9 +262,6 @@ class CartVC: UIViewController, Instantiatable {
         if cartArray.contains(where: { $0.isCustomizePending == 1 }) {
             showBanner(message: "pending_custimization_addtoCart".localized(), status: .failed)
             return
-        }
-        if UserDefaultHelper.totalPrice ?? 0.0 <= 0.0 {
-            self.showBanner(message: "no_cost_product".localized(), status: .failed)
         } else {
             
             let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "open", "order_type": self.orderType, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
@@ -310,6 +323,9 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qty.text = "\(dict.quantity)"
             cell.qty.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.qtyValue = dict.quantity
+            let place = "place_on".localized()
+            
+            cell.lblDate.text = place + " \(dict.placed_on)"
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
             cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
@@ -319,7 +335,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.minusButton.isUserInteractionEnabled = false
             cell.plusButton.isUserInteractionEnabled = false
             cell.editButton.isUserInteractionEnabled = false
-            cell.backView.backgroundColor = UIColor.black.withAlphaComponent(0.05)
+            cell.backView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
             
             cell.backView.layer.masksToBounds = true
             DispatchQueue.main.async {
@@ -357,6 +373,8 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = dict.product.name
             cell.itemId = "\(dict.id)"
             let doubleValue = Double(dict.unitPrice) ?? 0.0
+            let place = "place_on".localized()
+            cell.lblDate.text = place + " \(dict.placed_on)"
             cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
             
             let addedTitles = dict.ingredientsList?.map { group in
@@ -400,6 +418,40 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // MARK: - Swipe to Delete with Confirmation
+
+      func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+          var obj : CartItem?
+          if tableView == self.inactiveTableView {
+              obj = self.inActiveCartArray[indexPath.row]
+          } else {
+              obj = self.cartArray[indexPath.row]
+          }
+          let deleteAction = UIContextualAction(style: .destructive, title: "delete".localized()) { [weak self] (_, _, completionHandler) in
+              guard let self = self else { return }
+              let message = "cart_item_deelete_message".localized()
+              UIAlertController.showAlert(controller: self, title: "confirm_delete".localized(), message: "\(message) \"\(obj?.product.name ?? "")\"?", style: .alert, cancelButton: "cancel".localized(), distrutiveButton: "delete".localized(), otherButtons: nil) { (_, btnStr) in
+                  if btnStr == "delete".localized() {
+                      self.deleteCartItemAPI(cartID: obj?.id ?? 0)
+                      completionHandler(true)
+                  }
+              }
+          }
+
+          return UISwipeActionsConfiguration(actions: [deleteAction])
+      }
+    func scrollToLastRow() {
+        DispatchQueue.main.async {
+                self.view.layoutIfNeeded()  // Force layout pass to update contentSize
+                let bottomOffset = CGPoint(x: 0, y: self.mainScrollView.contentSize.height - self.mainScrollView.bounds.height + self.mainScrollView.contentInset.bottom)
+                if bottomOffset.y > 0 {
+                    self.mainScrollView.setContentOffset(bottomOffset, animated: true)
+                }
+            }
+
+    }
+
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
@@ -417,6 +469,19 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             let editVC = EditCartVC.instantiate()
             editVC.cartDetails = dict
             self.navigationController?.pushViewController(editVC, animated: true)
+        }
+    }
+    private func deleteCartItemAPI(cartID: Int) {
+        var aParams: [String: Any] = [:]
+        aParams["locale"]  = UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"
+        aParams["cart_item_id"]  = cartID
+        APIManager.shared.postCall(APPURL.remove_cart_item, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            let msg = responseJSON["message"].stringValue
+            self.showBanner(message: msg , status: .success)
+            self.getCartItem(isFromNavigate: false)
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
         }
     }
 }

@@ -152,3 +152,7 @@
 "id" = "ID";
 "pending_custimization" = "Customization Pending for this Item";
 "pending_custimization_addtoCart" = "Customization Pending for items in cart, please complete customization in order to continue";
+
+"confirm_delete" = "Confirm Delete";
+"cart_item_deelete_message" =  "Are you sure you want to delete";
+"place_on" = "Placed on";

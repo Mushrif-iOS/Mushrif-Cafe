@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EasyNotificationBadge
 
 class CategoryViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -27,6 +28,7 @@ class CategoryViewController: UIViewController, Instantiatable {
     var subCategoriesArr : [SubCategory] = [SubCategory]()
     var foodItemArr : [FoodItemData] = [FoodItemData]()
     
+    @IBOutlet weak var btnCart: UIButton!
     @IBOutlet weak var mainTableView: UITableView!
     
     @IBOutlet weak var bottomView: UIView!
@@ -65,6 +67,24 @@ class CategoryViewController: UIViewController, Instantiatable {
         self.getSubCategories()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
+
+    }
+    private func setupBadge() {
+        var badgeAppearance = BadgeAppearance()
+        badgeAppearance.backgroundColor = UIColor.appRed
+        badgeAppearance.textColor = UIColor.white
+        badgeAppearance.textAlignment = .center
+        badgeAppearance.font = UIFont.poppinsLightFontWith(size: 12)
+        badgeAppearance.distanceFromCenterX = 13
+        badgeAppearance.distanceFromCenterY = -13
+        badgeAppearance.allowShadow = true
+        badgeAppearance.borderColor = UIColor.white
+        badgeAppearance.borderWidth = 0.5
+        if "\(UserDefaultHelper.totalItems ?? 0)" == "0" {
+            self.btnCart.badge(text: nil)
+        } else {
+            self.btnCart.badge(text: "\(UserDefaultHelper.totalItems ?? 0)", appearance: badgeAppearance)
+        }
     }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
@@ -83,11 +103,14 @@ class CategoryViewController: UIViewController, Instantiatable {
         if UserDefaultHelper.totalItems ?? 0 == 0 {
             self.heightBottom.constant = 0
             self.bottomView.isHidden = true
+            setupBadge()
+
         } else {
             self.heightBottom.constant = 90
             self.bottomView.isHidden = false
             self.getCartItem()
         }
+        
     }
     
     private func getCartItem() {
@@ -97,7 +120,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         print(aParams)
         
-        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { responseJSON in
+        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { [self] responseJSON in
             print("Response JSON \(responseJSON)")
             let dataDict = responseJSON["response"]
             cartData = CartResponse(fromJson: dataDict)
@@ -106,6 +129,7 @@ class CategoryViewController: UIViewController, Instantiatable {
             let amt = Double("\(totalCost)") ?? 0.0
             
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(amt) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(amt)"
+            setupBadge()
             
         } failure: { error in
             print("Error \(error.localizedDescription)")
@@ -129,6 +153,17 @@ class CategoryViewController: UIViewController, Instantiatable {
             let profileVC = LoginVC.instantiate()
             self.navigationController?.pushViewController(profileVC, animated: true)
         }
+    }
+    
+    @IBAction func btnCartTapped(_ sender: Any) {
+        if UserDefaultHelper.authToken != "" {
+            let cartVC = CartVC.instantiate()
+            self.navigationController?.pushViewController(cartVC, animated: true)
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+        }
+
     }
     
     private func getSubCategories() {

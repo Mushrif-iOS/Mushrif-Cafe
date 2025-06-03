@@ -152,4 +152,6 @@
 "id" = "الرقم التعريفي";
 "pending_custimization" = "التخصيص قيد الانتظار لهذا المنتج";
 "pending_custimization_addtoCart" = "في عناصر بالسلة تحتاج تخصيص، يرجى إكمال التخصيص عشان تقدر تكمل.";
-
+"confirm_delete" = "تأكيد الحذف";
+"cart_item_deelete_message" =  "هل أنت متأكد أنك تريد الحذف؟";
+"place_on" = "موضوع في";

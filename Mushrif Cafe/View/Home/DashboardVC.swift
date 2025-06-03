@@ -107,7 +107,7 @@ class DashboardVC: UIViewController, Instantiatable {
     
     private func setupBadge() {
         var badgeAppearance = BadgeAppearance()
-        badgeAppearance.backgroundColor = UIColor.primaryBrown
+        badgeAppearance.backgroundColor = UIColor.appRed
         badgeAppearance.textColor = UIColor.white
         badgeAppearance.textAlignment = .center
         badgeAppearance.font = UIFont.poppinsLightFontWith(size: 12)
