@@ -7,6 +7,7 @@
 
 import UIKit
 import EasyNotificationBadge
+import JXSegmentedView
 
 class CategoryViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
@@ -30,7 +31,8 @@ class CategoryViewController: UIViewController, Instantiatable {
     
     @IBOutlet weak var btnCart: UIButton!
     @IBOutlet weak var mainTableView: UITableView!
-    
+    private var hasCalledTopAPI = false // Prevents repeated calls
+
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var totalLabel: UILabel! {
         didSet {
@@ -47,10 +49,9 @@ class CategoryViewController: UIViewController, Instantiatable {
     var pageNo: Int = 1
     var lastPage: Int = Int()
     var subCategoryId = String()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
         titleLabel.text = self.categoryName
         
@@ -62,11 +63,18 @@ class CategoryViewController: UIViewController, Instantiatable {
         layout.minimumLineSpacing = 8
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInset = UIEdgeInsets(top: 6.0, left: 16.0, bottom: 0.0, right: 16.0)
+        if UserDefaultHelper.language == "ar" {
+            self.view.semanticContentAttribute = .forceRightToLeft
+
+            mainCollectionView.semanticContentAttribute = .forceRightToLeft
+            mainCollectionView.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
         self.mainCollectionView.collectionViewLayout = layout
-        
+
         self.getSubCategories()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
+
 
     }
     private func setupBadge() {
@@ -226,10 +234,11 @@ class CategoryViewController: UIViewController, Instantiatable {
                 self.foodItemArr.append(FoodItemData(fromJson: obj))
             }
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 self.mainTableView.delegate = self
                 self.mainTableView.dataSource = self
                 self.mainTableView.reloadData()
+                hasCalledTopAPI = false
             }
             
         } failure: { error in
@@ -246,11 +255,15 @@ extension CategoryViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagsCVCell", for: indexPath) as! TagsCVCell
         cell.textLabel.text = self.subCategoriesArr[indexPath.item].name
+        if UserDefaultHelper.language == "ar" {
+            cell.contentView.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
+        
+
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let dict = self.subCategoriesArr[indexPath.item]
         self.subTitleLabel.text = dict.name
         

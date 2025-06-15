@@ -20,7 +20,9 @@ class TagsCVCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+        if UserDefaultHelper.language == "ar" {
+            self.contentView.semanticContentAttribute = .forceRightToLeft
+        }
         self.textLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         self.textLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     }

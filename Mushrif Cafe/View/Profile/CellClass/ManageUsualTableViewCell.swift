@@ -102,9 +102,8 @@ class ManageUsualTableViewCell: UITableViewCell {
     @IBAction func minusAction(_ sender: Any) {
         if qtyValue > 0 {
             qtyValue -= 1
-            
+            setImageInMinusButton()
             qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
-                                
             if isCart == "N" {
                 let aParams: [String: Any] = ["item_id": "\(self.itemId)", "quantity": "1", "is_increment": "0"]
                 print(aParams)
@@ -143,6 +142,7 @@ class ManageUsualTableViewCell: UITableViewCell {
         if qtyValue < 200 {
             qtyValue += 1
         }
+        setImageInMinusButton()
         qty.text =  userLanguage == "ar" ? "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "AR")) :  "\(qtyValue)".convertedDigitsToLocale(Locale(identifier: "EN"))
         
         if isCart == "N" {
@@ -174,5 +174,10 @@ class ManageUsualTableViewCell: UITableViewCell {
                 print("Error \(error.localizedDescription)")
             }
         }
+    }
+    func setImageInMinusButton()  {
+        let img = UIImage(named: qtyValue == 1 ? "ic_delete": "Icon ionic-ios-remove")
+        minusButton.setImage(img, for: .normal)
+
     }
 }

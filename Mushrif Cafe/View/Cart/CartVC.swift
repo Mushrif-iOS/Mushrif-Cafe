@@ -242,7 +242,6 @@ class CartVC: UIViewController, Instantiatable {
                 //self.inactiveTableView.reloadData()
             }
             UserDefaultHelper.totalItems = self.cartArray.count
-
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 if isFromNavigate {
                     self.scrollToLastRow()
@@ -324,7 +323,6 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.qty.textColor = UIColor.black.withAlphaComponent(0.5)
             cell.qtyValue = dict.quantity
             let place = "place_on".localized()
-            
             cell.lblDate.text = place + " \(dict.placed_on)"
             
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
@@ -373,8 +371,8 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = dict.product.name
             cell.itemId = "\(dict.id)"
             let doubleValue = Double(dict.unitPrice) ?? 0.0
-            let place = "place_on".localized()
-            cell.lblDate.text = place + " \(dict.placed_on)"
+            cell.lblDate.text = ""
+            
             cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
             
             let addedTitles = dict.ingredientsList?.map { group in
@@ -390,7 +388,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.instructionLabel.text = "\n\(dict.instruction)"
             cell.qty.text = "\(dict.quantity)"
             cell.qtyValue = dict.quantity
-            
+            cell.setImageInMinusButton()
             let prc = Double((Double(dict.unitPrice) ?? 0.0)*Double(dict.quantity))
             cell.otherPriceLabel.text = UserDefaultHelper.language == "en" ? "\(prc.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(prc.rounded(toPlaces: 3))"
             cell.itemValue = "\(dict.unitPrice)"

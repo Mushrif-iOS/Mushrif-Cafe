@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C0181912DFE9086004646FF /* JXSegmentedView in Frameworks */ = {isa = PBXBuildFile; productRef = 9C0181902DFE9086004646FF /* JXSegmentedView */; };
 		9CA8BCC52DE720C50071D4FD /* GroupCreationResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8BCC42DE720C40071D4FD /* GroupCreationResponseModel.swift */; };
 		9CA8BCDD2DE735D70071D4FD /* UIAlertControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8BCDB2DE735D70071D4FD /* UIAlertControllerExtensions.swift */; };
 		C613D1DB2D9B1309000FEDD8 /* MyUsualDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613D1DA2D9B1309000FEDD8 /* MyUsualDetailVC.swift */; };
@@ -294,6 +295,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C0181912DFE9086004646FF /* JXSegmentedView in Frameworks */,
 				E15A2BD7273CC8C0E684E4BA /* Pods_Mushrif_Cafe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +318,21 @@
 				DBCFF08B626657023215016A /* Pods-Mushrif Cafe.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		9C0181942DFE986D004646FF /* CustomCode */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181952DFE9879004646FF /* JXSegmented */,
+			);
+			path = CustomCode;
+			sourceTree = "<group>";
+		};
+		9C0181952DFE9879004646FF /* JXSegmented */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = JXSegmented;
 			sourceTree = "<group>";
 		};
 		9CA8BCDA2DE735CE0071D4FD /* Extentions */ = {
@@ -394,6 +411,7 @@
 		C667C4A12CA3165E00DE03C3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				9C0181942DFE986D004646FF /* CustomCode */,
 				9C0115C42DE83D33008B2A60 /* Constant */,
 				9CA8BCDA2DE735CE0071D4FD /* Extentions */,
 				C6E661B42CA3544700AFF47F /* Color+Extension.swift */,
@@ -712,6 +730,9 @@
 				ar,
 			);
 			mainGroup = C68E724B2CA3000200F223A8;
+			packageReferences = (
+				9C01818F2DFE9085004646FF /* XCRemoteSwiftPackageReference "JXSegmentedView" */,
+			);
 			productRefGroup = C68E72552CA3000200F223A8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1103,7 +1124,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.3;
+				CURRENT_PROJECT_VERSION = 1.6;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1145,7 +1166,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.3;
+				CURRENT_PROJECT_VERSION = 1.6;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1198,6 +1219,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9C01818F2DFE9085004646FF /* XCRemoteSwiftPackageReference "JXSegmentedView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pujiaxin33/JXSegmentedView";
+			requirement = {
+				kind = exactVersion;
+				version = 1.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9C0181902DFE9086004646FF /* JXSegmentedView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9C01818F2DFE9085004646FF /* XCRemoteSwiftPackageReference "JXSegmentedView" */;
+			productName = JXSegmentedView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C68E724C2CA3000200F223A8 /* Project object */;
 }
