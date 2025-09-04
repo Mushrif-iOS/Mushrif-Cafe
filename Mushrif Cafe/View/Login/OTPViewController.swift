@@ -11,6 +11,7 @@ import MFSDK
 class OTPViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleText: UILabel! {
         didSet {
             titleText.font = UIFont.poppinsMediumFontWith(size: 18)
@@ -65,7 +66,7 @@ class OTPViewController: UIViewController, Instantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        btnBack.setArabic()
         enterText.text = "\("please_enter_otp".localized()) \n\(enteredNumber)"
         
         self.otpValueText.text = tempOTP
@@ -224,7 +225,7 @@ class OTPViewController: UIViewController, Instantiatable {
         self.otpView.fieldBorderWidth = 1
         self.otpView.displayType = .roundedCorner
         self.otpView.fieldFont = UIFont.poppinsMediumFontWith(size: 18)
-        self.otpView.fieldSize = 55
+        self.otpView.fieldSize =  UIScreen.main.isDisplayZoomed ? 55 * 0.9 : 55
         self.otpView.separatorSpace = 1
         self.otpView.shouldAllowIntermediateEditing = false
         self.otpView.delegate = self

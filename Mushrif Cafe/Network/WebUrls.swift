@@ -154,4 +154,11 @@ struct APPURL {
         return BaseURL  + "remove-cart-item"
     }
 
+    static var gteGalls: String {
+        return BaseURL  + "halls"
+    }
+    static var autoselecttable: String {
+        return BaseURL  + "auto-select-table"
+    }
+    
 }

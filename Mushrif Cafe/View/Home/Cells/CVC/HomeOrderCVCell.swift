@@ -9,6 +9,15 @@ import UIKit
 
 class HomeOrderCVCell: UICollectionViewCell {
     
+    @IBOutlet weak var btnExtraHead: UIButton! {
+        didSet {
+            btnExtraHead.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 16)
+            btnExtraHead.setTitle("btnExtraHead".localized(), for: .normal)
+
+        }
+    }
+    
+    
     @IBOutlet var topView: UIView!
     
     @IBOutlet var orderLabel: UILabel! {
@@ -66,6 +75,8 @@ class HomeOrderCVCell: UICollectionViewCell {
             payNowButton.setTitle("pay_now".localized(), for: .normal)
         }
     }
+    var btnExtraHeadTapped : (() -> Void)? = nil
+
     
     static let identifier = "HomeOrderCVCell"
     
@@ -77,5 +88,8 @@ class HomeOrderCVCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         topView.roundCorners(corners: [.topLeft, .topRight], radius: 18)
+    }
+    @IBAction func btnExtraHeadTapped(_ sender: Any) {
+        btnExtraHeadTapped?()
     }
 }

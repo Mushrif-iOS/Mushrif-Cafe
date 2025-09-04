@@ -7,7 +7,58 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9C0181912DFE9086004646FF /* JXSegmentedView in Frameworks */ = {isa = PBXBuildFile; productRef = 9C0181902DFE9086004646FF /* JXSegmentedView */; };
+		9C0181992DFE9EA3004646FF /* ContentBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181982DFE9EA3004646FF /* ContentBaseViewController.swift */; };
+		9C0181D42DFEDC27004646FF /* JXSegmentedIndicatorBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B02DFEDC27004646FF /* JXSegmentedIndicatorBackgroundView.swift */; };
+		9C0181D52DFEDC27004646FF /* JXSegmentedBaseDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A62DFEDC27004646FF /* JXSegmentedBaseDataSource.swift */; };
+		9C0181D62DFEDC27004646FF /* JXSegmentedListContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A12DFEDC27004646FF /* JXSegmentedListContainerView.swift */; };
+		9C0181D72DFEDC27004646FF /* JXSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A92DFEDC27004646FF /* JXSegmentedView.swift */; };
+		9C0181D82DFEDC27004646FF /* JXSegmentedDotDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181AC2DFEDC27004646FF /* JXSegmentedDotDataSource.swift */; };
+		9C0181D92DFEDC27004646FF /* JXSegmentedTitleImageItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181CC2DFEDC27004646FF /* JXSegmentedTitleImageItemModel.swift */; };
+		9C0181DA2DFEDC27004646FF /* JXSegmentedIndicatorDoubleLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B32DFEDC27004646FF /* JXSegmentedIndicatorDoubleLineView.swift */; };
+		9C0181DB2DFEDC27004646FF /* JXSegmentedTitleAttributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C01819C2DFEDC27004646FF /* JXSegmentedTitleAttributeCell.swift */; };
+		9C0181DC2DFEDC27004646FF /* JXSegmentedBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A52DFEDC27004646FF /* JXSegmentedBaseCell.swift */; };
+		9C0181DD2DFEDC27004646FF /* JXSegmentedTitleGradientItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C82DFEDC27004646FF /* JXSegmentedTitleGradientItemModel.swift */; };
+		9C0181DE2DFEDC27004646FF /* JXSegmentedNumberItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181BF2DFEDC27004646FF /* JXSegmentedNumberItemModel.swift */; };
+		9C0181DF2DFEDC27004646FF /* JXSegmentedTitleOrImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181CE2DFEDC27004646FF /* JXSegmentedTitleOrImageCell.swift */; };
+		9C0181E02DFEDC27004646FF /* JXSegmentedNumberDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181BE2DFEDC27004646FF /* JXSegmentedNumberDataSource.swift */; };
+		9C0181E12DFEDC27004646FF /* JXSegmentedIndicatorGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B52DFEDC27004646FF /* JXSegmentedIndicatorGradientView.swift */; };
+		9C0181E22DFEDC27004646FF /* JXSegmentedBaseItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A72DFEDC27004646FF /* JXSegmentedBaseItemModel.swift */; };
+		9C0181E32DFEDC27004646FF /* JXSegmentedViewTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A32DFEDC27004646FF /* JXSegmentedViewTool.swift */; };
+		9C0181E42DFEDC27004646FF /* JXSegmentedIndicatorLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B72DFEDC27004646FF /* JXSegmentedIndicatorLineView.swift */; };
+		9C0181E52DFEDC27004646FF /* JXSegmentedTitleGradientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C62DFEDC27004646FF /* JXSegmentedTitleGradientCell.swift */; };
+		9C0181E62DFEDC27004646FF /* JXSegmentedCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A82DFEDC27004646FF /* JXSegmentedCollectionView.swift */; };
+		9C0181E72DFEDC27004646FF /* JXSegmentedComponetGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181AF2DFEDC27004646FF /* JXSegmentedComponetGradientView.swift */; };
+		9C0181E82DFEDC27004646FF /* JXSegmentedTitleOrImageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181CF2DFEDC27004646FF /* JXSegmentedTitleOrImageDataSource.swift */; };
+		9C0181E92DFEDC27004646FF /* JXSegmentedTitleAttributeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C01819E2DFEDC27004646FF /* JXSegmentedTitleAttributeItemModel.swift */; };
+		9C0181EA2DFEDC27004646FF /* JXSegmentedTitleDynamicConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C32DFEDC27004646FF /* JXSegmentedTitleDynamicConfiguration.swift */; };
+		9C0181EB2DFEDC27004646FF /* JXSegmentedIndicatorImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B62DFEDC27004646FF /* JXSegmentedIndicatorImageView.swift */; };
+		9C0181EC2DFEDC27004646FF /* JXSegmentedIndicatorDotLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B22DFEDC27004646FF /* JXSegmentedIndicatorDotLineView.swift */; };
+		9C0181ED2DFEDC27004646FF /* JXSegmentedNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181BD2DFEDC27004646FF /* JXSegmentedNumberCell.swift */; };
+		9C0181EE2DFEDC27004646FF /* JXSegmentedIndicatorTriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181BB2DFEDC27004646FF /* JXSegmentedIndicatorTriangleView.swift */; };
+		9C0181EF2DFEDC27004646FF /* JXSegmentedRTLLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A22DFEDC27004646FF /* JXSegmentedRTLLayout.swift */; };
+		9C0181F02DFEDC27004646FF /* JXSegmentedTitleOrImageItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181D02DFEDC27004646FF /* JXSegmentedTitleOrImageItemModel.swift */; };
+		9C0181F12DFEDC27004646FF /* JXSegmentedDotItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181AD2DFEDC27004646FF /* JXSegmentedDotItemModel.swift */; };
+		9C0181F22DFEDC27004646FF /* JXSegmentedTitleAttributeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C01819D2DFEDC27004646FF /* JXSegmentedTitleAttributeDataSource.swift */; };
+		9C0181F32DFEDC27004646FF /* JXSegmentedTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C12DFEDC27004646FF /* JXSegmentedTitleCell.swift */; };
+		9C0181F42DFEDC27004646FF /* JXSegmentedIndicatorRainbowLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181BA2DFEDC27004646FF /* JXSegmentedIndicatorRainbowLineView.swift */; };
+		9C0181F52DFEDC27004646FF /* JXSegmentedIndicatorGradientLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B42DFEDC27004646FF /* JXSegmentedIndicatorGradientLineView.swift */; };
+		9C0181F62DFEDC27004646FF /* JXSegmentedTitleGradientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C72DFEDC27004646FF /* JXSegmentedTitleGradientDataSource.swift */; };
+		9C0181F72DFEDC27004646FF /* JXSegmentedTitleImageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181CB2DFEDC27004646FF /* JXSegmentedTitleImageDataSource.swift */; };
+		9C0181F82DFEDC27004646FF /* JXSegmentedTitleImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181CA2DFEDC27004646FF /* JXSegmentedTitleImageCell.swift */; };
+		9C0181F92DFEDC27004646FF /* JXSegmentedIndicatorParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B82DFEDC27004646FF /* JXSegmentedIndicatorParams.swift */; };
+		9C0181FA2DFEDC27004646FF /* JXSegmentedTitleDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C22DFEDC27004646FF /* JXSegmentedTitleDataSource.swift */; };
+		9C0181FB2DFEDC27004646FF /* JXSegmentedTitleItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181C42DFEDC27004646FF /* JXSegmentedTitleItemModel.swift */; };
+		9C0181FC2DFEDC27004646FF /* JXSegmentedIndicatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B92DFEDC27004646FF /* JXSegmentedIndicatorProtocol.swift */; };
+		9C0181FD2DFEDC27004646FF /* JXSegmentedAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181A02DFEDC27004646FF /* JXSegmentedAnimator.swift */; };
+		9C0181FE2DFEDC27004646FF /* JXSegmentedIndicatorBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181B12DFEDC27004646FF /* JXSegmentedIndicatorBaseView.swift */; };
+		9C0181FF2DFEDC27004646FF /* JXSegmentedDotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0181AB2DFEDC27004646FF /* JXSegmentedDotCell.swift */; };
+		9C0182002DFEDC27004646FF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 9C0181D22DFEDC27004646FF /* PrivacyInfo.xcprivacy */; };
+		9C0B1EF12E2CC576001F2047 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0B1EEF2E2CC576001F2047 /* LocationManager.swift */; };
+		9C0B1EF42E2CC5CF001F2047 /* UDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0B1EF32E2CC5CE001F2047 /* UDManager.swift */; };
+		9C0DC2FF2E2CDA2E0085F448 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0DC2FD2E2CDA2E0085F448 /* Utility.swift */; };
+		9C5662262E2F81FF000173CE /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5662242E2F81FF000173CE /* PickerView.swift */; };
+		9C5662282E2F9047000173CE /* HallsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5662272E2F9047000173CE /* HallsModel.swift */; };
+		9C9285272E2CF1950009AA45 /* LocationAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9285262E2CF1950009AA45 /* LocationAlertVC.swift */; };
 		9CA8BCC52DE720C50071D4FD /* GroupCreationResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8BCC42DE720C40071D4FD /* GroupCreationResponseModel.swift */; };
 		9CA8BCDD2DE735D70071D4FD /* UIAlertControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8BCDB2DE735D70071D4FD /* UIAlertControllerExtensions.swift */; };
 		C613D1DB2D9B1309000FEDD8 /* MyUsualDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C613D1DA2D9B1309000FEDD8 /* MyUsualDetailVC.swift */; };
@@ -145,6 +196,58 @@
 /* Begin PBXFileReference section */
 		2E6F4D0B4EF17FB6B41AFBA9 /* Pods_Mushrif_Cafe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mushrif_Cafe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83201CD94B3BCD11A3F41519 /* Pods-Mushrif Cafe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mushrif Cafe.debug.xcconfig"; path = "Target Support Files/Pods-Mushrif Cafe/Pods-Mushrif Cafe.debug.xcconfig"; sourceTree = "<group>"; };
+		9C0181982DFE9EA3004646FF /* ContentBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBaseViewController.swift; sourceTree = "<group>"; };
+		9C01819C2DFEDC27004646FF /* JXSegmentedTitleAttributeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleAttributeCell.swift; sourceTree = "<group>"; };
+		9C01819D2DFEDC27004646FF /* JXSegmentedTitleAttributeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleAttributeDataSource.swift; sourceTree = "<group>"; };
+		9C01819E2DFEDC27004646FF /* JXSegmentedTitleAttributeItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleAttributeItemModel.swift; sourceTree = "<group>"; };
+		9C0181A02DFEDC27004646FF /* JXSegmentedAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedAnimator.swift; sourceTree = "<group>"; };
+		9C0181A12DFEDC27004646FF /* JXSegmentedListContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedListContainerView.swift; sourceTree = "<group>"; };
+		9C0181A22DFEDC27004646FF /* JXSegmentedRTLLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedRTLLayout.swift; sourceTree = "<group>"; };
+		9C0181A32DFEDC27004646FF /* JXSegmentedViewTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedViewTool.swift; sourceTree = "<group>"; };
+		9C0181A52DFEDC27004646FF /* JXSegmentedBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedBaseCell.swift; sourceTree = "<group>"; };
+		9C0181A62DFEDC27004646FF /* JXSegmentedBaseDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedBaseDataSource.swift; sourceTree = "<group>"; };
+		9C0181A72DFEDC27004646FF /* JXSegmentedBaseItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedBaseItemModel.swift; sourceTree = "<group>"; };
+		9C0181A82DFEDC27004646FF /* JXSegmentedCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedCollectionView.swift; sourceTree = "<group>"; };
+		9C0181A92DFEDC27004646FF /* JXSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedView.swift; sourceTree = "<group>"; };
+		9C0181AB2DFEDC27004646FF /* JXSegmentedDotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedDotCell.swift; sourceTree = "<group>"; };
+		9C0181AC2DFEDC27004646FF /* JXSegmentedDotDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedDotDataSource.swift; sourceTree = "<group>"; };
+		9C0181AD2DFEDC27004646FF /* JXSegmentedDotItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedDotItemModel.swift; sourceTree = "<group>"; };
+		9C0181AF2DFEDC27004646FF /* JXSegmentedComponetGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedComponetGradientView.swift; sourceTree = "<group>"; };
+		9C0181B02DFEDC27004646FF /* JXSegmentedIndicatorBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorBackgroundView.swift; sourceTree = "<group>"; };
+		9C0181B12DFEDC27004646FF /* JXSegmentedIndicatorBaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorBaseView.swift; sourceTree = "<group>"; };
+		9C0181B22DFEDC27004646FF /* JXSegmentedIndicatorDotLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorDotLineView.swift; sourceTree = "<group>"; };
+		9C0181B32DFEDC27004646FF /* JXSegmentedIndicatorDoubleLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorDoubleLineView.swift; sourceTree = "<group>"; };
+		9C0181B42DFEDC27004646FF /* JXSegmentedIndicatorGradientLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorGradientLineView.swift; sourceTree = "<group>"; };
+		9C0181B52DFEDC27004646FF /* JXSegmentedIndicatorGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorGradientView.swift; sourceTree = "<group>"; };
+		9C0181B62DFEDC27004646FF /* JXSegmentedIndicatorImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorImageView.swift; sourceTree = "<group>"; };
+		9C0181B72DFEDC27004646FF /* JXSegmentedIndicatorLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorLineView.swift; sourceTree = "<group>"; };
+		9C0181B82DFEDC27004646FF /* JXSegmentedIndicatorParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorParams.swift; sourceTree = "<group>"; };
+		9C0181B92DFEDC27004646FF /* JXSegmentedIndicatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorProtocol.swift; sourceTree = "<group>"; };
+		9C0181BA2DFEDC27004646FF /* JXSegmentedIndicatorRainbowLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorRainbowLineView.swift; sourceTree = "<group>"; };
+		9C0181BB2DFEDC27004646FF /* JXSegmentedIndicatorTriangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedIndicatorTriangleView.swift; sourceTree = "<group>"; };
+		9C0181BD2DFEDC27004646FF /* JXSegmentedNumberCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedNumberCell.swift; sourceTree = "<group>"; };
+		9C0181BE2DFEDC27004646FF /* JXSegmentedNumberDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedNumberDataSource.swift; sourceTree = "<group>"; };
+		9C0181BF2DFEDC27004646FF /* JXSegmentedNumberItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedNumberItemModel.swift; sourceTree = "<group>"; };
+		9C0181C12DFEDC27004646FF /* JXSegmentedTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleCell.swift; sourceTree = "<group>"; };
+		9C0181C22DFEDC27004646FF /* JXSegmentedTitleDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleDataSource.swift; sourceTree = "<group>"; };
+		9C0181C32DFEDC27004646FF /* JXSegmentedTitleDynamicConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleDynamicConfiguration.swift; sourceTree = "<group>"; };
+		9C0181C42DFEDC27004646FF /* JXSegmentedTitleItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleItemModel.swift; sourceTree = "<group>"; };
+		9C0181C62DFEDC27004646FF /* JXSegmentedTitleGradientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleGradientCell.swift; sourceTree = "<group>"; };
+		9C0181C72DFEDC27004646FF /* JXSegmentedTitleGradientDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleGradientDataSource.swift; sourceTree = "<group>"; };
+		9C0181C82DFEDC27004646FF /* JXSegmentedTitleGradientItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleGradientItemModel.swift; sourceTree = "<group>"; };
+		9C0181CA2DFEDC27004646FF /* JXSegmentedTitleImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleImageCell.swift; sourceTree = "<group>"; };
+		9C0181CB2DFEDC27004646FF /* JXSegmentedTitleImageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleImageDataSource.swift; sourceTree = "<group>"; };
+		9C0181CC2DFEDC27004646FF /* JXSegmentedTitleImageItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleImageItemModel.swift; sourceTree = "<group>"; };
+		9C0181CE2DFEDC27004646FF /* JXSegmentedTitleOrImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleOrImageCell.swift; sourceTree = "<group>"; };
+		9C0181CF2DFEDC27004646FF /* JXSegmentedTitleOrImageDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleOrImageDataSource.swift; sourceTree = "<group>"; };
+		9C0181D02DFEDC27004646FF /* JXSegmentedTitleOrImageItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JXSegmentedTitleOrImageItemModel.swift; sourceTree = "<group>"; };
+		9C0181D22DFEDC27004646FF /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		9C0B1EEF2E2CC576001F2047 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		9C0B1EF32E2CC5CE001F2047 /* UDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDManager.swift; sourceTree = "<group>"; };
+		9C0DC2FD2E2CDA2E0085F448 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		9C5662242E2F81FF000173CE /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
+		9C5662272E2F9047000173CE /* HallsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HallsModel.swift; sourceTree = "<group>"; };
+		9C9285262E2CF1950009AA45 /* LocationAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAlertVC.swift; sourceTree = "<group>"; };
 		9CA8BCC42DE720C40071D4FD /* GroupCreationResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupCreationResponseModel.swift; sourceTree = "<group>"; };
 		9CA8BCDB2DE735D70071D4FD /* UIAlertControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertControllerExtensions.swift; sourceTree = "<group>"; };
 		C613D1DA2D9B1309000FEDD8 /* MyUsualDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUsualDetailVC.swift; sourceTree = "<group>"; };
@@ -295,7 +398,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C0181912DFE9086004646FF /* JXSegmentedView in Frameworks */,
 				E15A2BD7273CC8C0E684E4BA /* Pods_Mushrif_Cafe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,6 +425,8 @@
 		9C0181942DFE986D004646FF /* CustomCode */ = {
 			isa = PBXGroup;
 			children = (
+				9C0B1EF22E2CC5C0001F2047 /* UDManager */,
+				9C0B1EF02E2CC576001F2047 /* LocationManager */,
 				9C0181952DFE9879004646FF /* JXSegmented */,
 			);
 			path = CustomCode;
@@ -331,8 +435,174 @@
 		9C0181952DFE9879004646FF /* JXSegmented */ = {
 			isa = PBXGroup;
 			children = (
+				9C0181D32DFEDC27004646FF /* Sources */,
+				9C0181982DFE9EA3004646FF /* ContentBaseViewController.swift */,
 			);
 			path = JXSegmented;
+			sourceTree = "<group>";
+		};
+		9C01819F2DFEDC27004646FF /* AttributeTitle */ = {
+			isa = PBXGroup;
+			children = (
+				9C01819C2DFEDC27004646FF /* JXSegmentedTitleAttributeCell.swift */,
+				9C01819D2DFEDC27004646FF /* JXSegmentedTitleAttributeDataSource.swift */,
+				9C01819E2DFEDC27004646FF /* JXSegmentedTitleAttributeItemModel.swift */,
+			);
+			path = AttributeTitle;
+			sourceTree = "<group>";
+		};
+		9C0181A42DFEDC27004646FF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181A02DFEDC27004646FF /* JXSegmentedAnimator.swift */,
+				9C0181A12DFEDC27004646FF /* JXSegmentedListContainerView.swift */,
+				9C0181A22DFEDC27004646FF /* JXSegmentedRTLLayout.swift */,
+				9C0181A32DFEDC27004646FF /* JXSegmentedViewTool.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9C0181AA2DFEDC27004646FF /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181A52DFEDC27004646FF /* JXSegmentedBaseCell.swift */,
+				9C0181A62DFEDC27004646FF /* JXSegmentedBaseDataSource.swift */,
+				9C0181A72DFEDC27004646FF /* JXSegmentedBaseItemModel.swift */,
+				9C0181A82DFEDC27004646FF /* JXSegmentedCollectionView.swift */,
+				9C0181A92DFEDC27004646FF /* JXSegmentedView.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		9C0181AE2DFEDC27004646FF /* Dot */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181AB2DFEDC27004646FF /* JXSegmentedDotCell.swift */,
+				9C0181AC2DFEDC27004646FF /* JXSegmentedDotDataSource.swift */,
+				9C0181AD2DFEDC27004646FF /* JXSegmentedDotItemModel.swift */,
+			);
+			path = Dot;
+			sourceTree = "<group>";
+		};
+		9C0181BC2DFEDC27004646FF /* Indicator */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181AF2DFEDC27004646FF /* JXSegmentedComponetGradientView.swift */,
+				9C0181B02DFEDC27004646FF /* JXSegmentedIndicatorBackgroundView.swift */,
+				9C0181B12DFEDC27004646FF /* JXSegmentedIndicatorBaseView.swift */,
+				9C0181B22DFEDC27004646FF /* JXSegmentedIndicatorDotLineView.swift */,
+				9C0181B32DFEDC27004646FF /* JXSegmentedIndicatorDoubleLineView.swift */,
+				9C0181B42DFEDC27004646FF /* JXSegmentedIndicatorGradientLineView.swift */,
+				9C0181B52DFEDC27004646FF /* JXSegmentedIndicatorGradientView.swift */,
+				9C0181B62DFEDC27004646FF /* JXSegmentedIndicatorImageView.swift */,
+				9C0181B72DFEDC27004646FF /* JXSegmentedIndicatorLineView.swift */,
+				9C0181B82DFEDC27004646FF /* JXSegmentedIndicatorParams.swift */,
+				9C0181B92DFEDC27004646FF /* JXSegmentedIndicatorProtocol.swift */,
+				9C0181BA2DFEDC27004646FF /* JXSegmentedIndicatorRainbowLineView.swift */,
+				9C0181BB2DFEDC27004646FF /* JXSegmentedIndicatorTriangleView.swift */,
+			);
+			path = Indicator;
+			sourceTree = "<group>";
+		};
+		9C0181C02DFEDC27004646FF /* Number */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181BD2DFEDC27004646FF /* JXSegmentedNumberCell.swift */,
+				9C0181BE2DFEDC27004646FF /* JXSegmentedNumberDataSource.swift */,
+				9C0181BF2DFEDC27004646FF /* JXSegmentedNumberItemModel.swift */,
+			);
+			path = Number;
+			sourceTree = "<group>";
+		};
+		9C0181C52DFEDC27004646FF /* Title */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181C12DFEDC27004646FF /* JXSegmentedTitleCell.swift */,
+				9C0181C22DFEDC27004646FF /* JXSegmentedTitleDataSource.swift */,
+				9C0181C32DFEDC27004646FF /* JXSegmentedTitleDynamicConfiguration.swift */,
+				9C0181C42DFEDC27004646FF /* JXSegmentedTitleItemModel.swift */,
+			);
+			path = Title;
+			sourceTree = "<group>";
+		};
+		9C0181C92DFEDC27004646FF /* TitleGradient */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181C62DFEDC27004646FF /* JXSegmentedTitleGradientCell.swift */,
+				9C0181C72DFEDC27004646FF /* JXSegmentedTitleGradientDataSource.swift */,
+				9C0181C82DFEDC27004646FF /* JXSegmentedTitleGradientItemModel.swift */,
+			);
+			path = TitleGradient;
+			sourceTree = "<group>";
+		};
+		9C0181CD2DFEDC27004646FF /* TitleImage */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181CA2DFEDC27004646FF /* JXSegmentedTitleImageCell.swift */,
+				9C0181CB2DFEDC27004646FF /* JXSegmentedTitleImageDataSource.swift */,
+				9C0181CC2DFEDC27004646FF /* JXSegmentedTitleImageItemModel.swift */,
+			);
+			path = TitleImage;
+			sourceTree = "<group>";
+		};
+		9C0181D12DFEDC27004646FF /* TitleOrImage */ = {
+			isa = PBXGroup;
+			children = (
+				9C0181CE2DFEDC27004646FF /* JXSegmentedTitleOrImageCell.swift */,
+				9C0181CF2DFEDC27004646FF /* JXSegmentedTitleOrImageDataSource.swift */,
+				9C0181D02DFEDC27004646FF /* JXSegmentedTitleOrImageItemModel.swift */,
+			);
+			path = TitleOrImage;
+			sourceTree = "<group>";
+		};
+		9C0181D32DFEDC27004646FF /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				9C01819F2DFEDC27004646FF /* AttributeTitle */,
+				9C0181A42DFEDC27004646FF /* Common */,
+				9C0181AA2DFEDC27004646FF /* Core */,
+				9C0181AE2DFEDC27004646FF /* Dot */,
+				9C0181BC2DFEDC27004646FF /* Indicator */,
+				9C0181C02DFEDC27004646FF /* Number */,
+				9C0181C52DFEDC27004646FF /* Title */,
+				9C0181C92DFEDC27004646FF /* TitleGradient */,
+				9C0181CD2DFEDC27004646FF /* TitleImage */,
+				9C0181D12DFEDC27004646FF /* TitleOrImage */,
+				9C0181D22DFEDC27004646FF /* PrivacyInfo.xcprivacy */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		9C0B1EF02E2CC576001F2047 /* LocationManager */ = {
+			isa = PBXGroup;
+			children = (
+				9C0B1EEF2E2CC576001F2047 /* LocationManager.swift */,
+			);
+			path = LocationManager;
+			sourceTree = "<group>";
+		};
+		9C0B1EF22E2CC5C0001F2047 /* UDManager */ = {
+			isa = PBXGroup;
+			children = (
+				9C0B1EF32E2CC5CE001F2047 /* UDManager.swift */,
+			);
+			path = UDManager;
+			sourceTree = "<group>";
+		};
+		9C0DC2FE2E2CDA2E0085F448 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				9C0DC2FD2E2CDA2E0085F448 /* Utility.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		9C5662252E2F81FF000173CE /* Pickeriew */ = {
+			isa = PBXGroup;
+			children = (
+				9C5662242E2F81FF000173CE /* PickerView.swift */,
+			);
+			path = Pickeriew;
 			sourceTree = "<group>";
 		};
 		9CA8BCDA2DE735CE0071D4FD /* Extentions */ = {
@@ -411,6 +681,8 @@
 		C667C4A12CA3165E00DE03C3 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				9C5662252E2F81FF000173CE /* Pickeriew */,
+				9C0DC2FE2E2CDA2E0085F448 /* Utility */,
 				9C0181942DFE986D004646FF /* CustomCode */,
 				9C0115C42DE83D33008B2A60 /* Constant */,
 				9CA8BCDA2DE735CE0071D4FD /* Extentions */,
@@ -435,6 +707,7 @@
 			isa = PBXGroup;
 			children = (
 				C68A612F2CBA4D200037094D /* LanguageModel.swift */,
+				9C5662272E2F9047000173CE /* HallsModel.swift */,
 				C68A61332CBC3EAE0037094D /* LoginModel.swift */,
 				C68A61392CC2684A0037094D /* DashboardModel.swift */,
 				C68A61372CBEB8440037094D /* WalletModel.swift */,
@@ -584,6 +857,7 @@
 				C6600C252CB31938009B0445 /* AddUsualsVC.swift */,
 				C6600C2B2CB32249009B0445 /* CreateNewUsualVC.swift */,
 				C68A61462CD2ADED0037094D /* SearchViewController.swift */,
+				9C9285262E2CF1950009AA45 /* LocationAlertVC.swift */,
 				C6C089D92CA9061F0050F034 /* Cells */,
 			);
 			path = Home;
@@ -731,7 +1005,6 @@
 			);
 			mainGroup = C68E724B2CA3000200F223A8;
 			packageReferences = (
-				9C01818F2DFE9085004646FF /* XCRemoteSwiftPackageReference "JXSegmentedView" */,
 			);
 			productRefGroup = C68E72552CA3000200F223A8 /* Products */;
 			projectDirPath = "";
@@ -785,6 +1058,7 @@
 				C6C089EE2CA9C1C40050F034 /* CategoryTVCell.xib in Resources */,
 				C650102E2CB06573003BCA53 /* ProfileHeaderTVC.xib in Resources */,
 				C68E725F2CA3000200F223A8 /* Base in Resources */,
+				9C0182002DFEDC27004646FF /* PrivacyInfo.xcprivacy in Resources */,
 				C68E72732CA30F4300F223A8 /* Poppins-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -873,6 +1147,7 @@
 				C68A61252CB6C6230037094D /* Protocols.swift in Sources */,
 				C6C089B92CA85D540050F034 /* ScanTableVC.swift in Sources */,
 				C6C818AB2CB1454F00905A39 /* ManageUsualViewController.swift in Sources */,
+				9C5662262E2F81FF000173CE /* PickerView.swift in Sources */,
 				C6C089F32CA9C31E0050F034 /* CategoryCVCell.swift in Sources */,
 				C613D1E12D9D80C6000FEDD8 /* MyUsualDetailsModel.swift in Sources */,
 				C68A614F2CD3719B0037094D /* SearchModel.swift in Sources */,
@@ -897,15 +1172,65 @@
 				C68A612E2CB948BA0037094D /* APIManager.swift in Sources */,
 				C6337B642CAC764500ACDD86 /* CategoryTableViewCell.swift in Sources */,
 				C68A61572CD931650037094D /* ItemDetailsModel.swift in Sources */,
+				9C0B1EF12E2CC576001F2047 /* LocationManager.swift in Sources */,
+				9C0181992DFE9EA3004646FF /* ContentBaseViewController.swift in Sources */,
 				C6E9626B2D932E0A0038E831 /* SpecialProductVC.swift in Sources */,
 				C6337B5E2CAB34FC00ACDD86 /* HomeOrderTVCell.swift in Sources */,
 				C6FE3FDB2CFF45B60049FFB1 /* CartItemModel.swift in Sources */,
+				9C0181D42DFEDC27004646FF /* JXSegmentedIndicatorBackgroundView.swift in Sources */,
+				9C0181D52DFEDC27004646FF /* JXSegmentedBaseDataSource.swift in Sources */,
+				9C0181D62DFEDC27004646FF /* JXSegmentedListContainerView.swift in Sources */,
+				9C0181D72DFEDC27004646FF /* JXSegmentedView.swift in Sources */,
+				9C0181D82DFEDC27004646FF /* JXSegmentedDotDataSource.swift in Sources */,
+				9C0181D92DFEDC27004646FF /* JXSegmentedTitleImageItemModel.swift in Sources */,
+				9C0181DA2DFEDC27004646FF /* JXSegmentedIndicatorDoubleLineView.swift in Sources */,
+				9C0181DB2DFEDC27004646FF /* JXSegmentedTitleAttributeCell.swift in Sources */,
+				9C0181DC2DFEDC27004646FF /* JXSegmentedBaseCell.swift in Sources */,
+				9C0181DD2DFEDC27004646FF /* JXSegmentedTitleGradientItemModel.swift in Sources */,
+				9C0181DE2DFEDC27004646FF /* JXSegmentedNumberItemModel.swift in Sources */,
+				9C0181DF2DFEDC27004646FF /* JXSegmentedTitleOrImageCell.swift in Sources */,
+				9C0181E02DFEDC27004646FF /* JXSegmentedNumberDataSource.swift in Sources */,
+				9C0181E12DFEDC27004646FF /* JXSegmentedIndicatorGradientView.swift in Sources */,
+				9C0181E22DFEDC27004646FF /* JXSegmentedBaseItemModel.swift in Sources */,
+				9C0181E32DFEDC27004646FF /* JXSegmentedViewTool.swift in Sources */,
+				9C0181E42DFEDC27004646FF /* JXSegmentedIndicatorLineView.swift in Sources */,
+				9C0181E52DFEDC27004646FF /* JXSegmentedTitleGradientCell.swift in Sources */,
+				9C0181E62DFEDC27004646FF /* JXSegmentedCollectionView.swift in Sources */,
+				9C0181E72DFEDC27004646FF /* JXSegmentedComponetGradientView.swift in Sources */,
+				9C0181E82DFEDC27004646FF /* JXSegmentedTitleOrImageDataSource.swift in Sources */,
+				9C0181E92DFEDC27004646FF /* JXSegmentedTitleAttributeItemModel.swift in Sources */,
+				9C0181EA2DFEDC27004646FF /* JXSegmentedTitleDynamicConfiguration.swift in Sources */,
+				9C0181EB2DFEDC27004646FF /* JXSegmentedIndicatorImageView.swift in Sources */,
+				9C0181EC2DFEDC27004646FF /* JXSegmentedIndicatorDotLineView.swift in Sources */,
+				9C0181ED2DFEDC27004646FF /* JXSegmentedNumberCell.swift in Sources */,
+				9C0181EE2DFEDC27004646FF /* JXSegmentedIndicatorTriangleView.swift in Sources */,
+				9C0181EF2DFEDC27004646FF /* JXSegmentedRTLLayout.swift in Sources */,
+				9C0181F02DFEDC27004646FF /* JXSegmentedTitleOrImageItemModel.swift in Sources */,
+				9C0181F12DFEDC27004646FF /* JXSegmentedDotItemModel.swift in Sources */,
+				9C0181F22DFEDC27004646FF /* JXSegmentedTitleAttributeDataSource.swift in Sources */,
+				9C0181F32DFEDC27004646FF /* JXSegmentedTitleCell.swift in Sources */,
+				9C0181F42DFEDC27004646FF /* JXSegmentedIndicatorRainbowLineView.swift in Sources */,
+				9C0181F52DFEDC27004646FF /* JXSegmentedIndicatorGradientLineView.swift in Sources */,
+				9C0181F62DFEDC27004646FF /* JXSegmentedTitleGradientDataSource.swift in Sources */,
+				9C5662282E2F9047000173CE /* HallsModel.swift in Sources */,
+				9C0DC2FF2E2CDA2E0085F448 /* Utility.swift in Sources */,
+				9C0181F72DFEDC27004646FF /* JXSegmentedTitleImageDataSource.swift in Sources */,
+				9C9285272E2CF1950009AA45 /* LocationAlertVC.swift in Sources */,
+				9C0181F82DFEDC27004646FF /* JXSegmentedTitleImageCell.swift in Sources */,
+				9C0181F92DFEDC27004646FF /* JXSegmentedIndicatorParams.swift in Sources */,
+				9C0181FA2DFEDC27004646FF /* JXSegmentedTitleDataSource.swift in Sources */,
+				9C0181FB2DFEDC27004646FF /* JXSegmentedTitleItemModel.swift in Sources */,
+				9C0181FC2DFEDC27004646FF /* JXSegmentedIndicatorProtocol.swift in Sources */,
+				9C0181FD2DFEDC27004646FF /* JXSegmentedAnimator.swift in Sources */,
+				9C0181FE2DFEDC27004646FF /* JXSegmentedIndicatorBaseView.swift in Sources */,
+				9C0181FF2DFEDC27004646FF /* JXSegmentedDotCell.swift in Sources */,
 				C6C818A12CB105B100905A39 /* ContacUsVC.swift in Sources */,
 				C6F024C62D738212007081A9 /* FoodInstructionAlertController.swift in Sources */,
 				C68A61342CBC3EAE0037094D /* LoginModel.swift in Sources */,
 				C6C089AC2CA677810050F034 /* LanguageSelectionVC.swift in Sources */,
 				C6C818B82CB2664B00905A39 /* CartVC.swift in Sources */,
 				C6C089FF2CAADE9C0050F034 /* MealTVCell.swift in Sources */,
+				9C0B1EF42E2CC5CF001F2047 /* UDManager.swift in Sources */,
 				C68A61412CCCF9B20037094D /* OrderDetailsVC.swift in Sources */,
 				C640CB9D2D53B20000A09F5D /* QRPopUpVC.swift in Sources */,
 				C6FE3FD92CF79AFB0049FFB1 /* ChoiceRowTVCell.swift in Sources */,
@@ -1122,29 +1447,28 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.6;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = T759B6ZF77;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2.6;
+				DEVELOPMENT_TEAM = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan QR codes.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to to assing table while you not inside cafe";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mmushrefiphone.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = mushrifDev;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1164,29 +1488,28 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.6;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = T759B6ZF77;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2.6;
+				DEVELOPMENT_TEAM = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan QR codes.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to to assing table while you not inside cafe";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5;
+				MARKETING_VERSION = 2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mmushrefiphone.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = mushrifDev;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1219,25 +1542,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		9C01818F2DFE9085004646FF /* XCRemoteSwiftPackageReference "JXSegmentedView" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pujiaxin33/JXSegmentedView";
-			requirement = {
-				kind = exactVersion;
-				version = 1.4.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		9C0181902DFE9086004646FF /* JXSegmentedView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9C01818F2DFE9085004646FF /* XCRemoteSwiftPackageReference "JXSegmentedView" */;
-			productName = JXSegmentedView;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C68E724C2CA3000200F223A8 /* Project object */;
 }

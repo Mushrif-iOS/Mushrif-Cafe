@@ -10,6 +10,7 @@ import UIKit
 class MyOrderViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
 
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -25,7 +26,7 @@ class MyOrderViewController: UIViewController, Instantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        btnBack.setArabic()
         // Do any additional setup after loading the view.
         mainTableView.register(MyOrderTableViewCell.nib(), forCellReuseIdentifier: MyOrderTableViewCell.identifier)
         if #available(iOS 15.0, *) {

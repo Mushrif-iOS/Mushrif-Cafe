@@ -11,6 +11,7 @@ import ProgressHUD
 class EditProfileVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleText: UILabel! {
         didSet {
             titleText.font = UIFont.poppinsMediumFontWith(size: 18)
@@ -73,7 +74,7 @@ class EditProfileVC: UIViewController, Instantiatable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        btnBack.setArabic()
         // Do any additional setup after loading the view.
         txtFullName.text = self.nameValue
         txtEmail.text = self.email

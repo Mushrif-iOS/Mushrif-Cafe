@@ -120,6 +120,9 @@ class MyActiveOrder {
     var updatedUserId : Int = 0
     var userId : Int = 0
     var items : [CountItems]!
+    var extra_head_category_id : Int?
+    var extra_head : Bool?
+    var extra_head_category_title : String?
 
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -167,6 +170,12 @@ class MyActiveOrder {
         tableNo = json["table_no"].intValue
         updatedUserId = json["updated_user_id"].intValue
         userId = json["user_id"].intValue
+      
+        extra_head_category_id = json["extra_head_category_id"].intValue
+        extra_head = json["extra_head"].bool
+
+        extra_head_category_title = json["extra_head_category_title"].stringValue
+
         items = [CountItems]()
         let itemsArray = json["items"].arrayValue
         for itemsJson in itemsArray{

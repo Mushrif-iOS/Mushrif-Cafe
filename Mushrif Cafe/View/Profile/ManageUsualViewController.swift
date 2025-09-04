@@ -10,6 +10,7 @@ import UIKit
 class ManageUsualViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -34,7 +35,7 @@ class ManageUsualViewController: UIViewController, Instantiatable {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        
+        btnBack.setArabic()
         mainTableView.register(ManageListTableViewCell.nib(), forCellReuseIdentifier: ManageListTableViewCell.identifier)
        // mainTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
         

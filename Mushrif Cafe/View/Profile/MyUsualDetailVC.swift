@@ -9,6 +9,7 @@ import UIKit
 import EasyNotificationBadge
 
 class MyUsualDetailVC: UIViewController, Instantiatable {
+    @IBOutlet weak var btnBack: UIButton!
     static var storyboard: AppStoryboard = .profile
 
     @IBOutlet weak var btnCart: UIButton!
@@ -39,7 +40,12 @@ class MyUsualDetailVC: UIViewController, Instantiatable {
         if #available(iOS 15.0, *) {
             mainTableView.sectionHeaderTopPadding = 0
         }
+        btnBack.setArabic()
+        
+
+
     }
+    
     private func setupBadge() {
         var badgeAppearance = BadgeAppearance()
         badgeAppearance.backgroundColor = UIColor.appRed
@@ -180,6 +186,8 @@ extension MyUsualDetailVC: UITableViewDelegate, UITableViewDataSource {
         cell.editButton.isHidden = false
         cell.editButton.tag = indexPath.row
         cell.editButton.addTarget(self, action: #selector(editButtonAction(sender: )), for: .touchUpInside)
+        cell.setImageInMinusButton()
+
         return cell
     }
     

@@ -180,8 +180,18 @@ extension AddUsualsVC: UITableViewDelegate, UITableViewDataSource {
         addItemroUsualAPI(id: dict.id)
     }
     func addItemroUsualAPI(id: Int)  {
-        //itemType = "ordered"
-        
+        if self.itemType == "listed",
+           let productIdInt = Int(self.productId),
+           let targetGroup = self.usualData.first(where: { $0.id == id }) {
+            let alreadyExists = targetGroup.items?.contains(where: { $0.productId == productIdInt }) ?? false
+            if alreadyExists {
+                let alert = UIAlertController(title: "title_already_exist".localized() , message: "msg_already_exist_msg".localized(), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "ok".localized(), style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+        }
+
         var aParams = [String: Any]()
         
         if self.itemType == "listed" {

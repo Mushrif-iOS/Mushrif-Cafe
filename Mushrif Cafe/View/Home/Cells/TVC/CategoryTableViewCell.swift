@@ -9,6 +9,12 @@ import UIKit
 
 class CategoryTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var viewSpecialPrice: UIView!
+    @IBOutlet weak var lblSpecialPrice: UILabel!{
+        didSet {
+            lblSpecialPrice.font = UIFont.poppinsLightFontWith(size: 15)
+        }
+    }
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.poppinsMediumFontWith(size: 18)

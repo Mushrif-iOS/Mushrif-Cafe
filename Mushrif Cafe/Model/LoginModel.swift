@@ -84,6 +84,13 @@ class Customer {
     var state : String = ""
     var status : Int = 0
     var userId : Int = 0
+  
+    var tableid : Int = 0
+    var hallid : Int = 0
+    var groupid : Int = 0
+    var tablename : Int = 0
+
+    var specialcustomer : Int = 0
 
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -107,6 +114,12 @@ class Customer {
         state = json["state"].stringValue
         status = json["status"].intValue
         userId = json["user_id"].intValue
+        tableid = json["table_id"].intValue
+        hallid = json["hall_id"].intValue
+        groupid = json["group_id"].intValue
+        specialcustomer = json["special_customer"].intValue
+        tablename = json["table_no"].intValue
+
     }
 }
 

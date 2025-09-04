@@ -10,6 +10,7 @@ import UIKit
 class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
     static var storyboard: AppStoryboard = .profile
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -47,7 +48,7 @@ class WalletVC: UIViewController, Instantiatable, AddMoneyDelegate {
 
         // Do any additional setup after loading the view.
         mainTableView.register(WalletTableViewCell.nib(), forCellReuseIdentifier: WalletTableViewCell.identifier)
-        
+        btnBack.setArabic()
         self.getWalletDetails()
     }
 

@@ -7,54 +7,34 @@
 
 import UIKit
 import EasyNotificationBadge
-import JXSegmentedView
 
 class CategoryViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
     
-    @IBOutlet weak var titleLabel: UILabel! {
-        didSet {
-            titleLabel.font = UIFont.poppinsRegularFontWith(size: 16)
-        }
-    }
-    
-    @IBOutlet weak var subTitleLabel: UILabel! {
-        didSet {
-            subTitleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
-        }
-    }
-    
-    @IBOutlet weak var mainCollectionView: UICollectionView!
-    
+    @IBOutlet weak var mainTableView: UITableView!
+
+    var didRemoveBlock : (() -> Void)? = nil
+    private var hasCalledTopAPI = false // Prevents repeated calls
     var subCategoriesArr : [SubCategory] = [SubCategory]()
     var foodItemArr : [FoodItemData] = [FoodItemData]()
-    
-    @IBOutlet weak var btnCart: UIButton!
-    @IBOutlet weak var mainTableView: UITableView!
-    private var hasCalledTopAPI = false // Prevents repeated calls
 
-    @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var totalLabel: UILabel! {
-        didSet {
-            totalLabel.font = UIFont.poppinsMediumFontWith(size: 18)
-            totalLabel.text = ""
-        }
-    }
-    
-    @IBOutlet var heightBottom: NSLayoutConstraint!
-    
     var categoryId = String()
     var categoryName = String()
-    
+    var titleName = String()
+
     var pageNo: Int = 1
     var lastPage: Int = Int()
     var subCategoryId = String()
+    private var isNearByCafe = true
+
+    private let locationManager = LocationManager()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        titleLabel.text = self.categoryName
+
         
+//        titleLabel.font = UIFont.poppinsRegularFontWith(size: 16)
         mainTableView.register(CategoryTableViewCell.nib(), forCellReuseIdentifier: CategoryTableViewCell.identifier)
         
         let layout = UICollectionViewFlowLayout()
@@ -63,36 +43,44 @@ class CategoryViewController: UIViewController, Instantiatable {
         layout.minimumLineSpacing = 8
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInset = UIEdgeInsets(top: 6.0, left: 16.0, bottom: 0.0, right: 16.0)
-        if UserDefaultHelper.language == "ar" {
-            self.view.semanticContentAttribute = .forceRightToLeft
-
-            mainCollectionView.semanticContentAttribute = .forceRightToLeft
-            mainCollectionView.transform = CGAffineTransform(scaleX: -1, y: 1)
-        }
-        self.mainCollectionView.collectionViewLayout = layout
+//        if UserDefaultHelper.language == "ar" {
+//            self.view.semanticContentAttribute = .forceRightToLeft
+//
+//            mainCollectionView.semanticContentAttribute = .forceRightToLeft
+//            mainCollectionView.transform = CGAffineTransform(scaleX: -1, y: 1)
+//        }
+//        self.mainCollectionView.collectionViewLayout = layout
 
         self.getSubCategories()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
 
 
+            
+
+
+
     }
-    private func setupBadge() {
-        var badgeAppearance = BadgeAppearance()
-        badgeAppearance.backgroundColor = UIColor.appRed
-        badgeAppearance.textColor = UIColor.white
-        badgeAppearance.textAlignment = .center
-        badgeAppearance.font = UIFont.poppinsLightFontWith(size: 12)
-        badgeAppearance.distanceFromCenterX = 13
-        badgeAppearance.distanceFromCenterY = -13
-        badgeAppearance.allowShadow = true
-        badgeAppearance.borderColor = UIColor.white
-        badgeAppearance.borderWidth = 0.5
-        if "\(UserDefaultHelper.totalItems ?? 0)" == "0" {
-            self.btnCart.badge(text: nil)
-        } else {
-            self.btnCart.badge(text: "\(UserDefaultHelper.totalItems ?? 0)", appearance: badgeAppearance)
+    func setupLocation()  { /// first  we will check location acces that user  is near by cafe or not
+        // Set up closures
+        locationManager.onLocationReceived = { [weak self] loc in
+            if let location = loc {
+                print("✅ One-time Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                   // Update UI here if needed
+                self!.isNearByCafe = Utility.isNearByCafe(userLocation: location)
+            }
+         
         }
+
+           locationManager.onLocationDenied = { [weak self] in
+               self!.isNearByCafe = false
+           }
+
+           locationManager.onError = { error in
+               self.isNearByCafe = false
+           }
+
+           locationManager.requestSingleLocation()
     }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
@@ -100,49 +88,15 @@ class CategoryViewController: UIViewController, Instantiatable {
         self.navigationController?.pushViewController(orderVC, animated: true)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        bottomView.applyGradient(isVertical: true, colorArray: [UIColor.primaryBrown, UIColor.borderPink])
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if UserDefaultHelper.totalItems ?? 0 == 0 {
-            self.heightBottom.constant = 0
-            self.bottomView.isHidden = true
-            setupBadge()
 
-        } else {
-            self.heightBottom.constant = 90
-            self.bottomView.isHidden = false
-            self.getCartItem()
-        }
         
     }
     
-    private func getCartItem() {
-        
-        var cartData: CartResponse?
-        
-        let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-        print(aParams)
-        
-        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { [self] responseJSON in
-            print("Response JSON \(responseJSON)")
-            let dataDict = responseJSON["response"]
-            cartData = CartResponse(fromJson: dataDict)
-            
-            let totalCost = "\(cartData?.subTotal != "" ? cartData?.subTotal ?? "" : "")"
-            let amt = Double("\(totalCost)") ?? 0.0
-            
-            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(amt) \("kwd".localized())" : "\("kwd".localized()) \(UserDefaultHelper.totalItems ?? 0) \("item_added".localized()) - \(amt)"
-            setupBadge()
-            
-        } failure: { error in
-            print("Error \(error.localizedDescription)")
-        }
-    }
+    
     
     @IBAction func backAction(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -163,19 +117,12 @@ class CategoryViewController: UIViewController, Instantiatable {
         }
     }
     
-    @IBAction func btnCartTapped(_ sender: Any) {
-        if UserDefaultHelper.authToken != "" {
-            let cartVC = CartVC.instantiate()
-            self.navigationController?.pushViewController(cartVC, animated: true)
-        } else {
-            let profileVC = LoginVC.instantiate()
-            self.navigationController?.pushViewController(profileVC, animated: true)
-        }
-
-    }
     
     private func getSubCategories() {
-        
+//        self.subTitleLabel.text = self.subCategoriesArr.first?.name
+        self.getProductList(subCatId: subCategoryId, page: self.pageNo)
+
+        /* this is added because of
         var aParams: [String: Any]?
         
         if UserDefaultHelper.language == "en" {
@@ -209,6 +156,7 @@ class CategoryViewController: UIViewController, Instantiatable {
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }
+         */
     }
     
     private func getProductList(subCatId: String, page: Int) {
@@ -222,8 +170,8 @@ class CategoryViewController: UIViewController, Instantiatable {
         }
         print(aParams!)
         
-        APIManager.shared.postCall(APPURL.categories_item_list + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
-            print("Response JSON \(responseJSON)")
+        APIManager.shared.postCall(APPURL.food_item_list + "?page=\(page)", params: aParams, withHeader: true) { responseJSON in
+//            print("Response JSON \(responseJSON)")
             
             let lPage = responseJSON["response"]["last_page"].intValue
             self.lastPage = lPage
@@ -247,48 +195,11 @@ class CategoryViewController: UIViewController, Instantiatable {
     }
 }
 
-extension CategoryViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.subCategoriesArr.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TagsCVCell", for: indexPath) as! TagsCVCell
-        cell.textLabel.text = self.subCategoriesArr[indexPath.item].name
-        if UserDefaultHelper.language == "ar" {
-            cell.contentView.transform = CGAffineTransform(scaleX: -1, y: 1)
-        }
-        
-
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let dict = self.subCategoriesArr[indexPath.item]
-        self.subTitleLabel.text = dict.name
-        
-        self.subCategoryId = "\(dict.id)"
-        //        self.foodItemArr.removeAll()
-        //        self.pageNo = 1
-        //        self.getProductList(subCatId: "\(dict.id)", page: self.pageNo)
-        if let matchingIndex = self.foodItemArr.firstIndex(where: { $0.subCategory.id == dict.id }) {
-            // Scroll the mainTableView to the first corresponding item
-            DispatchQueue.main.async {
-                self.mainTableView.scrollToRow(at: IndexPath(row: matchingIndex, section: 0), at: .top, animated: true)
-            }
-        } else {
-            // Reset the food items and load new products if no matching items are found
-            self.foodItemArr.removeAll()
-            self.pageNo = 1
-            self.getProductList(subCatId: "\(dict.id)", page: self.pageNo)
-        }
-    }
-}
 
 extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, ToastDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.foodItemArr.count == 0 {
-            tableView.setEmptyMessage("no_product".localized())
+            tableView.setEmptyMessage( titleName ==  "Extra Head" ? "extra_head".localized() : "no_product".localized())
         } else {
             tableView.restore()
         }
@@ -301,16 +212,17 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
         let dict = self.foodItemArr[indexPath.row]
         cell.nameLabel.text = dict.name
         cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "appLogo"))
-        
-        if dict.specialPrice != "" {
-            let doubleValue = Double(dict.specialPrice) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
-        } else {
-            let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
-        }
+
+        let specialPrice = Double(dict.specialPrice) ?? 0.0
+       
+        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(specialPrice.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(specialPrice.rounded(toPlaces: 3))"
+
+        let price = Double(dict.price) ?? 0.0
+        cell.lblSpecialPrice.text = UserDefaultHelper.language == "en" ? "\(price.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(price.rounded(toPlaces: 3))"
+
+      
         cell.customizeLabel.text = dict.isCustomizePending == 1 ? "customizable".localized() : ""
-        
+        cell.viewSpecialPrice.isHidden = (dict.price) == (dict.specialPrice)
         cell.descLabel.text = dict.descriptionString
         cell.addButton.tag = indexPath.item
         cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
@@ -422,19 +334,31 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
                         
                         let msg = responseJSON["message"].stringValue
                         print(msg)
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async { [self] in
                             self.showBanner(message: msg, status: .success)
                             UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
                             self.viewWillAppear(true)
+                            didRemoveBlock?()
+                            
                         }
                     } failure: { error in
                         print("Error \(error.localizedDescription)")
                     }
                 } else {
-                    self.showBanner(message: "please_scan".localized(), status: .warning)
-                    let scanVC = ScanTableVC.instantiate()
-                    scanVC.title = "LanguageSelection"
-                    self.navigationController?.push(viewController: scanVC)
+                    if (UserDefaultHelper.tableId ?? "").isBlank  {
+                        if let location =  locationManager.currentLocation ,  Utility.isNearByCafe(userLocation: location) {
+                            self.showBanner(message: "please_scan".localized(), status: .warning)
+                            let scanVC = ScanTableVC.instantiate()
+                            scanVC.title = "LanguageSelection"
+                            self.navigationController?.push(viewController: scanVC)
+                        } else {
+                            if !(UserDefaultHelper.authToken ?? "").isBlank{ /// show location  picker
+                                showLocationAlrt()
+                            } else {
+                                self.showLoginAlert()
+                            }
+                        }
+                    }
                 }
             } else {
                 let profileVC = LoginVC.instantiate()
@@ -442,7 +366,35 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
             }
         }
     }
-    
+    func showLocationAlrt() {
+        let popupVC = LocationAlertVC.instantiate()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.comletionBlock = { objTbl in
+            UserDefaultHelper.tableId = "\(objTbl?.tableId ?? 0)"
+            UserDefaultHelper.hallId = "\(objTbl?.hallId ?? 0)"
+            UserDefaultHelper.groupId = "\(objTbl?.groupId ?? 0)"
+            UserDefaultHelper.tableName = "\(objTbl?.tableName ?? "")"
+        }
+        
+        self.present(popupVC, animated: true, completion: nil)
+
+    }
+    func showLoginAlert()  {
+        let alert = UIAlertController(
+            title: "",
+            message: "lbl_select_cafe".localized(),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { _ in
+
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+
+        }))
+        present(alert, animated: true)
+
+    }
     @objc func addUsualAction(sender: UIButton) {
         
         let dict = self.foodItemArr[sender.tag]
@@ -490,40 +442,24 @@ extension CategoryViewController: UITableViewDelegate, UITableViewDataSource, To
 //            let profileVC = LoginVC.instantiate()
 //            self.navigationController?.pushViewController(profileVC, animated: true)
 //        }
-        UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
-        self.viewWillAppear(true)
+        
+        if UserDefaultHelper.authToken != "" {
+            UserDefaultHelper.totalItems = (UserDefaultHelper.totalItems ?? 0) + 1
+            didRemoveBlock?()
+        } else {
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+
+        }
     }
 }
 
-extension CategoryViewController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // Ensure we are only tracking the mainTableView
-        guard scrollView == mainTableView else { return }
-        
-        // Get the visible rows in the mainTableView
-        guard let visibleRows = mainTableView.indexPathsForVisibleRows, !visibleRows.isEmpty else { return }
-        
-        // Get the first visible row in the table
-        let firstVisibleIndexPath = visibleRows[0]
-        
-        // Get the sub-category ID of the first visible row's food item
-        let firstVisibleItem = foodItemArr[firstVisibleIndexPath.row]
-        let visibleSubCategoryId = firstVisibleItem.subCategory.id
 
-        // Find the matching subcategory in the collection view
-        if let matchIndex = subCategoriesArr.firstIndex(where: { $0.id == visibleSubCategoryId }) {
-            // Update UI on the main thread to highlight the subcategory in the collection view
-            DispatchQueue.main.async {
-                // Scroll to the matching sub-category in the collection view
-                self.mainCollectionView.scrollToItem(at: IndexPath(item: matchIndex, section: 0), at: .centeredHorizontally, animated: true)
-                
-                // Highlight the matching sub-category
-                self.mainCollectionView.selectItem(at: IndexPath(item: matchIndex, section: 0), animated: true, scrollPosition: .centeredHorizontally)
-                
-                // Update the subtitle label to reflect the selected sub-category
-                self.subTitleLabel.text = self.subCategoriesArr[matchIndex].name
-            }
-        }
+
+
+
+extension CategoryViewController: JXSegmentedListContainerViewListDelegate {
+    func listView() -> UIView {
+        return view
     }
 }

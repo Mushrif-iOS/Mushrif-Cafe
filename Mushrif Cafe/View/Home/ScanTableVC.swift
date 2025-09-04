@@ -12,6 +12,7 @@ import ProgressHUD
 class ScanTableVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet var backButton: UIButton!
     @IBOutlet var backButtonWidth: NSLayoutConstraint!
     
@@ -50,7 +51,7 @@ class ScanTableVC: UIViewController, Instantiatable {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
+        btnBack.setArabic()
         if self.title == "LanguageSelection" {
             self.backButton.isHidden = false
             self.backButtonWidth.constant = 46
@@ -273,6 +274,9 @@ extension ScanTableVC: AVCaptureMetadataOutputObjectsDelegate {
                         self.dismiss(animated: true)
                     } else {
                         let dashboardVC = DashboardVC.instantiate()
+                        let table = responseJSON["response"]
+                        let tblData = HallAssignment(json: table)
+                        dashboardVC.objTables = tblData
                         self.navigationController?.push(viewController: dashboardVC)
                     }
                 }

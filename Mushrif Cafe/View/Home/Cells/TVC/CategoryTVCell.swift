@@ -79,12 +79,50 @@ extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let dict = categoryObj[indexPath.item]
-                
-        let categoryVC = CategoryViewController.instantiate()
-        categoryVC.categoryId = "\(dict.id ?? 0)"
-        categoryVC.categoryName = dict.name
-        self.navController.push(viewController: categoryVC)
+        getSubCategories(id: categoryObj[indexPath.item].id ?? 0, title: dict.name)
+    }
+    
+    private func getSubCategories(id: Int,title: String) {
+        var subCategoriesArr : [SubCategory] = [SubCategory]()
+        var titles = [ String]()
+        var param: [String: Any] = [:]
+            if UserDefaultHelper.language == "en" {
+                param["category_id"]  = id
+                param["locale"]  = "English---us"
+            } else if UserDefaultHelper.language == "ar" {
+                param["category_id"]  = id
+                param["locale"]  = "Arabic---ae"
+            }
+        print(param)
+        APIManager.shared.postCall(APPURL.sub_category, params: param, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            let dataDict = responseJSON["response"]["sub_categories"].arrayValue
+            for obj in dataDict {
+                let objSub = SubCategory(fromJson: obj)
+                subCategoriesArr.append(objSub)
+                titles.append(objSub.name)
+            }
+            let vc = ContentBaseViewController.instantiate()
+            vc.strTitle = title
+            vc.title = titles.first ?? ""
+            let dataSource = JXSegmentedTitleDataSource()
+            dataSource.isTitleColorGradientEnabled = true
+            dataSource.titles = titles
+            dataSource.titleNormalFont =  UIFont.poppinsRegularFontWith(size: 14)
+            dataSource.titleSelectedFont =  UIFont.poppinsRegularFontWith(size: 14)
+            vc.segmentedDataSource = dataSource
+            dataSource.titleSelectedColor = .black  // Selected index color
+            dataSource.titleNormalColor = .black      // Unselected index color
+            let indicator = JXSegmentedIndicatorBackgroundView()
+            indicator.indicatorHeight = 30
+            vc.subCategoriesArr = subCategoriesArr
+            vc.categoryName = subCategoriesArr.first?.name ?? ""
+            vc.categoryId = "\(id)"
+            vc.segmentedView.indicators = [indicator]
+            self.navController.push(viewController: vc)
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
     }
 }

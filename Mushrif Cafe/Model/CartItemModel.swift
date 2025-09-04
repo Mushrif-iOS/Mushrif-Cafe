@@ -46,6 +46,8 @@ class CartResponse {
     var subTotal : String = ""
     var tableId : Int = 0
     var table : TableInfo!
+    var discount : Double = 0
+
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -77,6 +79,8 @@ class CartResponse {
         items = json["items"].intValue
         orderDate = json["order_date"].stringValue
         orderNo = json["order_no"].stringValue
+        discount = json["discount"].doubleValue
+
         orderId = json["order_id"].intValue
         orderStatus = json["order_status"].stringValue
         orderType = json["order_type"].stringValue

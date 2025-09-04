@@ -261,6 +261,7 @@ extension UIViewController {
             self.present(vc, animated: true)
         }
     }
+    
 
     func showBanner(message: String, status: BannerType) {
         switch status {
@@ -275,6 +276,13 @@ extension UIViewController {
             successBanner.show(in: self.view, duration: 2.0)
         }
     }
+    
+    func showEmptyPicker(txtField: UITextField) {
+        PickerView.sharedInstance.addPicker(Utility.sharedInstance.topMostController(), onTextField: txtField, pickerArray:  [String]()) { index, value, isDismiss in
+            txtField.resignFirstResponder()
+        }
+    }
+
 }
 
 //MARK: - DOWNLOAD IMAGE FROM URL OR STRING
@@ -311,38 +319,23 @@ extension UIImageView {
         }
     }
     
-    func loadURL(urlString : String?, placeholderImage : UIImage?)  {
-        
-        self.image = placeholderImage
-        
-        guard let lobjUrlString = urlString, !urlString!.isEmpty else {
+    func loadURL(urlString: String?, placeholderImage: UIImage?) {
+        guard let urlString = urlString, !urlString.isEmpty else {
             print("String is nil or empty.")
-            return // or break, continue, throw
+            return
         }
-        
-        //print("String From URL :>> \(lobjUrlString)")
-        
-        self.sd_setImage(with: URL(string: lobjUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") , placeholderImage: placeholderImage, options: [.refreshCached], completed: { (image, error, type, utlType)  in
-            
-            if image == nil {
-                self.downloadImage(url : lobjUrlString, completition: { (image2) in
-                    self.image = image2 == nil ? placeholderImage : image
-                })
-            } else {
-                self.image = image
-            }
-        })
-    }
-    
-    func downloadImage(url : String?, completition : @escaping (UIImage?) -> Void) {
-        
-        SDWebImageDownloader.shared.downloadImage(with: URL(string: url?.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "") , options: [.ignoreCachedResponse] , progress: nil) { (image, data, error, isComplete) in
-            if isComplete {
-                completition(image)
-            } else {
-                completition(nil)
-            }
+
+        // Use proper percent encoding for the full URL
+        guard let encodedURLString = urlString.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+              let url = URL(string: encodedURLString) else {
+            print("Failed to encode or create URL.")
+            return
         }
+        self.sd_setImage(with: url,
+                              placeholderImage: placeholderImage,
+                              options: .highPriority,
+                              completed: nil)
+
     }
 }
 
@@ -472,3 +465,12 @@ extension Sequence where Element: Hashable {
         return filter { set.insert($0).inserted }
     }
 }
+extension UIButton {
+    func setArabic() {
+        if UserDefaultHelper.language == "ar" {
+            self.transform = CGAffineTransform(scaleX: -1, y: 1)
+        }
+        
+    }
+}
+

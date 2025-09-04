@@ -12,6 +12,7 @@ import Alamofire
 class LoginVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .main
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleText: UILabel! {
         didSet {
             titleText.font = UIFont.poppinsMediumFontWith(size: 18)
@@ -56,7 +57,7 @@ class LoginVC: UIViewController, Instantiatable {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
+        btnBack.setArabic()
         let pickerView = UIPickerView()
         pickerView.delegate = self
         countryCode.inputView = pickerView

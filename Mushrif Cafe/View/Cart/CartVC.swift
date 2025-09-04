@@ -11,9 +11,21 @@ import ProgressHUD
 class CartVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .cart
     
+    @IBOutlet weak var viewDiscount: UIStackView!
+    @IBOutlet weak var lblTbl: UILabel!
+    @IBOutlet weak var btnPayNow: UIButton!{
+        didSet {
+            btnPayNow.titleLabel?.font = UIFont.poppinsMediumFontWith(size: 16)
+            btnPayNow.setTitle("\("pay_now".localized())", for: .normal)
+        }
+    }
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var viewContainer: UIView!
     @IBOutlet var mainScrollView: UIScrollView!
-    
+    private let locationManager = LocationManager()
+    private var isNearByCafe = true
+    var profileData: Customer?
+
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -74,7 +86,7 @@ class CartVC: UIViewController, Instantiatable {
         didSet {
             discountLabel.font = UIFont.poppinsMediumFontWith(size: 16)
             discountLabel.textColor = UIColor.red
-            discountLabel.text = UserDefaultHelper.language == "en" ? "-9.000 \("kwd".localized())" : "\("kwd".localized()) -9.000 -"
+            discountLabel.text = ""
         }
     }
     
@@ -102,17 +114,71 @@ class CartVC: UIViewController, Instantiatable {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        btnBack.setArabic()
+        lblTbl.font = UIFont.poppinsSemiBoldFontWith(size: 15)
+        lblTbl.text = ""
+        if (UserDefaultHelper.tableId ?? "").isBlank  == false {
+            //self.selectTableLabel.text = UserDefaultHelper.tableName
+            self.lblTbl.text = UserDefaultHelper.tableName
+            self.lblTbl.textColor = .black
+        }
         // Do any additional setup after loading the view.
         inactiveTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
         activeTableView.register(ManageUsualTableViewCell.nib(), forCellReuseIdentifier: ManageUsualTableViewCell.identifier)
-        
+        btnPayNow.isHidden = true
         if #available(iOS 15.0, *) {
             self.inactiveTableView.sectionHeaderTopPadding = 0
             self.activeTableView.sectionHeaderTopPadding = 0
         }
         self.inactiveTableView.addObserver(self, forKeyPath: "contentSize", options: [.new, .initial], context: nil)
         self.activeTableView.addObserver(self, forKeyPath: "contentSize", options: [.new, .initial], context: nil)
+       
+    }
+    private func getProfile() {
+        let aParams: [String: Any] = [:]
+        
+        APIManager.shared.getCallWithParams(APPURL.getProfileDetails, params: aParams) { [self] responseJSON in
+            print("Response JSON \(responseJSON)")
+            
+            let dataDict = responseJSON["response"].dictionaryValue
+            
+            let customerData = dataDict["customer"]
+            self.profileData = Customer(fromJson: customerData)
+
+            if  self.profileData?.specialcustomer != 1 { ///  2 step we will check here custmer is special or if custmer is special then hallId tableId groupId was automatic assign
+                setupLocation()
+                placeOrderButton.isHidden = true
+            }
+            
+            print("Customer Data", self.profileData!.phone)
+
+        } failure: {error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    func setupLocation()  { /// first  we will check location acces that user  is near by cafe or not
+        // Set up closures
+        locationManager.onLocationReceived = { [weak self] loc in
+            if let location = loc {
+                print("✅ One-time Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                   // Update UI here if needed
+                self!.placeOrderButton.isHidden = false
+                self!.isNearByCafe = Utility.isNearByCafe(userLocation: location)
+                let title = self!.isNearByCafe ? "\("place_order".localized())" : "\("Next".localized())"
+                self!.placeOrderButton.setTitle(title, for: .normal)
+            }
+         
+        }
+
+           locationManager.onLocationDenied = { [weak self] in
+               self!.placeOrderButton.isHidden = false
+           }
+
+           locationManager.onError = { error in
+               self.placeOrderButton.isHidden = false
+           }
+
+           locationManager.requestSingleLocation()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,6 +194,8 @@ class CartVC: UIViewController, Instantiatable {
         self.cartArray.removeAll()
         
         self.getCartItem()
+        getProfile()
+
     }
     
     // Clean up observer
@@ -193,6 +261,13 @@ class CartVC: UIViewController, Instantiatable {
             for obj in inActiveCartItemDict {
                 self.inActiveCartArray.append(CartItem(fromJson: obj))
             }
+            if self.inActiveCartArray.count > 0 &&  self.cartArray.count <= 0 {
+                self.btnPayNow.isHidden = false
+                self.placeOrderButton.isHidden =  true
+            } else {
+                self.btnPayNow.isHidden = true
+                self.placeOrderButton.isHidden =  false
+            }
             
             if self.cartData?.table != nil {
                 UserDefaultHelper.hallId = "\(self.cartData?.table.hallId ?? "")"
@@ -212,6 +287,10 @@ class CartVC: UIViewController, Instantiatable {
         let data = self.cartData
         
         DispatchQueue.main.async { [self] in
+            let discount = Double(data?.discount ?? 0)
+            
+            self.discountLabel.text = "\(discount.rounded(toPlaces: 3)) \("kwd".localized())"
+            
             
             self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized()) \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized())  \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
@@ -253,39 +332,56 @@ class CartVC: UIViewController, Instantiatable {
     }
     
     @IBAction func placeOrderAction(_ sender: Any) {
-        
+        if isNearByCafe {
+
+            if cartArray.contains(where: { $0.isCustomizePending == 1 }) {
+                showBanner(message: "pending_custimization_addtoCart".localized(), status: .failed)
+                return
+            } else {
+                
+                let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "open", "order_type": self.orderType, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+                print(aParams)
+                
+                APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+                    print("Response JSON \(responseJSON)")
+                    let dataDict = responseJSON["response"]
+                    self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                    
+                    let msg = responseJSON["message"].stringValue
+                    print(msg)
+                    
+                    DispatchQueue.main.async {
+                        self.showBanner(message: msg, status: .success)
+                        let orderVC = OrderSuccessVC.instantiate()
+                        orderVC.successOrderDetails = self.successOrderDetails
+                        orderVC.successMsg = msg
+                        self.navigationController?.pushViewController(orderVC, animated: true)
+                    }
+                } failure: { error in
+                    print("Error \(error.localizedDescription)")
+                }
+            }
+            
+        } else {
+            let checkoutVC = CheckoutVC.instantiate()
+            checkoutVC.isFromDiretPayment = true
+            checkoutVC.orderType =  orderType
+            self.navigationController?.pushViewController(checkoutVC, animated: true)
+
+        }
 //        if self.cartArray.count == 0 {
 //            self.showBanner(message: "no_cart_item".localized(), status: .failed)
 //        } else self.cartArray
         
-        if cartArray.contains(where: { $0.isCustomizePending == 1 }) {
-            showBanner(message: "pending_custimization_addtoCart".localized(), status: .failed)
-            return
-        } else {
-            
-            let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "open", "order_type": self.orderType, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-            print(aParams)
-            
-            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
-                print("Response JSON \(responseJSON)")
-                let dataDict = responseJSON["response"]
-                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
-                
-                let msg = responseJSON["message"].stringValue
-                print(msg)
-                
-                DispatchQueue.main.async {
-                    self.showBanner(message: msg, status: .success)
-                    let orderVC = OrderSuccessVC.instantiate()
-                    orderVC.successOrderDetails = self.successOrderDetails
-                    orderVC.successMsg = msg
-                    self.navigationController?.pushViewController(orderVC, animated: true)
-                }
-            } failure: { error in
-                print("Error \(error.localizedDescription)")
-            }
-        }
+
     }
+    
+    @IBAction func btnPayNowTapped(_ sender: Any) {
+        let dashboardVC = CheckoutVC.instantiate()
+        self.navigationController?.push(viewController: dashboardVC)
+
+    }
+    
 }
 
 extension CartVC: UITableViewDelegate, UITableViewDataSource {
@@ -419,12 +515,14 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
     // MARK: - Swipe to Delete with Confirmation
 
       func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+          
+          guard tableView == self.activeTableView else {
+                return nil // No swipe actions for other table views
+            }
+
           var obj : CartItem?
-          if tableView == self.inactiveTableView {
-              obj = self.inActiveCartArray[indexPath.row]
-          } else {
-              obj = self.cartArray[indexPath.row]
-          }
+            obj = self.cartArray[indexPath.row]
+          
           let deleteAction = UIContextualAction(style: .destructive, title: "delete".localized()) { [weak self] (_, _, completionHandler) in
               guard let self = self else { return }
               let message = "cart_item_deelete_message".localized()

@@ -10,6 +10,7 @@ import UIKit
 class SearchViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var sbSearchBar: UISearchBar!
     @IBOutlet weak var mainClcView: UICollectionView!
     
@@ -24,7 +25,7 @@ class SearchViewController: UIViewController, Instantiatable {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        
+        btnBack.setArabic()
         sbSearchBar.placeholder = "search_product".localized()
         sbSearchBar.textField?.font = UIFont.poppinsRegularFontWith(size: 14)
         sbSearchBar.textField?.attributedPlaceholder = NSAttributedString(
@@ -48,6 +49,10 @@ class SearchViewController: UIViewController, Instantiatable {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("OrderView"), object: nil)
     }
+    override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+        sbSearchBar.textField!.becomeFirstResponder() // 👈 Focus instantly
+        }
     
     @objc func methodOfReceivedNotification(notification: Notification) {
         let orderVC = MyOrderViewController.instantiate()
@@ -150,15 +155,15 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         cell.nameLabel.text = dict.name
         cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "appLogo"))
         
-        if dict.specialPrice != "" {
-            let doubleValue = Double(dict.specialPrice) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
-        } else {
-            let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
-        }
+        let specialPrice = Double(dict.specialPrice) ?? 0.0
+        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(specialPrice.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(specialPrice.rounded(toPlaces: 3))"
+    
+        let price = Double(dict.price) ?? 0.0
+        cell.lblSpecialPrice.text = UserDefaultHelper.language == "en" ? "\(price.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(price.rounded(toPlaces: 3))"
+
         cell.customizeLabel.text = dict.isCustomizePending == 1 ? "customizable".localized() : ""
-        
+        cell.viewSpecialPrice.isHidden = (dict.price) == (dict.specialPrice)
+
         cell.addButton.tag = indexPath.item
         cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
         

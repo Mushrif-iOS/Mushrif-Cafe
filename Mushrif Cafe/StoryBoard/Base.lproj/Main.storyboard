@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Gg3-8S-AJh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Gg3-8S-AJh">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -331,6 +331,7 @@
                     <navigationItem key="navigationItem" id="kw0-wZ-J0d"/>
                     <connections>
                         <outlet property="bottomConstraint" destination="PgM-o8-Ezg" id="c3y-Ax-RcW"/>
+                        <outlet property="btnBack" destination="RLq-la-XlE" id="mov-NY-EkC"/>
                         <outlet property="countryCode" destination="NV9-mL-8bs" id="CCr-4R-HCQ"/>
                         <outlet property="enterText" destination="MpX-ce-e62" id="KJK-6h-B9j"/>
                         <outlet property="mobileNumberText" destination="ry7-dV-4pH" id="GPG-Yd-Kbc"/>
@@ -481,6 +482,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstraint" destination="dzJ-Qc-zMT" id="yT3-03-kRB"/>
+                        <outlet property="btnBack" destination="WqO-Ra-6T4" id="Ooj-bM-KRL"/>
                         <outlet property="enterText" destination="Hbt-Ij-7vw" id="gao-Zf-eC0"/>
                         <outlet property="otpContainerView" destination="Wt8-Wf-c0M" id="YZg-MD-EAv"/>
                         <outlet property="otpValueText" destination="WLj-Iv-v6u" id="sWr-qM-F0T"/>
@@ -712,6 +714,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstraint" destination="1mj-nY-T1p" id="5gm-dP-WoQ"/>
+                        <outlet property="btnBack" destination="YXr-TS-lWU" id="4Ed-Ti-ig0"/>
                         <outlet property="emailTitle" destination="9WD-Ru-i9Q" id="MYC-Qz-0KA"/>
                         <outlet property="fullName" destination="Rm8-Le-Gqo" id="g5Z-nO-7LV"/>
                         <outlet property="submitBtn" destination="4v5-Ie-JHR" id="JcC-8k-8m8"/>

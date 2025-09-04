@@ -15,7 +15,8 @@ class HomeOrderTVCell: UITableViewCell {
     var usualObj = [MyActiveOrder]()
     
     var cartId: String = ""
-    
+    var btnExtraHeadTapped : ((Int, String) -> Void)? = nil
+
     static let identifier = "HomeOrderTVCell"
     
     static func nib() -> UINib {
@@ -53,12 +54,18 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeOrderCVCell.identifier, for: indexPath) as! HomeOrderCVCell
         let dict = usualObj[indexPath.item]
         cell.orderLabel.text = "\("order_id".localized()) #\(dict.orderNumber)"
-        
         cell.noOfItemLabel.text = dict.items.count > 0 ? "\(dict.items.count)" : ""
-        
+        if dict.extra_head ?? false {
+            cell.btnExtraHead.isHidden = false
+        } else {
+            cell.btnExtraHead.isHidden = true
+        }
         cell.dateTimeLabel.text = "\(dict.createdAt)"
         let amt = Double("\(dict.grandTotal)")
         cell.amtLabel.text = UserDefaultHelper.language == "en" ? "\(amt?.rounded(toPlaces: 3) ?? "") \("kwd".localized())" : "\("kwd".localized()) \(amt?.rounded(toPlaces: 3) ?? "")"
+        cell.btnExtraHeadTapped = {
+            self.btnExtraHeadTapped?(dict.extra_head_category_id ?? 10, dict.extra_head_category_title ?? "")
+        }
         
         if dict.paymentStatus == "Paid" {
             cell.payNowButton.isHidden = true

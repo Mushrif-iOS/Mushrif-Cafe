@@ -28,7 +28,9 @@ class MealTVCell: UITableViewCell {
     static func nib() -> UINib {
         return UINib(nibName: "MealTVCell", bundle: nil)
     }
-    
+    private let locationManager = LocationManager()
+    var comletionBlock: ((HallAssignment?) -> Void)?
+
     var didChangeItemsBlock : (() -> Void)? = nil
     var didUpdateTableInfo: ((TableInfo) -> Void)?
     
@@ -69,16 +71,18 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
         cell.nameLabel.text = dict.name
         cell.img.loadURL(urlString: dict.image, placeholderImage: UIImage(named: "appLogo"))
         
-        if dict.specialPrice != "" {
-            let doubleValue = Double(dict.specialPrice) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
-        } else {
-            let doubleValue = Double(dict.price) ?? 0.0
-            cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
-        }
         
+        let specialPrice = Double(dict.specialPrice) ?? 0.0
+        cell.priceLabel.text = UserDefaultHelper.language == "en" ? "\(specialPrice.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(specialPrice.rounded(toPlaces: 3))"
+        
+        
+        let price = Double(dict.price) ?? 0.0
+        cell.lblSpecialPrice.text = UserDefaultHelper.language == "en" ? "\(price.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(price.rounded(toPlaces: 3))"
+
+                
         cell.customizeLabel.text = dict.isCustomizePending == 1 ? "customizable".localized() : ""
-        
+        cell.viewSpecialPrice.isHidden = (dict.price) == (dict.specialPrice)
+
         cell.descLabel.text = UserDefaultHelper.language == "ar" ? dict.descriptionAr :  dict.descriptionField
         cell.addButton.tag = indexPath.item
         cell.addButton.addTarget(self, action: #selector(addAction(sender:)), for: .touchUpInside)
@@ -175,10 +179,18 @@ extension MealTVCell: UICollectionViewDataSource, UICollectionViewDelegate, UICo
                         print("Error \(error.localizedDescription)")
                     }
                 } else {
-                    self.navController?.showBanner(message: "please_scan".localized(), status: .warning)
-                    let scanVC = ScanTableVC.instantiate()
-                    scanVC.title = "LanguageSelection"
-                    self.navController?.push(viewController: scanVC)
+                    
+                    if let location =  locationManager.currentLocation ,  Utility.isNearByCafe(userLocation: location) {
+                        self.navController?.showBanner(message: "please_scan".localized(), status: .warning)
+                        let scanVC = ScanTableVC.instantiate()
+                        scanVC.title = "LanguageSelection"
+                        self.navController?.push(viewController: scanVC)
+                    } else {
+                        let popupVC = LocationAlertVC.instantiate()
+                        popupVC.modalPresentationStyle = .overCurrentContext
+                        popupVC.comletionBlock = comletionBlock
+                        self.navController?.present(popupVC, animated: true, completion: nil)
+                    }
                 }
             }
         } else {

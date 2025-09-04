@@ -992,6 +992,8 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                         selectedChoiceIDs.append(group.choices[indexPath.row].id)
                     }
                     tableView.reloadRows(at: [indexPath], with: .automatic)
+                    self.setPriceAttritubte()
+
                     return
                 }
                 

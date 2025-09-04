@@ -83,6 +83,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             print("Error \(error.localizedDescription)")
         }
     }
+
     
     @IBAction func englishAction(_ sender: Any) {
         UserDefaultHelper.language = "ar"
@@ -90,9 +91,8 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
-            let loginVC = ScanTableVC.instantiate()
-            loginVC.title = "LanguageSelection"
-            self.navigationController?.pushViewController(loginVC, animated: true)
+            APP_DELEGATE.setHome()
+
         }
     }
     
@@ -102,9 +102,7 @@ class LanguageSelectionVC: UIViewController, Instantiatable {
             let userLanguage = UserDefaultHelper.language
             UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
             UserDefaultHelper.isLanguageSelected = "yes"
-            let loginVC = ScanTableVC.instantiate()
-            loginVC.title = "LanguageSelection"
-            self.navigationController?.pushViewController(loginVC, animated: true)
+            APP_DELEGATE.setHome()
         }
     }
 }

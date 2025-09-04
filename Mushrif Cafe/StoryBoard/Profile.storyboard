@@ -40,12 +40,18 @@
                                     <action selector="backAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="vPf-fq-uuY"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Xk-T4-ilp">
-                                <rect key="frame" x="201" y="35" width="46" height="46"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iG0-Fg-oOF">
+                                <rect key="frame" x="183.5" y="47.5" width="41.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.52156862749999999" green="0.30196078430000001" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Xk-T4-ilp">
+                                <rect key="frame" x="235" y="35" width="0.0" height="46"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="Bkj-a4-Q89"/>
-                                    <constraint firstAttribute="width" constant="46" id="M7i-Sd-Qp9"/>
+                                    <constraint firstAttribute="width" id="M7i-Sd-Qp9"/>
                                 </constraints>
                                 <color key="tintColor" red="0.59215686270000001" green="0.40784313729999999" blue="0.1529411765" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="imageEdgeInsets" minX="10" minY="14" maxX="10" maxY="14"/>
@@ -66,44 +72,30 @@
                                 </connections>
                             </button>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hun-Pi-2iR">
-                                <rect key="frame" x="257" y="35" width="46" height="46"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="dPP-8y-8fI"/>
-                                    <constraint firstAttribute="height" constant="46" id="sQ8-yY-L3g"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="10" minY="14" maxX="10" maxY="14"/>
-                                <state key="normal" image="language"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="0.29999999999999999"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="23"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
-                            <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-aK-ugC">
-                                <rect key="frame" x="257" y="35" width="46" height="46"/>
+                                <rect key="frame" x="245" y="41" width="58" height="34"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <inset key="imageEdgeInsets" minX="10" minY="14" maxX="10" maxY="14"/>
+                                <state key="normal" title="English">
+                                    <color key="titleColor" red="0.52156862749999999" green="0.30196078430000001" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
                                 <connections>
-                                    <action selector="languageAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="h7C-To-y9d"/>
+                                    <action selector="languageAction:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="iBD-rR-AQd"/>
                                 </connections>
-                            </textField>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="iud-S7-DML">
-                                <rect key="frame" x="17" y="109" width="286" height="459"/>
+                                <rect key="frame" x="17" y="109" width="286" height="418.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <outlet property="dataSource" destination="Y6W-OH-hqX" id="sCg-Ly-TO0"/>
                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="VFa-XL-iPk"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4W6-Np-1Ul">
+                                <rect key="frame" x="16" y="537.5" width="288" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
@@ -114,25 +106,28 @@
                             <constraint firstItem="iud-S7-DML" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="17" id="D8W-o4-Km3"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="iud-S7-DML" secondAttribute="trailing" constant="17" id="Dku-pR-Mxi"/>
                             <constraint firstItem="iud-S7-DML" firstAttribute="top" secondItem="N9e-N0-0kG" secondAttribute="bottom" constant="28" id="EJv-af-6hM"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="iud-S7-DML" secondAttribute="bottom" id="Swn-i0-PhR"/>
-                            <constraint firstItem="Ueb-aK-ugC" firstAttribute="top" secondItem="hun-Pi-2iR" secondAttribute="top" id="VOJ-xO-4jc"/>
-                            <constraint firstItem="Ueb-aK-ugC" firstAttribute="bottom" secondItem="hun-Pi-2iR" secondAttribute="bottom" id="ZFr-jG-dsS"/>
-                            <constraint firstItem="Ueb-aK-ugC" firstAttribute="leading" secondItem="hun-Pi-2iR" secondAttribute="leading" id="cH2-5q-3OT"/>
+                            <constraint firstItem="6Xk-T4-ilp" firstAttribute="leading" secondItem="iG0-Fg-oOF" secondAttribute="trailing" constant="10" id="N4p-ip-IZo"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="4W6-Np-1Ul" secondAttribute="bottom" constant="10" id="TF2-kZ-5jY"/>
+                            <constraint firstItem="iG0-Fg-oOF" firstAttribute="centerY" secondItem="N9e-N0-0kG" secondAttribute="centerY" id="c3Q-Ey-jJH"/>
                             <constraint firstItem="hun-Pi-2iR" firstAttribute="centerY" secondItem="N9e-N0-0kG" secondAttribute="centerY" id="dut-Ts-2jY"/>
-                            <constraint firstItem="Ueb-aK-ugC" firstAttribute="trailing" secondItem="hun-Pi-2iR" secondAttribute="trailing" id="lGq-pQ-moa"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="4W6-Np-1Ul" secondAttribute="trailing" constant="16" id="hTi-l0-xJL"/>
                             <constraint firstItem="6Xk-T4-ilp" firstAttribute="centerY" secondItem="hun-Pi-2iR" secondAttribute="centerY" id="og3-5d-FdB"/>
                             <constraint firstItem="N9e-N0-0kG" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="17" id="one-KO-kZY"/>
+                            <constraint firstItem="4W6-Np-1Ul" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="shb-6c-E1q"/>
+                            <constraint firstItem="4W6-Np-1Ul" firstAttribute="top" secondItem="iud-S7-DML" secondAttribute="bottom" constant="10" id="xdt-hh-OgN"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnBack" destination="N9e-N0-0kG" id="jdV-n0-xFf"/>
                         <outlet property="languageButton" destination="hun-Pi-2iR" id="ULI-s6-MA2"/>
+                        <outlet property="lblTbl" destination="iG0-Fg-oOF" id="ca8-oR-3Bb"/>
+                        <outlet property="lblVersion" destination="4W6-Np-1Ul" id="JGE-df-0k4"/>
                         <outlet property="mainTableView" destination="iud-S7-DML" id="Auf-ws-DYK"/>
-                        <outlet property="selectLanguageTxt" destination="Ueb-aK-ugC" id="t7C-JL-cA0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-22" y="4"/>
+            <point key="canvasLocation" x="-22.5" y="3.1690140845070425"/>
         </scene>
         <!--Edit ProfileVC-->
         <scene sceneID="adz-Yz-obB">
@@ -302,6 +297,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnBack" destination="P2F-N3-3HZ" id="ZXG-9f-yMW"/>
                         <outlet property="deleteBtn" destination="Z0u-nB-EsR" id="eZg-gb-dDe"/>
                         <outlet property="emailTitle" destination="xOQ-6u-Qaq" id="K4k-Jk-i90"/>
                         <outlet property="fullName" destination="z4u-Qk-cGi" id="1jF-kW-oWU"/>
@@ -465,6 +461,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstraint" destination="Fb9-Hh-mSP" id="PBJ-d8-kdT"/>
+                        <outlet property="btnBack" destination="Kzy-y0-Zo4" id="s0t-Aq-b7y"/>
                         <outlet property="descLabel" destination="aPC-cC-RUt" id="9uz-oR-3kq"/>
                         <outlet property="fullName" destination="dAK-jJ-Bos" id="HcB-vx-Xdt"/>
                         <outlet property="msgTitle" destination="4PS-MY-Vjv" id="yXE-dt-SLr"/>
@@ -551,6 +548,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnBack" destination="sOJ-aO-Zea" id="SCf-6a-h8J"/>
                         <outlet property="mainTableView" destination="C3T-2S-82J" id="2tW-kX-1kF"/>
                         <outlet property="titleLabel" destination="gvb-ff-Y5a" id="Xvo-IL-BCe"/>
                     </connections>
@@ -683,6 +681,7 @@
                         <outlet property="addButton" destination="pdV-b1-beW" id="YdK-fq-Cgs"/>
                         <outlet property="avlLabel" destination="tAY-aX-dju" id="SVz-d7-Hca"/>
                         <outlet property="balanceLabel" destination="4VH-gX-hi5" id="TPR-Wf-X1A"/>
+                        <outlet property="btnBack" destination="2nZ-O2-xHU" id="K99-71-AQk"/>
                         <outlet property="mainTableView" destination="SR0-AP-d35" id="xb8-Vk-M7U"/>
                         <outlet property="titleLabel" destination="eKP-lc-y62" id="Mhp-Mz-9iM"/>
                     </connections>
@@ -957,7 +956,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="btnCart" destination="fo5-8W-mXn" id="1nn-JD-dWP"/>
+                        <outlet property="btnBack" destination="oar-yR-eFB" id="Fnm-pN-OEr"/>
+                        <outlet property="btnCart" destination="fo5-8W-mXn" id="FsR-3x-240"/>
                         <outlet property="mainTableView" destination="U7t-gv-Sl3" id="I2Q-Ub-9Ex"/>
                         <outlet property="titleLabel" destination="qcd-47-Pv8" id="Txm-l5-aT8"/>
                     </connections>
@@ -1286,6 +1286,7 @@
                         <outlet property="addLabel" destination="Xs1-TY-kjp" id="Usa-67-Gky"/>
                         <outlet property="amtLabel" destination="NkX-rf-zFA" id="RWT-u2-6s4"/>
                         <outlet property="amtTitle" destination="9Dw-L1-h9b" id="57Y-Q0-s4k"/>
+                        <outlet property="btnBack" destination="pRM-gz-0dX" id="bjt-xF-sAO"/>
                         <outlet property="dateTimeLabel" destination="Tid-PL-FRJ" id="a8l-20-nr2"/>
                         <outlet property="dateTimeTitle" destination="a5D-gj-Ggx" id="Oue-5a-MIJ"/>
                         <outlet property="discountLabel" destination="U5M-1q-Nnt" id="rIV-De-hRk"/>
@@ -1411,6 +1412,7 @@
                     </view>
                     <connections>
                         <outlet property="addNewBtn" destination="coV-Zc-OvK" id="Sql-ug-LHQ"/>
+                        <outlet property="btnBack" destination="dXN-FR-3On" id="rDk-ET-eHG"/>
                         <outlet property="mainTableView" destination="hkJ-cV-qqK" id="N6U-ir-oBk"/>
                         <outlet property="titleLabel" destination="Wvl-2B-I9Y" id="wCN-QJ-raj"/>
                     </connections>
@@ -1426,7 +1428,6 @@
         <image name="cart.fill" catalog="system" width="128" height="102"/>
         <image name="cc-apple-pay" width="24" height="15.5"/>
         <image name="kNet" width="22" height="16"/>
-        <image name="language" width="48" height="32"/>
         <image name="qrcode" catalog="system" width="128" height="114"/>
     </resources>
 </document>

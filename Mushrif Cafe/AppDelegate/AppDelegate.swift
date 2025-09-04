@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.keyboardDistanceFromTextField = 10
         IQKeyboardManager.shared.enableAutoToolbar = true
@@ -32,9 +33,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.toolbarConfiguration.placeholderConfiguration.showPlaceholder = true
         IQKeyboardManager.shared.toolbarConfiguration.previousNextDisplayMode = .alwaysShow
         
-        Siren.shared.wail()
-        Siren.shared.presentationManager = PresentationManager(forceLanguageLocalization: UserDefaultHelper.language == "ar" ? .arabic : .english)
         
+        // not need now
+//        Siren.shared.wail()
+//        Siren.shared.presentationManager = PresentationManager(forceLanguageLocalization: UserDefaultHelper.language == "ar" ? .arabic : .english)
+//        
         UITableView.appearance().showsVerticalScrollIndicator = false
         
         NetworkReachability.shared.startNotifier()
@@ -48,9 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let them = MFTheme(navigationTintColor: .white, navigationBarTintColor: UIColor.primaryBrown, navigationTitle: "payment".localized(), cancelButtonTitle: "cancel".localized())
         MFSettings.shared.setTheme(theme: them)
-        
         return true
     }
+    
+  
     
     func reachabilityObserver() {
         NetworkReachability.shared.reachabilityObserver = { [weak self] status in
@@ -80,61 +84,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     
     func restartApp() {
-        
         let userLanguage = UserDefaultHelper.language
         print("userLanguage.................", userLanguage ?? "")
-        
         let isLanguageSelected = UserDefaultHelper.isLanguageSelected
         print("isLanguageSelected.................", isLanguageSelected ?? "no")
-        
         UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
-        
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-        let languageVC = storyboard.instantiateViewController(withIdentifier: "LanguageSelectionVC") as! LanguageSelectionVC
-        //let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-        
         if isLanguageSelected == "yes" {
-//            let navigationController = UINavigationController.init(rootViewController: loginVC)
-//            navigationController.isNavigationBarHidden = true
-//            self.window?.rootViewController = navigationController
-            let scanSB = UIStoryboard.init(name: "Home", bundle: nil)
-            let scanVC = scanSB.instantiateViewController(withIdentifier: "ScanTableVC") as! ScanTableVC
-            let navigationController = UINavigationController.init(rootViewController: scanVC)
-            navigationController.isNavigationBarHidden = true
-            self.window?.rootViewController = navigationController
+            setHome()
         } else {
-            let navigationController = UINavigationController.init(rootViewController: languageVC)
-            navigationController.isNavigationBarHidden = true
-            self.window?.rootViewController = navigationController
+            setLanguage()
         }
-        
-        print("UserDefaultHelper.authToken", UserDefaultHelper.authToken!)
-        if UserDefaultHelper.orderType != "" {
-            let storyboard = UIStoryboard.init(name: "Home", bundle: nil)
-            let scanVC = storyboard.instantiateViewController(withIdentifier: "DashboardVC") as! DashboardVC
-            let navigationController = UINavigationController.init(rootViewController: scanVC)
-            navigationController.isNavigationBarHidden = true
-            self.window?.rootViewController = navigationController
-        }
-        
-        self.window?.makeKeyAndVisible()
-        
+       
     }
     
     func afterLogout() {
-        
-//        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-//        let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
-//        
-//        let navigationController = UINavigationController.init(rootViewController: loginVC)
-//        navigationController.isNavigationBarHidden = true
-//        self.window?.rootViewController = navigationController
-        let scanSB = UIStoryboard.init(name: "Home", bundle: nil)
-        let scanVC = scanSB.instantiateViewController(withIdentifier: "ScanTableVC") as! ScanTableVC
+        setHome()
+    }
+    
+    func setHome() {
+        let storyboard = UIStoryboard.init(name: "Home", bundle: nil)
+        let scanVC = storyboard.instantiateViewController(withIdentifier: "DashboardVC") as! DashboardVC
         let navigationController = UINavigationController.init(rootViewController: scanVC)
         navigationController.isNavigationBarHidden = true
         self.window?.rootViewController = navigationController
         self.window?.makeKeyAndVisible()
+
+    }
+    func setLanguage() {
+        let scanVC = LanguageSelectionVC.instantiate()
+        let navigationController = UINavigationController.init(rootViewController: scanVC)
+        navigationController.isNavigationBarHidden = true
+        self.window?.rootViewController = navigationController
+        self.window?.makeKeyAndVisible()
+
     }
 }

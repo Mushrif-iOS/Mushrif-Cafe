@@ -9,6 +9,13 @@ import UIKit
 
 class SearchCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var viewSpecialPrice: UIView!
+    @IBOutlet weak var lblSpecialPrice: UILabel!{
+        didSet {
+            lblSpecialPrice.font = UIFont.poppinsLightFontWith(size: 10)
+        }
+    }
+    
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.poppinsMediumFontWith(size: 12)

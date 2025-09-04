@@ -10,6 +10,7 @@ import UIKit
 class OrderDetailsVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -127,7 +128,7 @@ class OrderDetailsVC: UIViewController, Instantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        btnBack.setArabic()
         // Do any additional setup after loading the view.
         
         mainTableView.register(OrderDetailsTableViewCell.nib(), forCellReuseIdentifier: OrderDetailsTableViewCell.identifier)

@@ -156,3 +156,18 @@
 "confirm_delete" = "Confirm Delete";
 "cart_item_deelete_message" =  "Are you sure you want to delete";
 "place_on" = "Placed on";
+"lbl_select_cafe" = "Please login for provide you tables for selection while you are outside cafe";
+"lbl_access_deni" = "Location Access Denied";
+"msg_enable_location" = "Please enable location in Settings  for provide you tables for selection while you outside cafe";
+
+"lbl_setting" = "Settings";
+
+"lbl_location_title" = "It seems like are not in the Cafe, right now. Do you still wish to place order before you visit";
+"btn_Yes" = "Yes";
+"lbl_select_table" = "Select the table selection";
+"lbl_AreaName" = "Area Name";
+"btnExtraHead" = "Add extra head";
+"lbl_version" = "Version";
+"extra_head" = "In order to add Extra Head, \nyou need to add main item first.";
+"title_already_exist" = "Already exists";
+"msg_already_exist_msg" = "This item is already in this usual.";

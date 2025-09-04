@@ -13,14 +13,14 @@ class MyUsualCVCell: UICollectionViewCell {
     
     @IBOutlet weak var foodLabel: UILabel! {
         didSet {
-            foodLabel.font = UIFont.poppinsRegularFontWith(size: 18)
+            foodLabel.font = UIFont.poppinsRegularFontWith(size: 15)
             foodLabel.text = "Chicken Shawarma, Pepsi, Fries"
         }
     }
     
     @IBOutlet weak var addButton: UIButton! {
         didSet {
-            addButton.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 16)
+            addButton.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 12)
             addButton.setTitle("add_cart".localized(), for: .normal)
         }
     }

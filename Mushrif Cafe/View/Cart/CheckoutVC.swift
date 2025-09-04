@@ -12,10 +12,13 @@ import PassKit
 
 class CheckoutVC: UIViewController, Instantiatable {
     
+    @IBOutlet weak var bookView: UIView!
     static var storyboard: AppStoryboard = .cart
     
     @IBOutlet var mainScrollView: UIScrollView!
-    
+    var isFromDiretPayment = false
+    var orderType: String = "dinein"
+
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 20)
@@ -161,11 +164,6 @@ class CheckoutVC: UIViewController, Instantiatable {
         
         self.initiatePayment()
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         self.inactiveTableView.isHidden = true
         self.inActiveTblHeight.constant = 0
         
@@ -184,6 +182,13 @@ class CheckoutVC: UIViewController, Instantiatable {
         
         let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
         self.walletBalanceLabel.text = UserDefaultHelper.language == "en" ? "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \("balance".localized()): \(doubleValue.rounded(toPlaces: 3))"
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+       
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -356,7 +361,7 @@ class CheckoutVC: UIViewController, Instantiatable {
         print("Selected paymentType: \(paymentType)")
         self.setupUI()
     }
-    
+//    65081212
     private func getCartItem() {
         
         let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
@@ -366,10 +371,19 @@ class CheckoutVC: UIViewController, Instantiatable {
             print("Response JSON \(responseJSON)")
             let dataDict = responseJSON["response"]
             self.cartData = CartResponse(fromJson: dataDict)
-            let inActiveCartItemDict = responseJSON["response"]["inactive_items"].arrayValue
-            for obj in inActiveCartItemDict {
-                self.inActiveCartArray.append(CartItem(fromJson: obj))
+            if self.isFromDiretPayment {
+                let inActiveCartItemDict = responseJSON["response"]["active_items"].arrayValue
+                for obj in inActiveCartItemDict {
+                    self.inActiveCartArray.append(CartItem(fromJson: obj))
+                }
+            } else {
+                let inActiveCartItemDict = responseJSON["response"]["inactive_items"].arrayValue
+
+                for obj in inActiveCartItemDict {
+                    self.inActiveCartArray.append(CartItem(fromJson: obj))
+                }
             }
+            
             let paymentDetailData = responseJSON["response"]["transactionMethod"]
             self.paymentDetail = TransactionMethod(fromJson: paymentDetailData)
             
@@ -396,9 +410,20 @@ class CheckoutVC: UIViewController, Instantiatable {
                 
                 print("Total Price: \(totalPrice.rounded(toPlaces: 3))")
                 
+                
+                
                 self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(totalPrice.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(totalPrice.rounded(toPlaces: 3))"
                 self.totalCost = "\(totalPrice.rounded(toPlaces: 3))"
+               
                 print("Total Cost: \(self.totalCost)")
+                
+                
+                if Double(self.totalCost) ?? 0  >  0 {
+                    self.bookView.isHidden = false
+                } else {
+                    self.bookView.isHidden = true
+                    self.paymentType = "wallet"  // now we need to allow use id total coase < 0= then allow  to place order
+                }
                 self.inactiveTableView.isHidden = false
                 self.inactiveTableView.reloadData()
             } else {
@@ -407,6 +432,8 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.inactiveTableView.reloadData()
             }
         }
+        
+       
     }
     
     @IBAction func placeOrderAction(_ sender: Any) {
@@ -441,41 +468,18 @@ class CheckoutVC: UIViewController, Instantiatable {
             }
             self.executePayment(paymentMethodId: 1)
         } else if self.paymentType == "wallet" {
-            if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) < (Double(self.totalCost) ?? 0) {
-                self.showBanner(message: "insf_waller_amt".localized(), status: .failed)
-            } else {
-                let aParams: [String : Any] = ["order_id": "\(self.cartData?.orderId ?? 0)", "payment_type": "wallet", "payment_id": "", "payment_status": "Paid", "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
-                print(aParams)
-                
-                APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
-                    print("Response JSON \(responseJSON)")
-                    let dataDict = responseJSON["response"]
-                    self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
-                    
-                    let msg = responseJSON["message"].stringValue
-                    print(msg)
-                    let bal = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                    if bal > 0 {
-                        let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(self.totalCost) ?? 0.0)
-                        UserDefaultHelper.walletBalance = "\(doubleValue)"
-                        //self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) KWD"
-                    }
-                    
-                    //UserDefaultHelper.tableName = ""
-                    UserDefaultHelper.deleteTableId()
-                    UserDefaultHelper.deleteTableName()
-                    
-                    DispatchQueue.main.async {
-                        self.showBanner(message: msg, status: .success)
-                        let orderVC = OrderSuccessVC.instantiate()
-                        orderVC.successOrderDetails = self.successOrderDetails
-                        orderVC.successMsg = msg
-                        self.navigationController?.pushViewController(orderVC, animated: true)
-                    }
-                } failure: { error in
-                    print("Error \(error.localizedDescription)")
+            
+            if Double(self.totalCost) ?? 0  >  0 {  /// old flow continue
+                if (Double(UserDefaultHelper.walletBalance ?? "0") ?? 0) < (Double(self.totalCost) ?? 0) {
+                    self.showBanner(message: "insf_waller_amt".localized(), status: .failed)
+                } else {
+                    payWithWallert()
                 }
+            } else { // now we need to allow use id total coase < 0= then allow  to place order
+                payWithWallert()
             }
+ 
+            
         } else if self.paymentType == "wallet_and_apple_pay" {
             if let enteredAmount = Double(self.totalCost),
                let minAmount = Double(UserDefaultHelper.minimumAppleAmt ?? ""),
@@ -508,9 +512,42 @@ class CheckoutVC: UIViewController, Instantiatable {
             self.showBanner(message: "checkout_no_method".localized(), status: .failed)
         }
     }
-    
-    private func paymentOrder(orderId: String, type: String, payId: String, paymentStatus: String) {
+    private func payWithWallert() {
+                   let aParams: [String : Any] = ["order_id": "\(self.cartData?.orderId ?? 0)", "payment_type": "wallet", "payment_id": "", "payment_status": "Paid", "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.payment_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                self.successOrderDetails = SuccessOrderResponse(fromJson: dataDict)
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                let bal = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
+                if bal > 0 {
+                    let doubleValue = (Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0) - (Double(self.totalCost) ?? 0.0)
+                    UserDefaultHelper.walletBalance = "\(doubleValue)"
+                    //self.walletBalanceLabel.text =  "\("balance".localized()): \(doubleValue.rounded(toPlaces: 3)) KWD"
+                }
+                
+                //UserDefaultHelper.tableName = ""
+                UserDefaultHelper.deleteTableId()
+                UserDefaultHelper.deleteTableName()
+                
+                DispatchQueue.main.async {
+                    self.showBanner(message: msg, status: .success)
+                    let orderVC = OrderSuccessVC.instantiate()
+                    orderVC.successOrderDetails = self.successOrderDetails
+                    orderVC.successMsg = msg
+                    self.navigationController?.pushViewController(orderVC, animated: true)
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
         
+        
+    }
+    private func paymentOrders(orderId: String, type: String, payId: String, paymentStatus: String) {
         if type == "apple_pay" && payId != "" {
             let aParams: [String : Any] = ["order_id": orderId, "payment_type": type, "payment_id": payId, "payment_status": paymentStatus, "amount": self.totalCost, "with_wallet": 0, "wallet_amount": "0", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             print(aParams)
@@ -611,6 +648,42 @@ class CheckoutVC: UIViewController, Instantiatable {
             }
         }
     }
+    private func placerOrderAPI(orderId: String, type: String, payId: String, paymentStatus: String) {
+        if isFromDiretPayment {
+            
+            
+            let aParams = ["cart_id": "\(self.cartData?.id ?? 0)", "payment_type": "open", "order_type": self.orderType, "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+            print(aParams)
+            
+            APIManager.shared.postCall(APPURL.place_order, params: aParams, withHeader: true) { responseJSON in
+                print("Response JSON \(responseJSON)")
+                let dataDict = responseJSON["response"]
+                
+                let msg = responseJSON["message"].stringValue
+                print(msg)
+                let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
+                APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { responseJSON in
+
+                    let dataDict = responseJSON["response"]
+                    self.cartData = CartResponse(fromJson: dataDict)
+                    let paymentDetailData = responseJSON["response"]["transactionMethod"]
+                    self.paymentDetail = TransactionMethod(fromJson: paymentDetailData)
+                    UserDefaultHelper.minimumWalletAmt = "\(self.paymentDetail?.walletRecharge ?? "")"
+                    UserDefaultHelper.minimumAppleAmt = "\(self.paymentDetail?.applePay ?? "")"
+                    UserDefaultHelper.minimumKNETAmt = "\(self.paymentDetail?.knet ?? "")"
+                    self.paymentOrders(orderId: "\(self.cartData?.orderId ?? 0)", type: type, payId: payId, paymentStatus: paymentStatus)
+
+                } failure: { error in
+                    print("Error \(error.localizedDescription)")
+                }
+            } failure: { error in
+                print("Error \(error.localizedDescription)")
+            }
+        } else {
+            self.paymentOrders(orderId: orderId, type: type, payId: payId, paymentStatus: paymentStatus)
+
+        }
+    }
 }
 
 extension CheckoutVC: UITableViewDelegate, UITableViewDataSource {
@@ -685,9 +758,9 @@ extension CheckoutVC : PKPaymentAuthorizationViewControllerDelegate {
         
         controller.dismiss(animated: true) {
             if self.paymentType == "wallet_and_apple_pay" {
-                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
+                self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
             } else {
-                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
+                self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(transactionID)", paymentStatus: "Paid")
             }
         }
     }
@@ -703,9 +776,9 @@ extension CheckoutVC : PKPaymentAuthorizationViewControllerDelegate {
         print("Payment failed with error: \(error.localizedDescription)")
         controller.dismiss(animated: true) {
             if self.paymentType == "wallet_and_apple_pay" {
-                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "", paymentStatus: "")
+                self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "", paymentStatus: "")
             } else {
-                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
+                self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
             }
         }
     }
@@ -715,9 +788,9 @@ extension CheckoutVC : PKPaymentAuthorizationViewControllerDelegate {
         print("User canceled the payment.")
         controller.dismiss(animated: true) {
             if self.paymentType == "wallet_and_apple_pay" {
-                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "", paymentStatus: "")
+                self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "", paymentStatus: "")
             } else {
-                self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
+                self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "", paymentStatus: "")
             }
         }
     }
@@ -760,18 +833,18 @@ extension CheckoutVC: MFPaymentDelegate {
                     if let invoiceId = invoiceId {
                         print("Success with invoiceId \(invoiceId)")
                         if self.paymentType == "wallet_and_knet" {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
                         } else {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
                         }
                         self.dismiss(animated: true)
                     }
                 } else {
                     if let invoiceId = invoiceId {
                         if self.paymentType == "wallet_and_knet" {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
                         } else {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
                         }
                         self.dismiss(animated: true)
                     }
@@ -780,9 +853,9 @@ extension CheckoutVC: MFPaymentDelegate {
                 ProgressHUD.error(failError)
                 if let invoiceId = invoiceId {
                     if self.paymentType == "wallet_and_knet" {
-                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
+                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
                     } else {
-                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
                     }
                     self.dismiss(animated: true)
                 }
@@ -806,18 +879,18 @@ extension CheckoutVC: MFPaymentDelegate {
                     if let invoiceId = invoiceId {
                         print("Success with invoiceId \(invoiceId)")
                         if self.paymentType == "wallet_and_apple_pay" {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
                         } else {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
                         }
                         self.dismiss(animated: true)
                     }
                 } else {
                     if let invoiceId = invoiceId {
                         if self.paymentType == "wallet_and_apple_pay" {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
                         } else {
-                            self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
                         }
                         self.dismiss(animated: true)
                     }
@@ -826,9 +899,9 @@ extension CheckoutVC: MFPaymentDelegate {
                 ProgressHUD.error(failError)
                 if let invoiceId = invoiceId {
                     if self.paymentType == "wallet_and_apple_pay" {
-                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
                     } else {
-                        self.paymentOrder(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
                     }
                     self.dismiss(animated: true)
                 }

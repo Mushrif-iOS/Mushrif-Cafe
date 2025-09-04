@@ -95,7 +95,6 @@ class SpecialProductVC: UIViewController, Instantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Do any additional setup after loading the view.
         self.mealTypeTblView.register(SpecialMealTVC.nib(), forCellReuseIdentifier: SpecialMealTVC.identifier)
         

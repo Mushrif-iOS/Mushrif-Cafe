@@ -78,7 +78,7 @@ extension MyUsualTVCell: UICollectionViewDataSource, UICollectionViewDelegate, U
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 202, height: 145)
+        return CGSize(width: (UIScreen.main.bounds.size.width - 54)/3, height: 146)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

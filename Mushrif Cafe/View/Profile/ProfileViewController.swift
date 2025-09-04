@@ -11,12 +11,14 @@ import SafariServices
 class ProfileViewController: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
     
+    @IBOutlet weak var lblTbl: UILabel!
+    @IBOutlet weak var lblVersion: UILabel!
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var mainTableView: UITableView!
     
     var pickOption = ["English", "العربية"]
     var pickerView: UIPickerView!
     
-    @IBOutlet weak var selectLanguageTxt: UITextField!
     
     @IBOutlet weak var languageButton: UIButton!
     
@@ -59,10 +61,19 @@ class ProfileViewController: UIViewController, Instantiatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        lblTbl.font = UIFont.poppinsSemiBoldFontWith(size: 15)
+        lblTbl.text = ""
+        if (UserDefaultHelper.tableId ?? "").isBlank  == false {
+            //self.selectTableLabel.text = UserDefaultHelper.tableName
+            self.lblTbl.text = UserDefaultHelper.tableName
+            self.lblTbl.textColor = .black
+        }
+
         // Do any additional setup after loading the view.
         if #available(iOS 15.0, *) {
             mainTableView.sectionHeaderTopPadding = 0
         }
+        btnBack.setArabic()
         
 //        let pickerView = UIPickerView()
 //        pickerView.delegate = self
@@ -70,11 +81,22 @@ class ProfileViewController: UIViewController, Instantiatable {
         
         mainTableView.register(ProfileHeaderTVC.nib(), forCellReuseIdentifier: ProfileHeaderTVC.identifier)
         mainTableView.register(ProfileTVC.nib(), forCellReuseIdentifier: ProfileTVC.identifier)
-        
+        languageButton.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 20)
         print("UserDefaultHelper.userloginId", UserDefaultHelper.userloginId!)
+        lblVersion.font = UIFont.poppinsRegularFontWith(size: 16)
         
-        languageButton.menu = languageMenu
-        languageButton.showsMenuAsPrimaryAction = true
+        // Set app version
+        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+           let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+            let name = "lbl_version".localized()
+            lblVersion.text = "\(name) \(appVersion) (\(buildNumber))"
+        } else {
+            lblVersion.text = "Version Unknown"
+        }
+        
+        languageButton.setTitle(UserDefaultHelper.language == "en" ? "العربية" : "English", for: .normal)
+
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,7 +108,29 @@ class ProfileViewController: UIViewController, Instantiatable {
         self.navigationController?.popViewController(animated: true)
     }
     
+    
     @IBAction func languageAction(_ sender: UIButton) {
+        if UserDefaultHelper.language == "en" {
+            UserDefaultHelper.language = "ar"
+            DispatchQueue.main.async {
+                let userLanguage = UserDefaultHelper.language
+                UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
+                UserDefaultHelper.isLanguageSelected = "yes"
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.restartApp()
+            }
+        } else {
+            UserDefaultHelper.language = "en"
+            DispatchQueue.main.async {
+                let userLanguage = UserDefaultHelper.language
+                UIView.appearance().semanticContentAttribute =  userLanguage == "ar" ? .forceRightToLeft :  .forceLeftToRight
+                UserDefaultHelper.isLanguageSelected = "yes"
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.restartApp()
+            }
+
+        }
+        
     }
     
     @IBAction func qrAction(_ sender: UIButton) {

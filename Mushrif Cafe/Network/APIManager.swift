@@ -48,12 +48,16 @@ class APIManager: NSObject {
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Authorization": "Bearer \(UserDefaultHelper.authToken ?? "")"]
             
             print(strURL)
             print(headers)
             
-            AF.request(urlString, method: .get, headers: withHeader ? headers : nil).responseJSON { responseObj in
+            // Always use the URL passed to this function. Avoid responseJSON to gracefully handle non-JSON bodies.
+            AF.request(strURL, method: .get, headers: withHeader ? headers : nil)
+                .validate(statusCode: 200..<300)
+                .responseData { responseObj in
                 
                 if let statusCode = responseObj.response?.statusCode {
                     print("HTTP Status Code: \(statusCode)")
@@ -63,22 +67,26 @@ class APIManager: NSObject {
                     }
                 }
                 
-                if let error = responseObj.error {
+                switch responseObj.result {
+                case .failure(let error):
+                    if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (GET): \n\(raw)") }
                     failure(error)
                     self.showBanner(message: error.localizedDescription, status: .failed)
                     ProgressHUD.dismiss()
-                } else {
-                    if let responseData = responseObj.data {
-                        
-                        let data = JSON(responseData)
-                        
-                        if data["success"].bool == true {
-                            success(data)
+                case .success(let responseData):
+                    // Try to parse JSON; if it fails, log raw string and surface a friendly error
+                    if let json = try? JSON(data: responseData) {
+                        if json["success"].bool == true {
+                            success(json)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .failed)
+                            self.showBanner(message: json["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
+                    } else {
+                        if let raw = String(data: responseData, encoding: .utf8) { print("Non-JSON body (GET): \n\(raw)") }
+                        self.showBanner(message: "Invalid server response", status: .failed)
+                        ProgressHUD.dismiss()
                     }
                 }
             }
@@ -95,12 +103,15 @@ class APIManager: NSObject {
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Authorization": "Bearer \(UserDefaultHelper.authToken ?? "")"]
             
             print(strURL)
             print(headers)
             
-            AF.request(strURL, method: .get, parameters: params, headers: headers).responseJSON { responseObj in
+            AF.request(strURL, method: .get, parameters: params, headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseData { responseObj in
                 
                 if let statusCode = responseObj.response?.statusCode {
                     print("HTTP Status Code: \(statusCode)")
@@ -110,22 +121,25 @@ class APIManager: NSObject {
                     }
                 }
                 
-                if let error = responseObj.error {
+                switch responseObj.result {
+                case .failure(let error):
+                    if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (GET params): \n\(raw)") }
                     failure(error)
                     self.showBanner(message: error.localizedDescription, status: .failed)
                     ProgressHUD.dismiss()
-                } else {
-                    if let responseData = responseObj.data {
-                        
-                        let data = JSON(responseData)
-                        
-                        if data["success"].bool == true {
-                            success(data)
+                case .success(let responseData):
+                    if let json = try? JSON(data: responseData) {
+                        if json["success"].bool == true {
+                            success(json)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .failed)
+                            self.showBanner(message: json["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
+                    } else {
+                        if let raw = String(data: responseData, encoding: .utf8) { print("Non-JSON body (GET params): \n\(raw)") }
+                        self.showBanner(message: "Invalid server response", status: .failed)
+                        ProgressHUD.dismiss()
                     }
                 }
             }
@@ -144,13 +158,16 @@ class APIManager: NSObject {
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Authorization": "Bearer \(UserDefaultHelper.authToken ?? "")"]
             
             let fullUrl = (strURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
             print(fullUrl)
             print(headers)
             
-            AF.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil).responseJSON { responseObj in
+            AF.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil)
+                .validate(statusCode: 200..<300)
+                .responseData { responseObj in
                 
                 if let statusCode = responseObj.response?.statusCode {
                     print("HTTP Status Code: \(statusCode)")
@@ -160,22 +177,25 @@ class APIManager: NSObject {
                     }
                 }
                 
-                if let error = responseObj.error {
+                switch responseObj.result {
+                case .failure(let error):
+                    if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (POST): \n\(raw)") }
                     failure(error)
                     ProgressHUD.dismiss()
                     self.showBanner(message: error.localizedDescription, status: .failed)
-                } else {
-                    if let responseData = responseObj.data {
-                        
-                        let data = JSON(responseData)
-                        
-                        if data["success"].bool == true {
-                            success(data)
+                case .success(let responseData):
+                    if let json = try? JSON(data: responseData) {
+                        if json["success"].bool == true {
+                            success(json)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .failed)
+                            self.showBanner(message: json["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
+                    } else {
+                        if let raw = String(data: responseData, encoding: .utf8) { print("Non-JSON body (POST): \n\(raw)") }
+                        self.showBanner(message: "Invalid server response", status: .failed)
+                        ProgressHUD.dismiss()
                     }
                 }
             }
@@ -194,13 +214,16 @@ class APIManager: NSObject {
             
             let headers: HTTPHeaders = [
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Authorization": "Bearer \(UserDefaultHelper.authToken ?? "")"]
             
             let fullUrl = (strURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
             print(fullUrl)
             print(headers)
             
-            AF.request(fullUrl, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { responseObj in
+            AF.request(fullUrl, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseData { responseObj in
                 
                 if let statusCode = responseObj.response?.statusCode {
                     print("HTTP Status Code: \(statusCode)")
@@ -210,22 +233,25 @@ class APIManager: NSObject {
                     }
                 }
                 
-                if let error = responseObj.error {
+                switch responseObj.result {
+                case .failure(let error):
+                    if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (PUT): \n\(raw)") }
                     failure(error)
                     ProgressHUD.dismiss()
                     self.showBanner(message: error.localizedDescription, status: .failed)
-                } else {
-                    if let responseData = responseObj.data {
-                        
-                        let data = JSON(responseData)
-                        
-                        if data["success"].bool == true {
-                            success(data)
+                case .success(let responseData):
+                    if let json = try? JSON(data: responseData) {
+                        if json["success"].bool == true {
+                            success(json)
                             ProgressHUD.dismiss()
                         } else {
-                            self.showBanner(message: data["message"].stringValue, status: .failed)
+                            self.showBanner(message: json["message"].stringValue, status: .failed)
                             ProgressHUD.dismiss()
                         }
+                    } else {
+                        if let raw = String(data: responseData, encoding: .utf8) { print("Non-JSON body (PUT): \n\(raw)") }
+                        self.showBanner(message: "Invalid server response", status: .failed)
+                        ProgressHUD.dismiss()
                     }
                 }
             }

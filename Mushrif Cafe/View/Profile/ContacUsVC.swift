@@ -11,6 +11,7 @@ import UIKit
 class ContacUsVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .profile
     
+    @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var titleText: UILabel! {
         didSet {
             titleText.font = UIFont.poppinsMediumFontWith(size: 18)
@@ -65,7 +66,7 @@ class ContacUsVC: UIViewController, Instantiatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        btnBack.setArabic()
         // Do any additional setup after loading the view.
     }
     

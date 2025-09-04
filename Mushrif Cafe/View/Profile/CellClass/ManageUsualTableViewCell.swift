@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 class ManageUsualTableViewCell: UITableViewCell {
     
     @IBOutlet weak var backView: UIView!

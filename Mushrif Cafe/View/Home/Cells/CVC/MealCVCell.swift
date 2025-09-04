@@ -9,6 +9,14 @@ import UIKit
 
 class MealCVCell: UICollectionViewCell {
     
+    
+    @IBOutlet weak var lblSpecialPrice: UILabel!{
+        didSet {
+            lblSpecialPrice.font = UIFont.poppinsLightFontWith(size: 14)
+        }
+    }
+    @IBOutlet weak var viewSpecialPrice: UIView!
+    
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.poppinsMediumFontWith(size: 18)
