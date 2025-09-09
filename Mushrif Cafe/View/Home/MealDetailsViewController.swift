@@ -28,7 +28,8 @@ class MealDetailsViewController: UIViewController, Instantiatable {
     }
     
     @IBOutlet var txtViewHeight: NSLayoutConstraint!
-    
+    private let locationManager = LocationManager()
+
     @IBOutlet var typeOfMealTop: NSLayoutConstraint!
     @IBOutlet var typeOfMealView: UIView!
     @IBOutlet var typeOfMealHeight: NSLayoutConstraint!
@@ -1288,11 +1289,51 @@ extension MealDetailsViewController: UITableViewDelegate, UITableViewDataSource 
                 print("Error \(error.localizedDescription)")
             }
         } else {
-            self.showBanner(message: "please_scan".localized(), status: .warning)
-            let scanVC = ScanTableVC.instantiate()
-            scanVC.title = "Details"
-            scanVC.modalPresentationStyle = .formSheet
-            self.present(scanVC, animated: true)
+            if (UserDefaultHelper.tableId ?? "").isBlank  {
+                if let location =  locationManager.currentLocation ,  Utility.isNearByCafe(userLocation: location) {
+                    self.showBanner(message: "please_scan".localized(), status: .warning)
+                    let scanVC = ScanTableVC.instantiate()
+                    scanVC.title = "Details"
+                    scanVC.modalPresentationStyle = .formSheet
+                    self.present(scanVC, animated: true)
+                } else {
+                    if !(UserDefaultHelper.authToken ?? "").isBlank{ /// show location  picker
+                        showLocationAlrt()
+                    } else {
+                        self.showLoginAlert()
+                    }
+                }
+            }
         }
+    }
+    func showLocationAlrt() {
+        let popupVC = LocationAlertVC.instantiate()
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.comletionBlock = { objTbl in
+            UserDefaultHelper.tableId = "\(objTbl?.tableId ?? 0)"
+            UserDefaultHelper.hallId = "\(objTbl?.hallId ?? 0)"
+            UserDefaultHelper.groupId = "\(objTbl?.groupId ?? 0)"
+            UserDefaultHelper.tableName = "\(objTbl?.tableName ?? "")"
+        }
+        
+        self.present(popupVC, animated: true, completion: nil)
+
+    }
+    
+    func showLoginAlert()  {
+        let alert = UIAlertController(
+            title: "",
+            message: "lbl_select_cafe".localized(),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { _ in
+
+            let profileVC = LoginVC.instantiate()
+            self.navigationController?.pushViewController(profileVC, animated: true)
+
+        }))
+        present(alert, animated: true)
+
     }
 }

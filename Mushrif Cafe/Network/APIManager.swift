@@ -21,6 +21,13 @@ class APIManager: NSObject {
     var errorResponse: FailureHandler!
     var urlString = APPURL.getLanguages
     
+    private let session: Session
+    
+    override init() {
+        self.session = Session(interceptor: NetworkRetryInterceptor())
+        super.init()
+    }
+    
     private func showLoader() {
         ProgressHUD.animationType = .circleDotSpinFade
         ProgressHUD.colorAnimation = UIColor.primaryBrown
@@ -36,6 +43,30 @@ class APIManager: NSObject {
             return
         }
         banner.show(in: window, duration: 2.0)
+    }
+    
+    private func friendlyErrorMessage(for statusCode: Int) -> String? {
+        switch statusCode {
+        case 429:
+            return "Too many requests. Please wait a moment and try again."
+        case 500...599:
+            return "The server is having trouble right now. Please try again shortly."
+        default:
+            return nil
+        }
+    }
+    
+    private func serverMessage(from data: Data?) -> String? {
+        guard let data = data, let json = try? JSON(data: data) else { return nil }
+        let candidates: [String?] = [
+            json["message"].string,
+            json["error_description"].string,
+            json["error"].string,
+            json["msg"].string
+        ]
+        return candidates
+            .compactMap { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .first { !$0.isEmpty }
     }
     
     // MARK: - Get Methods
@@ -55,7 +86,7 @@ class APIManager: NSObject {
             print(headers)
             
             // Always use the URL passed to this function. Avoid responseJSON to gracefully handle non-JSON bodies.
-            AF.request(strURL, method: .get, headers: withHeader ? headers : nil)
+            session.request(strURL, method: .get, headers: withHeader ? headers : nil)
                 .validate(statusCode: 200..<300)
                 .responseData { responseObj in
                 
@@ -71,7 +102,13 @@ class APIManager: NSObject {
                 case .failure(let error):
                     if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (GET): \n\(raw)") }
                     failure(error)
-                    self.showBanner(message: error.localizedDescription, status: .failed)
+                    if let message = self.serverMessage(from: responseObj.data) {
+                        self.showBanner(message: message, status: .failed)
+                    } else if let code = responseObj.response?.statusCode, let msg = self.friendlyErrorMessage(for: code) {
+                        self.showBanner(message: msg, status: .failed)
+                    } else {
+                        self.showBanner(message: error.localizedDescription, status: .failed)
+                    }
                     ProgressHUD.dismiss()
                 case .success(let responseData):
                     // Try to parse JSON; if it fails, log raw string and surface a friendly error
@@ -109,7 +146,7 @@ class APIManager: NSObject {
             print(strURL)
             print(headers)
             
-            AF.request(strURL, method: .get, parameters: params, headers: headers)
+            session.request(strURL, method: .get, parameters: params, headers: headers)
                 .validate(statusCode: 200..<300)
                 .responseData { responseObj in
                 
@@ -125,7 +162,13 @@ class APIManager: NSObject {
                 case .failure(let error):
                     if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (GET params): \n\(raw)") }
                     failure(error)
-                    self.showBanner(message: error.localizedDescription, status: .failed)
+                    if let message = self.serverMessage(from: responseObj.data) {
+                        self.showBanner(message: message, status: .failed)
+                    } else if let code = responseObj.response?.statusCode, let msg = self.friendlyErrorMessage(for: code) {
+                        self.showBanner(message: msg, status: .failed)
+                    } else {
+                        self.showBanner(message: error.localizedDescription, status: .failed)
+                    }
                     ProgressHUD.dismiss()
                 case .success(let responseData):
                     if let json = try? JSON(data: responseData) {
@@ -165,7 +208,7 @@ class APIManager: NSObject {
             print(fullUrl)
             print(headers)
             
-            AF.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil)
+            session.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil)
                 .validate(statusCode: 200..<300)
                 .responseData { responseObj in
                 
@@ -182,7 +225,13 @@ class APIManager: NSObject {
                     if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (POST): \n\(raw)") }
                     failure(error)
                     ProgressHUD.dismiss()
-                    self.showBanner(message: error.localizedDescription, status: .failed)
+                    if let message = self.serverMessage(from: responseObj.data) {
+                        self.showBanner(message: message, status: .failed)
+                    } else if let code = responseObj.response?.statusCode, let msg = self.friendlyErrorMessage(for: code) {
+                        self.showBanner(message: msg, status: .failed)
+                    } else {
+                        self.showBanner(message: error.localizedDescription, status: .failed)
+                    }
                 case .success(let responseData):
                     if let json = try? JSON(data: responseData) {
                         if json["success"].bool == true {
@@ -221,7 +270,7 @@ class APIManager: NSObject {
             print(fullUrl)
             print(headers)
             
-            AF.request(fullUrl, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
+            session.request(fullUrl, method: .put, parameters: params, encoding: JSONEncoding.default, headers: headers)
                 .validate(statusCode: 200..<300)
                 .responseData { responseObj in
                 
@@ -238,7 +287,13 @@ class APIManager: NSObject {
                     if let raw = responseObj.data.flatMap({ String(data: $0, encoding: .utf8) }) { print("Raw body (PUT): \n\(raw)") }
                     failure(error)
                     ProgressHUD.dismiss()
-                    self.showBanner(message: error.localizedDescription, status: .failed)
+                    if let message = self.serverMessage(from: responseObj.data) {
+                        self.showBanner(message: message, status: .failed)
+                    } else if let code = responseObj.response?.statusCode, let msg = self.friendlyErrorMessage(for: code) {
+                        self.showBanner(message: msg, status: .failed)
+                    } else {
+                        self.showBanner(message: error.localizedDescription, status: .failed)
+                    }
                 case .success(let responseData):
                     if let json = try? JSON(data: responseData) {
                         if json["success"].bool == true {
@@ -318,7 +373,11 @@ class APIManager: NSObject {
                                     ProgressHUD.dismiss()
                                 }
                                 completion(.failure(error))
-                                self.showBanner(message: error.localizedDescription, status: .failed)
+                                if let message = self.serverMessage(from: response.data) {
+                                    self.showBanner(message: message, status: .failed)
+                                } else {
+                                    self.showBanner(message: error.localizedDescription, status: .failed)
+                                }
                             }
                         }
                     }

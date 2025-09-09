@@ -171,3 +171,4 @@
 "extra_head" = "In order to add Extra Head, \nyou need to add main item first.";
 "title_already_exist" = "Already exists";
 "msg_already_exist_msg" = "This item is already in this usual.";
+"lbl_SubTotal" = "Sub total";

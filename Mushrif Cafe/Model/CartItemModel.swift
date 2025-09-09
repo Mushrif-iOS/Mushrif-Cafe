@@ -47,7 +47,8 @@ class CartResponse {
     var tableId : Int = 0
     var table : TableInfo!
     var discount : Double = 0
-
+    var special_sub_total : Double = 0
+    
     
     init(fromJson json: JSON!) {
         if json.isEmpty {
@@ -86,6 +87,8 @@ class CartResponse {
         orderType = json["order_type"].stringValue
         subTotal = json["sub_total"].stringValue
         tableId = json["table_id"].intValue
+        special_sub_total = json["special_sub_total"].doubleValue
+
         let tableJson = json["table"]
         if !tableJson.isEmpty {
             table = TableInfo(fromJson: tableJson)

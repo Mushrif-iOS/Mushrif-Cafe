@@ -56,6 +56,7 @@
 		9C0B1EF12E2CC576001F2047 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0B1EEF2E2CC576001F2047 /* LocationManager.swift */; };
 		9C0B1EF42E2CC5CF001F2047 /* UDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0B1EF32E2CC5CE001F2047 /* UDManager.swift */; };
 		9C0DC2FF2E2CDA2E0085F448 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0DC2FD2E2CDA2E0085F448 /* Utility.swift */; };
+		9C44143B2E69B78D000CE288 /* NetworkRetryInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C44143A2E69B78D000CE288 /* NetworkRetryInterceptor.swift */; };
 		9C5662262E2F81FF000173CE /* PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5662242E2F81FF000173CE /* PickerView.swift */; };
 		9C5662282E2F9047000173CE /* HallsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5662272E2F9047000173CE /* HallsModel.swift */; };
 		9C9285272E2CF1950009AA45 /* LocationAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9285262E2CF1950009AA45 /* LocationAlertVC.swift */; };
@@ -245,6 +246,7 @@
 		9C0B1EEF2E2CC576001F2047 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9C0B1EF32E2CC5CE001F2047 /* UDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDManager.swift; sourceTree = "<group>"; };
 		9C0DC2FD2E2CDA2E0085F448 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		9C44143A2E69B78D000CE288 /* NetworkRetryInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRetryInterceptor.swift; sourceTree = "<group>"; };
 		9C5662242E2F81FF000173CE /* PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerView.swift; sourceTree = "<group>"; };
 		9C5662272E2F9047000173CE /* HallsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HallsModel.swift; sourceTree = "<group>"; };
 		9C9285262E2CF1950009AA45 /* LocationAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAlertVC.swift; sourceTree = "<group>"; };
@@ -769,6 +771,7 @@
 		C68A61212CB6C2B50037094D /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				9C44143A2E69B78D000CE288 /* NetworkRetryInterceptor.swift */,
 				C68A61222CB6C3650037094D /* WebUrls.swift */,
 				C68A61262CB6C99A0037094D /* WebService.swift */,
 				C68A612D2CB948BA0037094D /* APIManager.swift */,
@@ -1202,6 +1205,7 @@
 				9C0181EA2DFEDC27004646FF /* JXSegmentedTitleDynamicConfiguration.swift in Sources */,
 				9C0181EB2DFEDC27004646FF /* JXSegmentedIndicatorImageView.swift in Sources */,
 				9C0181EC2DFEDC27004646FF /* JXSegmentedIndicatorDotLineView.swift in Sources */,
+				9C44143B2E69B78D000CE288 /* NetworkRetryInterceptor.swift in Sources */,
 				9C0181ED2DFEDC27004646FF /* JXSegmentedNumberCell.swift in Sources */,
 				9C0181EE2DFEDC27004646FF /* JXSegmentedIndicatorTriangleView.swift in Sources */,
 				9C0181EF2DFEDC27004646FF /* JXSegmentedRTLLayout.swift in Sources */,
@@ -1448,7 +1452,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.6;
+				CURRENT_PROJECT_VERSION = 2.7;
 				DEVELOPMENT_TEAM = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1465,7 +1469,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mmushrefiphone.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1489,7 +1493,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.6;
+				CURRENT_PROJECT_VERSION = 2.7;
 				DEVELOPMENT_TEAM = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1506,7 +1510,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2;
+				MARKETING_VERSION = 2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mmushrefiphone.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

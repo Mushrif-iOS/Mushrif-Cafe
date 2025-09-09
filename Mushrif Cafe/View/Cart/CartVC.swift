@@ -292,9 +292,10 @@ class CartVC: UIViewController, Instantiatable {
             self.discountLabel.text = "\(discount.rounded(toPlaces: 3)) \("kwd".localized())"
             
             
-            self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized()) \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized())  \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
             self.totalCost = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "")"
+            
+            amtLabel.text = "\(data?.special_sub_total ?? 0) \("kwd".localized())"
 
 //            UserDefaultHelper.totalItems! = data?.items ?? 0
             UserDefaultHelper.totalPrice! = Double("\(data?.subTotal != "" ? data?.subTotal ?? "" : "")") ?? 0.0
@@ -458,7 +459,6 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             cell.didChangePriceBlock = {
                 DispatchQueue.main.async {
                     let doubleValue = Double(UserDefaultHelper.totalPrice ?? 0.0)
-                    self.amtLabel.text =  UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                     self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
                 }
             }

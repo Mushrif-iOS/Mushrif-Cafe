@@ -11,6 +11,20 @@ import ProgressHUD
 import PassKit
 
 class CheckoutVC: UIViewController, Instantiatable {
+    @IBOutlet weak var lblSubTotal: UILabel!{
+        didSet {
+            lblSubTotal.font = UIFont.poppinsMediumFontWith(size: 16)
+            lblSubTotal.adjustsFontSizeToFitWidth = true
+        }
+    }
+    
+    @IBOutlet weak var lblSubTotalTitle: UILabel!{
+        didSet {
+            lblSubTotalTitle.font = UIFont.poppinsMediumFontWith(size: 16)
+            lblSubTotalTitle.text =  "lbl_SubTotal".localized()
+            lblSubTotalTitle.adjustsFontSizeToFitWidth = true
+        }
+    }
     
     @IBOutlet weak var bookView: UIView!
     static var storyboard: AppStoryboard = .cart
@@ -90,7 +104,7 @@ class CheckoutVC: UIViewController, Instantiatable {
     @IBOutlet var discountTitle: UILabel! {
         didSet {
             discountTitle.font = UIFont.poppinsMediumFontWith(size: 16)
-            discountTitle.text = "wallet_amt".localized()
+            discountTitle.text = "discount_apl".localized()
         }
     }
     @IBOutlet var discountLabel: UILabel! {
@@ -221,7 +235,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletDiscountStack.isHidden = false
                 self.walletTotalStack.isHidden = false
                 
-                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(self.totalCost) \("kwd".localized())" : "\("kwd".localized()) \(self.totalCost)-"
+//                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(self.totalCost) \("kwd".localized())" : "\("kwd".localized()) \(self.totalCost)-"
                 self.totalLabel.text = UserDefaultHelper.language == "en" ? "0.0 \("kwd".localized())" : "\("kwd".localized()) 0.0"
                 print("Remaining amount: 0.0 \("kwd".localized())")
                 self.remainingAmountAfterWallet = ""
@@ -236,7 +250,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 self.walletTotalStack.isHidden = false
                 
                 let doubleValue = Double(UserDefaultHelper.walletBalance ?? "") ?? 0.0
-                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))-"
+//                self.discountLabel.text = UserDefaultHelper.language == "en" ? "-\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))-"
                 
                 let remainingAmount = abs(totalCostValue - walletBalance)
                 self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(remainingAmount.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(remainingAmount.rounded(toPlaces: 3))"
@@ -256,7 +270,7 @@ class CheckoutVC: UIViewController, Instantiatable {
             }
         } else {
             // Wallet deselected
-            self.walletDiscountStack.isHidden = true
+            self.walletDiscountStack.isHidden = false
             self.walletTotalStack.isHidden = true
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(totalCostValue) \("kwd".localized())" : "\("kwd".localized()) \(totalCostValue)"
             paymentType = appleCheckBoxBtn.isSelected ? "apple_pay" : knetCheckBoxBtn.isSelected ? "knet" : ""
@@ -278,7 +292,7 @@ class CheckoutVC: UIViewController, Instantiatable {
                 // Wallet balance is sufficient, ONLY allow one method selection
                 walletCheckBoxBtn.isSelected = false
                 knetCheckBoxBtn.isSelected = false
-                self.walletDiscountStack.isHidden = true
+                self.walletDiscountStack.isHidden = false
                 self.walletTotalStack.isHidden = true
                 paymentType = "apple_pay"
                 
@@ -367,7 +381,7 @@ class CheckoutVC: UIViewController, Instantiatable {
         let aParams = ["locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
         print(aParams)
         
-        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { responseJSON in
+        APIManager.shared.postCall(APPURL.get_cart, params: aParams, withHeader: true) { [self] responseJSON in
             print("Response JSON \(responseJSON)")
             let dataDict = responseJSON["response"]
             self.cartData = CartResponse(fromJson: dataDict)
@@ -383,7 +397,17 @@ class CheckoutVC: UIViewController, Instantiatable {
                     self.inActiveCartArray.append(CartItem(fromJson: obj))
                 }
             }
-            
+
+            let special_sub_total = Double(cartData?.special_sub_total ?? 0)
+            self.totalCost = "\(special_sub_total.rounded(toPlaces: 3))"
+           
+            self.amtLabel.text = "\(special_sub_total.rounded(toPlaces: 3)) \("kwd".localized())"
+
+            self.lblSubTotal.text = "\(cartData?.subTotal ?? "0") \("kwd".localized())"
+
+            let discount = Double(cartData?.discount ?? 0)
+            self.discountLabel.text = "\(discount.rounded(toPlaces: 3)) \("kwd".localized())"
+
             let paymentDetailData = responseJSON["response"]["transactionMethod"]
             self.paymentDetail = TransactionMethod(fromJson: paymentDetailData)
             
@@ -407,15 +431,6 @@ class CheckoutVC: UIViewController, Instantiatable {
                     let quantity = item.quantity
                     return (unitPrice) * Double(quantity)
                 }.reduce(0.0, +)
-                
-                print("Total Price: \(totalPrice.rounded(toPlaces: 3))")
-                
-                
-                
-                self.amtLabel.text = UserDefaultHelper.language == "en" ? "\(totalPrice.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(totalPrice.rounded(toPlaces: 3))"
-                self.totalCost = "\(totalPrice.rounded(toPlaces: 3))"
-               
-                print("Total Cost: \(self.totalCost)")
                 
                 
                 if Double(self.totalCost) ?? 0  >  0 {
