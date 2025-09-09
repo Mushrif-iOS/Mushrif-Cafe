@@ -86,7 +86,7 @@ class ContacUsVC: UIViewController, Instantiatable {
             self.showBanner(message: "message_error".localized(), status: .failed)
         } else {
             
-            let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "message": "\(self.descLabel.text!)"]
+            let aParams: [String: Any] = ["name": "\(self.txtFullName.text!)", "message": "\(self.descLabel.text!)", "locale": UserDefaultHelper.language == "en" ? "English---us" : "Arabic---ae"]
             
             print(aParams)
             

@@ -254,8 +254,8 @@
             filePath = "Mushrif Cafe/View/Cart/CartVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
+            startingLineNumber = "347"
+            endingLineNumber = "347"
             landmarkName = "placeOrderAction(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -481,22 +481,6 @@
             startingLineNumber = "115"
             endingLineNumber = "115"
             landmarkName = "addAction(sender:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D829C698-457D-417A-950C-DC2E0620F791"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Mushrif Cafe/Utility/CustomCode/JXSegmented/ContentBaseViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
-            landmarkName = "listContainerView(_:initListAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

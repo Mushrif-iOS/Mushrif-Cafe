@@ -287,6 +287,7 @@ class CartVC: UIViewController, Instantiatable {
         let data = self.cartData
         
         DispatchQueue.main.async { [self] in
+           
             let discount = Double(data?.discount ?? 0)
             
             self.discountLabel.text = "\(discount.rounded(toPlaces: 3)) \("kwd".localized())"
@@ -295,7 +296,10 @@ class CartVC: UIViewController, Instantiatable {
             self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized())  \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
             self.totalCost = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "")"
             
-            amtLabel.text = "\(data?.special_sub_total ?? 0) \("kwd".localized())"
+            
+            let special_sub_total = Double(data?.special_sub_total ?? 0)
+            self.amtLabel.text = "\(special_sub_total.rounded(toPlaces: 3)) \("kwd".localized())"
+
 
 //            UserDefaultHelper.totalItems! = data?.items ?? 0
             UserDefaultHelper.totalPrice! = Double("\(data?.subTotal != "" ? data?.subTotal ?? "" : "")") ?? 0.0
