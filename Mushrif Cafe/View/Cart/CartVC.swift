@@ -90,17 +90,7 @@ class CartVC: UIViewController, Instantiatable {
         }
     }
     
-    @IBOutlet var totalTitle: UILabel! {
-        didSet {
-            totalTitle.font = UIFont.poppinsMediumFontWith(size: 16)
-            totalTitle.text = "total".localized()
-        }
-    }
-    @IBOutlet var totalLabel: UILabel! {
-        didSet {
-            totalLabel.font = UIFont.poppinsMediumFontWith(size: 16)
-        }
-    }
+   
     
     var cartData: CartResponse?
     var cartArray : [CartItem] = [CartItem]()
@@ -109,7 +99,6 @@ class CartVC: UIViewController, Instantiatable {
     
     var successOrderDetails: SuccessOrderResponse?
     
-    var totalCost: String = ""
     var orderType: String = "dinein"
         
     override func viewDidLoad() {
@@ -281,7 +270,11 @@ class CartVC: UIViewController, Instantiatable {
             print("Error \(error.localizedDescription)")
         }
     }
-    
+    func setAmountAndDiscount(dicount: Double, special_sub_total: Double) {
+        self.discountLabel.text = "\(dicount.rounded(toPlaces: 3)) \("kwd".localized())"
+        self.amtLabel.text = "\(special_sub_total.rounded(toPlaces: 3)) \("kwd".localized())"
+
+    }
     private func setupUI(isFromNavigate: Bool = true) {
         
         let data = self.cartData
@@ -289,19 +282,11 @@ class CartVC: UIViewController, Instantiatable {
         DispatchQueue.main.async { [self] in
            
             let discount = Double(data?.discount ?? 0)
-            
-            self.discountLabel.text = "\(discount.rounded(toPlaces: 3)) \("kwd".localized())"
-            
-            
-            self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(data?.subTotal != "" ? "\(data?.subTotal ?? "") \("kwd".localized())" : "")" : "\("kwd".localized())  \(data?.subTotal != "" ? "\(data?.subTotal ?? "")" : "")"
-            self.totalCost = "\(data?.subTotal != "" ? data?.subTotal ?? "" : "")"
-            
-            
             let special_sub_total = Double(data?.special_sub_total ?? 0)
-            self.amtLabel.text = "\(special_sub_total.rounded(toPlaces: 3)) \("kwd".localized())"
+
+            setAmountAndDiscount(dicount: discount, special_sub_total: special_sub_total)
 
 
-//            UserDefaultHelper.totalItems! = data?.items ?? 0
             UserDefaultHelper.totalPrice! = Double("\(data?.subTotal != "" ? data?.subTotal ?? "" : "")") ?? 0.0
             if self.inActiveCartArray.count > 0 {
                 self.inactiveTableView.isHidden = false
@@ -460,10 +445,11 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
                 self.getCartItem()
             }
             
-            cell.didChangePriceBlock = {
-                DispatchQueue.main.async {
-                    let doubleValue = Double(UserDefaultHelper.totalPrice ?? 0.0)
-                    self.totalLabel.text = UserDefaultHelper.language == "en" ? "\(doubleValue.rounded(toPlaces: 3)) \("kwd".localized())" : "\("kwd".localized()) \(doubleValue.rounded(toPlaces: 3))"
+            cell.didChangePriceBlock = { sub_total, discount in
+                DispatchQueue.main.async { [self] in
+                    setAmountAndDiscount(dicount: Double(sub_total) ?? 0, special_sub_total: Double(discount) ?? 0)
+
+
                 }
             }
             

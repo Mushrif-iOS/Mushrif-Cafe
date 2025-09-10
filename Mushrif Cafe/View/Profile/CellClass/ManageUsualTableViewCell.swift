@@ -79,7 +79,7 @@ class ManageUsualTableViewCell: UITableViewCell {
     var isCart: String = ""
     var didRemoveBlock : (() -> Void)? = nil
     
-    var didChangePriceBlock : (() -> Void)? = nil
+    var didChangePriceBlock : ((String, String) -> Void)? = nil
     
     static let identifier = "ManageUsualTableViewCell"
     
@@ -123,8 +123,10 @@ class ManageUsualTableViewCell: UITableViewCell {
                     if self.qtyValue == 0 {
                         self.didRemoveBlock?()
                     }
+                    let sub_total = responseJSON["response"]["sub_total"].stringValue
+                    let discount = responseJSON["discount"]["discount"].stringValue
                     
-                    self.didChangePriceBlock?()
+                    self.didChangePriceBlock?(sub_total, discount)
                     let total = responseJSON["response"]["sub_total"].stringValue
                     UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
                     
@@ -163,7 +165,10 @@ class ManageUsualTableViewCell: UITableViewCell {
             APIManager.shared.postCall(APPURL.update_cart_Qty, params: aParams, withHeader: true) { responseJSON in
                 print("Response JSON \(responseJSON)")
                 
-                self.didChangePriceBlock?()
+                let sub_total = responseJSON["response"]["sub_total"].stringValue
+                let discount = responseJSON["discount"]["discount"].stringValue
+                
+                self.didChangePriceBlock?(sub_total, discount)
                 let total = responseJSON["response"]["sub_total"].stringValue
                 UserDefaultHelper.totalPrice! = Double("\(total)") ?? 0.0
                 

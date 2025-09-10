@@ -254,8 +254,8 @@
             filePath = "Mushrif Cafe/View/Cart/CartVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
+            startingLineNumber = "332"
+            endingLineNumber = "332"
             landmarkName = "placeOrderAction(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -657,6 +657,38 @@
             startingLineNumber = "286"
             endingLineNumber = "286"
             landmarkName = "appleCheckBoxAction(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "129F4572-8EE2-48EE-B91E-E2B404A7F8BA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mushrif Cafe/View/Profile/CellClass/ManageUsualTableViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "minusAction(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "92B29F6C-6E8A-43E0-80E2-8F093F73FAA9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mushrif Cafe/View/Cart/CartVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "setAmountAndDiscount(dicount:special_sub_total:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
