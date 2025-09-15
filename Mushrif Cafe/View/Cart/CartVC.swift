@@ -447,7 +447,7 @@ extension CartVC: UITableViewDelegate, UITableViewDataSource {
             
             cell.didChangePriceBlock = { sub_total, discount in
                 DispatchQueue.main.async { [self] in
-                    setAmountAndDiscount(dicount: Double(sub_total) ?? 0, special_sub_total: Double(discount) ?? 0)
+                    setAmountAndDiscount(dicount: Double(discount) ?? 0, special_sub_total: Double(sub_total) ?? 0)
 
 
                 }

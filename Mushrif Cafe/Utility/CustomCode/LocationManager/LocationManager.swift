@@ -56,12 +56,12 @@ extension LocationManager: CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
+//        guard let location = locations.last else { return }
 
         // Stop further updates after getting the location once
         manager.stopUpdatingLocation()
 
-//        let location = CLLocation(latitude: cafeLatitude, longitude: cafeLongitude) // test
+        let location = CLLocation(latitude: cafeLatitude, longitude: cafeLongitude) // test
 
         currentLocation = location
         UDManager.isLocationServiceEnabled = true

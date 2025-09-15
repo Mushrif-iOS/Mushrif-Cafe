@@ -82,9 +82,8 @@ class APIManager: NSObject {
                 "Accept": "application/json",
                 "Authorization": "Bearer \(UserDefaultHelper.authToken ?? "")"]
             
-            print(strURL)
-            print(headers)
-            
+            print("URL" , strURL)
+            print("TYPE" , "GET")
             // Always use the URL passed to this function. Avoid responseJSON to gracefully handle non-JSON bodies.
             session.request(strURL, method: .get, headers: withHeader ? headers : nil)
                 .validate(statusCode: 200..<300)
@@ -205,9 +204,10 @@ class APIManager: NSObject {
                 "Authorization": "Bearer \(UserDefaultHelper.authToken ?? "")"]
             
             let fullUrl = (strURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")
-            print(fullUrl)
-            print(headers)
-            
+            print("URL" , fullUrl)
+            print("HEADER" , headers)
+            print("PARAM" , params as Any)
+            print("TYPE" , "POST")
             session.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil)
                 .validate(statusCode: 200..<300)
                 .responseData { responseObj in

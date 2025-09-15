@@ -124,7 +124,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                         self.didRemoveBlock?()
                     }
                     let sub_total = responseJSON["response"]["sub_total"].stringValue
-                    let discount = responseJSON["discount"]["discount"].stringValue
+                    let discount = responseJSON["response"]["discount"].stringValue
                     
                     self.didChangePriceBlock?(sub_total, discount)
                     let total = responseJSON["response"]["sub_total"].stringValue
@@ -166,7 +166,7 @@ class ManageUsualTableViewCell: UITableViewCell {
                 print("Response JSON \(responseJSON)")
                 
                 let sub_total = responseJSON["response"]["sub_total"].stringValue
-                let discount = responseJSON["discount"]["discount"].stringValue
+                let discount = responseJSON["response"]["discount"].stringValue
                 
                 self.didChangePriceBlock?(sub_total, discount)
                 let total = responseJSON["response"]["sub_total"].stringValue

@@ -845,35 +845,35 @@ extension CheckoutVC: MFPaymentDelegate {
                 if let invoiceStatus = executePaymentResponse.invoiceStatus {
                     ProgressHUD.success(invoiceStatus)
                     
-                    if let invoiceId = invoiceId {
-                        print("Success with invoiceId \(invoiceId)")
+                    if let invoice = invoiceId {
+                        print("Success with invoiceId \(invoice)")
                         if self.paymentType == "wallet_and_knet" {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoice)", paymentStatus: invoiceStatus)
                         } else {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: invoiceStatus)
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoice)", paymentStatus: invoiceStatus)
                         }
                         self.dismiss(animated: true)
                     }
                 } else {
-                    if let invoiceId = invoiceId {
+                    if let invoice = invoiceId {
                         if self.paymentType == "wallet_and_knet" {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoice)", paymentStatus: "")
                         } else {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoice)", paymentStatus: "")
                         }
                         self.dismiss(animated: true)
                     }
                 }
             case .failure(let failError):
                 ProgressHUD.error(failError)
-                if let invoiceId = invoiceId {
-                    if self.paymentType == "wallet_and_knet" {
-                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
-                    } else {
-                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
-                    }
-                    self.dismiss(animated: true)
-                }
+//                if let invoiceId = invoiceId {
+//                    if self.paymentType == "wallet_and_knet" {
+//                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_knet", payId: "\(invoiceId)", paymentStatus: "")
+//                    } else {
+//                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "knet", payId: "\(invoiceId)", paymentStatus: "")
+//                    }
+//                    self.dismiss(animated: true)
+//                }
             }
         }
     }
@@ -891,35 +891,35 @@ extension CheckoutVC: MFPaymentDelegate {
                 if let invoiceStatus = executePaymentResponse.invoiceStatus {
                     ProgressHUD.success(invoiceStatus)
                     
-                    if let invoiceId = invoiceId {
-                        print("Success with invoiceId \(invoiceId)")
+                    if let invoice = invoiceId {
+                        print("Success with invoiceId \(invoice)")
                         if self.paymentType == "wallet_and_apple_pay" {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoice)", paymentStatus: "Paid")
                         } else {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "Paid")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoice)", paymentStatus: "Paid")
                         }
                         self.dismiss(animated: true)
                     }
                 } else {
-                    if let invoiceId = invoiceId {
+                    if let invoice = invoiceId {
                         if self.paymentType == "wallet_and_apple_pay" {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoice)", paymentStatus: "")
                         } else {
-                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+                            self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoice)", paymentStatus: "")
                         }
                         self.dismiss(animated: true)
                     }
                 }
             case .failure(let failError):
                 ProgressHUD.error(failError)
-                if let invoiceId = invoiceId {
-                    if self.paymentType == "wallet_and_apple_pay" {
-                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
-                    } else {
-                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
-                    }
-                    self.dismiss(animated: true)
-                }
+//                if let invoiceId = invoiceId {
+//                    if self.paymentType == "wallet_and_apple_pay" {
+//                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "wallet_and_apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+//                    } else {
+//                        self.placerOrderAPI(orderId: "\(self.cartData?.orderId ?? 0)", type: "apple_pay", payId: "\(invoiceId)", paymentStatus: "")
+//                    }
+//                    self.dismiss(animated: true)
+//                }
             }
         }
     }
