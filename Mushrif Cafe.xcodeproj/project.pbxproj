@@ -1452,7 +1452,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.8;
+				CURRENT_PROJECT_VERSION = 2.11;
 				DEVELOPMENT_TEAM = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";
@@ -1493,7 +1493,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Mushrif Cafe/Mushrif Cafe.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2.8;
+				CURRENT_PROJECT_VERSION = 2.11;
 				DEVELOPMENT_TEAM = T759B6ZF77;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Mushrif Cafe/Info.plist";

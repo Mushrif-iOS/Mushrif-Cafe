@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         reachabilityObserver()
         
         self.restartApp()
-        
+        checkTableCartOrNot()
         
         MFSettings.shared.configure(token: UserDefaultHelper.paymentKey ?? "",
                                     country: .kuwait, environment: UserDefaultHelper.paymentEnv == "sandbox" ? .test : .live)
@@ -53,7 +53,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         MFSettings.shared.setTheme(theme: them)
         return true
     }
-    
+    func checkTableCartOrNot() {
+        if (UserDefaultHelper.totalItems ??  0 ) <= 0 {
+            UserDefaultHelper.hallId = ""
+                UserDefaultHelper.tableId = ""
+                UserDefaultHelper.groupId = ""
+                UserDefaultHelper.tableName = ""
+        }
+    }
   
     
     func reachabilityObserver() {

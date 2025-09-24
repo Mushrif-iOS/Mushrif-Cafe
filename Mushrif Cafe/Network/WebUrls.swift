@@ -160,5 +160,9 @@ struct APPURL {
     static var autoselecttable: String {
         return BaseURL  + "auto-select-table"
     }
+ 
+    static var versioncheck: String {
+        return BaseURL  + "version-check"
+    }
     
 }

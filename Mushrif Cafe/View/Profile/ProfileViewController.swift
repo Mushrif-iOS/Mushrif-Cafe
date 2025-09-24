@@ -86,14 +86,8 @@ class ProfileViewController: UIViewController, Instantiatable {
         lblVersion.font = UIFont.poppinsRegularFontWith(size: 16)
         
         // Set app version
-        if let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-           let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            let name = "lbl_version".localized()
-            lblVersion.text = "\(name) \(appVersion) (\(buildNumber))"
-        } else {
-            lblVersion.text = "Version Unknown"
-        }
-        
+        let name = "lbl_version".localized()
+        lblVersion.text = "\(name) \(Utility.getAppVersionAndBuild().version) (\(Utility.getAppVersionAndBuild().build))"
         languageButton.setTitle(UserDefaultHelper.language == "en" ? "العربية" : "English", for: .normal)
 
 

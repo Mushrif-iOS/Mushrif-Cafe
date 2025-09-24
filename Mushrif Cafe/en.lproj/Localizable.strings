@@ -172,3 +172,7 @@
 "title_already_exist" = "Already exists";
 "msg_already_exist_msg" = "This item is already in this usual.";
 "lbl_SubTotal" = "Sub total";
+"tbl_delete_msg" = "Are you sure you want to remove this table?";
+"lbl_Login" = "Login";
+"update_available" = "Update Available";
+"update_message" = "A new version of Mushrif cafe is available. Please update to version %@ now";

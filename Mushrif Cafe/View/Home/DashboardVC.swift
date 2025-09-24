@@ -12,7 +12,6 @@ import CoreLocation
 
 class DashboardVC: UIViewController, Instantiatable {
     static var storyboard: AppStoryboard = .home
-    
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.poppinsBoldFontWith(size: 13)
@@ -74,7 +73,11 @@ class DashboardVC: UIViewController, Instantiatable {
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("ShowOrders"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodRefreshTable(notification:)), name: Notification.Name("RefreshTableInfo"), object: nil)
         
-    
+        // Add observer for app becoming active to re-check version
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        
+        versioncheckAPI()
+
     }
     func setupLocation()  { /// first  we will check location acces that user  is near by cafe or not
         // Set up closures
@@ -91,9 +94,7 @@ class DashboardVC: UIViewController, Instantiatable {
                     self!.checkLoginOrNot(isNearByCafe: false)
 
                 }
-
             }
-         
         }
 
            locationManager.onLocationDenied = { [weak self] in
@@ -116,14 +117,69 @@ class DashboardVC: UIViewController, Instantiatable {
         }
     }
   
+    private func versioncheckAPI() {
+        var aParams: [String: Any] = [:]
+        aParams["version"]  = Utility.getAppVersionAndBuild().version
+        APIManager.shared.postCall(APPURL.versioncheck, params: aParams, withHeader: true) { responseJSON in
+            print("Response JSON \(responseJSON)")
+            let objectVersion = VersionCheckResponse(json: responseJSON)
+            // Check if there's a version update available
+            if objectVersion.response?.forceLogin == 1 {
+                self.showVersionAlert(version: Utility.getAppVersionAndBuild().version)
+            }
+        } failure: { error in
+            print("Error \(error.localizedDescription)")
+        }
+    }
+    private func showVersionAlert(version: String) {
+        // Check if alert is already being presented
+        if presentedViewController is UIAlertController {
+            return
+        }
+        
+        let alert = UIAlertController(
+           title: "update_available".localized(),
+           message: String(format: "update_message".localized(), version),
+           preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "update".localized(), style: .default, handler: { _ in
+            self.redirectToAppStore()
+        }))
+        present(alert, animated: true)
+    }
+    
+    @objc private func appDidBecomeActive() {
+        // Re-show alert if update is still required when app becomes active
+        versioncheckAPI()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
+    func showTableDelete()  {
+          let alert = UIAlertController(
+              title: "",
+              message: "tbl_delete_msg".localized(),
+              preferredStyle: .alert
+          )
+        alert.addAction(UIAlertAction(title: "cancel".localized(), style: .default))
+        alert.addAction(UIAlertAction(title: "btn_Yes".localized(), style: .default, handler: { [self] _ in
+            UserDefaultHelper.totalItems = 0
+            scanTableVC()
+          }))
+          present(alert, animated: true)
+
+      }
+    
     func showLoginAlert()  {
         let alert = UIAlertController(
             title: "",
             message: "lbl_select_cafe".localized(),
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        alert.addAction(UIAlertAction(title: "Login", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: "ok".localized(), style: .default))
+        alert.addAction(UIAlertAction(title: "lbl_Login".localized(), style: .default, handler: { _ in
 
             let profileVC = LoginVC.instantiate()
             self.navigationController?.pushViewController(profileVC, animated: true)
@@ -160,6 +216,17 @@ class DashboardVC: UIViewController, Instantiatable {
         if let appSettings = URL(string: UIApplication.openSettingsURLString) {
             if UIApplication.shared.canOpenURL(appSettings) {
                 UIApplication.shared.open(appSettings, options: [:], completionHandler: nil)
+            }
+        }
+    }
+    
+    @objc private func redirectToAppStore() {
+        // Try to open with the specific App Store URL first, fallback to search if needed
+        let appStoreURL = "https://apps.apple.com/app/mushrif-cafe/id1467496776"
+        
+        if let url = URL(string: appStoreURL) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
     }
@@ -226,7 +293,15 @@ class DashboardVC: UIViewController, Instantiatable {
     }
     
     @IBAction func selectTableAction(_ sender: UIButton) {
-        if (UserDefaultHelper.tableId ?? "").isBlank  {
+        if (UserDefaultHelper.tableId ?? "").isBlank == false  , (UserDefaultHelper.totalItems ??  0 ) <= 0 {
+            showTableDelete()
+        } else {
+            if (UserDefaultHelper.tableId ?? "").isBlank  {
+                scanTableVC()
+            }
+        }
+   }
+    func scanTableVC() {
             if let location =  locationManager.currentLocation ,  Utility.isNearByCafe(userLocation: location) {
                 let scanVC = ScanTableVC.instantiate()
                 scanVC.title = "LanguageSelection"
@@ -240,7 +315,6 @@ class DashboardVC: UIViewController, Instantiatable {
                 
             }
         }
-    }
     
     @IBAction func viewProfileAction(_ sender: Any) {
         
@@ -326,6 +400,7 @@ class DashboardVC: UIViewController, Instantiatable {
                 self.setupBadge()
                 setupLocation()
 
+             
                 /* this is old  flow for set table
                  
                  if self.activeData.count > 0 {
@@ -423,11 +498,9 @@ class DashboardVC: UIViewController, Instantiatable {
         if (UserDefaultHelper.tableId ?? "").isBlank  == false {
             //self.selectTableLabel.text = UserDefaultHelper.tableName
             self.selectTableLabel.text = UserDefaultHelper.tableName
-            self.scanTableButton.isUserInteractionEnabled = false
             
         } else {
             self.selectTableLabel.text = "select_table".localized()
-            self.scanTableButton.isUserInteractionEnabled = true
         }
 
     }

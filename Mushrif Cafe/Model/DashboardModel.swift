@@ -348,3 +348,25 @@ class CountItems {
         userId = json["user_id"].intValue
     }
 }
+
+class VersionCheckResponse {
+    let success: Bool?
+    let response: ResponseData?
+    let message: String?
+    
+    init(json: JSON) {
+        self.success = json["success"].bool
+        self.message = json["message"].string
+        self.response = ResponseData(json: json["response"])
+    }
+}
+
+struct ResponseData {
+    let version: String?
+    let forceLogin: Int
+    
+    init(json: JSON) {
+        self.version = json["version"].string
+        self.forceLogin = json["force_login"].intValue
+    }
+}
