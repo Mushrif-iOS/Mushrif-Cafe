@@ -66,17 +66,16 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
         cell.btnExtraHeadTapped = {
             self.btnExtraHeadTapped?(dict.extra_head_category_id ?? 10, dict.extra_head_category_title ?? "")
         }
-        
+        cell.lblTable.text = String(dict.tableNo)
         if dict.paymentStatus == "Paid" {
             cell.payNowButton.isHidden = true
+            cell.btnPaid.isHidden = false
             cell.statusLabel.text = "paid_order".localized()
         } else {
+            cell.btnPaid.isHidden = true
             cell.payNowButton.isHidden = false
             cell.statusLabel.text = "open_order".localized()
         }
-        
-//        cell.payNowButton.tag = indexPath.item
-//        cell.payNowButton.addTarget(self, action: #selector(payNowAction(sender: )), for: .touchUpInside)
         cell.payNowButton.isUserInteractionEnabled = false
         return cell
     }
@@ -87,13 +86,17 @@ extension HomeOrderTVCell: UICollectionViewDataSource, UICollectionViewDelegate,
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dict = usualObj[indexPath.item]
-        if dict.items.count > 0 {
-            self.cartId = "\(dict.cart.id)"
-            let dashboardVC = CheckoutVC.instantiate()
-            self.navController?.push(viewController: dashboardVC)
-        } else {
-            self.navController?.showBanner(message: "no_cart_item".localized(), status: .failed)
+        if dict.paymentStatus != "Paid" {
+            if dict.items.count > 0 {
+                self.cartId = "\(dict.cart.id)"
+                let dashboardVC = CheckoutVC.instantiate()
+                self.navController?.push(viewController: dashboardVC)
+            } else {
+                self.navController?.showBanner(message: "no_cart_item".localized(), status: .failed)
+            }
         }
+        
+        
     }
     
     @objc func payNowAction(sender: UIButton) {

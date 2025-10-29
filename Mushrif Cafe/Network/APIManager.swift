@@ -211,7 +211,7 @@ class APIManager: NSObject {
             session.request(fullUrl, method: .post, parameters: params, encoding: JSONEncoding.default, headers: withHeader ? headers : nil)
                 .validate(statusCode: 200..<300)
                 .responseData { responseObj in
-                
+                    
                 if let statusCode = responseObj.response?.statusCode {
                     print("HTTP Status Code: \(statusCode)")
                     

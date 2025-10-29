@@ -176,3 +176,6 @@
 "lbl_Login" = "Login";
 "update_available" = "Update Available";
 "update_message" = "A new version of Mushrif cafe is available. Please update to version %@ now";
+"lbl_Paid" = "Paid";
+"lbl_Order_Placed" = "Order Placed";
+"lbl_Order_Updated" = "Order Updated";

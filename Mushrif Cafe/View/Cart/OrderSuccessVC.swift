@@ -63,9 +63,23 @@ class OrderSuccessVC: UIViewController, Instantiatable {
     @IBOutlet var dateTimeTitle: UILabel! {
         didSet {
             dateTimeTitle.font = UIFont.poppinsRegularFontWith(size: 16)
-            dateTimeTitle.text = "date_time".localized()
+            dateTimeTitle.text = "lbl_Order_Placed".localized()
         }
     }
+    @IBOutlet weak var lblUpdateDateTitle: UILabel!{
+        didSet {
+            lblUpdateDateTitle.font = UIFont.poppinsRegularFontWith(size: 16)
+            lblUpdateDateTitle.text = "lbl_Order_Updated".localized()
+        }
+    }
+    
+    @IBOutlet weak var lblUpdate: UILabel!{
+        didSet {
+            lblUpdate.font = UIFont.poppinsRegularFontWith(size: 16)
+            lblUpdate.text = Utility.formatDate(successOrderDetails?.updatedat ?? "")
+        }
+    }
+    
     @IBOutlet var dateTimeLabel: UILabel! {
         didSet {
             dateTimeLabel.font = UIFont.poppinsRegularFontWith(size: 16)

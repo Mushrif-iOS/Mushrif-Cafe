@@ -176,3 +176,7 @@
 "lbl_Login" = "تسجيل الدخول";
 "update_available" = "تحديث متوفر";
 "update_message" = "إصدار جديد من مقهى مشرف متوفر. يرجى التحديث إلى الإصدار %@ الآن";
+"lbl_Paid" = "مدفوع";
+
+"lbl_Order_Placed" = "تم تقديم الطلب";
+"lbl_Order_Updated" = "تم تحديث الطلب";

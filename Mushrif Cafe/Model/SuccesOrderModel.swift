@@ -65,7 +65,8 @@ class SuccessOrderResponse {
     var tableNo : AnyObject!
     var updatedUserId : Int = 0
     var userId : Int = 0
-    
+    var updatedat : String = ""
+
     init(fromJson json: JSON!) {
         if json.isEmpty {
             return
@@ -106,5 +107,7 @@ class SuccessOrderResponse {
         tableNo = json["table_no"].stringValue as AnyObject
         updatedUserId = json["updated_user_id"].intValue
         userId = json["user_id"].intValue
+        updatedat = json["updated_at"].stringValue
+
     }
 }

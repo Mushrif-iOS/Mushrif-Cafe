@@ -9,6 +9,13 @@ import UIKit
 
 class HomeOrderCVCell: UICollectionViewCell {
     
+    @IBOutlet weak var btnPaid: UIButton!{
+        didSet {
+            btnPaid.titleLabel?.font = UIFont.poppinsBoldFontWith(size: 16)
+            btnPaid.setTitle("lbl_Paid".localized(), for: .normal)
+        }
+    }
+    
     @IBOutlet weak var btnExtraHead: UIButton! {
         didSet {
             btnExtraHead.titleLabel?.font = UIFont.poppinsRegularFontWith(size: 16)
@@ -19,6 +26,19 @@ class HomeOrderCVCell: UICollectionViewCell {
     
     
     @IBOutlet var topView: UIView!
+  
+    @IBOutlet weak var lblTableTitle: UILabel!{
+        didSet {
+            lblTableTitle.font = UIFont.poppinsBoldFontWith(size: 16)
+            lblTableTitle.text = "table".localized()
+        }
+    }
+    
+    @IBOutlet weak var lblTable: UILabel!{
+        didSet {
+            lblTable.font = UIFont.poppinsBoldFontWith(size: 16)
+        }
+    }
     
     @IBOutlet var orderLabel: UILabel! {
         didSet {

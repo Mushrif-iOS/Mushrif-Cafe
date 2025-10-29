@@ -130,5 +130,30 @@ public class Utility {
         return (version, build)
     }
 
+    
+    static func formatDate(_ dateString: String) -> String {
+            // Check if the string is empty
+           if dateString.isEmpty {
+               return "Invalid Date"
+           }
+           
+           let inputFormatter = DateFormatter()
+           inputFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+           inputFormatter.locale = Locale(identifier: "en_US_POSIX")
+           inputFormatter.timeZone = TimeZone(abbreviation: "UTC") // input assumed UTC
+           
+           // Try parsing the input string
+           guard let date = inputFormatter.date(from: dateString) else {
+               return dateString // fallback: return original string
+           }
+           
+           let outputFormatter = DateFormatter()
+           outputFormatter.dateFormat = "E, MMM dd, yyyy - hh:mm a"
+           outputFormatter.locale = Locale(identifier: "en_US_POSIX")
+           outputFormatter.timeZone = TimeZone(abbreviation: "UTC") // output in UTC
+           
+           return outputFormatter.string(from: date)
+    }
+
 }
 

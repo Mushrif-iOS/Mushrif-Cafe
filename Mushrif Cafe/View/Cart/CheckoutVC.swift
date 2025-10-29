@@ -176,7 +176,6 @@ class CheckoutVC: UIViewController, Instantiatable {
 //            }
 //        }
         
-        self.initiatePayment()
         
         self.inactiveTableView.isHidden = true
         self.inActiveTblHeight.constant = 0
@@ -415,6 +414,8 @@ class CheckoutVC: UIViewController, Instantiatable {
             UserDefaultHelper.minimumAppleAmt = "\(self.paymentDetail?.applePay ?? "")"
             UserDefaultHelper.minimumKNETAmt = "\(self.paymentDetail?.knet ?? "")"
             self.setupUI()
+            self.initiatePayment()
+
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }

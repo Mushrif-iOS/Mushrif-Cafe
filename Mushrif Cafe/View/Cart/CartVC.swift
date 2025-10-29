@@ -183,7 +183,6 @@ class CartVC: UIViewController, Instantiatable {
         self.cartArray.removeAll()
         
         self.getCartItem()
-        getProfile()
 
     }
     
@@ -266,6 +265,8 @@ class CartVC: UIViewController, Instantiatable {
                 //UserDefaultHelper.tableNameFull = "\(self.cartData?.table.tableName ?? "")"
             }
             self.setupUI(isFromNavigate: isFromNavigate)
+            self.getProfile()
+
         } failure: { error in
             print("Error \(error.localizedDescription)")
         }
