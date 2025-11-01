@@ -74,9 +74,7 @@ extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, 
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (UIScreen.main.bounds.size.width - 54)/3, height: 146)
-    }
+   
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let dict = categoryObj[indexPath.item]
@@ -125,4 +123,32 @@ extension CategoryTVCell: UICollectionViewDataSource, UICollectionViewDelegate, 
             print("Error \(error.localizedDescription)")
         }
     }
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let totalSpacing: CGFloat = 12 + 12 + (10 * 2) // left + right + 2 gaps between 3 cells
+        let width = (collectionView.bounds.width - totalSpacing) / 3
+        return CGSize(width: width, height: 146)
+    }
+    
+    
+    
 }
